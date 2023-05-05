@@ -45,6 +45,9 @@ tasks {
       options.release.set(17)
     }
   }
+  register("runDatagen") {
+    dependsOn(":datagen:run")
+  }
 }
 
 // Publishing

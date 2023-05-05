@@ -5,3 +5,4 @@ out/
 run/
 
 publishing.properties
+src/main/resources/generated
