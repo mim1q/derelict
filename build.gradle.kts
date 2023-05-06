@@ -48,6 +48,17 @@ tasks {
   register("runDatagen") {
     dependsOn(":datagen:run")
   }
+  withType<Assemble> {
+    dependsOn("runDatagen")
+  }
+}
+
+sourceSets {
+  main {
+    resources {
+      srcDirs("src/main/generated")
+    }
+  }
 }
 
 // Publishing

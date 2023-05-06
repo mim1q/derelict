@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "derelict",
+  "name": "Derelict",
+  "version": "${version}",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.github.mim1q.derelict.Derelict"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric": ">=0.76.0",
+    "minecraft": "1.19.2"
+  }
+}

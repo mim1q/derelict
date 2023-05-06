@@ -33,7 +33,7 @@ fun deleteDir(directory: Path) {
     .forEach { it.delete() }
 }
 
-val generatedDir = projectDir.resolve("../src/main/resources/generated")
+val generatedDir = projectDir.resolve("../src/main/generated")
 tasks {
   withType<JavaExec> {
     doFirst {
