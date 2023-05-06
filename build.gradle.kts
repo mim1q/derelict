@@ -6,6 +6,7 @@ plugins {
   id("fabric-loom") version Versions.loom
   id("com.modrinth.minotaur") version Versions.minotaur
   id("com.matthewprenger.cursegradle") version Versions.cursegradle
+  kotlin("jvm") version Versions.kotlin
 }
 
 java {
@@ -30,6 +31,8 @@ dependencies {
   mappings("net.fabricmc:yarn:${Versions.yarn}:v2")
   modImplementation("net.fabricmc:fabric-loader:${Versions.fabricLoader}")
   modImplementation("net.fabricmc.fabric-api:fabric-api:${Versions.fabricApi}")
+  modImplementation("net.fabricmc:fabric-language-kotlin:${Versions.fabricLanguageKotlin}")
+  implementation(kotlin("stdlib-jdk8"))
 }
 
 @Suppress("UnstableApiUsage")
@@ -119,4 +122,8 @@ if (secrets.isCurseforgeReady()) {
       dependsOn(remapJar)
     }
   }
+}
+
+kotlin {
+  jvmToolchain(17)
 }

@@ -6,6 +6,8 @@ object Versions {
   const val fabricApi = "0.76.0+1.19.2"
   const val yarn = "1.19.2+build.28"
   const val loom = "1.2-SNAPSHOT"
+  const val fabricLanguageKotlin = "1.9.4+kotlin.1.8.21"
+  const val kotlin = "1.8.21"
 
   // Publishing
   const val cursegradle = "1.4.0"
