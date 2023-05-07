@@ -9,6 +9,6 @@ fun main(args: Array<String>) {
   if (args.isEmpty()) throw IllegalArgumentException("Must provide an output directory")
   ResourceGenerator.create("derelict", Path.of(args[0])).apply {
     // Assets to generate
-    add(BlockSets.woodSet("derelict:test"))
+    add(BlockSets.basicWoodSet("derelict:burned"))
   }.generate()
 }

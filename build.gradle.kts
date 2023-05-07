@@ -51,9 +51,6 @@ tasks {
   register("runDatagen") {
     dependsOn(":datagen:run")
   }
-  withType<Assemble> {
-    dependsOn("runDatagen")
-  }
 }
 
 sourceSets {

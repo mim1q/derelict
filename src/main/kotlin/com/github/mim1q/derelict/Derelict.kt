@@ -20,6 +20,6 @@ object Derelict : ModInitializer {
   fun id(value: String) = Identifier(MOD_ID, value)
 
   val ITEM_GROUP: ItemGroup = FabricItemGroupBuilder.create(id("derelict"))
-    .icon { ModBlocks.TEST_WOOD.log.asItem().defaultStack }
+    .icon { ModBlocks.BURNED_WOOD.log.asItem().defaultStack }
     .build()
 }
