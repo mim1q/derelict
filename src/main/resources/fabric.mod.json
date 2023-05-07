@@ -11,6 +11,12 @@
         "adapter": "kotlin",
         "value": "com.github.mim1q.derelict.Derelict"
       }
+    ],
+    "client": [
+      {
+        "adapter": "kotlin",
+        "value": "com.github.mim1q.derelict.DerelictClient"
+      }
     ]
   },
   "depends": {
