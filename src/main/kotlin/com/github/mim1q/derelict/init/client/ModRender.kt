@@ -6,6 +6,10 @@ import net.minecraft.client.render.RenderLayer
 
 object ModRender {
   fun init() {
+    initBlocks()
+  }
+
+  private fun initBlocks() {
     BlockRenderLayerMap.INSTANCE.putBlocks(
       RenderLayer.getCutout(),
       ModBlocks.BURNED_WOOD.trapdoor, ModBlocks.BURNED_WOOD.door,

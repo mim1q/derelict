@@ -1,8 +1,8 @@
-package com.github.mim1q.derelict.family
+package com.github.mim1q.derelict.featureset
 
 import net.minecraft.block.*
 
-class StoneFamily(name: String) : BlockFamily(name) {
+class StoneSet(name: String) : FeatureSet(name) {
   var block = Block(settings)
   var stairs = StairsBlock(block.defaultState, settings)
   var slab = SlabBlock(settings)

@@ -1,9 +1,9 @@
-package com.github.mim1q.derelict.family
+package com.github.mim1q.derelict.featureset
 
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.minecraft.block.*
 
-class WoodBlockFamily(name: String) : BlockFamily(name, FabricBlockSettings.copyOf(Blocks.OAK_WOOD)) {
+class WoodSet(name: String) : FeatureSet(name, FabricBlockSettings.copyOf(Blocks.OAK_WOOD)) {
   val planks = Block(settings)
   val log = PillarBlock(settings)
   val strippedLog = PillarBlock(settings)
