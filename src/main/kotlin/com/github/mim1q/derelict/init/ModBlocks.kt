@@ -1,7 +1,6 @@
 package com.github.mim1q.derelict.init
 
 import com.github.mim1q.derelict.Derelict
-import com.github.mim1q.derelict.featureset.FeatureSet
 import com.github.mim1q.derelict.featureset.WoodSet
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.block.Block
@@ -10,7 +9,7 @@ import net.minecraft.item.Item
 import net.minecraft.util.registry.Registry
 
 object ModBlocks {
-  val BURNED_WOOD = register(WoodSet("burned"))
+  val BURNED_WOOD = WoodSet(Derelict.id("burned"), FabricItemSettings().group(Derelict.ITEM_GROUP)).register()
 
   fun init() { }
 
@@ -27,11 +26,6 @@ object ModBlocks {
   private fun <T: Item> registerItem(name: String, item: T): T = Registry.register(
     Registry.ITEM, Derelict.id(name), item
   )
-
-  private fun <T : FeatureSet> register(blockSet: T): T {
-    blockSet.getBlocks().forEach { (k, v) -> register(k, v) }
-    return blockSet
-  }
 
   private fun defaultItemSettings() = FabricItemSettings().group(Derelict.ITEM_GROUP)
 }

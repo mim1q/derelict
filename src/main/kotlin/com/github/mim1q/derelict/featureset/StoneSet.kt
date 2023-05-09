@@ -1,21 +1,26 @@
 package com.github.mim1q.derelict.featureset
 
+import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.minecraft.block.*
+import net.minecraft.util.Identifier
 
-class StoneSet(name: String) : FeatureSet(name) {
-  var block = Block(settings)
-  var stairs = StairsBlock(block.defaultState, settings)
-  var slab = SlabBlock(settings)
-  val wall = WallBlock(settings)
-  val pressurePlate = PressurePlateBlock(PressurePlateBlock.ActivationRule.MOBS, settings)
-  val button = StoneButtonBlock(settings)
+class StoneSet(
+  name: Identifier,
+  defaultBlockSettings: FabricBlockSettings = FabricBlockSettings.of(Material.STONE)
+) : FeatureSet(name, defaultBlockSettings = defaultBlockSettings) {
+  var block = Block(defaultBlockSettings)
+  var stairs = StairsBlock(block.defaultState, defaultBlockSettings)
+  var slab = SlabBlock(defaultBlockSettings)
+  val wall = WallBlock(defaultBlockSettings)
+  val pressurePlate = PressurePlateBlock(PressurePlateBlock.ActivationRule.MOBS, defaultBlockSettings)
+  val button = StoneButtonBlock(defaultBlockSettings)
 
-  override fun getBlocks() = mapOf(
-    name to block,
-    "${name}_stairs" to stairs,
-    "${name}_slab" to slab,
-    "${name}_wall" to wall,
-    "${name}_pressure_plate" to pressurePlate,
-    "${name}_button" to button
-  )
+  override fun register(): StoneSet = this.apply {
+    registerBlockWithItem(name, block)
+    registerBlockWithItem("${name}_stairs", stairs)
+    registerBlockWithItem("${name}_slab", slab)
+    registerBlockWithItem("${name}_wall", wall)
+    registerBlockWithItem("${name}_pressure_plate", pressurePlate)
+    registerBlockWithItem("${name}_button", button)
+  }
 }
