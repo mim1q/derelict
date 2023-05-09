@@ -51,6 +51,9 @@ tasks {
   register("runDatagen") {
     dependsOn(":datagen:run")
   }
+  named("runClient") {
+    dependsOn("runDatagen")
+  }
 }
 
 sourceSets {

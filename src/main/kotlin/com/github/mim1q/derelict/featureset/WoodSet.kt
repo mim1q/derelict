@@ -2,13 +2,17 @@ package com.github.mim1q.derelict.featureset
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
+import net.fabricmc.fabric.api.`object`.builder.v1.sign.SignTypeRegistry
 import net.minecraft.block.*
+import net.minecraft.item.SignItem
 import net.minecraft.util.Identifier
 
 class WoodSet(
-  name: Identifier,
+  id: Identifier,
   defaultItemSettings: FabricItemSettings = FabricItemSettings()
-) : FeatureSet(name, defaultItemSettings, FabricBlockSettings.copyOf(Blocks.OAK_WOOD)) {
+) : FeatureSet(id, defaultItemSettings, FabricBlockSettings.copyOf(Blocks.OAK_WOOD)) {
+  val signType = SignTypeRegistry.registerSignType(id(name))
+
   val planks = Block(defaultBlockSettings)
   val log = PillarBlock(defaultBlockSettings)
   val strippedLog = PillarBlock(defaultBlockSettings)
@@ -22,6 +26,8 @@ class WoodSet(
   val fenceGate = FenceGateBlock(defaultBlockSettings)
   val button = WoodenButtonBlock(defaultBlockSettings)
   val pressurePlate = PressurePlateBlock(PressurePlateBlock.ActivationRule.EVERYTHING, defaultBlockSettings)
+  val sign = SignBlock(defaultBlockSettings.noCollision(), signType)
+  val wallSign = WallSignBlock(defaultBlockSettings.noCollision(), signType)
 
   override fun register(): WoodSet = this.apply {
     registerBlockWithItem("${name}_planks", planks)
@@ -37,5 +43,8 @@ class WoodSet(
     registerBlockWithItem("${name}_fence_gate", fenceGate)
     registerBlockWithItem("${name}_button", button)
     registerBlockWithItem("${name}_pressure_plate", pressurePlate)
+    registerBlock("${name}_sign", sign)
+    registerBlock("${name}_wall_sign", wallSign)
+    registerItem("${name}_sign", SignItem(defaultItemSettings.maxCount(16), sign, wallSign))
   }
 }
