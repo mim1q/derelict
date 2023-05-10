@@ -10,5 +10,7 @@ fun main(args: Array<String>) {
   ResourceGenerator.create("derelict", Path.of(args[0])).apply {
     // Assets to generate
     add(BlockSets.basicWoodSet("derelict:burned"))
+    add(CustomPresets.smolderingEmbers())
+//    add(CustomPresets.eachWallBlock("derelict:smoldering_embers"))
   }.generate()
 }

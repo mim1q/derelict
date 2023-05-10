@@ -3,6 +3,7 @@ package com.github.mim1q.derelict.featureset
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.sign.SignTypeRegistry
+import net.fabricmc.fabric.api.registry.StrippableBlockRegistry
 import net.minecraft.block.*
 import net.minecraft.item.SignItem
 import net.minecraft.util.Identifier
@@ -46,5 +47,7 @@ class WoodSet(
     registerBlock("${name}_sign", sign)
     registerBlock("${name}_wall_sign", wallSign)
     registerItem("${name}_sign", SignItem(defaultItemSettings.maxCount(16), sign, wallSign))
+    StrippableBlockRegistry.register(log, strippedLog)
+    StrippableBlockRegistry.register(wood, strippedWood)
   }
 }

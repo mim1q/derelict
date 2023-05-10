@@ -10,9 +10,11 @@ object ModRender {
   }
 
   private fun initBlocks() {
-    BlockRenderLayerMap.INSTANCE.putBlocks(
-      RenderLayer.getCutout(),
+    BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
       ModBlocks.BURNED_WOOD.trapdoor, ModBlocks.BURNED_WOOD.door,
+    )
+    BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),
+      ModBlocks.SMOLDERING_EMBERS
     )
   }
 }
