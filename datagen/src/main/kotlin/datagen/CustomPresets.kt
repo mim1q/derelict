@@ -13,7 +13,7 @@ import tada.lib.util.Id
 object CustomPresets {
   fun eachWallBlock(id: String) = Preset {
     val (ns, name) = Id(id)
-    add(CommonModelPresets.itemBlockModel(id))
+    add(CommonModelPresets.generatedItemModel(id))
     add(name, ParentedModel.block("block/vine")
       .texture("particle", "$ns:block/$name")
       .texture("vine", "$ns:block/$name")
@@ -45,7 +45,7 @@ object CustomPresets {
         models[0], models[1], models[2], models[3]
       )
     }
-    add(name, ParentedModel.item("item/generated").texture("layer0", "derelict:block/$name/0"))
+    add(CommonModelPresets.generatedItemModel("derelict:smoldering_embers"))
     variantList.forEach {
       add("$name/$it", ParentedModel.block("block/vine")
         .texture("particle", "derelict:block/$name/$it")

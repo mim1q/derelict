@@ -11,6 +11,6 @@ fun main(args: Array<String>) {
     // Assets to generate
     add(BlockSets.basicWoodSet("derelict:burned"))
     add(CustomPresets.smolderingEmbers())
-//    add(CustomPresets.eachWallBlock("derelict:smoldering_embers"))
+    add(CustomPresets.eachWallBlock("derelict:smoking_embers"))
   }.generate()
 }

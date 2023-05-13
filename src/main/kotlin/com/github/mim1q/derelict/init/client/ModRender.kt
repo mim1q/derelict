@@ -14,7 +14,7 @@ object ModRender {
       ModBlocks.BURNED_WOOD.trapdoor, ModBlocks.BURNED_WOOD.door,
     )
     BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),
-      ModBlocks.SMOLDERING_EMBERS
+      ModBlocks.SMOLDERING_EMBERS, ModBlocks.SMOKING_EMBERS
     )
   }
 }
