@@ -1,11 +1,12 @@
 package com.github.mim1q.derelict.block
 
+import com.github.mim1q.derelict.init.ModBlocks
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.minecraft.block.*
 import net.minecraft.fluid.FluidState
 import net.minecraft.fluid.Fluids
 import net.minecraft.item.ItemPlacementContext
-import net.minecraft.particle.DefaultParticleType
+import net.minecraft.particle.ParticleEffect
 import net.minecraft.particle.ParticleTypes
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.BooleanProperty
@@ -18,13 +19,8 @@ import net.minecraft.world.World
 import net.minecraft.world.WorldAccess
 
 @Suppress("OVERRIDE_DEPRECATION", "DEPRECATION")
-class SmolderingEmbersBlock(
-  settings: FabricBlockSettings,
-  private val primaryParticle: DefaultParticleType = ParticleTypes.FLAME,
-  private val secondaryParticle: DefaultParticleType = ParticleTypes.SMOKE,
-  private val particleVelocity: Double = 0.01,
-  private val particleRarity: Float = 0.2f
-) : MultifaceGrowthBlock(settings.noCollision().ticksRandomly()), Waterloggable {
+sealed class EmbersBlock(settings: FabricBlockSettings, private val particleVelocity: Double = 0.01)
+  : MultifaceGrowthBlock(settings.noCollision().ticksRandomly()), Waterloggable {
   override fun getGrower(): LichenGrower = null!!
 
   // Waterloggable
@@ -42,7 +38,7 @@ class SmolderingEmbersBlock(
   }
 
   override fun getPlacementState(ctx: ItemPlacementContext) =
-    super.getPlacementState(ctx)?.with(WATERLOGGED, false)
+    super.getPlacementState(ctx)?.with(WATERLOGGED, ctx.world.getFluidState(ctx.blockPos).fluid === Fluids.WATER)
 
   override fun getFluidState(state: BlockState): FluidState {
     return if (state[WATERLOGGED]) Fluids.WATER.getStill(false) else super.getFluidState(state)
@@ -73,13 +69,44 @@ class SmolderingEmbersBlock(
   }
 
   override fun randomDisplayTick(state: BlockState, world: World, pos: BlockPos, random: Random) {
-    if (random.nextFloat() > particleRarity) return
+    val particle = getParticle(random) ?: return
     val particlePos = getBaseParticleOffset(state, random).add(Vec3d.ofCenter(pos))
-    val particle = if (random.nextFloat() < 0.6f) primaryParticle else secondaryParticle
     world.addParticle(
       particle,
       particlePos.x, particlePos.y, particlePos.z,
       0.0, particleVelocity, 0.0
     )
+  }
+
+  abstract fun getParticle(random: Random): ParticleEffect?
+
+  class Smoldering(settings: FabricBlockSettings): EmbersBlock(settings) {
+    override fun getParticle(random: Random): ParticleEffect? {
+      if (random.nextFloat() < 0.8f) return null
+      return if (random.nextFloat() < 0.4f) ParticleTypes.FLAME else ParticleTypes.SMOKE
+    }
+
+    override fun tryFillWithFluid(world: WorldAccess, pos: BlockPos, state: BlockState, fluid: FluidState): Boolean {
+      val canFillWithFluid = super.tryFillWithFluid(world, pos, state, fluid)
+      if (canFillWithFluid) {
+        world.setBlockState(pos, ModBlocks.SMOKING_EMBERS.getStateWithProperties(state).with(WATERLOGGED, true), 3)
+      }
+      return canFillWithFluid
+    }
+
+    override fun getPlacementState(ctx: ItemPlacementContext): BlockState? {
+      val state = super.getPlacementState(ctx) ?: return null
+      if (state[WATERLOGGED]) {
+        return ModBlocks.SMOKING_EMBERS.getStateWithProperties(state).with(WATERLOGGED, true)
+      }
+      return state
+    }
+  }
+
+  class Smoking(settings: FabricBlockSettings): EmbersBlock(settings, 0.07) {
+    override fun getParticle(random: Random): ParticleEffect? {
+      if (random.nextFloat() < 0.3f) return null
+      return ParticleTypes.CAMPFIRE_COSY_SMOKE
+    }
   }
 }
