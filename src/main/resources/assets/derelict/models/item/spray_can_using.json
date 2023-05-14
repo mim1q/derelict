@@ -1,0 +1,15 @@
+{
+	"parent": "derelict:item/spray_can",
+	"display": {
+		"firstperson_righthand": {
+			"rotation": [0, -90, 10],
+			"translation": [10, 2.5, -12],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, -90, 10],
+			"translation": [1.13, 5.2, 1.13],
+			"scale": [0.8, 0.8, 0.8]
+		}
+	}
+}
