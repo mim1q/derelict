@@ -2,10 +2,13 @@ package com.github.mim1q.derelict.init
 
 import com.github.mim1q.derelict.Derelict
 import com.github.mim1q.derelict.block.EmbersBlock
+import com.github.mim1q.derelict.block.SmolderingLeavesBlock
 import com.github.mim1q.derelict.featureset.WoodSet
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.minecraft.block.Block
+import net.minecraft.block.Blocks
+import net.minecraft.block.LeavesBlock
 import net.minecraft.block.Material
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
@@ -13,6 +16,8 @@ import net.minecraft.util.registry.Registry
 
 object ModBlocks {
   val BURNED_WOOD = WoodSet(Derelict.id("burned"), defaultItemSettings()).register()
+  val BURNED_LEAVES = register("burned_leaves", LeavesBlock(FabricBlockSettings.copyOf(Blocks.OAK_LEAVES)))
+  val SMOLDERING_LEAVES = register("smoldering_leaves", SmolderingLeavesBlock(FabricBlockSettings.copyOf(Blocks.OAK_LEAVES)))
   val SMOLDERING_EMBERS = register("smoldering_embers", EmbersBlock.Smoldering(
     FabricBlockSettings.of(Material.FIRE).luminance(4).emissiveLighting {_, _, _ -> true}
   ))

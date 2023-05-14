@@ -67,4 +67,17 @@ object CustomPresets {
       applyWhen(BlockStateModel("block/air"), "north=false,east=false,south=false,west=false,up=false")
     })
   }
+
+  fun smolderingLeaves() = Preset {
+    val name = "smoldering_leaves"
+    listOf("0", "1", "2", "3").forEach {
+      add("$name/$it", ParentedModel.block("block/cube_all")
+        .texture("all", "derelict:block/$name/$it"))
+    }
+    val modelList = listOf("0", "1", "2", "3").map { BlockStateModel("derelict:block/$name/$it") }
+    add(name, BlockState.create {
+      variant("", modelList[0], modelList[1], modelList[2], modelList[3])
+    })
+    add(name, ParentedModel.item("derelict:block/$name/0"))
+  }
 }
