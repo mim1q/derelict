@@ -8,7 +8,9 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.random.Random
 import net.minecraft.world.World
 
-class SmolderingLeavesBlock(settings: FabricBlockSettings) : LeavesBlock(settings.ticksRandomly()) {
+class SmolderingLeavesBlock(settings: FabricBlockSettings) : LeavesBlock(
+  settings.ticksRandomly().luminance(4).emissiveLighting { _, _, _ -> true }
+) {
   override fun randomDisplayTick(state: BlockState, world: World, pos: BlockPos, random: Random) {
     super.randomDisplayTick(state, world, pos, random)
     if (random.nextFloat() < 0.1f) {

@@ -3,6 +3,7 @@ package datagen
 import tada.lib.generator.ResourceGenerator
 import tada.lib.presets.BlockSets
 import tada.lib.presets.CommonModelPresets
+import tada.lib.tags.TagManager
 import java.nio.file.Path
 
 fun main(args: Array<String>) {
@@ -15,5 +16,9 @@ fun main(args: Array<String>) {
     add(CommonModelPresets.cubeAllBlock("derelict:burned_leaves"))
     add(CustomPresets.smolderingEmbers())
     add(CustomPresets.eachWallBlock("derelict:smoking_embers"))
+    // Custom Tags
+    TagManager.add("blocks/leaves", "derelict:burned_leaves", "derelict:smoldering_leaves")
+    TagManager.add("blocks/mineable/hoe", "derelict:burned_leaves", "derelict:smoldering_leaves")
+    TagManager.copy("blocks/leaves", "items/leaves")
   }.generate()
 }
