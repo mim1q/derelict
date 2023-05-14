@@ -1,12 +1,15 @@
 package com.github.mim1q.derelict.item.graffiti
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
+import net.minecraft.client.item.TooltipContext
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.ItemUsage
 import net.minecraft.particle.ParticleTypes
+import net.minecraft.text.Style
+import net.minecraft.text.Text
 import net.minecraft.util.Hand
 import net.minecraft.util.TypedActionResult
 import net.minecraft.util.UseAction
@@ -38,6 +41,21 @@ class SprayCanItem(settings: FabricItemSettings) : Item(settings.maxCount(1).max
       )
       val particle = ParticleTypes.SMOKE
       world.addParticle(particle, pos.x, pos.y, pos.z, velocity.x, velocity.y, velocity.z)
+    }
+  }
+
+  override fun appendTooltip(stack: ItemStack, world: World?, tooltip: MutableList<Text>, context: TooltipContext?) {
+    super.appendTooltip(stack, world, tooltip, context)
+    val color = getColor(stack) ?: return
+    val hexString = "#" + Integer.toHexString(color).padStart(6, '0')
+    val colorText = Text.literal(hexString).setStyle(Style.EMPTY.withColor(color))
+    tooltip.add(colorText)
+  }
+
+  companion object {
+    fun getColor(stack: ItemStack): Int? {
+      if (!stack.orCreateNbt.contains("color")) return null
+      return stack.orCreateNbt.getInt("color")
     }
   }
 }
