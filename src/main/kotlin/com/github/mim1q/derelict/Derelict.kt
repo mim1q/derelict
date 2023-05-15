@@ -2,6 +2,7 @@ package com.github.mim1q.derelict
 
 import com.github.mim1q.derelict.init.ModBlocks
 import com.github.mim1q.derelict.init.ModItems
+import com.github.mim1q.derelict.init.ModParticles
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder
 import net.minecraft.item.ItemGroup
@@ -17,6 +18,7 @@ object Derelict : ModInitializer {
     LOGGER.info("Derelict initializing")
     ModBlocks.init()
     ModItems.init()
+    ModParticles.init()
   }
 
   fun id(value: String) = Identifier(MOD_ID, value)
