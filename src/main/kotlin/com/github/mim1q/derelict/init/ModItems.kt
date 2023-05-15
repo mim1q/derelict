@@ -13,7 +13,7 @@ object ModItems {
 
   fun init() { }
 
-  private fun <T : Item> register(name: String, item: T) = Registry.register(Registry.ITEM, Derelict.id(name), item)
+  private fun <T : Item> register(name: String, item: T): T = Registry.register(Registry.ITEM, Derelict.id(name), item)
   private fun defaultItemSettings() = FabricItemSettings().group(Derelict.ITEM_GROUP)
   private fun graffitiItemSettings() = defaultItemSettings().group(Derelict.GRAFFITI_ITEM_GROUP)
 }
