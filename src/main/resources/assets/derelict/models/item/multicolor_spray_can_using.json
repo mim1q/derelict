@@ -1,0 +1,7 @@
+{
+	"parent": "derelict:item/spray_can_using",
+	"textures": {
+		"texture": "derelict:item/multicolor_spray_can",
+		"particle": "derelict:item/multicolor_spray_can"
+	}
+}

@@ -20,7 +20,7 @@ object ModRender {
       ModBlocks.SMOLDERING_EMBERS, ModBlocks.SMOKING_EMBERS
     )
 
-    listOf(ModItems.SPRAY_CAN, ModItems.RAINBOW_SPRAY_CAN).forEach {
+    listOf(ModItems.SPRAY_CAN, ModItems.MULTICOLOR_SPRAY_CAN).forEach {
       ModelPredicateProviderRegistry.register(it, Derelict.id("using")) { stack, _, entity, _ ->
         if (entity != null && entity.isUsingItem && entity.activeItem == stack) 1.0F else 0.0F
       }

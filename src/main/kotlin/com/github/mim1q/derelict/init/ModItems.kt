@@ -8,7 +8,7 @@ import net.minecraft.util.registry.Registry
 
 object ModItems {
   val SPRAY_CAN = register("spray_can", SprayCanItem(graffitiItemSettings()))
-  val RAINBOW_SPRAY_CAN = register("rainbow_spray_can", SprayCanItem(graffitiItemSettings()))
+  val MULTICOLOR_SPRAY_CAN = register("multicolor_spray_can", SprayCanItem(graffitiItemSettings()))
 
 
   fun init() { }

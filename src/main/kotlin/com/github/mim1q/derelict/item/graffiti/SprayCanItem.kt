@@ -28,7 +28,7 @@ class SprayCanItem(settings: FabricItemSettings) : Item(settings.maxCount(1).max
 
   override fun usageTick(world: World, user: LivingEntity, stack: ItemStack, remainingUseTicks: Int) {
     if (world.isClient) {
-      val color = if(stack.isOf(ModItems.RAINBOW_SPRAY_CAN)) world.random.nextInt(0xFFFFFF) else getColor(stack) ?: 0xFFFFFF
+      val color = if(stack.isOf(ModItems.MULTICOLOR_SPRAY_CAN)) world.random.nextInt(0xFFFFFF) else getColor(stack) ?: 0xFFFFFF
       spawnParticles(world, user, color, user.mainArm === Arm.LEFT)
     }
   }

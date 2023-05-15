@@ -28,7 +28,10 @@ object Derelict : ModInitializer {
     .build()
 
   val GRAFFITI_ITEM_GROUP: ItemGroup = FabricItemGroupBuilder.create(id("derelict_graffiti"))
-    .icon { ModItems.SPRAY_CAN.defaultStack }
-    .appendItems { items -> items.add(ModItems.SPRAY_CAN.defaultStack) }
+    .icon { ModItems.MULTICOLOR_SPRAY_CAN.defaultStack }
+    .appendItems { items ->
+      items.add(ModItems.SPRAY_CAN.defaultStack)
+      items.add(ModItems.MULTICOLOR_SPRAY_CAN.defaultStack)
+    }
     .build()
 }
