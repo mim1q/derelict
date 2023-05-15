@@ -104,9 +104,6 @@ sealed class EmbersBlock(settings: FabricBlockSettings, private val particleVelo
   }
 
   class Smoking(settings: FabricBlockSettings): EmbersBlock(settings, 0.07) {
-    override fun getParticle(random: Random): ParticleEffect? {
-      if (random.nextFloat() < 0.3f) return null
-      return ParticleTypes.CAMPFIRE_COSY_SMOKE
-    }
+    override fun getParticle(random: Random): ParticleEffect = ParticleTypes.CAMPFIRE_COSY_SMOKE
   }
 }
