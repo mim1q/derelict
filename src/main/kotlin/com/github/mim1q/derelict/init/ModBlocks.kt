@@ -3,6 +3,7 @@ package com.github.mim1q.derelict.init
 import com.github.mim1q.derelict.Derelict
 import com.github.mim1q.derelict.block.EmbersBlock
 import com.github.mim1q.derelict.block.SmolderingLeavesBlock
+import com.github.mim1q.derelict.featureset.CoverBoardsSet
 import com.github.mim1q.derelict.featureset.WoodSet
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
@@ -22,6 +23,7 @@ object ModBlocks {
     FabricBlockSettings.of(Material.FIRE).luminance(4).emissiveLighting {_, _, _ -> true}
   ))
   val SMOKING_EMBERS = register("smoking_embers", EmbersBlock.Smoking(FabricBlockSettings.of(Material.FIRE)))
+  val OAK_COVER_BOARDS = CoverBoardsSet(Derelict.id("oak"), defaultItemSettings())
 
   fun init() { }
 

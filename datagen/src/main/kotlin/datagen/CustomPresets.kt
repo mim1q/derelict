@@ -80,4 +80,35 @@ object CustomPresets {
     })
     add(name, ParentedModel.item("derelict:block/$name/0"))
   }
+
+  private fun rotatableCoverBoard(id: String, particle: String, type: String, count: Int = 8) = Preset {
+    val (ns, name) = Id(id)
+    val parent = "derelict:block/cover_boards/$type"
+    for (i in 0 until count) {
+      add(
+        "cover_boards/${type}_${name}_$i", ParentedModel.block("${parent}_$i")
+          .texture("0", "$ns:block/cover_boards/$name")
+          .texture("particle", Id(particle).toString())
+      )
+    }
+    val prefix = if (type == "single") "" else "${type}_"
+    val suffix = if (type == "single") "" else "s"
+    add("${prefix}${name}_cover_board$suffix", BlockState.create {
+      for (i in 0 until count) {
+        variant("facing=north,rotation=$i", BlockStateModel("$ns:block/cover_boards/${type}_${name}_$i", yRot = Rotation.NONE))
+        variant("facing=east,rotation=$i", BlockStateModel("$ns:block/cover_boards/${type}_${name}_$i", yRot = Rotation.CW_90))
+        variant("facing=south,rotation=$i", BlockStateModel("$ns:block/cover_boards/${type}_${name}_$i", yRot = Rotation.CW_180))
+        variant("facing=west,rotation=$i", BlockStateModel("$ns:block/cover_boards/${type}_${name}_$i", yRot = Rotation.CW_270))
+        variant("facing=up,rotation=$i", BlockStateModel("$ns:block/cover_boards/${type}_${name}_$i", xRot = Rotation.CW_270))
+        variant("facing=down,rotation=$i", BlockStateModel("$ns:block/cover_boards/${type}_${name}_$i", xRot = Rotation.CW_90))
+      }
+    })
+    add("${prefix}${name}_cover_board$suffix", ParentedModel.item("$ns:block/cover_boards/${type}_${name}_0"))
+  }
+
+  fun coverBoards(id: String, particle: String) = Preset {
+    add(rotatableCoverBoard(id, particle, "single"))
+    add(rotatableCoverBoard(id, particle, "double"))
+    add(rotatableCoverBoard(id, particle, "crossed", 3))
+  }
 }

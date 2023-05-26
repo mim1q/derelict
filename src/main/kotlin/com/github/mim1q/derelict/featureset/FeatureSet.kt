@@ -20,18 +20,14 @@ abstract class FeatureSet(
   protected fun id(name: String) = Identifier(namespace, name)
   abstract fun register(): FeatureSet
 
-  protected fun <I : Item> registerItem(name: String, item: I) {
-    Registry.register(Registry.ITEM, id(name), item)
-  }
+  protected fun <I : Item> registerItem(name: String, item: I): I = Registry.register(Registry.ITEM, id(name), item)
 
-  protected fun <B : Block> registerBlock(name: String, block: B) {
-    Registry.register(Registry.BLOCK, id(name), block)
-  }
+  protected fun <B : Block> registerBlock(name: String, block: B): B = Registry.register(Registry.BLOCK, id(name), block)
 
   protected fun <B : Block> registerBlockWithItem(
     name: String,
     block: B,
     settings: FabricItemSettings = defaultItemSettings,
     item: Item? = BlockItem(block, settings)
-  ) = registerBlock(name, block).also { if (item != null) registerItem(name, item) }
+  ): B = registerBlock(name, block).also { if (item != null) registerItem(name, item) }
 }

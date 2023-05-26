@@ -5,12 +5,12 @@ import net.minecraft.block.*
 import net.minecraft.util.Identifier
 
 class StoneSet(
-  name: Identifier,
+  id: Identifier,
   defaultBlockSettings: FabricBlockSettings = FabricBlockSettings.of(Material.STONE)
-) : FeatureSet(name, defaultBlockSettings = defaultBlockSettings) {
-  var block = Block(defaultBlockSettings)
-  var stairs = StairsBlock(block.defaultState, defaultBlockSettings)
-  var slab = SlabBlock(defaultBlockSettings)
+) : FeatureSet(id, defaultBlockSettings = defaultBlockSettings) {
+  val block = Block(defaultBlockSettings)
+  val stairs = StairsBlock(block.defaultState, defaultBlockSettings)
+  val slab = SlabBlock(defaultBlockSettings)
   val wall = WallBlock(defaultBlockSettings)
   val pressurePlate = PressurePlateBlock(PressurePlateBlock.ActivationRule.MOBS, defaultBlockSettings)
   val button = StoneButtonBlock(defaultBlockSettings)

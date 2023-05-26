@@ -1,0 +1,28 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "derelict:block/cover_boards/base",
+	"textures": {
+		"0": "derelict:block/cover_boards/oak",
+		"particle": "derelict:block/cover_boards/oak"
+	},
+	"elements": [
+		{
+			"from": [4, -8, 13],
+			"to": [12, 24, 15],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, 8, 15]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 4], "rotation": 270, "texture": "#0"},
+				"east": {"uv": [0, 8, 16, 9], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [0, 0, 16, 4], "rotation": 90, "texture": "#0"},
+				"west": {"uv": [0, 9, 16, 10], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [1, 12, 2, 16], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [0, 12, 1, 16], "rotation": 90, "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [0, 0, 1]
+		}
+	}
+}
