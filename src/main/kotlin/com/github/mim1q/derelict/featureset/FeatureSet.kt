@@ -10,12 +10,12 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 
 abstract class FeatureSet(
-  name: Identifier,
+  id: Identifier,
   protected val defaultItemSettings: FabricItemSettings = FabricItemSettings(),
   protected val defaultBlockSettings: FabricBlockSettings = FabricBlockSettings.copyOf(Blocks.STONE)
 ) {
-  protected val name = name.path
-  protected val namespace = name.namespace
+  protected val name = id.path
+  protected val namespace = id.namespace
 
   protected fun id(name: String) = Identifier(namespace, name)
   abstract fun register(): FeatureSet

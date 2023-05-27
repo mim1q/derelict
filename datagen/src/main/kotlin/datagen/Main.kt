@@ -20,6 +20,9 @@ fun main(args: Array<String>) {
       add(CustomPresets.coverBoards("derelict:$it", "minecraft:block/${it}_planks"))
     }
     add(CustomPresets.coverBoards("derelict:burned", "derelict:block/burned_planks"))
+    listOf("dried", "burned").forEach {
+      add(CustomPresets.grassSet("derelict:$it"))
+    }
     // Custom Tags
     TagManager.add("blocks/leaves", "derelict:burned_leaves", "derelict:smoldering_leaves")
     TagManager.add("blocks/mineable/hoe", "derelict:burned_leaves", "derelict:smoldering_leaves")

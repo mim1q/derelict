@@ -114,4 +114,32 @@ object CustomPresets {
     add(rotatableCoverBoard(id, particle, "double"))
     add(rotatableCoverBoard(id, particle, "crossed", 3))
   }
+
+  fun grassSet(id: String) = Preset {
+    val (ns, name) = Id(id)
+    add(
+      "${name}_grass_block",
+      ParentedModel.block("minecraft:block/grass_block")
+        .texture("overlay", "$ns:block/${name}_grass_block_side_overlay")
+        .texture("top", "$ns:block/${name}_grass_block_top")
+        .texture("side", "minecraft:block/dirt")
+    )
+    add("${name}_grass_block", BlockState.createSingle("$ns:block/${name}_grass_block"))
+    add(CommonModelPresets.itemBlockModel("$ns:${name}_grass_block"))
+    listOf("${name}_grass", "tall_${name}_grass_bottom", "tall_${name}_grass_top").forEach {
+      add(CommonModelPresets.crossBlock("$ns:$it"))
+    }
+    add(CommonModelPresets.generatedItemModel("$ns:${name}_grass", "block"))
+    add("tall_${name}_grass", ParentedModel.item("minecraft:item/generated") {
+      texture("layer0", "$ns:block/tall_${name}_grass_top")
+    })
+
+    add("${name}_grass", BlockState.createSingle("$ns:block/${name}_grass"))
+    add("tall_${name}_grass", BlockState.create {
+      variant("half=lower", BlockStateModel("$ns:block/tall_${name}_grass_bottom"))
+      variant("half=upper", BlockStateModel("$ns:block/tall_${name}_grass_top"))
+    })
+    TagManager.add("minecraft:blocks/dirt", "$ns:${name}_grass_block")
+    TagManager.add("minecraft:blocks/replaceable_plants", "$ns:${name}_grass", "$ns:tall_${name}_grass")
+  }
 }

@@ -4,6 +4,7 @@ import com.github.mim1q.derelict.Derelict
 import com.github.mim1q.derelict.block.EmbersBlock
 import com.github.mim1q.derelict.block.SmolderingLeavesBlock
 import com.github.mim1q.derelict.featureset.CoverBoardsSet
+import com.github.mim1q.derelict.featureset.GrassSet
 import com.github.mim1q.derelict.featureset.WoodSet
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
@@ -34,6 +35,9 @@ object ModBlocks {
   val WARPED_COVER_BOARDS = CoverBoardsSet(Derelict.id("warped"), defaultItemSettings())
   val CRIMSON_COVER_BOARDS = CoverBoardsSet(Derelict.id("crimson"), defaultItemSettings())
   val BURNED_COVER_BOARDS = CoverBoardsSet(Derelict.id("burned"), defaultItemSettings())
+
+  val DRIED_GRASS = GrassSet(Derelict.id("dried"), defaultItemSettings())
+  val BURNED_GRASS = GrassSet(Derelict.id("burned"), defaultItemSettings())
 
   fun init() { }
 

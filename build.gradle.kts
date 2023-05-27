@@ -48,11 +48,9 @@ tasks {
       options.release.set(17)
     }
   }
-  register("runDatagen") {
+  register("runDatagenScript") {
     dependsOn(":datagen:run")
-  }
-  named("runClient") {
-    dependsOn("runDatagen")
+    group = "fabric"
   }
 }
 
