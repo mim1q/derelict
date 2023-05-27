@@ -5,7 +5,9 @@
   "mixins": [
     "block.entity.BlockEntityTypeMixin"
   ],
-  "client": [],
+  "client": [
+    "block.AbstractBlockStateMixin"
+  ],
   "server": [],
   "injectors": {
     "defaultRequire": 1

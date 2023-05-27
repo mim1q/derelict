@@ -8,6 +8,7 @@ import tada.lib.resources.blockstate.BlockStateModel.Rotation
 import tada.lib.resources.blockstate.MultipartBlockState
 import tada.lib.resources.blockstate.MultipartBlockState.Entry.ConditionType
 import tada.lib.resources.model.ParentedModel
+import tada.lib.tags.TagManager
 import tada.lib.util.Id
 
 object CustomPresets {
@@ -104,6 +105,8 @@ object CustomPresets {
       }
     })
     add("${prefix}${name}_cover_board$suffix", ParentedModel.item("$ns:block/cover_boards/${type}_${name}_0"))
+
+    TagManager.add("derelict:blocks/cover_boards", "$ns:$prefix${name}_cover_board$suffix")
   }
 
   fun coverBoards(id: String, particle: String) = Preset {
