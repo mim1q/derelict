@@ -17,6 +17,7 @@ import net.minecraft.util.Hand
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
+import net.minecraft.util.math.Direction.Axis
 import net.minecraft.util.shape.VoxelShape
 import net.minecraft.world.BlockView
 import net.minecraft.world.World
@@ -24,7 +25,12 @@ import net.minecraft.world.World
 sealed class CoverBoardBlock(
   settings: FabricBlockSettings
 ) : Block(settings.nonOpaque()) {
+  init {
+    defaultState = defaultState.with(LOCKED, false)
+  }
+
   protected abstract fun getRotationProperty(): IntProperty
+  protected abstract fun getRotatedOrdinal(): Int
 
   override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
     super.appendProperties(builder)
@@ -32,7 +38,8 @@ sealed class CoverBoardBlock(
   }
 
   override fun getPlacementState(ctx: ItemPlacementContext): BlockState {
-    return defaultState.with(FACING, ctx.side).with(LOCKED, false)
+    val rotation = if (ctx.side.axis.isVertical && ctx.playerFacing.axis == Axis.X) getRotatedOrdinal() else 0
+    return defaultState.with(FACING, ctx.side).with(getRotationProperty(), rotation)
   }
 
   @Suppress("OVERRIDE_DEPRECATION")
@@ -72,6 +79,7 @@ sealed class CoverBoardBlock(
 
   class Normal(settings: FabricBlockSettings) : CoverBoardBlock(settings) {
     override fun getRotationProperty(): IntProperty = ROTATION_8
+    override fun getRotatedOrdinal() = 4
   }
 
   class Crossed(settings: FabricBlockSettings) : CoverBoardBlock(settings) {
@@ -80,6 +88,7 @@ sealed class CoverBoardBlock(
     }
 
     override fun getRotationProperty(): IntProperty = ROTATION_3
+    override fun getRotatedOrdinal() = 2
   }
 
   companion object {
