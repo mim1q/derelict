@@ -16,7 +16,10 @@ fun main(args: Array<String>) {
     add(CommonModelPresets.cubeAllBlock("derelict:burned_leaves"))
     add(CustomPresets.smolderingEmbers())
     add(CustomPresets.eachWallBlock("derelict:smoking_embers"))
-    add(CustomPresets.coverBoards("derelict:oak", "minecraft:block/oak_planks"))
+    listOf("oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "mangrove", "crimson", "warped").forEach {
+      add(CustomPresets.coverBoards("derelict:$it", "minecraft:block/${it}_planks"))
+    }
+    add(CustomPresets.coverBoards("derelict:burned", "derelict:block/burned_planks"))
     // Custom Tags
     TagManager.add("blocks/leaves", "derelict:burned_leaves", "derelict:smoldering_leaves")
     TagManager.add("blocks/mineable/hoe", "derelict:burned_leaves", "derelict:smoldering_leaves")
