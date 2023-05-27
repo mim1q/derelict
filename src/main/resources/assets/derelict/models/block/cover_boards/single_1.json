@@ -1,14 +1,15 @@
 {
 	"credit": "Made with Blockbench",
 	"parent": "derelict:block/cover_boards/base",
+	"ambientocclusion": false,
 	"textures": {
 		"0": "derelict:block/cover_boards/oak",
 		"particle": "derelict:block/cover_boards/oak"
 	},
 	"elements": [
 		{
-			"from": [-8, 4, 13],
-			"to": [24, 12, 15],
+			"from": [-8, 4, 14],
+			"to": [24, 12, 16],
 			"rotation": {"angle": 22.5, "axis": "z", "origin": [8, 8, 15]},
 			"faces": {
 				"north": {"uv": [0, 0, 16, 4], "texture": "#0"},

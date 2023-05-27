@@ -1,14 +1,15 @@
 {
 	"credit": "Made with Blockbench",
 	"parent": "derelict:block/cover_boards/base",
+	"ambientocclusion": false,
 	"textures": {
 		"0": "derelict:block/cover_boards/oak",
 		"particle": "block/oak_planks"
 	},
 	"elements": [
 		{
-			"from": [-8, -1, 13],
-			"to": [24, 7, 15],
+			"from": [-8, -1, 14],
+			"to": [24, 7, 16],
 			"rotation": {"angle": 22.5, "axis": "z", "origin": [8, 8, 15]},
 			"faces": {
 				"north": {"uv": [0, 4, 16, 8], "texture": "#0"},
@@ -20,8 +21,8 @@
 			}
 		},
 		{
-			"from": [-8, 9, 13],
-			"to": [24, 17, 15],
+			"from": [-8, 9, 14],
+			"to": [24, 17, 16],
 			"rotation": {"angle": 22.5, "axis": "z", "origin": [8, 8, 15]},
 			"faces": {
 				"north": {"uv": [0, 0, 16, 4], "texture": "#0"},

@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier
 class CoverBoardsSet(
   id: Identifier,
   defaultItemSettings: FabricItemSettings,
-  defaultBlockSettings: FabricBlockSettings = FabricBlockSettings.copyOf(Blocks.OAK_PLANKS).nonOpaque()
+  defaultBlockSettings: FabricBlockSettings = FabricBlockSettings.copyOf(Blocks.OAK_PLANKS)
 ) : FeatureSet(id, defaultItemSettings, defaultBlockSettings = defaultBlockSettings)  {
   val single = registerBlockWithItem("${name}_cover_board", CoverBoardBlock.Normal(defaultBlockSettings))
   val double = registerBlockWithItem("double_${name}_cover_boards", CoverBoardBlock.Normal(defaultBlockSettings))
