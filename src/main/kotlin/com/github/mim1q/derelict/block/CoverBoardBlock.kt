@@ -18,6 +18,7 @@ import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Direction.Axis
+import net.minecraft.util.math.MathHelper
 import net.minecraft.util.shape.VoxelShape
 import net.minecraft.world.BlockView
 import net.minecraft.world.World
@@ -30,7 +31,7 @@ sealed class CoverBoardBlock(
   }
 
   protected abstract fun getRotationProperty(): IntProperty
-  protected abstract fun getRotatedOrdinal(): Int
+  protected abstract fun getRotation(ctx: ItemPlacementContext): Int
 
   override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
     super.appendProperties(builder)
@@ -38,7 +39,7 @@ sealed class CoverBoardBlock(
   }
 
   override fun getPlacementState(ctx: ItemPlacementContext): BlockState {
-    val rotation = if (ctx.side.axis.isVertical && ctx.playerFacing.axis == Axis.X) getRotatedOrdinal() else 0
+    val rotation = if (ctx.side.axis.isVertical) getRotation(ctx) else 0
     return defaultState.with(FACING, ctx.side).with(getRotationProperty(), rotation)
   }
 
@@ -79,7 +80,10 @@ sealed class CoverBoardBlock(
 
   class Normal(settings: FabricBlockSettings) : CoverBoardBlock(settings) {
     override fun getRotationProperty(): IntProperty = ROTATION_8
-    override fun getRotatedOrdinal() = 4
+    override fun getRotation(ctx: ItemPlacementContext): Int {
+      val yaw = MathHelper.floorMod(ctx.player!!.headYaw + 11.25F, 360.0F)
+      return (yaw / 22.5F).toInt() % 8
+    }
   }
 
   class Crossed(settings: FabricBlockSettings) : CoverBoardBlock(settings) {
@@ -88,7 +92,7 @@ sealed class CoverBoardBlock(
     }
 
     override fun getRotationProperty(): IntProperty = ROTATION_3
-    override fun getRotatedOrdinal() = 2
+    override fun getRotation(ctx: ItemPlacementContext): Int = if (ctx.playerFacing.axis == Axis.X) 2 else 0
   }
 
   companion object {
