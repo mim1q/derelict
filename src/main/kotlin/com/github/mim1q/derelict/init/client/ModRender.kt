@@ -11,7 +11,8 @@ object ModRender {
       ModBlocks.BURNED_WOOD.trapdoor, ModBlocks.BURNED_WOOD.door, ModBlocks.BURNED_LEAVES, ModBlocks.SMOLDERING_LEAVES,
       ModBlocks.BURNED_GRASS.grassBlock, ModBlocks.BURNED_GRASS.grass, ModBlocks.BURNED_GRASS.tallGrass,
       ModBlocks.DRIED_GRASS.grassBlock, ModBlocks.DRIED_GRASS.grass, ModBlocks.DRIED_GRASS.tallGrass,
-      ModBlocks.SMOLDERING_EMBERS, ModBlocks.SMOKING_EMBERS, ModBlocks.FLICKERING_LANTERN, ModBlocks.FLICKERING_SOUL_LANTERN
+      ModBlocks.SMOLDERING_EMBERS, ModBlocks.SMOKING_EMBERS, ModBlocks.FLICKERING_LANTERN, ModBlocks.FLICKERING_SOUL_LANTERN,
+      ModBlocks.BROKEN_LANTERN
     )
   }
 }

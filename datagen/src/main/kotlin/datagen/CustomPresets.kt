@@ -200,4 +200,15 @@ object CustomPresets {
     AnimationPresets.createIndexedBlockTextureCopies(id, count)
     add(AnimationPresets.flicker("$ns:item/$name", seed))
   }
+
+  fun lantern(id: String) = Preset {
+    val (ns, name) = Id(id)
+    add(CommonModelPresets.generatedItemModel(id))
+    add(name, ParentedModel.block("block/template_lantern").texture("lantern", "$ns:block/$name"))
+    add("${name}_hanging", ParentedModel.block("block/template_hanging_lantern").texture("lantern", "$ns:block/${name}"))
+    add(name, BlockState.create {
+      variant("hanging=false", BlockStateModel("$ns:block/$name"))
+      variant("hanging=true", BlockStateModel("$ns:block/${name}_hanging"))
+    })
+  }
 }

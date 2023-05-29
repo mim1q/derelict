@@ -38,8 +38,10 @@ object ModBlocks {
 
   val FLICKERING_REDSTONE_LAMP = register("flickering_redstone_lamp", Block(FabricBlockSettings.copyOf(Blocks.REDSTONE_LAMP).luminance { 8 }))
   val FLICKERING_SEA_LANTERN = register("flickering_sea_lantern", Block(FabricBlockSettings.copyOf(Blocks.SEA_LANTERN).luminance { 8 }))
+  val BROKEN_SEA_LANTERN = register("broken_sea_lantern", Block(FabricBlockSettings.copyOf(Blocks.SEA_LANTERN).luminance { 0 }))
   val FLICKERING_JACK_O_LANTERN = register("flickering_jack_o_lantern", CarvedPumpkinBlock(FabricBlockSettings.copyOf(Blocks.JACK_O_LANTERN).luminance { 8 }))
   val FLICKERING_LANTERN = register("flickering_lantern", LanternBlock(FabricBlockSettings.copyOf(Blocks.LANTERN).luminance { 8 }))
+  val BROKEN_LANTERN = register("broken_lantern", LanternBlock(FabricBlockSettings.copyOf(Blocks.LANTERN).luminance { 0 }))
   val FLICKERING_SOUL_LANTERN = register("flickering_soul_lantern", LanternBlock(FabricBlockSettings.copyOf(Blocks.SOUL_LANTERN).luminance { 8 }))
 
   fun init() { }
