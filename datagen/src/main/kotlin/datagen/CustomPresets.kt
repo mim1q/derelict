@@ -191,12 +191,13 @@ object CustomPresets {
     val rest = IntRange(1, count - 1).map { BlockStateModel("$ns:block/$name/$it") }.toTypedArray()
     val restHanging = IntRange(1, count - 1).map { BlockStateModel("$ns:block/${name}_hanging/$it") }.toTypedArray()
     add(flickerVariants(id, "block/template_lantern", "lantern", count, seed, id))
-    add(flickerVariants("${id}_hanging", "block/template_lantern", "lantern", count, seed, id))
+    add(flickerVariants("${id}_hanging", "block/template_hanging_lantern", "lantern", count, seed, id))
     add(CommonModelPresets.generatedItemModel(id))
     add(name, BlockState.create {
       variant("hanging=false", BlockStateModel("$ns:block/$name/0"), *rest)
       variant("hanging=true", BlockStateModel("$ns:block/${name}_hanging/0"), *restHanging)
     })
     AnimationPresets.createIndexedBlockTextureCopies(id, count)
+    add(AnimationPresets.flicker("$ns:item/$name", seed))
   }
 }
