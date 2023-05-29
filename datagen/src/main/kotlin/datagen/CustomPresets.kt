@@ -1,7 +1,7 @@
 package datagen
 
 import datagen.custom.AnimationPresets
-import tada.lib.presets.CommonModelPresets
+import tada.lib.presets.common.CommonModelPresets
 import tada.lib.presets.Preset
 import tada.lib.resources.blockstate.BlockState
 import tada.lib.resources.blockstate.BlockStateModel
