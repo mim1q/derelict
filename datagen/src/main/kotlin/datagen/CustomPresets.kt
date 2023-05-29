@@ -142,4 +142,49 @@ object CustomPresets {
     TagManager.add("minecraft:blocks/dirt", "$ns:${name}_grass_block")
     TagManager.add("minecraft:blocks/replaceable_plants", "$ns:${name}_grass", "$ns:tall_${name}_grass")
   }
+
+  private fun textureVariantModels(id: String, parent: String, key: String, count: Int, textureFolder: String = id) = Preset {
+    val (ns, name) = Id(id)
+    val (_, tName) = Id(textureFolder)
+    for (i in 0 until count) {
+      add("${name}/$i", ParentedModel.block(parent).texture(key, "$ns:block/$tName/$i"))
+    }
+  }
+
+  fun flickeringCubeAll(id: String, count: Int) = Preset {
+    val (ns, name) = Id(id)
+    add(textureVariantModels(id, "block/cube_all", "all", count))
+    val first = "$ns:block/$name/0"
+    val rest = IntRange(1, count - 1).map { BlockStateModel("$ns:block/$name/$it") }.toTypedArray()
+    add(name, ParentedModel.item(first))
+    add(name, BlockState.create {
+      variant("", BlockStateModel(first), *rest)
+    })
+  }
+
+  fun flickeringJackOLantern(count: Int) = Preset {
+    val first = "derelict:block/flickering_jack_o_lantern/0"
+    add(textureVariantModels("derelict:flickering_jack_o_lantern", "block/jack_o_lantern", "front", count))
+    fun rest(rotation: Rotation) = IntRange(1, count - 1).map { BlockStateModel("derelict:block/flickering_jack_o_lantern/$it", yRot = rotation) }.toTypedArray()
+    add("flickering_jack_o_lantern", ParentedModel.item(first))
+    add("flickering_jack_o_lantern", BlockState.create {
+      variant("facing=north", BlockStateModel(first, yRot = Rotation.NONE), *rest(Rotation.NONE))
+      variant("facing=east", BlockStateModel(first, yRot = Rotation.CW_90), *rest(Rotation.CW_90))
+      variant("facing=south", BlockStateModel(first, yRot = Rotation.CW_180), *rest(Rotation.CW_180))
+      variant("facing=west", BlockStateModel(first, yRot = Rotation.CW_270), *rest(Rotation.CW_270))
+    })
+  }
+
+  fun flickeringLantern(id: String, count: Int) = Preset {
+    val (ns, name) = Id(id)
+    val rest = IntRange(1, count - 1).map { BlockStateModel("$ns:block/$name/$it") }.toTypedArray()
+    val restHanging = IntRange(1, count - 1).map { BlockStateModel("$ns:block/${name}_hanging/$it") }.toTypedArray()
+    add(textureVariantModels(id, "block/template_lantern", "lantern", count, id))
+    add(textureVariantModels("${id}_hanging", "block/template_lantern", "lantern", count, id))
+    add(CommonModelPresets.generatedItemModel(id))
+    add(name, BlockState.create {
+      variant("hanging=false", BlockStateModel("$ns:block/$name/0"), *rest)
+      variant("hanging=true", BlockStateModel("$ns:block/${name}_hanging/0"), *restHanging)
+    })
+  }
 }

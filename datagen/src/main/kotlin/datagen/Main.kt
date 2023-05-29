@@ -23,6 +23,12 @@ fun main(args: Array<String>) {
     listOf("dried", "burned").forEach {
       add(CustomPresets.grassSet("derelict:$it"))
     }
+    // Flickering Lights
+    add(CustomPresets.flickeringCubeAll("derelict:flickering_sea_lantern", 4))
+    add(CustomPresets.flickeringCubeAll("derelict:flickering_redstone_lamp", 4))
+    add(CustomPresets.flickeringJackOLantern(4))
+    add(CustomPresets.flickeringLantern("derelict:flickering_lantern", 4))
+    add(CustomPresets.flickeringLantern("derelict:flickering_soul_lantern", 4))
     // Custom Tags
     TagManager.add("blocks/leaves", "derelict:burned_leaves", "derelict:smoldering_leaves")
     TagManager.add("blocks/mineable/hoe", "derelict:burned_leaves", "derelict:smoldering_leaves")
