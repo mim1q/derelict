@@ -13,6 +13,7 @@ import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
 import net.minecraft.util.registry.Registry
 
+@Suppress("UNUSED")
 object ModBlocks {
   val BURNED_WOOD = WoodSet(Derelict.id("burned"), defaultItemSettings()).register()
   val BURNED_LEAVES = register("burned_leaves", LeavesBlock(FabricBlockSettings.copyOf(Blocks.OAK_LEAVES)))

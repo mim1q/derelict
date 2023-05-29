@@ -34,6 +34,7 @@ fun deleteDir(directory: Path) {
 }
 
 val generatedDir = projectDir.resolve("../src/main/generated")
+val resourceDir = projectDir.resolve("src/main/resources/")
 tasks {
   withType<JavaExec> {
     doFirst {
@@ -43,6 +44,6 @@ tasks {
         println("Datagen output directory hasn't been generated yet")
       }
     }
-    args = listOf(generatedDir.path)
+    args = listOf(generatedDir.path, resourceDir.path)
   }
 }

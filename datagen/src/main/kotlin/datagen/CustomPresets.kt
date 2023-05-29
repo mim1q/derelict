@@ -1,5 +1,6 @@
 package datagen
 
+import datagen.custom.AnimationPresets
 import tada.lib.presets.CommonModelPresets
 import tada.lib.presets.Preset
 import tada.lib.resources.blockstate.BlockState
@@ -151,20 +152,29 @@ object CustomPresets {
     }
   }
 
-  fun flickeringCubeAll(id: String, count: Int) = Preset {
+  private fun flickerVariants(id: String, parent: String, key: String, count: Int, seed: Long, textureFolder: String = id) = Preset {
     val (ns, name) = Id(id)
-    add(textureVariantModels(id, "block/cube_all", "all", count))
+    add(textureVariantModels(id, parent, key, count, textureFolder))
+    for (i in 0 until count) {
+      add(AnimationPresets.flicker("$ns:block/$name/$i", seed + i))
+    }
+  }
+
+  fun flickeringCubeAll(id: String, count: Int, seed: Long) = Preset {
+    val (ns, name) = Id(id)
+    add(flickerVariants(id, "block/cube_all", "all", count, seed))
     val first = "$ns:block/$name/0"
     val rest = IntRange(1, count - 1).map { BlockStateModel("$ns:block/$name/$it") }.toTypedArray()
     add(name, ParentedModel.item(first))
     add(name, BlockState.create {
       variant("", BlockStateModel(first), *rest)
     })
+    AnimationPresets.createIndexedBlockTextureCopies(id, count)
   }
 
-  fun flickeringJackOLantern(count: Int) = Preset {
+  fun flickeringJackOLantern(count: Int, seed: Long) = Preset {
     val first = "derelict:block/flickering_jack_o_lantern/0"
-    add(textureVariantModels("derelict:flickering_jack_o_lantern", "block/jack_o_lantern", "front", count))
+    add(flickerVariants("derelict:flickering_jack_o_lantern", "block/jack_o_lantern", "front", count, seed))
     fun rest(rotation: Rotation) = IntRange(1, count - 1).map { BlockStateModel("derelict:block/flickering_jack_o_lantern/$it", yRot = rotation) }.toTypedArray()
     add("flickering_jack_o_lantern", ParentedModel.item(first))
     add("flickering_jack_o_lantern", BlockState.create {
@@ -173,18 +183,20 @@ object CustomPresets {
       variant("facing=south", BlockStateModel(first, yRot = Rotation.CW_180), *rest(Rotation.CW_180))
       variant("facing=west", BlockStateModel(first, yRot = Rotation.CW_270), *rest(Rotation.CW_270))
     })
+    AnimationPresets.createIndexedBlockTextureCopies("derelict:flickering_jack_o_lantern", count)
   }
 
-  fun flickeringLantern(id: String, count: Int) = Preset {
+  fun flickeringLantern(id: String, count: Int, seed: Long) = Preset {
     val (ns, name) = Id(id)
     val rest = IntRange(1, count - 1).map { BlockStateModel("$ns:block/$name/$it") }.toTypedArray()
     val restHanging = IntRange(1, count - 1).map { BlockStateModel("$ns:block/${name}_hanging/$it") }.toTypedArray()
-    add(textureVariantModels(id, "block/template_lantern", "lantern", count, id))
-    add(textureVariantModels("${id}_hanging", "block/template_lantern", "lantern", count, id))
+    add(flickerVariants(id, "block/template_lantern", "lantern", count, seed, id))
+    add(flickerVariants("${id}_hanging", "block/template_lantern", "lantern", count, seed, id))
     add(CommonModelPresets.generatedItemModel(id))
     add(name, BlockState.create {
       variant("hanging=false", BlockStateModel("$ns:block/$name/0"), *rest)
       variant("hanging=true", BlockStateModel("$ns:block/${name}_hanging/0"), *restHanging)
     })
+    AnimationPresets.createIndexedBlockTextureCopies(id, count)
   }
 }
