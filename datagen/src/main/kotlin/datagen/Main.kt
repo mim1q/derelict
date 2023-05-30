@@ -4,6 +4,7 @@ import datagen.custom.FileCopyManager
 import tada.lib.generator.ResourceGenerator
 import tada.lib.lang.LanguageHelper
 import tada.lib.presets.blocksets.BlockSets
+import tada.lib.presets.common.CommonDropPresets
 import tada.lib.presets.common.CommonModelPresets
 import tada.lib.tags.TagManager
 import java.nio.file.Path
@@ -20,9 +21,13 @@ fun main(args: Array<String>) {
     // Assets to generate
     add(BlockSets.basicWoodSet("derelict:burned"))
     add(CustomPresets.smolderingLeaves())
+    add(CommonDropPresets.silkTouchOrShearsOnlyDrop("derelict:smoldering_leaves"))
     add(CommonModelPresets.cubeAllBlock("derelict:burned_leaves"))
+    add(CommonDropPresets.silkTouchOrShearsOnlyDrop("derelict:burned_leaves"))
     add(CustomPresets.smolderingEmbers())
     add(CustomPresets.eachWallBlock("derelict:smoking_embers"))
+    add(CommonDropPresets.simpleDrop("derelict:smoking_embers"))
+    add(CommonDropPresets.simpleDrop("derelict:smoldering_embers"))
     listOf("oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "mangrove", "crimson", "warped").forEach {
       add(CustomPresets.coverBoards("derelict:$it", "minecraft:block/${it}_planks"))
     }
@@ -33,6 +38,7 @@ fun main(args: Array<String>) {
     // Flickering Lights
     add(CustomPresets.flickeringCubeAll("derelict:flickering_sea_lantern", 8, 10))
     add(CommonModelPresets.cubeAllBlock("derelict:broken_sea_lantern"))
+    add(CommonDropPresets.simpleDrop("derelict:broken_sea_lantern"))
     add(CustomPresets.flickeringCubeAll("derelict:flickering_redstone_lamp", 8, 20))
     add(CustomPresets.flickeringJackOLantern(8, 30))
     add(CustomPresets.flickeringLantern("derelict:flickering_lantern", 8, 40))
@@ -41,6 +47,7 @@ fun main(args: Array<String>) {
     // Custom Tags
     TagManager.add("blocks/leaves", "derelict:burned_leaves", "derelict:smoldering_leaves")
     TagManager.add("blocks/mineable/hoe", "derelict:burned_leaves", "derelict:smoldering_leaves")
+    TagManager.add("blocks/mineable/axe", "#derelict:cover_boards")
     TagManager.copy("blocks/leaves", "items/leaves")
   }
   generator.generate()
@@ -48,6 +55,6 @@ fun main(args: Array<String>) {
 
   LanguageHelper.create(langPath, langHelperPath) {
     automaticallyGenerateBlockEntries(generator)
-//    generateMissingLangEntries()
+    generateMissingLangEntries()
   }
 }

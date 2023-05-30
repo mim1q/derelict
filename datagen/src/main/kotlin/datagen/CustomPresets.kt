@@ -3,6 +3,7 @@ package datagen
 import datagen.custom.AnimationPresets
 import tada.lib.presets.common.CommonModelPresets
 import tada.lib.presets.Preset
+import tada.lib.presets.common.CommonDropPresets
 import tada.lib.resources.blockstate.BlockState
 import tada.lib.resources.blockstate.BlockStateModel
 import tada.lib.resources.blockstate.BlockStateModel.Rotation
@@ -108,6 +109,7 @@ object CustomPresets {
     add("${prefix}${name}_cover_board$suffix", ParentedModel.item("$ns:block/cover_boards/${type}_${name}_0"))
 
     TagManager.add("derelict:blocks/cover_boards", "$ns:$prefix${name}_cover_board$suffix")
+    add(CommonDropPresets.simpleDrop("$ns:${prefix}${name}_cover_board$suffix"))
   }
 
   fun coverBoards(id: String, particle: String) = Preset {
@@ -140,7 +142,12 @@ object CustomPresets {
       variant("half=lower", BlockStateModel("$ns:block/tall_${name}_grass_bottom"))
       variant("half=upper", BlockStateModel("$ns:block/tall_${name}_grass_top"))
     })
+    // Drops
+    add(CommonDropPresets.silkTouchDrop("$ns:${name}_grass_block", "minecraft:dirt", "$ns:${name}_grass_block"))
+    add(CommonDropPresets.silkTouchOrShearsOnlyDrop("$ns:${name}_grass"))
+    add(CommonDropPresets.silkTouchOrShearsOnlyDrop("$ns:tall_${name}_grass"))
     TagManager.add("minecraft:blocks/dirt", "$ns:${name}_grass_block")
+    TagManager.add("minecraft:blocks/mineable/shovel", "$ns:${name}_grass_block")
     TagManager.add("minecraft:blocks/replaceable_plants", "$ns:${name}_grass", "$ns:tall_${name}_grass")
   }
 
@@ -170,6 +177,8 @@ object CustomPresets {
       variant("", BlockStateModel(first), *rest)
     })
     AnimationPresets.createIndexedBlockTextureCopies(id, count)
+    TagManager.add("minecraft:blocks/mineable/pickaxe", id)
+    add(CommonDropPresets.simpleDrop(id))
   }
 
   fun flickeringJackOLantern(count: Int, seed: Long) = Preset {
@@ -184,6 +193,8 @@ object CustomPresets {
       variant("facing=west", BlockStateModel(first, yRot = Rotation.CW_270), *rest(Rotation.CW_270))
     })
     AnimationPresets.createIndexedBlockTextureCopies("derelict:flickering_jack_o_lantern", count)
+    TagManager.add("minecraft:blocks/mineable/axe", "derelict:flickering_jack_o_lantern")
+    add(CommonDropPresets.simpleDrop("derelict:flickering_jack_o_lantern"))
   }
 
   fun flickeringLantern(id: String, count: Int, seed: Long) = Preset {
@@ -198,7 +209,9 @@ object CustomPresets {
       variant("hanging=true", BlockStateModel("$ns:block/${name}_hanging/0"), *restHanging)
     })
     AnimationPresets.createIndexedBlockTextureCopies(id, count)
+    TagManager.add("minecraft:blocks/mineable/pickaxe", id)
     add(AnimationPresets.flicker("$ns:item/$name", seed))
+    add(CommonDropPresets.simpleDrop(id))
   }
 
   fun lantern(id: String) = Preset {
@@ -210,5 +223,7 @@ object CustomPresets {
       variant("hanging=false", BlockStateModel("$ns:block/$name"))
       variant("hanging=true", BlockStateModel("$ns:block/${name}_hanging"))
     })
+    TagManager.add("minecraft:blocks/mineable/pickaxe", id)
+    add(CommonDropPresets.simpleDrop(id))
   }
 }
