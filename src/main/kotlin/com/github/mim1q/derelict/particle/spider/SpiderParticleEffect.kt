@@ -40,7 +40,7 @@ class SpiderParticleEffect(
   }
 
   companion object {
-    val CODEC = Codec.INT.xmap(
+    val CODEC: Codec<SpiderParticleEffect> = Codec.INT.xmap(
       { direction: Int -> SpiderParticleEffect(ModParticles.SPIDER, Direction.byId(direction)) }
     ) { it.direction.id }
   }
