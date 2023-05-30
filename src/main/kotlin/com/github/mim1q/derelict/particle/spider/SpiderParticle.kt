@@ -24,7 +24,7 @@ class SpiderParticle(
   init {
     maxAge = 40 + random.nextInt(40)
     alpha = 0.0F
-    scale = random.nextFloat() * 0.15F + 0.1F
+    scale = random.nextFloat() * 0.1F + 0.075F
   }
 
   override fun getType(): ParticleTextureSheet = ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT

@@ -259,5 +259,6 @@ object CustomPresets {
       applyWhen(fullModel(), "north=false,east=false,west=false,south=false,up=true,down=true")
     })
     add(CommonModelPresets.generatedItemModel(id))
+    TagManager.add("derelict:blocks/cobwebs", id)
   }
 }

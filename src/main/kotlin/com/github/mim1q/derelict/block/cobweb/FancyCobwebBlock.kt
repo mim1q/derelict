@@ -1,8 +1,10 @@
 package com.github.mim1q.derelict.block.cobweb
 
+import com.github.mim1q.derelict.block.tag.ModBlockTags
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.CobwebBlock
+import net.minecraft.block.SideShapeType
 import net.minecraft.item.ItemPlacementContext
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.BooleanProperty
@@ -16,14 +18,21 @@ open class FancyCobwebBlock(settings: Settings) : CobwebBlock(settings) {
     builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN)
   }
 
+  private fun canConnect(world: WorldAccess, origin: BlockPos, direction: Direction): Boolean {
+    val pos = origin.add(direction.vector)
+    val state = world.getBlockState(pos)
+    return state.isSideSolid(world, pos, direction.opposite, SideShapeType.CENTER) || state.isIn(ModBlockTags.COBWEBS)
+  }
+
   override fun getPlacementState(ctx: ItemPlacementContext): BlockState {
     val pos = ctx.blockPos
-    val north = !ctx.world.getBlockState(pos.north()).isAir
-    val east = !ctx.world.getBlockState(pos.east()).isAir
-    val south = !ctx.world.getBlockState(pos.south()).isAir
-    val west = !ctx.world.getBlockState(pos.west()).isAir
-    val up = !ctx.world.getBlockState(pos.up()).isAir
-    val down = !ctx.world.getBlockState(pos.down()).isAir
+    val world = ctx.world
+    val north = canConnect(world, pos, Direction.NORTH)
+    val east = canConnect(world, pos, Direction.EAST)
+    val south = canConnect(world, pos, Direction.SOUTH)
+    val west = canConnect(world, pos, Direction.WEST)
+    val up = canConnect(world, pos, Direction.UP)
+    val down = canConnect(world, pos, Direction.DOWN)
     return defaultState.with(NORTH, north).with(EAST, east).with(SOUTH, south).with(WEST, west).with(UP, up).with(DOWN, down)
   }
 
@@ -36,7 +45,7 @@ open class FancyCobwebBlock(settings: Settings) : CobwebBlock(settings) {
     pos: BlockPos,
     neighborPos: BlockPos
   ): BlockState {
-    return state.with(getDirectionProperty(direction), !neighborState.isAir)
+    return state.with(getDirectionProperty(direction), canConnect(world, pos, direction))
   }
 
   companion object {

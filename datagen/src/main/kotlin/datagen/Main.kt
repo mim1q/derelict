@@ -47,6 +47,7 @@ fun main(args: Array<String>) {
     add(CustomPresets.lantern("derelict:broken_lantern"))
     add(CustomPresets.flickeringLantern("derelict:flickering_soul_lantern", 8, 50))
     // Custom Tags
+    TagManager.add("derelict:blocks/cobwebs", "minecraft:cobweb")
     TagManager.add("blocks/leaves", "derelict:burned_leaves", "derelict:smoldering_leaves")
     TagManager.add("blocks/mineable/hoe", "derelict:burned_leaves", "derelict:smoldering_leaves")
     TagManager.add("blocks/mineable/axe", "#derelict:cover_boards")

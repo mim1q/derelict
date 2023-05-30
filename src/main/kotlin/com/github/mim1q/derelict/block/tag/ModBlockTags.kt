@@ -7,6 +7,7 @@ import net.minecraft.util.registry.Registry
 
 object ModBlockTags {
   val COVER_BOARDS = of("cover_boards")
+  val COBWEBS = of("cobwebs")
 
   private fun of(id: String): TagKey<Block> = TagKey.of(Registry.BLOCK_KEY, Derelict.id(id))
 }
