@@ -1,4 +1,4 @@
-package com.github.mim1q.derelict.block
+package com.github.mim1q.derelict.block.cobweb
 
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState

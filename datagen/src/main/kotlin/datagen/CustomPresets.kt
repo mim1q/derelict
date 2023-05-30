@@ -232,7 +232,7 @@ object CustomPresets {
     fun topModel(rotation: Rotation) = BlockStateModel("derelict:block/fancy_cobweb/top", yRot = rotation)
     fun sideModel(rotation: Rotation) = BlockStateModel("derelict:block/fancy_cobweb/side", yRot = rotation)
     fun bottomModel(rotation: Rotation) = BlockStateModel("derelict:block/fancy_cobweb/bottom", yRot = rotation)
-    fun fullModel() = BlockStateModel("minecraft:block/cobweb")
+    fun fullModel() = BlockStateModel("derelict:block/fancy_cobweb/full")
     add(CommonDropPresets.silkTouchOrShearsOnlyDrop(id))
     add(name, BlockState.createMultipart {
       applyWhenAll(topModel(Rotation.NONE), "up=true", "north=true")
