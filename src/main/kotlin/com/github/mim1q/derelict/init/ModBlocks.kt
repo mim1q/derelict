@@ -2,6 +2,7 @@ package com.github.mim1q.derelict.init
 
 import com.github.mim1q.derelict.Derelict
 import com.github.mim1q.derelict.block.EmbersBlock
+import com.github.mim1q.derelict.block.FancyCobwebBlock
 import com.github.mim1q.derelict.block.SmolderingLeavesBlock
 import com.github.mim1q.derelict.featureset.CoverBoardsSet
 import com.github.mim1q.derelict.featureset.GrassSet
@@ -43,6 +44,8 @@ object ModBlocks {
   val FLICKERING_LANTERN = register("flickering_lantern", LanternBlock(FabricBlockSettings.copyOf(Blocks.LANTERN).luminance { 10 }))
   val BROKEN_LANTERN = register("broken_lantern", LanternBlock(FabricBlockSettings.copyOf(Blocks.LANTERN).luminance { 0 }))
   val FLICKERING_SOUL_LANTERN = register("flickering_soul_lantern", LanternBlock(FabricBlockSettings.copyOf(Blocks.SOUL_LANTERN).luminance { 10 }))
+
+  val FANCY_COBWEB = register("fancy_cobweb", FancyCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
 
   fun init() { }
 

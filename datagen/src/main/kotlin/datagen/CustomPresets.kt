@@ -226,4 +226,38 @@ object CustomPresets {
     TagManager.add("minecraft:blocks/mineable/pickaxe", id)
     add(CommonDropPresets.simpleDrop(id))
   }
+
+  fun fancyCobweb(id: String) = Preset {
+    val (_, name) = Id(id)
+    fun topModel(rotation: Rotation) = BlockStateModel("derelict:block/fancy_cobweb/top", yRot = rotation)
+    fun sideModel(rotation: Rotation) = BlockStateModel("derelict:block/fancy_cobweb/side", yRot = rotation)
+    fun bottomModel(rotation: Rotation) = BlockStateModel("derelict:block/fancy_cobweb/bottom", yRot = rotation)
+    fun fullModel() = BlockStateModel("minecraft:block/cobweb")
+    add(CommonDropPresets.silkTouchOrShearsOnlyDrop(id))
+    add(name, BlockState.createMultipart {
+      applyWhenAll(topModel(Rotation.NONE), "up=true", "north=true")
+      applyWhenAll(topModel(Rotation.CW_90), "up=true", "east=true")
+      applyWhenAll(topModel(Rotation.CW_180), "up=true", "south=true")
+      applyWhenAll(topModel(Rotation.CW_270), "up=true", "west=true")
+      applyWhenAll(bottomModel(Rotation.NONE), "down=true", "north=true")
+      applyWhenAll(bottomModel(Rotation.CW_90), "down=true", "east=true")
+      applyWhenAll(bottomModel(Rotation.CW_180), "down=true", "south=true")
+      applyWhenAll(bottomModel(Rotation.CW_270), "down=true", "west=true")
+      applyWhenAll(sideModel(Rotation.NONE), "west=true", "north=true")
+      applyWhenAll(sideModel(Rotation.CW_90), "north=true", "east=true")
+      applyWhenAll(sideModel(Rotation.CW_180), "east=true", "south=true")
+      applyWhenAll(sideModel(Rotation.CW_270), "south=true", "west=true")
+      applyWhen(fullModel(), "north=false,east=false,west=false,south=false,up=false,down=false")
+      applyWhen(fullModel(), "north=true,east=false,west=false,south=false,up=false,down=false")
+      applyWhen(fullModel(), "north=false,east=true,west=false,south=false,up=false,down=false")
+      applyWhen(fullModel(), "north=false,east=false,west=true,south=false,up=false,down=false")
+      applyWhen(fullModel(), "north=false,east=false,west=false,south=true,up=false,down=false")
+      applyWhen(fullModel(), "north=false,east=false,west=false,south=false,up=true,down=false")
+      applyWhen(fullModel(), "north=false,east=false,west=false,south=false,up=false,down=true")
+      applyWhen(fullModel(), "north=true,east=false,west=false,south=true,up=false,down=false")
+      applyWhen(fullModel(), "north=false,east=true,west=true,south=false,up=false,down=false")
+      applyWhen(fullModel(), "north=false,east=false,west=false,south=false,up=true,down=true")
+    })
+    add(CommonModelPresets.generatedItemModel(id))
+  }
 }

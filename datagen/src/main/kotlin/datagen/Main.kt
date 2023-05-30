@@ -35,6 +35,7 @@ fun main(args: Array<String>) {
     listOf("dried", "burned").forEach {
       add(CustomPresets.grassSet("derelict:$it"))
     }
+    add(CustomPresets.fancyCobweb("derelict:fancy_cobweb"))
     // Flickering Lights
     add(CustomPresets.flickeringCubeAll("derelict:flickering_sea_lantern", 8, 10))
     add(CommonModelPresets.cubeAllBlock("derelict:broken_sea_lantern"))
