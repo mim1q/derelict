@@ -1,18 +1,18 @@
 package com.github.mim1q.derelict.init
 
 import com.github.mim1q.derelict.Derelict
-import com.github.mim1q.derelict.particle.SpiderParticle
 import com.github.mim1q.derelict.particle.colored.ColoredParticle
 import com.github.mim1q.derelict.particle.colored.ColoredParticleType
 import com.github.mim1q.derelict.particle.colored.SprayParticle
+import com.github.mim1q.derelict.particle.spider.SpiderParticle
+import com.github.mim1q.derelict.particle.spider.SpiderParticleType
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry
-import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes
 import net.minecraft.particle.ParticleType
 import net.minecraft.util.registry.Registry
 
 object ModParticles {
   val SPRAY = register("spray", ColoredParticleType.create())
-  val SPIDER = register("spider", FabricParticleTypes.simple())
+  val SPIDER = register("spider", SpiderParticleType.create())
 
   fun init() { }
 
