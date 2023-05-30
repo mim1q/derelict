@@ -2,8 +2,8 @@ package com.github.mim1q.derelict.init
 
 import com.github.mim1q.derelict.Derelict
 import com.github.mim1q.derelict.block.EmbersBlock
-import com.github.mim1q.derelict.block.FancyCobwebBlock
 import com.github.mim1q.derelict.block.SmolderingLeavesBlock
+import com.github.mim1q.derelict.block.cobweb.FancyCobwebBlock
 import com.github.mim1q.derelict.featureset.CoverBoardsSet
 import com.github.mim1q.derelict.featureset.GrassSet
 import com.github.mim1q.derelict.featureset.WoodSet
