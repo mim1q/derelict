@@ -10,7 +10,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.world.WorldAccess
 
-class FancyCobwebBlock(settings: Settings) : CobwebBlock(settings) {
+open class FancyCobwebBlock(settings: Settings) : CobwebBlock(settings) {
   override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
     super.appendProperties(builder)
     builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN)
