@@ -31,7 +31,7 @@ class FancyCobwebWithSpiderNestBlock(settings: Settings) : FancyCobwebBlock(sett
 
   @Suppress("OVERRIDE_DEPRECATION", "DEPRECATION")
   override fun onEntityCollision(state: BlockState, world: World, pos: BlockPos, entity: Entity) {
-    if (world.isClient) {
+    if (world.isClient && entity.isLiving) {
       val times = if (entity.prevX != entity.x || entity.prevY != entity.y || entity.prevZ != entity.z) 6 else 2
       repeat(times) {
         spawnParticle(state, world, pos, world.random, 0.5F, 0.04)
