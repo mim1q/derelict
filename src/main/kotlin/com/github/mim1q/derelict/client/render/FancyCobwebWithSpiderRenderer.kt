@@ -35,24 +35,25 @@ class FancyCobwebWithSpiderRenderer(context: Context) : BlockEntityRenderer<Fanc
     val progress = Easing.easeInOutQuad(0F, 1F, linearProgress.toFloat())
     val yaw = MathHelper.lerp(tickDelta, entity.lastClientYaw, entity.clientYaw)
     val vertices = vertexConsumers.getBuffer(RenderLayer.getEntityCutout(TEXTURE))
-    val distance = entity.distance - 1.5
     matrices.entry {
       scale(-1F, -1F, 1F)
       translate(-0.5, -1.5, 0.5)
 
       matrices.entry {
         translate(0.0, 1.0, 0.0)
-        scale(1F, progress * distance.toFloat(), 1F)
+        scale(1F, progress * entity.distance.toFloat(), 1F)
         model.renderString(matrices, vertices, light, overlay)
       }
 
       matrices.entry {
-        translate(0.0, progress * distance, 0.0)
+        translate(0.0, progress * entity.distance, 0.0)
         matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(yaw))
         model.render(matrices, vertices, light, overlay, 1F, 1F, 1F, 1F)
       }
     }
   }
+
+  override fun rendersOutsideBoundingBox(blockEntity: FancyCobwebWithSpiderBlockEntity) = true
 
   companion object {
     val TEXTURE = Derelict.id("textures/blockentity/spider.png")
@@ -93,7 +94,7 @@ class FancyCobwebWithSpiderRenderer(context: Context) : BlockEntityRenderer<Fanc
         modelPartData.addChild(
           "string",
           ModelPartBuilder.create().uv(30, 0).cuboid(-0.5f, -8.5f, 0.0f, 1.0f, 16.0f, 0.0f, Dilation(0.0f)),
-          ModelTransform.of(0.0f, 8.5f, 0.0f, 0.0f, 0.7854f, 0.0f)
+          ModelTransform.of(0.0f, 8.5f, 0.0f, 0.0f, 0.78f, 0.0f)
         )
         return TexturedModelData.of(modelData, 32, 32)
       }
