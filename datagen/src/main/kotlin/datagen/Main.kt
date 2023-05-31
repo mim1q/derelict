@@ -37,6 +37,8 @@ fun main(args: Array<String>) {
     }
     add(CustomPresets.fancyCobweb("derelict:fancy_cobweb"))
     add(CustomPresets.fancyCobweb("derelict:fancy_cobweb_with_spider_nest"))
+    add(CustomPresets.fancyCobweb("derelict:fancy_cobweb_with_spider"))
+    add(CustomPresets.fancyCobweb("derelict:fancy_cobweb_with_shy_spider"))
     // Flickering Lights
     add(CustomPresets.flickeringCubeAll("derelict:flickering_sea_lantern", 8, 10))
     add(CommonModelPresets.cubeAllBlock("derelict:broken_sea_lantern"))

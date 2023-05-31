@@ -4,6 +4,7 @@ import com.github.mim1q.derelict.Derelict
 import com.github.mim1q.derelict.block.EmbersBlock
 import com.github.mim1q.derelict.block.SmolderingLeavesBlock
 import com.github.mim1q.derelict.block.cobweb.FancyCobwebBlock
+import com.github.mim1q.derelict.block.cobweb.FancyCobwebWithSpiderBlock
 import com.github.mim1q.derelict.block.cobweb.FancyCobwebWithSpiderNestBlock
 import com.github.mim1q.derelict.featureset.CoverBoardsSet
 import com.github.mim1q.derelict.featureset.GrassSet
@@ -48,6 +49,8 @@ object ModBlocks {
 
   val FANCY_COBWEB = register("fancy_cobweb", FancyCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
   val FANCY_COBWEB_WITH_SPIDER_NEST = register("fancy_cobweb_with_spider_nest", FancyCobwebWithSpiderNestBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
+  val FANCY_COBWEB_WITH_SPIDER = register("fancy_cobweb_with_spider", FancyCobwebWithSpiderBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
+  val FANCY_COBWEB_WITH_SHY_SPIDER = register("fancy_cobweb_with_shy_spider", FancyCobwebWithSpiderBlock(FabricBlockSettings.copyOf(Blocks.COBWEB), true))
 
   fun init() { }
 

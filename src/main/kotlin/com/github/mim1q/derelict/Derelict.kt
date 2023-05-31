@@ -1,5 +1,6 @@
 package com.github.mim1q.derelict
 
+import com.github.mim1q.derelict.init.ModBlockEntities
 import com.github.mim1q.derelict.init.ModBlocks
 import com.github.mim1q.derelict.init.ModItems
 import com.github.mim1q.derelict.init.ModParticles
@@ -17,6 +18,7 @@ object Derelict : ModInitializer {
   override fun onInitialize() {
     LOGGER.info("Derelict initializing")
     ModBlocks.init()
+    ModBlockEntities.init()
     ModItems.init()
     ModParticles.init()
   }
