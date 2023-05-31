@@ -46,8 +46,9 @@ class FancyCobwebWithSpiderRenderer(context: Context) : BlockEntityRenderer<Fanc
       }
 
       matrices.entry {
-        translate(0.0, progress * entity.distance, 0.0)
+        translate(0.0, progress * entity.distance + 0.9F, 0.0)
         matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(yaw))
+        matrices.scale(entity.scale, entity.scale, entity.scale)
         model.render(matrices, vertices, light, overlay, 1F, 1F, 1F, 1F)
       }
     }
@@ -77,7 +78,6 @@ class FancyCobwebWithSpiderRenderer(context: Context) : BlockEntityRenderer<Fanc
     }
 
     fun renderString(matrices: MatrixStack, vertices: VertexConsumer, light: Int, overlay: Int) {
-      string.pivotY = 8.5F
       string.render(matrices, vertices, light, overlay)
     }
 
@@ -89,7 +89,7 @@ class FancyCobwebWithSpiderRenderer(context: Context) : BlockEntityRenderer<Fanc
           "spider",
           ModelPartBuilder.create().uv(0, 6).cuboid(-4.5f, -12.0f, 0.0f, 9.0f, 12.0f, 0.0f, Dilation(0.0f))
             .uv(0, 0).cuboid(-1.5f, -8.0f, -1.0f, 3.0f, 4.0f, 2.0f, Dilation(0.0f)),
-          ModelTransform.pivot(0.0f, 24.0f, 0.0f)
+          ModelTransform.pivot(0.0f, 8.5f, 0.0f)
         )
         modelPartData.addChild(
           "string",

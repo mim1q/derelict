@@ -20,6 +20,7 @@ class FancyCobwebWithSpiderBlockEntity(pos: BlockPos, state: BlockState) : Block
   private val speed = 0.01 + rng.nextDouble(0.015)
   private val delay = rng.nextInt(40)
   private val range = 4.0 + rng.nextDouble(3.0)
+  val scale = 0.8F + rng.nextFloat(0.4F)
 
   var lastLoweringProgress = 0.0
     private set
