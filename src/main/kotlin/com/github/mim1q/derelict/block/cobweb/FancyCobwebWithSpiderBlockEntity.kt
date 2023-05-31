@@ -11,18 +11,27 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.MathHelper
 import net.minecraft.world.World
+import kotlin.math.atan2
 
 class FancyCobwebWithSpiderBlockEntity(pos: BlockPos, state: BlockState) : BlockEntity(ModBlockEntities.FANCY_COBWEB_WITH_SPIDER, pos, state) {
   var lastLoweringProgress = 0.0
   var loweringProgress = 0.0
   var distance = 0
+  var lastClientYaw = 0F
+  var clientYaw = 0F
 
   fun tick(world: World, pos: BlockPos, state: BlockState, shy: Boolean) {
     if (world.isClient) {
       lastLoweringProgress = loweringProgress
+      lastClientYaw = clientYaw
       val multiplier = if (state[FancyCobwebWithSpiderBlock.LOWERING]) 1.0 else -1.0
       loweringProgress += multiplier * 0.02
       loweringProgress = MathHelper.clamp(loweringProgress, 0.0, 1.0)
+      val player = world.getClosestPlayer(pos.x + 0.5, pos.y + 1.5 - distance, pos.z + 0.5, 16.0, false)
+      if (player != null) {
+        val yaw = atan2(player.z - pos.z + 0.5, player.x - pos.x + 0.5).toFloat() * MathHelper.DEGREES_PER_RADIAN + 90F
+        clientYaw = MathHelper.lerpAngleDegrees(0.01F, clientYaw, yaw)
+      }
       return
     }
     if (world.time % 20 == 0L) {

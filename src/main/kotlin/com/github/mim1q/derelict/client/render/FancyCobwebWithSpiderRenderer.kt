@@ -12,6 +12,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory.Context
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.math.MathHelper
+import net.minecraft.util.math.Vec3f
 
 fun MatrixStack.entry(setup: MatrixStack.() -> Unit) {
   push()
@@ -32,6 +33,7 @@ class FancyCobwebWithSpiderRenderer(context: Context) : BlockEntityRenderer<Fanc
   ) {
     val linearProgress = MathHelper.lerp(tickDelta.toDouble(), entity.lastLoweringProgress, entity.loweringProgress)
     val progress = Easing.easeInOutQuad(0F, 1F, linearProgress.toFloat())
+    val yaw = MathHelper.lerp(tickDelta, entity.lastClientYaw, entity.clientYaw)
     val vertices = vertexConsumers.getBuffer(RenderLayer.getEntityCutout(TEXTURE))
     val distance = entity.distance - 1.5
     matrices.entry {
@@ -46,6 +48,7 @@ class FancyCobwebWithSpiderRenderer(context: Context) : BlockEntityRenderer<Fanc
 
       matrices.entry {
         translate(0.0, progress * distance, 0.0)
+        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(yaw))
         model.render(matrices, vertices, light, overlay, 1F, 1F, 1F, 1F)
       }
     }
