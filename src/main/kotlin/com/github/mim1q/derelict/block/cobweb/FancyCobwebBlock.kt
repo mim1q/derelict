@@ -5,14 +5,22 @@ import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.CobwebBlock
 import net.minecraft.block.SideShapeType
+import net.minecraft.client.item.TooltipContext
 import net.minecraft.item.ItemPlacementContext
+import net.minecraft.item.ItemStack
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.BooleanProperty
+import net.minecraft.text.Text
+import net.minecraft.util.Formatting
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
+import net.minecraft.world.BlockView
 import net.minecraft.world.WorldAccess
 
-open class FancyCobwebBlock(settings: Settings) : CobwebBlock(settings) {
+open class FancyCobwebBlock(
+  settings: Settings,
+  private val hasTooltip: Boolean = false
+) : CobwebBlock(settings) {
   override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
     super.appendProperties(builder)
     builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN)
@@ -48,7 +56,17 @@ open class FancyCobwebBlock(settings: Settings) : CobwebBlock(settings) {
     return state.with(getDirectionProperty(direction), canConnect(world, pos, direction))
   }
 
+  override fun appendTooltip(stack: ItemStack, world: BlockView?, tooltip: MutableList<Text>, options: TooltipContext) {
+    super.appendTooltip(stack, world, tooltip, options)
+    val text = Text.translatable(DISABLED_TOOLTIP_KEY)
+    if (text.string.isNotBlank() && hasTooltip) {
+      tooltip.add(text.formatted(Formatting.DARK_RED))
+    }
+  }
+
   companion object {
+    private const val DISABLED_TOOLTIP_KEY = "block.derelict.fancy_cobweb.disabled_tooltip"
+
     val NORTH: BooleanProperty = BooleanProperty.of("north")
     val EAST: BooleanProperty = BooleanProperty.of("east")
     val SOUTH: BooleanProperty = BooleanProperty.of("south")

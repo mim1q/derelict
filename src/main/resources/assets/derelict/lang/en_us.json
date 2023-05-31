@@ -62,5 +62,10 @@
   "block.derelict.flickering_jack_o_lantern": "Flickering Jack o'Lantern",
   "block.derelict.flickering_lantern": "Flickering Lantern",
   "block.derelict.broken_lantern": "Broken Lantern",
-  "block.derelict.flickering_soul_lantern": "Flickering Soul Lantern"
+  "block.derelict.flickering_soul_lantern": "Flickering Soul Lantern",
+  "block.derelict.fancy_cobweb": "Fancy Cobweb",
+  "block.derelict.fancy_cobweb_with_spider_nest": "Fancy Cobweb With Spider Nest",
+  "block.derelict.fancy_cobweb_with_spider": "Fancy Cobweb With Spider",
+  "block.derelict.fancy_cobweb_with_shy_spider": "Fancy Cobweb With Shy Spider",
+  "block.derelict.fancy_cobweb.disabled_tooltip": ""
 }

@@ -14,7 +14,7 @@ import net.minecraft.world.World
 class FancyCobwebWithSpiderBlock(
   settings: Settings,
   private val shy: Boolean = false
-) : FancyCobwebBlock(settings), BlockEntityProvider {
+) : FancyCobwebBlock(settings, true), BlockEntityProvider {
   init {
     defaultState = defaultState.with(LOWERING, false)
   }

@@ -10,7 +10,7 @@ import net.minecraft.util.math.random.Random
 import net.minecraft.world.World
 import net.minecraft.world.WorldAccess
 
-class FancyCobwebWithSpiderNestBlock(settings: Settings) : FancyCobwebBlock(settings) {
+class FancyCobwebWithSpiderNestBlock(settings: Settings) : FancyCobwebBlock(settings, true) {
   private fun spawnParticle(state: BlockState, world: WorldAccess, blockPos: BlockPos, random: Random, chance: Float, speed: Double) {
     if (random.nextFloat() > chance) return
     val vel = Vec3d(random.nextDouble() - 0.5, 0.0, random.nextDouble() - 0.5)
