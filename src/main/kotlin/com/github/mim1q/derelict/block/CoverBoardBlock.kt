@@ -88,9 +88,9 @@ sealed class CoverBoardBlock(
   }
 
   companion object {
-    val SHAPE: VoxelShape = createCuboidShape(0.0, 0.0, 14.0, 16.0, 16.0, 16.0)
-    val SHAPE_BOTTOM: VoxelShape = createCuboidShape(0.0, 0.0, 0.0, 16.0, 2.0, 16.0)
-    val SHAPE_TOP: VoxelShape = createCuboidShape(0.0, 14.0, 0.0, 16.0, 16.0, 16.0)
+    val SHAPE: VoxelShape = createCuboidShape(1.0, 1.0, 14.0, 15.0, 15.0, 16.0)
+    val SHAPE_BOTTOM: VoxelShape = createCuboidShape(1.0, 0.0, 1.0, 15.0, 2.0, 15.0)
+    val SHAPE_TOP: VoxelShape = createCuboidShape(1.0, 14.0, 1.0, 15.0, 16.0, 15.0)
 
     val FACING: DirectionProperty = Properties.FACING
     val ROTATION_8: IntProperty = IntProperty.of("rotation", 0, 7)
