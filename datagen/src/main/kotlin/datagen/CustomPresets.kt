@@ -261,4 +261,28 @@ object CustomPresets {
     add(CommonModelPresets.generatedItemModel(id))
     TagManager.add("derelict:blocks/cobwebs", id)
   }
+
+  fun fancyCornerCobweb(id: String) = Preset {
+    val (ns, name) = Id(id)
+    listOf("rotated_bottom", "rotated_top", "straight_bottom", "straight_top").forEach {
+      add("${name}_$it", ParentedModel.block("derelict:block/fancy_cobweb/corner_$it")
+        .texture("0", "$ns:block/$name")
+      )
+    }
+    add(name, BlockState.create {
+      listOf("top", "bottom").forEach {
+        variant("rotation=0,half=$it", BlockStateModel("$ns:block/${name}_straight_$it"))
+        variant("rotation=1,half=$it", BlockStateModel("$ns:block/${name}_rotated_$it", yRot = Rotation.CW_90))
+        variant("rotation=2,half=$it", BlockStateModel("$ns:block/${name}_straight_$it", yRot = Rotation.CW_90))
+        variant("rotation=3,half=$it", BlockStateModel("$ns:block/${name}_rotated_$it", yRot = Rotation.CW_180))
+        variant("rotation=4,half=$it", BlockStateModel("$ns:block/${name}_straight_$it", yRot = Rotation.CW_180))
+        variant("rotation=5,half=$it", BlockStateModel("$ns:block/${name}_rotated_$it", yRot = Rotation.CW_270))
+        variant("rotation=6,half=$it", BlockStateModel("$ns:block/${name}_straight_$it", yRot = Rotation.CW_270))
+        variant("rotation=7,half=$it", BlockStateModel("$ns:block/${name}_rotated_$it"))
+      }
+    })
+    add(CommonDropPresets.silkTouchOrShearsOnlyDrop(id))
+    add(CommonModelPresets.generatedItemModel(id))
+    TagManager.add("derelict:blocks/cobwebs", id)
+  }
 }

@@ -67,5 +67,7 @@
   "block.derelict.fancy_cobweb_with_spider_nest": "Fancy Cobweb With Spider Nest",
   "block.derelict.fancy_cobweb_with_spider": "Fancy Cobweb With Spider",
   "block.derelict.fancy_cobweb_with_shy_spider": "Fancy Cobweb With Shy Spider",
-  "block.derelict.fancy_cobweb.disabled_tooltip": ""
+  "block.derelict.fancy_cobweb.disabled_tooltip": "",
+  "block.derelict.fancy_corner_cobweb": "Fancy Corner Cobweb",
+  "block.derelict.corner_cobweb": "Corner Cobweb"
 }
