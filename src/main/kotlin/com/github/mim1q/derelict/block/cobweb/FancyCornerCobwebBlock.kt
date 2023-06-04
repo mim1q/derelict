@@ -2,40 +2,45 @@ package com.github.mim1q.derelict.block.cobweb
 
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
-import net.minecraft.block.enums.BlockHalf
 import net.minecraft.item.ItemPlacementContext
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.EnumProperty
 import net.minecraft.state.property.IntProperty
-import net.minecraft.state.property.Properties
+import net.minecraft.util.StringIdentifiable
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.MathHelper
 
 class FancyCornerCobwebBlock(settings: Settings) : Block(settings) {
   override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
     super.appendProperties(builder)
-    builder.add(ROTATION, HALF)
+    builder.add(ROTATION, TYPE)
   }
 
   override fun getPlacementState(ctx: ItemPlacementContext): BlockState {
     if (ctx.side.axis.isHorizontal) {
-      val half = if (MathHelper.fractionalPart(ctx.hitPos.y) < 0.5) BlockHalf.BOTTOM else BlockHalf.TOP
       return defaultState
-        .with(ROTATION, getRotation(ctx))
-        .with(HALF, half)
+        .with(ROTATION, getRotation(ctx, 45F))
+        .with(TYPE, Type.HORIZONTAL)
     }
     return defaultState
       .with(ROTATION, getRotation(ctx))
-      .with(HALF, if (ctx.side == Direction.UP) BlockHalf.BOTTOM else BlockHalf.TOP)
+      .with(TYPE, if (ctx.side == Direction.UP) Type.BOTTOM else Type.TOP)
   }
 
-  private fun getRotation(ctx: ItemPlacementContext): Int {
-    val yaw = MathHelper.floorMod(ctx.player?.headYaw?.plus(22.5F) ?: 0.0F, 360.0F)
+  private fun getRotation(ctx: ItemPlacementContext, offset: Float = 22.5F): Int {
+    val yaw = MathHelper.floorMod(ctx.player?.headYaw?.plus(offset) ?: 0.0F, 360.0F)
     return (yaw / 45F).toInt() % 8
   }
 
   companion object {
     val ROTATION: IntProperty = IntProperty.of("rotation", 0, 7)
-    val HALF: EnumProperty<BlockHalf> = Properties.BLOCK_HALF
+    val TYPE: EnumProperty<Type> = EnumProperty.of("type", Type::class.java)
+  }
+
+  enum class Type(private val id: String) : StringIdentifiable {
+    TOP("top"),
+    BOTTOM("bottom"),
+    HORIZONTAL("horizontal");
+    override fun asString() = id
   }
 }

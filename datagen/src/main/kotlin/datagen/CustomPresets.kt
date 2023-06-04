@@ -264,22 +264,30 @@ object CustomPresets {
 
   fun fancyCornerCobweb(id: String) = Preset {
     val (ns, name) = Id(id)
-    listOf("rotated_bottom", "rotated_top", "straight_bottom", "straight_top").forEach {
+    listOf("rotated_bottom", "rotated_top", "straight_bottom", "straight_top", "horizontal").forEach {
       add("${name}_$it", ParentedModel.block("derelict:block/fancy_cobweb/corner_$it")
         .texture("0", "$ns:block/$name")
       )
     }
     add(name, BlockState.create {
       listOf("top", "bottom").forEach {
-        variant("rotation=0,half=$it", BlockStateModel("$ns:block/${name}_straight_$it"))
-        variant("rotation=1,half=$it", BlockStateModel("$ns:block/${name}_rotated_$it", yRot = Rotation.CW_90))
-        variant("rotation=2,half=$it", BlockStateModel("$ns:block/${name}_straight_$it", yRot = Rotation.CW_90))
-        variant("rotation=3,half=$it", BlockStateModel("$ns:block/${name}_rotated_$it", yRot = Rotation.CW_180))
-        variant("rotation=4,half=$it", BlockStateModel("$ns:block/${name}_straight_$it", yRot = Rotation.CW_180))
-        variant("rotation=5,half=$it", BlockStateModel("$ns:block/${name}_rotated_$it", yRot = Rotation.CW_270))
-        variant("rotation=6,half=$it", BlockStateModel("$ns:block/${name}_straight_$it", yRot = Rotation.CW_270))
-        variant("rotation=7,half=$it", BlockStateModel("$ns:block/${name}_rotated_$it"))
+        variant("rotation=0,type=$it", BlockStateModel("$ns:block/${name}_straight_$it"))
+        variant("rotation=1,type=$it", BlockStateModel("$ns:block/${name}_rotated_$it", yRot = Rotation.CW_90))
+        variant("rotation=2,type=$it", BlockStateModel("$ns:block/${name}_straight_$it", yRot = Rotation.CW_90))
+        variant("rotation=3,type=$it", BlockStateModel("$ns:block/${name}_rotated_$it", yRot = Rotation.CW_180))
+        variant("rotation=4,type=$it", BlockStateModel("$ns:block/${name}_straight_$it", yRot = Rotation.CW_180))
+        variant("rotation=5,type=$it", BlockStateModel("$ns:block/${name}_rotated_$it", yRot = Rotation.CW_270))
+        variant("rotation=6,type=$it", BlockStateModel("$ns:block/${name}_straight_$it", yRot = Rotation.CW_270))
+        variant("rotation=7,type=$it", BlockStateModel("$ns:block/${name}_rotated_$it"))
       }
+      variant("rotation=0,type=horizontal", BlockStateModel("$ns:block/${name}_horizontal"))
+      variant("rotation=1,type=horizontal", BlockStateModel("$ns:block/${name}_horizontal", yRot = Rotation.CW_90))
+      variant("rotation=2,type=horizontal", BlockStateModel("$ns:block/${name}_horizontal", yRot = Rotation.CW_90))
+      variant("rotation=3,type=horizontal", BlockStateModel("$ns:block/${name}_horizontal", yRot = Rotation.CW_180))
+      variant("rotation=4,type=horizontal", BlockStateModel("$ns:block/${name}_horizontal", yRot = Rotation.CW_180))
+      variant("rotation=5,type=horizontal", BlockStateModel("$ns:block/${name}_horizontal", yRot = Rotation.CW_270))
+      variant("rotation=6,type=horizontal", BlockStateModel("$ns:block/${name}_horizontal", yRot = Rotation.CW_270))
+      variant("rotation=7,type=horizontal", BlockStateModel("$ns:block/${name}_horizontal"))
     })
     add(CommonDropPresets.silkTouchOrShearsOnlyDrop(id))
     add(CommonModelPresets.generatedItemModel(id))
