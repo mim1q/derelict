@@ -2,7 +2,6 @@ package com.github.mim1q.derelict.block.cobweb
 
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
-import net.minecraft.block.CobwebBlock
 import net.minecraft.block.enums.BlockHalf
 import net.minecraft.item.ItemPlacementContext
 import net.minecraft.state.StateManager
@@ -12,7 +11,7 @@ import net.minecraft.state.property.Properties
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.MathHelper
 
-class FancyCornerCobwebBlock(settings: Settings) : CobwebBlock(settings) {
+class FancyCornerCobwebBlock(settings: Settings) : Block(settings) {
   override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
     super.appendProperties(builder)
     builder.add(ROTATION, HALF)
