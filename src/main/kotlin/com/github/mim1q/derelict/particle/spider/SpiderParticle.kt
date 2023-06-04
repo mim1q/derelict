@@ -5,9 +5,7 @@ import net.minecraft.client.render.Camera
 import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.world.ClientWorld
 import net.minecraft.util.math.Direction
-import net.minecraft.util.math.MathHelper
-import net.minecraft.util.math.MathHelper.HALF_PI
-import net.minecraft.util.math.MathHelper.PI
+import net.minecraft.util.math.MathHelper.*
 import net.minecraft.util.math.Vec3d
 
 class SpiderParticle(
@@ -15,9 +13,8 @@ class SpiderParticle(
   x: Double,
   y: Double,
   z: Double,
-  private val vx: Double,
-  private val vy: Double,
-  private val vz: Double,
+  vx: Double,
+  vz: Double,
   private val spriteProvider: SpriteProvider,
   private val direction: Direction
 ) : SpriteBillboardParticle(world, x, y, z, 0.0, 0.0, 0.0) {
@@ -25,7 +22,15 @@ class SpiderParticle(
     maxAge = 40 + random.nextInt(40)
     alpha = 0.0F
     scale = random.nextFloat() * 0.1F + 0.075F
+    velocityMultiplier = sqrt((vx * vx + vz * vz).toFloat())
   }
+
+  private var rotation = atan2(vz, vx).toFloat()
+
+  private val vx
+    get() = sin(HALF_PI - rotation) * velocityMultiplier.toDouble()
+  private val vz
+    get() = cos(HALF_PI - rotation) * velocityMultiplier.toDouble()
 
   override fun getType(): ParticleTextureSheet = ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT
 
@@ -41,10 +46,11 @@ class SpiderParticle(
   }
 
   override fun tick() {
+    rotation += (random.nextFloat() - 0.5F) * 0.5F
     setAngle()
-    setVelocity(vx, vy, vz)
+    setVelocity(vx, 0.0, vz)
     setBoundingBoxSpacing(0.01F, 0.01F)
-    val offset = Vec3d(vx, vy, vz).multiply(3.5).add(Vec3d.of(direction.vector).multiply(0.5))
+    val offset = Vec3d(velocityX, velocityY, velocityZ).multiply(1.5).add(Vec3d.of(direction.vector).multiply(0.5))
     if (world.getBlockCollisions(null, boundingBox.offset(offset.x, offset.y, offset.z)).none()) {
       markDead()
     }
@@ -69,7 +75,6 @@ class SpiderParticle(
 
   private fun setAngle() {
     prevAngle = angle
-    val rotation = MathHelper.atan2(vz, vx).toFloat()
     angle = when(direction) {
       Direction.DOWN -> rotation
       Direction.UP -> PI - rotation
@@ -91,7 +96,7 @@ class SpiderParticle(
       velocityY: Double,
       velocityZ: Double
     ): Particle {
-      val particle = SpiderParticle(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider, parameters.direction)
+      val particle = SpiderParticle(world, x, y, z, velocityX, velocityZ, spriteProvider, parameters.direction)
       particle.setSprite(spriteProvider)
       return particle
     }
