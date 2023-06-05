@@ -9,6 +9,7 @@ import com.github.mim1q.derelict.block.cobweb.FancyCobwebWithSpiderNestBlock
 import com.github.mim1q.derelict.block.cobweb.FancyCornerCobwebBlock
 import com.github.mim1q.derelict.featureset.CoverBoardsSet
 import com.github.mim1q.derelict.featureset.GrassSet
+import com.github.mim1q.derelict.featureset.MetalSet
 import com.github.mim1q.derelict.featureset.WoodSet
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
@@ -54,6 +55,8 @@ object ModBlocks {
   val FANCY_COBWEB_WITH_SHY_SPIDER = register("fancy_cobweb_with_shy_spider", FancyCobwebWithSpiderBlock(FabricBlockSettings.copyOf(Blocks.COBWEB), true))
   val CORNER_COBWEB = register("corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
   val FANCY_CORNER_COBWEB = register("fancy_corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
+
+  val CONSTRUCTION_STEEL = MetalSet.FullOxidizable(Derelict.id("construction_steel"), defaultItemSettings())
 
   fun init() { }
 

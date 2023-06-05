@@ -18,7 +18,7 @@ abstract class FeatureSet(
   protected val namespace = id.namespace
 
   protected fun id(name: String) = Identifier(namespace, name)
-  abstract fun register(): FeatureSet
+  open fun register(): FeatureSet = this
 
   protected fun <I : Item> registerItem(name: String, item: I): I = Registry.register(Registry.ITEM, id(name), item)
 

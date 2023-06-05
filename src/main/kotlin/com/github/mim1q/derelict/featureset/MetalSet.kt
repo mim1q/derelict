@@ -1,0 +1,86 @@
+package com.github.mim1q.derelict.featureset
+
+import com.github.mim1q.derelict.block.metal.*
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings
+import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
+import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry
+import net.minecraft.block.*
+import net.minecraft.block.Oxidizable.OxidationLevel
+import net.minecraft.util.Identifier
+
+sealed class MetalSet(
+  id: Identifier,
+  defaultItemSettings: FabricItemSettings
+) : FeatureSet(id, defaultItemSettings, FabricBlockSettings.copyOf(Blocks.IRON_BLOCK)) {
+  abstract val block: Block
+  abstract val cut: Block
+  abstract val pillar: PillarBlock
+  abstract val stairs: StairsBlock
+  abstract val slab: SlabBlock
+  abstract val chain: ChainBlock
+  abstract val grate: GrateBlock
+  abstract val beam: BeamBlock
+
+  class Regular(
+    id: Identifier,
+    defaultItemSettings: FabricItemSettings,
+    prefix: String = ""
+  ) : MetalSet(id, defaultItemSettings) {
+    override val block: Block = registerBlockWithItem("$prefix${name}_block", Block(defaultBlockSettings))
+    override val cut: Block = registerBlockWithItem("${prefix}cut_$name", Block(defaultBlockSettings))
+    override val pillar: PillarBlock = registerBlockWithItem("$prefix${name}_pillar", PillarBlock(defaultBlockSettings))
+    override val stairs: StairsBlock = registerBlockWithItem("${prefix}cut_${name}_stairs", StairsBlock(block.defaultState, defaultBlockSettings))
+    override val slab: SlabBlock = registerBlockWithItem("${prefix}cut_${name}_slab", SlabBlock(defaultBlockSettings))
+    override val chain: ChainBlock = registerBlockWithItem("$prefix${name}_chain", ChainBlock(defaultBlockSettings))
+    override val grate: GrateBlock = registerBlockWithItem("$prefix${name}_grate", GrateBlock(defaultBlockSettings))
+    override val beam: BeamBlock = registerBlockWithItem("$prefix${name}_beam", BeamBlock(defaultBlockSettings))
+  }
+
+  class Oxidized internal constructor(
+    id: Identifier,
+    prefix: String,
+    defaultItemSettings: FabricItemSettings,
+    level: OxidationLevel,
+    private val moreOxidizedSet: MetalSet?,
+    private val waxedSet: MetalSet
+  ) : MetalSet(id, defaultItemSettings) {
+    override val block: Block = registerBlockWithItem("$prefix${name}_block", OxidizableBlock(level, defaultBlockSettings))
+    override val cut: Block = registerBlockWithItem("${prefix}cut_$name", OxidizableBlock(level, defaultBlockSettings))
+    override val pillar: PillarBlock = registerBlockWithItem("$prefix${name}_pillar", OxidizablePillarBlock(level, defaultBlockSettings))
+    override val stairs: StairsBlock = registerBlockWithItem("${prefix}cut_${name}_stairs", OxidizableStairsBlock(level, block.defaultState, defaultBlockSettings))
+    override val slab: SlabBlock = registerBlockWithItem("${prefix}cut_${name}_slab", OxidizableSlabBlock(level, defaultBlockSettings))
+    override val chain: ChainBlock = registerBlockWithItem("$prefix${name}_chain", OxidizableChainBlock(level, defaultBlockSettings))
+    override val grate: GrateBlock = registerBlockWithItem("$prefix${name}_grate", OxidizableGrateBlock(level, defaultBlockSettings))
+    override val beam: BeamBlock = registerBlockWithItem("$prefix${name}_beam", OxidizableBeamBlock(level, defaultBlockSettings))
+
+    private fun registerOxidizable(base: Block, moreOxidized: Block?, waxed: Block) {
+      if (moreOxidized != null) {
+        OxidizableBlocksRegistry.registerOxidizableBlockPair(base, moreOxidized)
+      }
+      OxidizableBlocksRegistry.registerWaxableBlockPair(base, waxed)
+    }
+
+    override fun register(): Oxidized {
+      registerOxidizable(block, moreOxidizedSet?.block, waxedSet.block)
+      registerOxidizable(cut, moreOxidizedSet?.cut, waxedSet.cut)
+      registerOxidizable(pillar, moreOxidizedSet?.pillar, waxedSet.pillar)
+      registerOxidizable(stairs, moreOxidizedSet?.stairs, waxedSet.stairs)
+      registerOxidizable(slab, moreOxidizedSet?.slab, waxedSet.slab)
+      registerOxidizable(chain, moreOxidizedSet?.chain, waxedSet.chain)
+      registerOxidizable(grate, moreOxidizedSet?.grate, waxedSet.grate)
+      registerOxidizable(beam, moreOxidizedSet?.beam, waxedSet.beam)
+      return this
+    }
+  }
+
+  class FullOxidizable(id: Identifier, defaultItemSettings: FabricItemSettings) : FeatureSet(id, defaultItemSettings) {
+    val waxedOxidized = Regular(id, defaultItemSettings, "waxed_oxidized_")
+    val waxedWeathered = Regular(id, defaultItemSettings, "waxed_weathered_")
+    val waxedExposed = Regular(id, defaultItemSettings, "waxed_exposed_")
+    val waxedUnaffected = Regular(id, defaultItemSettings, "waxed_")
+    val oxidized = Oxidized(id, "oxidized_", defaultItemSettings, OxidationLevel.OXIDIZED, null, waxedOxidized)
+    val weathered = Oxidized(id, "weathered_", defaultItemSettings, OxidationLevel.WEATHERED, oxidized, waxedWeathered)
+    val exposed = Oxidized(id, "exposed_", defaultItemSettings, OxidationLevel.EXPOSED, weathered, waxedExposed)
+    val unaffected = Oxidized(id, "", defaultItemSettings, OxidationLevel.UNAFFECTED, exposed, waxedUnaffected)
+  }
+}
