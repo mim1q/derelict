@@ -29,11 +29,11 @@ sealed class MetalSet(
     override val block: Block = registerBlockWithItem("$prefix${name}_block", Block(defaultBlockSettings))
     override val cut: Block = registerBlockWithItem("${prefix}cut_$name", Block(defaultBlockSettings))
     override val pillar: PillarBlock = registerBlockWithItem("$prefix${name}_pillar", PillarBlock(defaultBlockSettings))
-    override val stairs: StairsBlock = registerBlockWithItem("${prefix}cut_${name}_stairs", StairsBlock(block.defaultState, defaultBlockSettings))
-    override val slab: SlabBlock = registerBlockWithItem("${prefix}cut_${name}_slab", SlabBlock(defaultBlockSettings))
-    override val chain: ChainBlock = registerBlockWithItem("$prefix${name}_chain", ChainBlock(defaultBlockSettings))
-    override val grate: GrateBlock = registerBlockWithItem("$prefix${name}_grate", GrateBlock(defaultBlockSettings))
-    override val beam: BeamBlock = registerBlockWithItem("$prefix${name}_beam", BeamBlock(defaultBlockSettings))
+    override val stairs: StairsBlock = registerBlockWithItem("${prefix}cut_${name}_stairs", StairsBlock(block.defaultState, defaultBlockSettings.nonOpaque()))
+    override val slab: SlabBlock = registerBlockWithItem("${prefix}cut_${name}_slab", SlabBlock(defaultBlockSettings.nonOpaque()))
+    override val chain: ChainBlock = registerBlockWithItem("$prefix${name}_chain", ChainBlock(defaultBlockSettings.nonOpaque()))
+    override val grate: GrateBlock = registerBlockWithItem("$prefix${name}_grate", GrateBlock(defaultBlockSettings.nonOpaque()))
+    override val beam: BeamBlock = registerBlockWithItem("$prefix${name}_beam", BeamBlock(defaultBlockSettings.nonOpaque()))
   }
 
   class Oxidized internal constructor(
@@ -47,11 +47,11 @@ sealed class MetalSet(
     override val block: Block = registerBlockWithItem("$prefix${name}_block", OxidizableBlock(level, defaultBlockSettings))
     override val cut: Block = registerBlockWithItem("${prefix}cut_$name", OxidizableBlock(level, defaultBlockSettings))
     override val pillar: PillarBlock = registerBlockWithItem("$prefix${name}_pillar", OxidizablePillarBlock(level, defaultBlockSettings))
-    override val stairs: StairsBlock = registerBlockWithItem("${prefix}cut_${name}_stairs", OxidizableStairsBlock(level, block.defaultState, defaultBlockSettings))
-    override val slab: SlabBlock = registerBlockWithItem("${prefix}cut_${name}_slab", OxidizableSlabBlock(level, defaultBlockSettings))
-    override val chain: ChainBlock = registerBlockWithItem("$prefix${name}_chain", OxidizableChainBlock(level, defaultBlockSettings))
-    override val grate: GrateBlock = registerBlockWithItem("$prefix${name}_grate", OxidizableGrateBlock(level, defaultBlockSettings))
-    override val beam: BeamBlock = registerBlockWithItem("$prefix${name}_beam", OxidizableBeamBlock(level, defaultBlockSettings))
+    override val stairs: StairsBlock = registerBlockWithItem("${prefix}cut_${name}_stairs", OxidizableStairsBlock(level, block.defaultState, defaultBlockSettings.nonOpaque()))
+    override val slab: SlabBlock = registerBlockWithItem("${prefix}cut_${name}_slab", OxidizableSlabBlock(level, defaultBlockSettings.nonOpaque()))
+    override val chain: ChainBlock = registerBlockWithItem("$prefix${name}_chain", OxidizableChainBlock(level, defaultBlockSettings.nonOpaque()))
+    override val grate: GrateBlock = registerBlockWithItem("$prefix${name}_grate", OxidizableGrateBlock(level, defaultBlockSettings.nonOpaque()))
+    override val beam: BeamBlock = registerBlockWithItem("$prefix${name}_beam", OxidizableBeamBlock(level, defaultBlockSettings.nonOpaque()))
 
     private fun registerOxidizable(base: Block, moreOxidized: Block?, waxed: Block) {
       if (moreOxidized != null) {
@@ -82,5 +82,12 @@ sealed class MetalSet(
     val weathered = Oxidized(id, "weathered_", defaultItemSettings, OxidationLevel.WEATHERED, oxidized, waxedWeathered)
     val exposed = Oxidized(id, "exposed_", defaultItemSettings, OxidationLevel.EXPOSED, weathered, waxedExposed)
     val unaffected = Oxidized(id, "", defaultItemSettings, OxidationLevel.UNAFFECTED, exposed, waxedUnaffected)
+
+    fun getCutoutBlocks() = arrayOf(
+      unaffected.grate, unaffected.chain, waxedUnaffected.grate, waxedUnaffected.chain,
+      exposed.grate, exposed.chain, waxedExposed.grate, waxedExposed.chain,
+      weathered.grate, weathered.chain, waxedWeathered.grate, waxedWeathered.chain,
+      oxidized.grate, oxidized.chain, waxedOxidized.grate, waxedOxidized.chain
+    )
   }
 }

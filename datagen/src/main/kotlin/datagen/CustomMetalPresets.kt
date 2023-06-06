@@ -3,6 +3,8 @@ package datagen
 import tada.lib.presets.Preset
 import tada.lib.presets.common.CommonModelPresets
 import tada.lib.resources.blockstate.BlockState
+import tada.lib.resources.blockstate.BlockStateModel
+import tada.lib.resources.blockstate.BlockStateModel.Rotation
 import tada.lib.resources.model.ParentedModel
 import tada.lib.util.Id
 
@@ -32,8 +34,20 @@ object CustomMetalPresets {
       namespacedBlockName("", "cut_"),
       blockTexture("", "cut_")
     ))
-
-    listOf(namespacedBlockName("_block"), namespacedBlockName("", "cut_")).forEach {
+    add(blockName("_grate"), ParentedModel.block("derelict:block/metal_grate").texture("0", blockTexture("_grate", folder = "block/")))
+    add(blockName("_grate"), BlockState.create {
+      variant("facing=north", BlockStateModel(namespacedBlockName("_grate", "", "block/"), yRot = Rotation.NONE))
+      variant("facing=east", BlockStateModel(namespacedBlockName("_grate", "", "block/"), yRot = Rotation.CW_90))
+      variant("facing=south", BlockStateModel(namespacedBlockName("_grate", "", "block/"), yRot = Rotation.CW_180))
+      variant("facing=west", BlockStateModel(namespacedBlockName("_grate", "", "block/"), yRot = Rotation.CW_270))
+      variant("facing=up", BlockStateModel(namespacedBlockName("_grate", "", "block/"), xRot = Rotation.CW_270))
+      variant("facing=down", BlockStateModel(namespacedBlockName("_grate", "", "block/"), xRot = Rotation.CW_90))
+    })
+    listOf(
+      namespacedBlockName("_block"),
+      namespacedBlockName("", "cut_"),
+      namespacedBlockName("_grate")
+    ).forEach {
       add(CommonModelPresets.itemBlockModel(it))
     }
   }
