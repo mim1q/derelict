@@ -11,6 +11,8 @@ import com.github.mim1q.derelict.featureset.CoverBoardsSet
 import com.github.mim1q.derelict.featureset.GrassSet
 import com.github.mim1q.derelict.featureset.MetalSet
 import com.github.mim1q.derelict.featureset.WoodSet
+import com.github.mim1q.derelict.item.AgingStaffItem
+import com.github.mim1q.derelict.item.WaxingStaffItem
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.minecraft.block.*
@@ -19,7 +21,10 @@ import net.minecraft.item.Item
 import net.minecraft.util.registry.Registry
 
 @Suppress("UNUSED")
-object ModBlocks {
+object ModBlocksAndItems {
+  val AGING_STAFF = registerItem("aging_staff", AgingStaffItem(defaultItemSettings()))
+  val WAXING_STAFF = registerItem("waxing_staff", WaxingStaffItem(defaultItemSettings()))
+
   val BURNED_WOOD = WoodSet(Derelict.id("burned"), defaultItemSettings()).register()
   val BURNED_LEAVES = register("burned_leaves", LeavesBlock(FabricBlockSettings.copyOf(Blocks.OAK_LEAVES)))
   val SMOLDERING_LEAVES = register("smoldering_leaves", SmolderingLeavesBlock(FabricBlockSettings.copyOf(Blocks.OAK_LEAVES)))

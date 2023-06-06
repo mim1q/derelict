@@ -6,6 +6,7 @@ import tada.lib.lang.LanguageHelper
 import tada.lib.presets.blocksets.BlockSets
 import tada.lib.presets.common.CommonDropPresets
 import tada.lib.presets.common.CommonModelPresets
+import tada.lib.resources.model.ParentedModel
 import tada.lib.tags.TagManager
 import java.nio.file.Path
 
@@ -52,6 +53,10 @@ fun main(args: Array<String>) {
     add(CustomPresets.flickeringLantern("derelict:flickering_soul_lantern", 8, 50))
     // Metal
     add(CustomMetalPresets.fullMetalSet("derelict:construction_steel"))
+    // Handheld items
+    listOf("aging_staff", "waxing_staff").forEach {
+      add(it, ParentedModel.item("minecraft:item/handheld").texture("layer0", "derelict:$it"))
+    }
     // Custom Tags
     TagManager.add("derelict:blocks/cobwebs", "minecraft:cobweb")
     TagManager.add("blocks/leaves", "derelict:burned_leaves", "derelict:smoldering_leaves")

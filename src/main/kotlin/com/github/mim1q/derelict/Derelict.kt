@@ -1,8 +1,7 @@
 package com.github.mim1q.derelict
 
 import com.github.mim1q.derelict.init.ModBlockEntities
-import com.github.mim1q.derelict.init.ModBlocks
-import com.github.mim1q.derelict.init.ModItems
+import com.github.mim1q.derelict.init.ModBlocksAndItems
 import com.github.mim1q.derelict.init.ModParticles
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder
@@ -17,15 +16,14 @@ object Derelict : ModInitializer {
 
   override fun onInitialize() {
     LOGGER.info("Derelict initializing")
-    ModBlocks.init()
+    ModBlocksAndItems.init()
     ModBlockEntities.init()
-    ModItems.init()
     ModParticles.init()
   }
 
   fun id(value: String) = Identifier(MOD_ID, value)
 
   val ITEM_GROUP: ItemGroup = FabricItemGroupBuilder.create(id("derelict"))
-    .icon { ModBlocks.FLICKERING_REDSTONE_LAMP.asItem().defaultStack }
+    .icon { ModBlocksAndItems.FLICKERING_REDSTONE_LAMP.asItem().defaultStack }
     .build()
 }

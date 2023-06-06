@@ -13,8 +13,8 @@ object ModBlockEntities {
   val FANCY_COBWEB_WITH_SPIDER: BlockEntityType<FancyCobwebWithSpiderBlockEntity> = register(
     "fancy_cobweb_with_spider",
     ::FancyCobwebWithSpiderBlockEntity,
-    ModBlocks.FANCY_COBWEB_WITH_SPIDER,
-    ModBlocks.FANCY_COBWEB_WITH_SHY_SPIDER
+    ModBlocksAndItems.FANCY_COBWEB_WITH_SPIDER,
+    ModBlocksAndItems.FANCY_COBWEB_WITH_SHY_SPIDER
   )
 
   fun init() { }

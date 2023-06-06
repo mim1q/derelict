@@ -1,6 +1,6 @@
 package com.github.mim1q.derelict.block
 
-import com.github.mim1q.derelict.init.ModBlocks
+import com.github.mim1q.derelict.init.ModBlocksAndItems
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.minecraft.block.*
 import net.minecraft.fluid.FluidState
@@ -89,7 +89,7 @@ sealed class EmbersBlock(settings: FabricBlockSettings, private val particleVelo
     override fun tryFillWithFluid(world: WorldAccess, pos: BlockPos, state: BlockState, fluid: FluidState): Boolean {
       val canFillWithFluid = super.tryFillWithFluid(world, pos, state, fluid)
       if (canFillWithFluid) {
-        world.setBlockState(pos, ModBlocks.SMOKING_EMBERS.getStateWithProperties(state).with(WATERLOGGED, true), 3)
+        world.setBlockState(pos, ModBlocksAndItems.SMOKING_EMBERS.getStateWithProperties(state).with(WATERLOGGED, true), 3)
       }
       return canFillWithFluid
     }
@@ -97,7 +97,7 @@ sealed class EmbersBlock(settings: FabricBlockSettings, private val particleVelo
     override fun getPlacementState(ctx: ItemPlacementContext): BlockState? {
       val state = super.getPlacementState(ctx) ?: return null
       if (state[WATERLOGGED]) {
-        return ModBlocks.SMOKING_EMBERS.getStateWithProperties(state).with(WATERLOGGED, true)
+        return ModBlocksAndItems.SMOKING_EMBERS.getStateWithProperties(state).with(WATERLOGGED, true)
       }
       return state
     }
