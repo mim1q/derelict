@@ -25,6 +25,7 @@ version = ModData.version
 
 repositories {
   mavenCentral()
+  maven("https://maven.wispforest.io")
 }
 
 dependencies {
@@ -34,6 +35,10 @@ dependencies {
   modImplementation("net.fabricmc.fabric-api:fabric-api:${Versions.fabricApi}")
   modImplementation("net.fabricmc:fabric-language-kotlin:${Versions.fabricLanguageKotlin}")
   implementation(kotlin("stdlib-jdk8"))
+  // owo-lib
+  modImplementation("io.wispforest:owo-lib:${Versions.owoLib}")
+  annotationProcessor(modImplementation("io.wispforest:owo-lib:${Versions.owoLib}")!!)
+  include("io.wispforest:owo-sentinel:${Versions.owoLib}")
 }
 
 @Suppress("UnstableApiUsage")
