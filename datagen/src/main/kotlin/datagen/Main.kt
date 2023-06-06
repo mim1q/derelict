@@ -55,7 +55,7 @@ fun main(args: Array<String>) {
     add(CustomMetalPresets.fullMetalSet("derelict:construction_steel"))
     // Handheld items
     listOf("aging_staff", "waxing_staff").forEach {
-      add(it, ParentedModel.item("minecraft:item/handheld").texture("layer0", "derelict:$it"))
+      add(it, ParentedModel.item("minecraft:item/handheld").texture("layer0", "derelict:item/$it"))
     }
     // Custom Tags
     TagManager.add("derelict:blocks/cobwebs", "minecraft:cobweb")
