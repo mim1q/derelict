@@ -36,7 +36,6 @@ dependencies {
   modImplementation("net.fabricmc:fabric-language-kotlin:${Versions.fabricLanguageKotlin}")
   implementation(kotlin("stdlib-jdk8"))
   // owo-lib
-  modImplementation("io.wispforest:owo-lib:${Versions.owoLib}")
   annotationProcessor(modImplementation("io.wispforest:owo-lib:${Versions.owoLib}")!!)
   include("io.wispforest:owo-sentinel:${Versions.owoLib}")
 }
@@ -63,7 +62,10 @@ tasks {
 sourceSets {
   main {
     resources {
-      srcDirs("src/main/generated")
+      srcDir("src/main/generated")
+    }
+    java {
+      srcDir("$buildDir/generated/sources/annotationProcessor/java")
     }
   }
 }
