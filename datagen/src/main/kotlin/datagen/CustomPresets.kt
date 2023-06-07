@@ -191,28 +191,47 @@ object CustomPresets {
     val first = "derelict:block/flickering_jack_o_lantern/0"
     add(flickerVariants("derelict:flickering_jack_o_lantern", "block/jack_o_lantern", "front", count, seed))
     fun rest(rotation: Rotation) = IntRange(1, count - 1).map { BlockStateModel("derelict:block/flickering_jack_o_lantern/$it", yRot = rotation) }.toTypedArray()
+    add("flickering_jack_o_lantern/on", ParentedModel.block("block/jack_o_lantern").texture("front", "minecraft:block/jack_o_lantern"))
+    add("flickering_jack_o_lantern/half_on", ParentedModel.block("block/jack_o_lantern").texture("front", "derelict:block/jack_o_lantern_half_on"))
+    add("flickering_jack_o_lantern/off", ParentedModel.block("block/jack_o_lantern").texture("front", "minecraft:block/carved_pumpkin"))
     add("flickering_jack_o_lantern", ParentedModel.item(first))
     add("flickering_jack_o_lantern", BlockState.create {
-      variant("facing=north", BlockStateModel(first, yRot = Rotation.NONE), *rest(Rotation.NONE))
-      variant("facing=east", BlockStateModel(first, yRot = Rotation.CW_90), *rest(Rotation.CW_90))
-      variant("facing=south", BlockStateModel(first, yRot = Rotation.CW_180), *rest(Rotation.CW_180))
-      variant("facing=west", BlockStateModel(first, yRot = Rotation.CW_270), *rest(Rotation.CW_270))
+      variant("light_state=flickering,facing=north", BlockStateModel(first, yRot = Rotation.NONE), *rest(Rotation.NONE))
+      variant("light_state=flickering,facing=east", BlockStateModel(first, yRot = Rotation.CW_90), *rest(Rotation.CW_90))
+      variant("light_state=flickering,facing=south", BlockStateModel(first, yRot = Rotation.CW_180), *rest(Rotation.CW_180))
+      variant("light_state=flickering,facing=west", BlockStateModel(first, yRot = Rotation.CW_270), *rest(Rotation.CW_270))
+      listOf("on", "half_on", "off").forEach {
+        variant("light_state=$it,facing=north", BlockStateModel("derelict:block/flickering_jack_o_lantern/$it", yRot = Rotation.NONE))
+        variant("light_state=$it,facing=east", BlockStateModel("derelict:block/flickering_jack_o_lantern/$it", yRot = Rotation.CW_90))
+        variant("light_state=$it,facing=south", BlockStateModel("derelict:block/flickering_jack_o_lantern/$it", yRot = Rotation.CW_180))
+        variant("light_state=$it,facing=west", BlockStateModel("derelict:block/flickering_jack_o_lantern/$it", yRot = Rotation.CW_270))
+      }
     })
     AnimationPresets.createIndexedBlockTextureCopies("derelict:flickering_jack_o_lantern", count)
     TagManager.add("minecraft:blocks/mineable/axe", "derelict:flickering_jack_o_lantern")
     add(CommonDropPresets.simpleDrop("derelict:flickering_jack_o_lantern"))
   }
 
-  fun flickeringLantern(id: String, count: Int, seed: Long) = Preset {
+  fun flickeringLantern(id: String, count: Int, seed: Long, onTexture: String, halfOnTexture: String, offTexture: String) = Preset {
     val (ns, name) = Id(id)
     val rest = IntRange(1, count - 1).map { BlockStateModel("$ns:block/$name/$it") }.toTypedArray()
     val restHanging = IntRange(1, count - 1).map { BlockStateModel("$ns:block/${name}_hanging/$it") }.toTypedArray()
     add(flickerVariants(id, "block/template_lantern", "lantern", count, seed, id))
     add(flickerVariants("${id}_hanging", "block/template_hanging_lantern", "lantern", count, seed, id))
     add(CommonModelPresets.generatedItemModel(id))
+    add("${name}_hanging/on", ParentedModel.block("block/template_hanging_lantern").texture("lantern", onTexture))
+    add("${name}_hanging/half_on", ParentedModel.block("block/template_hanging_lantern").texture("lantern", halfOnTexture))
+    add("${name}_hanging/off", ParentedModel.block("block/template_hanging_lantern").texture("lantern", offTexture))
+    add("${name}/on", ParentedModel.block("block/template_lantern").texture("lantern", onTexture))
+    add("${name}/half_on", ParentedModel.block("block/template_lantern").texture("lantern", halfOnTexture))
+    add("${name}/off", ParentedModel.block("block/template_lantern").texture("lantern", offTexture))
     add(name, BlockState.create {
-      variant("hanging=false", BlockStateModel("$ns:block/$name/0"), *rest)
-      variant("hanging=true", BlockStateModel("$ns:block/${name}_hanging/0"), *restHanging)
+      variant("light_state=flickering,hanging=false", BlockStateModel("$ns:block/$name/0"), *rest)
+      variant("light_state=flickering,hanging=true", BlockStateModel("$ns:block/${name}_hanging/0"), *restHanging)
+      listOf("on", "half_on", "off").forEach {
+        variant("light_state=$it,hanging=false", BlockStateModel("$ns:block/$name/$it"))
+        variant("light_state=$it,hanging=true", BlockStateModel("$ns:block/${name}_hanging/$it"))
+      }
     })
     AnimationPresets.createIndexedBlockTextureCopies(id, count)
     TagManager.add("minecraft:blocks/mineable/pickaxe", id)

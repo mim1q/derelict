@@ -41,7 +41,7 @@ interface FlickeringBlock {
       if (random.nextFloat() < 0.5) {
         return LightState.ON to random.nextInt(4) + 2
       }
-      return LightState.ON to random.nextInt(80) + 20
+      return LightState.ON to random.nextInt(100) + 20
     }
     return LightState.OFF to random.nextInt(6) + 1
   }

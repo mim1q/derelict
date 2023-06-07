@@ -54,9 +54,13 @@ fun main(args: Array<String>) {
       "derelict:block/redstone_lamp_half_on", "minecraft:block/redstone_lamp"
     ))
     add(CustomPresets.flickeringJackOLantern(8, 30))
-    add(CustomPresets.flickeringLantern("derelict:flickering_lantern", 8, 40))
+    add(CustomPresets.flickeringLantern("derelict:flickering_lantern", 8, 40,
+      "minecraft:block/lantern", "derelict:block/lantern_half_on", "derelict:block/broken_lantern"
+    ))
     add(CustomPresets.lantern("derelict:broken_lantern"))
-    add(CustomPresets.flickeringLantern("derelict:flickering_soul_lantern", 8, 50))
+    add(CustomPresets.flickeringLantern("derelict:flickering_soul_lantern", 8, 50,
+      "minecraft:block/soul_lantern", "derelict:block/soul_lantern_half_on", "derelict:block/broken_lantern"
+    ))
     // Metal
     add(CustomMetalPresets.fullMetalSet("derelict:construction_steel"))
     // Handheld items

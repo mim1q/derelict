@@ -7,6 +7,8 @@ import com.github.mim1q.derelict.block.cobweb.FancyCobwebBlock
 import com.github.mim1q.derelict.block.cobweb.FancyCobwebWithSpiderBlock
 import com.github.mim1q.derelict.block.cobweb.FancyCobwebWithSpiderNestBlock
 import com.github.mim1q.derelict.block.cobweb.FancyCornerCobwebBlock
+import com.github.mim1q.derelict.block.flickering.FlickeringCarvedPumpkinBlock
+import com.github.mim1q.derelict.block.flickering.FlickeringLanternBlock
 import com.github.mim1q.derelict.block.flickering.FlickeringSolidBlock
 import com.github.mim1q.derelict.featureset.CoverBoardsSet
 import com.github.mim1q.derelict.featureset.GrassSet
@@ -50,10 +52,10 @@ object ModBlocksAndItems {
   val FLICKERING_REDSTONE_LAMP = register("flickering_redstone_lamp", FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.REDSTONE_LAMP)))
   val FLICKERING_SEA_LANTERN = register("flickering_sea_lantern", FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.SEA_LANTERN)))
   val BROKEN_SEA_LANTERN = register("broken_sea_lantern", Block(FabricBlockSettings.copyOf(Blocks.SEA_LANTERN).luminance { 0 }))
-  val FLICKERING_JACK_O_LANTERN = register("flickering_jack_o_lantern", CarvedPumpkinBlock(FabricBlockSettings.copyOf(Blocks.JACK_O_LANTERN).luminance { 10 }))
-  val FLICKERING_LANTERN = register("flickering_lantern", LanternBlock(FabricBlockSettings.copyOf(Blocks.LANTERN).luminance { 10 }))
+  val FLICKERING_JACK_O_LANTERN = register("flickering_jack_o_lantern", FlickeringCarvedPumpkinBlock(FabricBlockSettings.copyOf(Blocks.JACK_O_LANTERN)))
+  val FLICKERING_LANTERN = register("flickering_lantern", FlickeringLanternBlock(FabricBlockSettings.copyOf(Blocks.LANTERN)))
   val BROKEN_LANTERN = register("broken_lantern", LanternBlock(FabricBlockSettings.copyOf(Blocks.LANTERN).luminance { 0 }))
-  val FLICKERING_SOUL_LANTERN = register("flickering_soul_lantern", LanternBlock(FabricBlockSettings.copyOf(Blocks.SOUL_LANTERN).luminance { 10 }))
+  val FLICKERING_SOUL_LANTERN = register("flickering_soul_lantern", FlickeringLanternBlock(FabricBlockSettings.copyOf(Blocks.SOUL_LANTERN)))
 
   val FANCY_COBWEB = register("fancy_cobweb", FancyCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
   val FANCY_COBWEB_WITH_SPIDER_NEST = register("fancy_cobweb_with_spider_nest", FancyCobwebWithSpiderNestBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
