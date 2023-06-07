@@ -1,6 +1,7 @@
 package com.github.mim1q.derelict.block.flickering
 
 import com.github.mim1q.derelict.Derelict
+import com.github.mim1q.derelict.config.DerelictConfigModel.FlickeringLightsSetting
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.state.property.EnumProperty
@@ -12,7 +13,7 @@ import net.minecraft.world.World
 interface FlickeringBlock {
   fun prepareFlicker(world: World, state: BlockState, pos: BlockPos, random: Random, block: Block) {
     if (world.isClient) return
-    if (Derelict.CONFIG.fancyFlickeringLights()) {
+    if (Derelict.CONFIG.flickeringLights() == FlickeringLightsSetting.FAST) {
       if (state[LIGHT_STATE] == LightState.FLICKERING) {
         scheduleFlicker(world, state, pos, random, block)
       }
@@ -23,7 +24,7 @@ interface FlickeringBlock {
 
   fun scheduleFlicker(world: World, state: BlockState, pos: BlockPos, random: Random, block: Block) {
     if (world.isClient) return
-    if (!Derelict.CONFIG.fancyFlickeringLights()) {
+    if (Derelict.CONFIG.flickeringLights() == FlickeringLightsSetting.FAST) {
       world.setBlockState(pos, state.with(LIGHT_STATE, LightState.FLICKERING))
       return
     }

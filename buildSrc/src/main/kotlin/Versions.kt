@@ -9,6 +9,7 @@ object Versions {
   const val fabricLanguageKotlin = "1.9.4+kotlin.1.8.21"
   const val kotlin = "1.8.21"
   const val owoLib = "0.9.2+1.19"
+  const val jankson = "1.2.1"
 
   // Publishing
   const val cursegradle = "1.4.0"

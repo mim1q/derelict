@@ -38,6 +38,8 @@ dependencies {
   // owo-lib
   annotationProcessor(modImplementation("io.wispforest:owo-lib:${Versions.owoLib}")!!)
   include("io.wispforest:owo-sentinel:${Versions.owoLib}")
+  // Jankson for owo-lib config comments
+  implementation("blue.endless:jankson:${Versions.jankson}")
 }
 
 @Suppress("UnstableApiUsage")
