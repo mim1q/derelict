@@ -29,6 +29,6 @@ class FlickeringLanternBlock(
   }
 
   override fun onPlaced(world: World, pos: BlockPos, state: BlockState, placer: LivingEntity?, itemStack: ItemStack) {
-    prepareFlicker(world, state, pos, world.random, this)
+    scheduleFlicker(world, state, pos, world.random, this)
   }
 }

@@ -11,33 +11,29 @@ import net.minecraft.util.math.random.Random
 import net.minecraft.world.World
 
 interface FlickeringBlock {
-  fun prepareFlicker(world: World, state: BlockState, pos: BlockPos, random: Random, block: Block) {
-    if (world.isClient) return
-    if (Derelict.CONFIG.flickeringLights() == FlickeringLightsSetting.FAST) {
-      if (state[LIGHT_STATE] == LightState.FLICKERING) {
-        scheduleFlicker(world, state, pos, random, block)
-      }
-    } else {
-      world.setBlockState(pos, state.with(LIGHT_STATE, LightState.FLICKERING))
-    }
-  }
-
   fun scheduleFlicker(world: World, state: BlockState, pos: BlockPos, random: Random, block: Block) {
     if (world.isClient) return
     if (Derelict.CONFIG.flickeringLights() == FlickeringLightsSetting.FAST) {
       world.setBlockState(pos, state.with(LIGHT_STATE, LightState.FLICKERING))
       return
     }
-    val (lightState, delay) = when (state[LIGHT_STATE]) {
-      LightState.HALF_ON -> nextFlickerState(random)
-      LightState.FLICKERING -> LightState.ON to 1
-      else -> LightState.HALF_ON to 1 + random.nextInt(1)
+    val (lightState, delay) = when (Derelict.CONFIG.flickeringLights()) {
+      FlickeringLightsSetting.FANCY -> nextFancyFlicker(random, state[LIGHT_STATE])
+      else -> if (state[LIGHT_STATE] == LightState.HALF_ON) nextFabulousFlicker(random) else LightState.HALF_ON to 1 + random.nextInt(1)
     }
+
     world.setBlockState(pos, state.with(LIGHT_STATE, lightState))
     world.createAndScheduleBlockTick(pos, block, delay)
   }
 
-  fun nextFlickerState(random: Random): Pair<LightState, Int> {
+  fun nextFancyFlicker(random: Random, currentState: LightState): Pair<LightState, Int> {
+    return when (currentState) {
+      LightState.OFF -> LightState.ON to if (random.nextFloat() < 0.75) (random.nextInt(3) + 1) else (random.nextInt(100) + 20)
+      else -> LightState.OFF to random.nextInt(3) + 1
+    }
+  }
+
+  fun nextFabulousFlicker(random: Random): Pair<LightState, Int> {
     if (random.nextFloat() < 0.5) {
       if (random.nextFloat() < 0.5) {
         return LightState.ON to random.nextInt(4) + 2
