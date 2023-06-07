@@ -13,7 +13,7 @@ import net.minecraft.world.World
 
 class FlickeringSolidBlock(
   settings: Settings
-) : Block(settings.ticksRandomly().luminance { if (it[FlickeringBlock.LIGHT_STATE] == LightState.OFF) 0 else 10 }),
+) : Block(settings.ticksRandomly().luminance(FlickeringBlock::getLuminance)),
   FlickeringBlock {
   init {
     defaultState = defaultState.with(FlickeringBlock.LIGHT_STATE, LightState.FLICKERING)

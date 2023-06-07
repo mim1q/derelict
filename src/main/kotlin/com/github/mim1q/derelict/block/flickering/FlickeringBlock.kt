@@ -27,25 +27,40 @@ interface FlickeringBlock {
       world.setBlockState(pos, state.with(LIGHT_STATE, LightState.FLICKERING))
       return
     }
-    val off = state[LIGHT_STATE] == LightState.OFF
-    world.setBlockState(
-      pos, state.with(LIGHT_STATE, if (off) LightState.ON else LightState.OFF)
-    )
-    val delay = when {
-      off -> if (random.nextFloat() < 0.6F) random.nextInt(2) + 1 else random.nextInt(40) + 20
-      else -> random.nextInt(4) + 2
+    val (lightState, delay) = when (state[LIGHT_STATE]) {
+      LightState.HALF_ON -> nextFlickerState(random)
+      LightState.FLICKERING -> LightState.ON to 1
+      else -> LightState.HALF_ON to 1 + random.nextInt(1)
     }
-    if (!world.blockTickScheduler.isQueued(pos, block)) {
-      world.createAndScheduleBlockTick(pos, block, delay)
+    world.setBlockState(pos, state.with(LIGHT_STATE, lightState))
+    world.createAndScheduleBlockTick(pos, block, delay)
+  }
+
+  fun nextFlickerState(random: Random): Pair<LightState, Int> {
+    if (random.nextFloat() < 0.5) {
+      if (random.nextFloat() < 0.5) {
+        return LightState.ON to random.nextInt(4) + 2
+      }
+      return LightState.ON to random.nextInt(80) + 20
     }
+    return LightState.OFF to random.nextInt(6) + 1
   }
 
   companion object {
+    fun getLuminance(state: BlockState): Int {
+      return when (state[LIGHT_STATE]) {
+        LightState.HALF_ON -> 5
+        LightState.ON -> 10
+        else -> 0
+      }
+    }
+
     val LIGHT_STATE: EnumProperty<LightState> = EnumProperty.of("light_state", LightState::class.java)
 
     enum class LightState(private val id: String) : StringIdentifiable {
       FLICKERING("flickering"),
       OFF("off"),
+      HALF_ON("half_on"),
       ON("on");
 
       override fun asString() = id

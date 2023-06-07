@@ -167,17 +167,19 @@ object CustomPresets {
     }
   }
 
-  fun flickeringCubeAll(id: String, count: Int, seed: Long, onTexture: String, offTexture: String) = Preset {
+  fun flickeringCubeAll(id: String, count: Int, seed: Long, onTexture: String, halfOnTexture: String, offTexture: String) = Preset {
     val (ns, name) = Id(id)
     add(flickerVariants(id, "block/cube_all", "all", count, seed))
     val first = "$ns:block/$name/0"
     val rest = IntRange(1, count - 1).map { BlockStateModel("$ns:block/$name/$it") }.toTypedArray()
     add(name, ParentedModel.item(first))
     add("$name/on", ParentedModel.block("block/cube_all").texture("all", onTexture))
+    add("$name/half_on", ParentedModel.block("block/cube_all").texture("all", halfOnTexture))
     add("$name/off", ParentedModel.block("block/cube_all").texture("all", offTexture))
     add(name, BlockState.create {
       variant("light_state=flickering", BlockStateModel(first), *rest)
       variant("light_state=on", BlockStateModel("$ns:block/$name/on"))
+      variant("light_state=half_on", BlockStateModel("$ns:block/$name/half_on"))
       variant("light_state=off", BlockStateModel("$ns:block/$name/off"))
     })
     AnimationPresets.createIndexedBlockTextureCopies(id, count)
