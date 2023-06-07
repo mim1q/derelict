@@ -32,7 +32,7 @@ object ModRender {
     BlockEntityRendererFactories.register(ModBlockEntities.FANCY_COBWEB_WITH_SPIDER, ::FancyCobwebWithSpiderRenderer)
   }
 
-  fun registerLayer(provider: TexturedModelDataProvider, path: String, name: String = "main"): EntityModelLayer
+  private fun registerLayer(provider: TexturedModelDataProvider, path: String, name: String = "main"): EntityModelLayer
     = EntityModelLayer(Derelict.id(path), name).also {
       EntityModelLayerRegistry.registerModelLayer(it, provider)
     }

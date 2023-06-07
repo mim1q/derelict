@@ -4,5 +4,5 @@ import io.wispforest.owo.config.annotation.Config;
 
 @Config(name = "derelict", wrapperName = "DerelictConfig")
 public class DerelictConfigModel {
-  public boolean fancyFlickeringLights = false;
+  public boolean fancyFlickeringLights = true;
 }

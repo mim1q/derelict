@@ -12,9 +12,10 @@ object AnimationPresets {
       listOf(1, 0, 1),
       listOf(1, 1, 0, 1, 0, 1),
       listOf(1, 0, 1, 1, 0, 0, 1),
-      listOf(1, 0, 1, 0, 1, 0),
+      listOf(1, 0, 1, 0, 1),
       listOf(1, 0, 0, 1),
       listOf(1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1)
+      //     1  3  5  7  9  11 13 15 17 19 21 23 25 27
     )
     val (_, name) = Id(id)
     val rng = Random(seed)

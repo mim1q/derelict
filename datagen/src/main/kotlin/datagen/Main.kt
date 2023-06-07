@@ -43,10 +43,10 @@ fun main(args: Array<String>) {
     add(CustomPresets.fancyCornerCobweb("derelict:fancy_corner_cobweb"))
     add(CustomPresets.fancyCornerCobweb("derelict:corner_cobweb"))
     // Flickering Lights
-    add(CustomPresets.flickeringCubeAll("derelict:flickering_sea_lantern", 8, 10))
+    add(CustomPresets.flickeringCubeAll("derelict:flickering_sea_lantern", 8, 10, "minecraft:block/sea_lantern", "derelict:block/broken_sea_lantern"))
     add(CommonModelPresets.cubeAllBlock("derelict:broken_sea_lantern"))
     add(CommonDropPresets.simpleDrop("derelict:broken_sea_lantern"))
-    add(CustomPresets.flickeringCubeAll("derelict:flickering_redstone_lamp", 8, 20))
+    add(CustomPresets.flickeringCubeAll("derelict:flickering_redstone_lamp", 8, 20, "minecraft:block/redstone_lamp_on", "minecraft:block/redstone_lamp"))
     add(CustomPresets.flickeringJackOLantern(8, 30))
     add(CustomPresets.flickeringLantern("derelict:flickering_lantern", 8, 40))
     add(CustomPresets.lantern("derelict:broken_lantern"))

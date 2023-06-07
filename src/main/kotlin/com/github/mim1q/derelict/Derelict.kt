@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger
 object Derelict : ModInitializer {
   private const val MOD_ID = "derelict"
   val LOGGER: Logger = LogManager.getLogger(MOD_ID)
-  val CONFIG = DerelictConfig.createAndLoad()
+  val CONFIG: DerelictConfig = DerelictConfig.createAndLoad()
 
   override fun onInitialize() {
     LOGGER.info("Derelict initializing")
