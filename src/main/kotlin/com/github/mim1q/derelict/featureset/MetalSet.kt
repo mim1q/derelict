@@ -20,6 +20,7 @@ sealed class MetalSet(
   abstract val chain: ChainBlock
   abstract val grate: GrateBlock
   abstract val beam: BeamBlock
+  abstract val beamPile: BeamBlock
 
   class Regular(
     id: Identifier,
@@ -34,15 +35,14 @@ sealed class MetalSet(
     override val chain: ChainBlock = registerBlockWithItem("$prefix${name}_chain", ChainBlock(defaultBlockSettings.nonOpaque()))
     override val grate: GrateBlock = registerBlockWithItem("$prefix${name}_grate", GrateBlock(defaultBlockSettings.nonOpaque()))
     override val beam: BeamBlock = registerBlockWithItem("$prefix${name}_beam", BeamBlock(defaultBlockSettings.nonOpaque()))
+    override val beamPile: BeamBlock = registerBlockWithItem("$prefix${name}_beam_pile", BeamBlock(defaultBlockSettings.nonOpaque(), true))
   }
 
   class Oxidized internal constructor(
     id: Identifier,
     prefix: String,
     defaultItemSettings: FabricItemSettings,
-    level: OxidationLevel,
-    private val moreOxidizedSet: MetalSet?,
-    private val waxedSet: MetalSet
+    level: OxidationLevel
   ) : MetalSet(id, defaultItemSettings) {
     override val block: Block = registerBlockWithItem("$prefix${name}_block", OxidizableBlock(level, defaultBlockSettings))
     override val cut: Block = registerBlockWithItem("${prefix}cut_$name", OxidizableBlock(level, defaultBlockSettings))
@@ -52,6 +52,7 @@ sealed class MetalSet(
     override val chain: ChainBlock = registerBlockWithItem("$prefix${name}_chain", OxidizableChainBlock(level, defaultBlockSettings.nonOpaque()))
     override val grate: GrateBlock = registerBlockWithItem("$prefix${name}_grate", OxidizableGrateBlock(level, defaultBlockSettings.nonOpaque()))
     override val beam: BeamBlock = registerBlockWithItem("$prefix${name}_beam", OxidizableBeamBlock(level, defaultBlockSettings.nonOpaque()))
+    override val beamPile: BeamBlock = registerBlockWithItem("$prefix${name}_beam_pile", OxidizableBeamBlock(level, defaultBlockSettings.nonOpaque(), true))
 
     private fun registerOxidizable(base: Block, moreOxidized: Block?, waxed: Block) {
       if (moreOxidized != null) {
@@ -60,7 +61,7 @@ sealed class MetalSet(
       OxidizableBlocksRegistry.registerWaxableBlockPair(base, waxed)
     }
 
-    override fun register(): Oxidized {
+    fun register(moreOxidizedSet: MetalSet?, waxedSet: MetalSet): Oxidized {
       registerOxidizable(block, moreOxidizedSet?.block, waxedSet.block)
       registerOxidizable(cut, moreOxidizedSet?.cut, waxedSet.cut)
       registerOxidizable(pillar, moreOxidizedSet?.pillar, waxedSet.pillar)
@@ -74,14 +75,14 @@ sealed class MetalSet(
   }
 
   class FullOxidizable(id: Identifier, defaultItemSettings: FabricItemSettings) : FeatureSet(id, defaultItemSettings) {
-    val waxedOxidized = Regular(id, defaultItemSettings, "waxed_oxidized_")
-    val waxedWeathered = Regular(id, defaultItemSettings, "waxed_weathered_")
-    val waxedExposed = Regular(id, defaultItemSettings, "waxed_exposed_")
     val waxedUnaffected = Regular(id, defaultItemSettings, "waxed_")
-    val oxidized = Oxidized(id, "oxidized_", defaultItemSettings, OxidationLevel.OXIDIZED, null, waxedOxidized)
-    val weathered = Oxidized(id, "weathered_", defaultItemSettings, OxidationLevel.WEATHERED, oxidized, waxedWeathered)
-    val exposed = Oxidized(id, "exposed_", defaultItemSettings, OxidationLevel.EXPOSED, weathered, waxedExposed)
-    val unaffected = Oxidized(id, "", defaultItemSettings, OxidationLevel.UNAFFECTED, exposed, waxedUnaffected)
+    val waxedExposed = Regular(id, defaultItemSettings, "waxed_exposed_")
+    val waxedWeathered = Regular(id, defaultItemSettings, "waxed_weathered_")
+    val waxedOxidized = Regular(id, defaultItemSettings, "waxed_oxidized_")
+    val unaffected = Oxidized(id, "", defaultItemSettings, OxidationLevel.UNAFFECTED)
+    val exposed = Oxidized(id, "exposed_", defaultItemSettings, OxidationLevel.EXPOSED)
+    val weathered = Oxidized(id, "weathered_", defaultItemSettings, OxidationLevel.WEATHERED)
+    val oxidized = Oxidized(id, "oxidized_", defaultItemSettings, OxidationLevel.OXIDIZED)
 
     fun getCutoutBlocks() = arrayOf(
       unaffected.grate, unaffected.chain, waxedUnaffected.grate, waxedUnaffected.chain,

@@ -5,7 +5,8 @@ import net.minecraft.block.Oxidizable.OxidationLevel
 
 class OxidizableBeamBlock(
   private val oxidizationLevel: OxidationLevel,
-  settings: Settings
-) : BeamBlock(settings), Oxidizable {
+  settings: Settings,
+  fullCube: Boolean = false
+) : BeamBlock(settings, fullCube), Oxidizable {
   override fun getDegradationLevel() = oxidizationLevel
 }

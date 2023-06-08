@@ -52,6 +52,21 @@ object CustomMetalPresets {
       variant("axis=z", BlockStateModel(namespacedBlockName("_chain", "", "block/"), xRot = Rotation.CW_90))
       variant("axis=x", BlockStateModel(namespacedBlockName("_chain", "", "block/"), xRot = Rotation.CW_90, yRot = Rotation.CW_90))
     })
+    listOf("vertical", "horizontal", "vertical_pile", "horizontal_pile").forEach {
+      add(blockName("_beam/$it"), ParentedModel.block("derelict:block/construction_beam/$it").texture("0", blockTexture("_beam", folder = "block/")))
+    }
+    listOf("", "_pile").forEach {
+      add(blockName("_beam$it"), BlockState.create {
+        listOf(false to "horizontal", true to "vertical").forEach {pair ->
+          variant("vertical=${pair.first},facing=north", BlockStateModel(namespacedBlockName("_beam/${pair.second}$it", "", "block/"), yRot = Rotation.NONE))
+          variant("vertical=${pair.first},facing=east", BlockStateModel(namespacedBlockName("_beam/${pair.second}$it", "", "block/"), yRot = Rotation.CW_90))
+          variant("vertical=${pair.first},facing=south", BlockStateModel(namespacedBlockName("_beam/${pair.second}$it", "", "block/"), yRot = Rotation.CW_180))
+          variant("vertical=${pair.first},facing=west", BlockStateModel(namespacedBlockName("_beam/${pair.second}$it", "", "block/"), yRot = Rotation.CW_270))
+        }
+      })
+    }
+    add(blockName("_beam"), ParentedModel.item(namespacedBlockName("_beam/horizontal", "", "block/")))
+    add(blockName("_beam_pile"), ParentedModel.item(namespacedBlockName("_beam/horizontal_pile", "", "block/")))
     listOf(
       namespacedBlockName("_block"),
       namespacedBlockName("", "cut_"),
