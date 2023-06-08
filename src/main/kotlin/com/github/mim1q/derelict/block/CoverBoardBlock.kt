@@ -15,8 +15,7 @@ import net.minecraft.util.ActionResult
 import net.minecraft.util.Hand
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Direction
-import net.minecraft.util.math.Direction.Axis
+import net.minecraft.util.math.Direction.*
 import net.minecraft.util.math.MathHelper
 import net.minecraft.util.shape.VoxelShape
 import net.minecraft.world.BlockView
@@ -45,8 +44,8 @@ sealed class CoverBoardBlock(
     pos: BlockPos,
     context: ShapeContext
   ) = when(val facing = state[FACING]) {
-    Direction.UP -> SHAPE_BOTTOM
-    Direction.DOWN -> SHAPE_TOP
+    UP -> SHAPE_BOTTOM
+    DOWN -> SHAPE_TOP
     else -> {
       ShapeUtil.rotate(facing, SHAPE)
     }
@@ -73,8 +72,10 @@ sealed class CoverBoardBlock(
   class Normal(settings: FabricBlockSettings) : CoverBoardBlock(settings) {
     override fun getRotationProperty(): IntProperty = ROTATION_8
     override fun getRotation(ctx: ItemPlacementContext): Int {
-      val yaw = MathHelper.floorMod(ctx.player?.headYaw?.plus(11.25F) ?: 0.0F, 360.0F)
-      return (yaw / 22.5F).toInt() % 8
+      val up = ctx.side == UP
+      val yaw = MathHelper.floorMod(ctx.player?.headYaw?.plus(if (up) 11.25F else -11.25F) ?: 0.0F, 360.0F)
+      val rotation = (yaw / 22.5F).toInt() % 8
+      return if (ctx.side == UP) rotation else 7 - rotation
     }
   }
 
