@@ -14,10 +14,10 @@ object CustomMetalPresets {
 
     fun blockTexture(suffix: String = "", variant: String = "", folder: String = "")
     = "$ns:$folder${name}/${prefix}$variant${name}$suffix"
-    fun blockName(suffix: String = "", variant: String = "")
-    = "${if(waxed) "waxed_" else ""}${prefix}$variant${name}$suffix"
-    fun namespacedBlockName(suffix: String = "", variant: String = "", folder: String = "")
-    = "$ns:$folder${blockName(suffix, variant)}"
+    fun blockName(suffix: String = "", variant: String = "", original: Boolean = false)
+    = "${if(waxed && !original) "waxed_" else ""}${prefix}$variant${name}$suffix"
+    fun namespacedBlockName(suffix: String = "", variant: String = "", folder: String = "", original: Boolean = false)
+    = "$ns:$folder${blockName(suffix, variant, original)}"
 
     add(blockName("_block"), ParentedModel.block("minecraft:block/cube_all").texture("all", blockTexture("_block", folder = "block/")))
     add(blockName("_block"), BlockState.createSingle(namespacedBlockName("_block", "", "block/")))
@@ -43,6 +43,15 @@ object CustomMetalPresets {
       variant("facing=up", BlockStateModel(namespacedBlockName("_grate", "", "block/"), xRot = Rotation.CW_270))
       variant("facing=down", BlockStateModel(namespacedBlockName("_grate", "", "block/"), xRot = Rotation.CW_90))
     })
+    add(blockName("_chain"), ParentedModel.block("minecraft:block/chain")
+      .texture("all", blockTexture("_chain", folder = "block/"))
+      .texture("particle", blockTexture("_chain", folder = "block/"))
+    )
+    add(blockName("_chain"), BlockState.create {
+      variant("axis=y", BlockStateModel(namespacedBlockName("_chain", "", "block/")))
+      variant("axis=z", BlockStateModel(namespacedBlockName("_chain", "", "block/"), xRot = Rotation.CW_90))
+      variant("axis=x", BlockStateModel(namespacedBlockName("_chain", "", "block/"), xRot = Rotation.CW_90, yRot = Rotation.CW_90))
+    })
     listOf(
       namespacedBlockName("_block"),
       namespacedBlockName("", "cut_"),
@@ -50,6 +59,7 @@ object CustomMetalPresets {
     ).forEach {
       add(CommonModelPresets.itemBlockModel(it))
     }
+    add(blockName("_chain"), ParentedModel.item("minecraft:item/generated").texture("layer0", blockTexture("_chain", folder = "item/")))
   }
 
   fun fullMetalSet(id: String) = Preset {
