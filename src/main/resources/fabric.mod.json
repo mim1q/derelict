@@ -5,6 +5,7 @@
   "description": "Decorations for your abandoned builds!",
   "version": "${version}",
   "environment": "*",
+  "icon": "assets/derelict/icon.png",
   "entrypoints": {
     "main": [
       {
