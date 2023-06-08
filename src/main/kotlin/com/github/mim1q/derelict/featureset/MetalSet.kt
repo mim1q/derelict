@@ -90,5 +90,13 @@ sealed class MetalSet(
       weathered.grate, weathered.chain, waxedWeathered.grate, waxedWeathered.chain,
       oxidized.grate, oxidized.chain, waxedOxidized.grate, waxedOxidized.chain
     )
+
+    override fun register(): FullOxidizable {
+      unaffected.register(exposed, waxedUnaffected)
+      exposed.register(weathered, waxedExposed)
+      weathered.register(oxidized, waxedWeathered)
+      oxidized.register(null, waxedOxidized)
+      return this
+    }
   }
 }
