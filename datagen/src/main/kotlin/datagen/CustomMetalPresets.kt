@@ -6,6 +6,7 @@ import tada.lib.resources.blockstate.BlockState
 import tada.lib.resources.blockstate.BlockStateModel
 import tada.lib.resources.blockstate.BlockStateModel.Rotation
 import tada.lib.resources.model.ParentedModel
+import tada.lib.tags.TagManager
 import tada.lib.util.Id
 
 object CustomMetalPresets {
@@ -75,6 +76,13 @@ object CustomMetalPresets {
       add(CommonModelPresets.itemBlockModel(it))
     }
     add(blockName("_chain"), ParentedModel.item("minecraft:item/generated").texture("layer0", blockTexture("_chain", folder = "item/")))
+
+    // Item Tags
+    TagManager.add("derelict:items/${if (waxed) "waxed" else "unwaxed"}_metals",
+      namespacedBlockName("_block"), namespacedBlockName("", "cut_"), namespacedBlockName("_pillar"),
+      namespacedBlockName("_stairs", "cut_"), namespacedBlockName("_slab", "cut_"), namespacedBlockName("_chain"),
+      namespacedBlockName("_grate"),  namespacedBlockName("_beam"), namespacedBlockName("_beam_pile")
+    )
   }
 
   fun fullMetalSet(id: String) = Preset {

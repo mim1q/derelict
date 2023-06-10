@@ -35,6 +35,7 @@ object CustomPresets {
       applyWhen(BlockStateModel("$ns:block/$name", xRot = Rotation.CW_90, uvlock = true), "down=true")
       applyWhen(BlockStateModel("$ns:block/$name", xRot = Rotation.CW_90, uvlock = true), "north=false,east=false,south=false,west=false,up=false")
     })
+    TagManager.add("derelict:items/general_tab", "$ns:$name")
   }
 
   fun smolderingEmbers() = Preset {
@@ -69,6 +70,7 @@ object CustomPresets {
       addEntry(entry("down=true", xRot = Rotation.CW_90))
       applyWhen(BlockStateModel("block/air"), "north=false,east=false,south=false,west=false,up=false")
     })
+    TagManager.add("derelict:items/general_tab", "derelict:smoldering_embers")
   }
 
   fun smolderingLeaves() = Preset {
@@ -82,6 +84,7 @@ object CustomPresets {
       variant("", modelList[0], modelList[1], modelList[2], modelList[3])
     })
     add(name, ParentedModel.item("derelict:block/$name/0"))
+    TagManager.add("derelict:items/general_tab", "derelict:smoldering_leaves")
   }
 
   private fun rotatableCoverBoard(id: String, particle: String, type: String, count: Int = 8) = Preset {
@@ -113,9 +116,13 @@ object CustomPresets {
   }
 
   fun coverBoards(id: String, particle: String) = Preset {
+    val (ns, name) = Id(id)
     add(rotatableCoverBoard(id, particle, "single"))
     add(rotatableCoverBoard(id, particle, "double"))
     add(rotatableCoverBoard(id, particle, "crossed", 3))
+    TagManager.add("derelict:items/general_tab",
+      "$ns:${name}_cover_board", "$ns:double_${name}_cover_boards", "$ns:crossed_${name}_cover_boards"
+    )
   }
 
   fun grassSet(id: String) = Preset {
@@ -149,6 +156,9 @@ object CustomPresets {
     TagManager.add("minecraft:blocks/dirt", "$ns:${name}_grass_block")
     TagManager.add("minecraft:blocks/mineable/shovel", "$ns:${name}_grass_block")
     TagManager.add("minecraft:blocks/replaceable_plants", "$ns:${name}_grass", "$ns:tall_${name}_grass")
+    TagManager.add(
+      "derelict:items/general_tab", "$ns:${name}_grass", "$ns:tall_${name}_grass", "$ns:${name}_grass_block",
+    )
   }
 
   private fun textureVariantModels(id: String, parent: String, key: String, count: Int, textureFolder: String = id) = Preset {
@@ -185,6 +195,7 @@ object CustomPresets {
     AnimationPresets.createIndexedBlockTextureCopies(id, count)
     TagManager.add("minecraft:blocks/mineable/pickaxe", id)
     add(CommonDropPresets.simpleDrop(id))
+    TagManager.add("derelict:items/general_tab", id)
   }
 
   fun flickeringJackOLantern(count: Int, seed: Long) = Preset {
@@ -209,6 +220,7 @@ object CustomPresets {
     })
     AnimationPresets.createIndexedBlockTextureCopies("derelict:flickering_jack_o_lantern", count)
     TagManager.add("minecraft:blocks/mineable/axe", "derelict:flickering_jack_o_lantern")
+    TagManager.add("derelict:items/general_tab", "derelict:flickering_jack_o_lantern")
     add(CommonDropPresets.simpleDrop("derelict:flickering_jack_o_lantern"))
   }
 
@@ -235,6 +247,7 @@ object CustomPresets {
     })
     AnimationPresets.createIndexedBlockTextureCopies(id, count)
     TagManager.add("minecraft:blocks/mineable/pickaxe", id)
+    TagManager.add("derelict:items/general_tab", id)
     add(AnimationPresets.flicker("$ns:item/$name", seed))
     add(CommonDropPresets.simpleDrop(id))
   }
@@ -249,6 +262,7 @@ object CustomPresets {
       variant("hanging=true", BlockStateModel("$ns:block/${name}_hanging"))
     })
     TagManager.add("minecraft:blocks/mineable/pickaxe", id)
+    TagManager.add("derelict:items/general_tab", id)
     add(CommonDropPresets.simpleDrop(id))
   }
 
@@ -285,6 +299,7 @@ object CustomPresets {
     })
     add(CommonModelPresets.generatedItemModel(id))
     TagManager.add("derelict:blocks/cobwebs", id)
+    TagManager.add("derelict:items/general_tab", id)
   }
 
   fun fancyCornerCobweb(id: String) = Preset {
@@ -317,5 +332,6 @@ object CustomPresets {
     add(CommonDropPresets.silkTouchOrShearsOnlyDrop(id))
     add(CommonModelPresets.generatedItemModel(id))
     TagManager.add("derelict:blocks/cobwebs", id)
+    TagManager.add("derelict:items/general_tab", id)
   }
 }

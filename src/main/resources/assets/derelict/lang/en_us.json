@@ -1,5 +1,16 @@
 {
-  "itemGroup.derelict.derelict": "Derelict",
+  "itemGroup.derelict.derelict": [
+    { "text": "Derelict", "color": "#FFFFFF" }
+  ],
+  "itemGroup.derelict.derelict.tab.general": [
+    { "text": "General Items & Blocks", "color": "#FFFFFF" }
+  ],
+  "itemGroup.derelict.derelict.tab.unwaxed_metals": [
+    { "text": "Unwaxed Metals", "color": "#FFFFFF" }
+  ],
+  "itemGroup.derelict.derelict.tab.waxed_metals": [
+    { "text": "Waxed Metals", "color": "#FFFFFF" }
+  ],
 
   "item.derelict.aging_staff": "Aging Staff",
   "item.derelict.waxing_staff": "Waxing Staff",

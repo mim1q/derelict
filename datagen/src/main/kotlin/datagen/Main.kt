@@ -73,6 +73,13 @@ fun main(args: Array<String>) {
     TagManager.add("blocks/mineable/hoe", "derelict:burned_leaves", "derelict:smoldering_leaves")
     TagManager.add("blocks/mineable/axe", "#derelict:cover_boards")
     TagManager.copy("blocks/leaves", "items/leaves")
+    TagManager.add("derelict:items/general_tab",
+      "derelict:aging_staff", "derelict:waxing_staff",
+      "derelict:burned_planks", "derelict:burned_stairs", "derelict:burned_slab", "derelict:burned_fence",
+      "derelict:burned_fence_gate", "derelict:burned_door", "derelict:burned_button", "derelict:burned_pressure_plate",
+      "derelict:burned_sign", "derelict:burned_log", "derelict:burned_wood", "derelict:stripped_burned_log",
+      "derelict:stripped_burned_wood", "derelict:burned_leaves", "derelict:smoldering_leaves", "derelict:burned_trapdoor"
+    )
   }
   generator.generate()
   FileCopyManager.copyFiles()

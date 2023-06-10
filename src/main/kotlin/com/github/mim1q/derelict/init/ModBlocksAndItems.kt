@@ -68,17 +68,17 @@ object ModBlocksAndItems {
 
   fun init() { }
 
-  private fun <T : Block> register(name: String, block: T): T {
+  internal fun <T : Block> register(name: String, block: T): T {
     Registry.register(Registry.BLOCK, Derelict.id(name), block)
     Registry.register(Registry.ITEM, Derelict.id(name), BlockItem(block, FabricItemSettings().group(Derelict.ITEM_GROUP)))
     return block
   }
 
-  private fun <T: Block> registerBlock(name: String, block: T): T = Registry.register(
+  internal fun <T: Block> registerBlock(name: String, block: T): T = Registry.register(
     Registry.BLOCK, Derelict.id(name), block
   )
 
-  private fun <T: Item> registerItem(name: String, item: T): T = Registry.register(
+  internal fun <T: Item> registerItem(name: String, item: T): T = Registry.register(
     Registry.ITEM, Derelict.id(name), item
   )
 
