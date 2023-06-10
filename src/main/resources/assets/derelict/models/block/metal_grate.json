@@ -3,7 +3,7 @@
 	"parent": "block/block",
 	"textures": {
 		"0": "derelict:block/construction_steel/construction_steel_grate",
-		"particle": "derelict:block/construction_steel/construction_steel_grate"
+		"particle": "#0"
 	},
 	"elements": [
 		{

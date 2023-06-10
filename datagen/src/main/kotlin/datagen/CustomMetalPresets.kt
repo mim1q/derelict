@@ -76,12 +76,22 @@ object CustomMetalPresets {
       add(CommonModelPresets.itemBlockModel(it))
     }
     add(blockName("_chain"), ParentedModel.item("minecraft:item/generated").texture("layer0", blockTexture("_chain", folder = "item/")))
+    add(blockName("_ladder"), ParentedModel.block("derelict:block/metal_ladder").texture("0", blockTexture("_ladder", folder = "block/")))
+    add(blockName("_ladder"), BlockState.create {
+      variant("facing=north", BlockStateModel(namespacedBlockName("_ladder", "", "block/"), yRot = Rotation.NONE))
+      variant("facing=east", BlockStateModel(namespacedBlockName("_ladder", "", "block/"), yRot = Rotation.CW_90))
+      variant("facing=south", BlockStateModel(namespacedBlockName("_ladder", "", "block/"), yRot = Rotation.CW_180))
+      variant("facing=west", BlockStateModel(namespacedBlockName("_ladder", "", "block/"), yRot = Rotation.CW_270))
+    })
+    add(blockName("_ladder"), ParentedModel.item("minecraft:item/generated").texture("layer0", blockTexture("_ladder", folder = "block/")))
 
+    TagManager.add("minecraft:blocks/climbable", namespacedBlockName("_ladder"))
     // Item Tags
     TagManager.add("derelict:items/${if (waxed) "waxed" else "unwaxed"}_metals",
       namespacedBlockName("_block"), namespacedBlockName("", "cut_"), namespacedBlockName("_pillar"),
       namespacedBlockName("_stairs", "cut_"), namespacedBlockName("_slab", "cut_"), namespacedBlockName("_chain"),
-      namespacedBlockName("_grate"),  namespacedBlockName("_beam"), namespacedBlockName("_beam_pile")
+      namespacedBlockName("_grate"),  namespacedBlockName("_beam"), namespacedBlockName("_beam_pile"),
+      namespacedBlockName("_ladder")
     )
   }
 

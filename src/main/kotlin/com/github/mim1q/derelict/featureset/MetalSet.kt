@@ -21,6 +21,7 @@ sealed class MetalSet(
   abstract val grate: GrateBlock
   abstract val beam: BeamBlock
   abstract val beamPile: BeamBlock
+  abstract val ladder: LadderBlock
 
   class Regular(
     id: Identifier,
@@ -36,6 +37,7 @@ sealed class MetalSet(
     override val grate: GrateBlock = registerBlockWithItem("$prefix${name}_grate", GrateBlock(defaultBlockSettings.nonOpaque()))
     override val beam: BeamBlock = registerBlockWithItem("$prefix${name}_beam", BeamBlock(defaultBlockSettings.nonOpaque()))
     override val beamPile: BeamBlock = registerBlockWithItem("$prefix${name}_beam_pile", BeamBlock(defaultBlockSettings.nonOpaque(), true))
+    override val ladder: LadderBlock = registerBlockWithItem("$prefix${name}_ladder", MetalLadderBlock(defaultBlockSettings.nonOpaque()))
   }
 
   class Oxidized internal constructor(
@@ -53,6 +55,7 @@ sealed class MetalSet(
     override val grate: GrateBlock = registerBlockWithItem("$prefix${name}_grate", OxidizableGrateBlock(level, defaultBlockSettings.nonOpaque()))
     override val beam: BeamBlock = registerBlockWithItem("$prefix${name}_beam", OxidizableBeamBlock(level, defaultBlockSettings.nonOpaque()))
     override val beamPile: BeamBlock = registerBlockWithItem("$prefix${name}_beam_pile", OxidizableBeamBlock(level, defaultBlockSettings.nonOpaque(), true))
+    override val ladder: LadderBlock = registerBlockWithItem("$prefix${name}_ladder", OxidizableMetalLadderBlock(level, defaultBlockSettings.nonOpaque()))
 
     private fun registerOxidizable(base: Block, moreOxidized: Block?, waxed: Block) {
       if (moreOxidized != null) {
@@ -85,10 +88,11 @@ sealed class MetalSet(
     val oxidized = Oxidized(id, "oxidized_", defaultItemSettings, OxidationLevel.OXIDIZED)
 
     fun getCutoutBlocks() = arrayOf(
-      unaffected.grate, unaffected.chain, waxedUnaffected.grate, waxedUnaffected.chain,
-      exposed.grate, exposed.chain, waxedExposed.grate, waxedExposed.chain,
-      weathered.grate, weathered.chain, waxedWeathered.grate, waxedWeathered.chain,
-      oxidized.grate, oxidized.chain, waxedOxidized.grate, waxedOxidized.chain
+      unaffected.grate, unaffected.chain, unaffected.ladder, waxedUnaffected.grate, waxedUnaffected.chain, waxedUnaffected.ladder,
+      exposed.grate, exposed.chain, exposed.ladder, waxedExposed.grate, waxedExposed.chain, waxedExposed.ladder,
+      weathered.grate, weathered.chain, weathered.ladder, waxedWeathered.grate, waxedWeathered.chain, waxedWeathered.ladder,
+      oxidized.grate, oxidized.chain, oxidized.ladder, waxedOxidized.grate, waxedOxidized.chain, waxedOxidized.ladder
+
     )
 
     override fun register(): FullOxidizable {
