@@ -5,6 +5,7 @@ import com.github.mim1q.derelict.block.RotatableCoverBlock.Normal.OxidizableNorm
 import com.github.mim1q.derelict.block.RotatableCoverBlock.SquarePatch
 import com.github.mim1q.derelict.block.RotatableCoverBlock.SquarePatch.OxidizableSquarePatch
 import com.github.mim1q.derelict.block.metal.*
+import com.github.mim1q.derelict.block.metal.oxidizable.*
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry
@@ -29,6 +30,10 @@ sealed class MetalSet(
   abstract val patch: SquarePatch
   abstract val sheet: RotatableCoverBlock.Normal
   abstract val chainLinkFence: PaneBlock
+
+  fun getCutoutBlocks() = arrayOf(
+    chain, grate, ladder, chainLinkFence
+  )
 
   class Regular(
     id: Identifier,
@@ -105,14 +110,10 @@ sealed class MetalSet(
     val weathered = Oxidized(id, "weathered_", defaultItemSettings, OxidationLevel.WEATHERED)
     val oxidized = Oxidized(id, "oxidized_", defaultItemSettings, OxidationLevel.OXIDIZED)
 
-    fun getCutoutBlocks() = arrayOf(
-      unaffected.grate, unaffected.chain, unaffected.ladder, waxedUnaffected.grate, waxedUnaffected.chain, waxedUnaffected.ladder,
-      exposed.grate, exposed.chain, exposed.ladder, waxedExposed.grate, waxedExposed.chain, waxedExposed.ladder,
-      weathered.grate, weathered.chain, weathered.ladder, waxedWeathered.grate, waxedWeathered.chain, waxedWeathered.ladder,
-      oxidized.grate, oxidized.chain, oxidized.ladder, waxedOxidized.grate, waxedOxidized.chain, waxedOxidized.ladder,
-      unaffected.chainLinkFence, waxedUnaffected.chainLinkFence, exposed.chainLinkFence, waxedExposed.chainLinkFence,
-      weathered.chainLinkFence, waxedWeathered.chainLinkFence, oxidized.chainLinkFence, waxedOxidized.chainLinkFence
-    )
+    fun getCutoutBlocks() = unaffected.getCutoutBlocks() + waxedUnaffected.getCutoutBlocks() +
+      exposed.getCutoutBlocks() + waxedExposed.getCutoutBlocks() +
+      weathered.getCutoutBlocks() + waxedWeathered.getCutoutBlocks() +
+      oxidized.getCutoutBlocks() + waxedOxidized.getCutoutBlocks()
 
     override fun register(): FullOxidizable {
       unaffected.register(exposed, waxedUnaffected)

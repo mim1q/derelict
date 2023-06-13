@@ -1,5 +1,6 @@
-package com.github.mim1q.derelict.block.metal
+package com.github.mim1q.derelict.block.metal.oxidizable
 
+import com.github.mim1q.derelict.block.metal.GrateBlock
 import net.minecraft.block.BlockState
 import net.minecraft.block.Oxidizable
 import net.minecraft.block.Oxidizable.OxidationLevel

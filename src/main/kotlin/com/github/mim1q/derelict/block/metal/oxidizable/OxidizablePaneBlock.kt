@@ -1,17 +1,17 @@
-package com.github.mim1q.derelict.block.metal
+package com.github.mim1q.derelict.block.metal.oxidizable
 
+import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.minecraft.block.BlockState
 import net.minecraft.block.Oxidizable
-import net.minecraft.block.Oxidizable.OxidationLevel
+import net.minecraft.block.PaneBlock
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.random.Random
 
-class OxidizableBeamBlock(
-  private val oxidizationLevel: OxidationLevel,
-  settings: Settings,
-  fullCube: Boolean = false
-) : BeamBlock(settings, fullCube), Oxidizable {
+class OxidizablePaneBlock(
+  private val oxidizationLevel: Oxidizable.OxidationLevel,
+  settings: FabricBlockSettings
+) : PaneBlock(settings), Oxidizable {
   override fun getDegradationLevel() = oxidizationLevel
 
   @Suppress("OVERRIDE_DEPRECATION")
