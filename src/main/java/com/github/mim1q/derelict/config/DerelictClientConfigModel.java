@@ -1,0 +1,13 @@
+package com.github.mim1q.derelict.config;
+
+import blue.endless.jankson.Comment;
+import io.wispforest.owo.config.annotation.Config;
+
+@SuppressWarnings("unused")
+@Config(name = "derelict_client", wrapperName = "DerelictClientConfig")
+public class DerelictClientConfigModel {
+  @Comment("Opacity of the little honeycomb icon next to waxed blocks in your inventory. 0.0 to disable.")
+  public float waxedIndicatorOpacity = 0.5F;
+  @Comment("Scale of the honeycomb icon next to waxed blocks in your inventory. 1.0 is full item slot size.")
+  public float waxedIndicatorScale = 0.5F;
+}

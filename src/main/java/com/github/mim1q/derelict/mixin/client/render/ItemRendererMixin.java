@@ -1,5 +1,6 @@
 package com.github.mim1q.derelict.mixin.client.render;
 
+import com.github.mim1q.derelict.Derelict;
 import com.github.mim1q.derelict.item.tag.ModItemTags;
 import com.github.mim1q.derelict.util.RenderUtil;
 import net.minecraft.client.render.item.ItemRenderer;
@@ -14,8 +15,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class ItemRendererMixin {
   @Inject(method = "renderGuiItemModel", at = @At("TAIL"))
   void derelict$injectRenderGuiItemModel(ItemStack stack, int x, int y, BakedModel model, CallbackInfo ci) {
-    if (stack.isIn(ModItemTags.INSTANCE.getWAXED_COMMON())) {
-      RenderUtil.INSTANCE.renderWaxedIndicator(x - 2, y - 2, 8);
+    if (
+      stack.isIn(ModItemTags.INSTANCE.getWAXED_COMMON())
+      && Derelict.INSTANCE.getCLIENT_CONFIG().waxedIndicatorOpacity() > 0F
+    ) {
+      RenderUtil.INSTANCE.renderWaxedIndicator(x - 2, y - 2);
     }
   }
 }
