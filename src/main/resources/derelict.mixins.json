@@ -6,7 +6,8 @@
     "block.entity.BlockEntityTypeMixin"
   ],
   "client": [
-    "block.AbstractBlockStateMixin"
+    "block.AbstractBlockStateMixin",
+    "client.render.ItemRendererMixin"
   ],
   "server": [],
   "injectors": {
