@@ -111,7 +111,10 @@ sealed class RotatableCoverBlock(
 
     override fun getRotationProperty(): IntProperty = ROTATION_4
     override fun getRotation(ctx: ItemPlacementContext): Int {
-      return 0
+      val up = ctx.side == UP
+      val yaw = MathHelper.floorMod(ctx.player?.headYaw?.plus(if (up) 11.25F else -11.25F) ?: 0.0F, 360.0F)
+      val rotation = (yaw / 22.5F).toInt() % 4
+      return if (ctx.side == UP) rotation else 3 - rotation
     }
 
     class OxidizableSquarePatch(

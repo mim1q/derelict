@@ -107,21 +107,23 @@ object CustomMetalPresets {
     val (ns, name) = Id(id)
     val parent = "derelict:block/metal_sheets/$type"
     val prefix = (if (waxed) "waxed_" else "") + oxidization
-    for (i in 0 until count) {
-      add(
-        "metal_sheets/${name}_${type}_$i", ParentedModel.block("${parent}_$i")
-          .texture("0", "$ns:block/$name/$oxidization${name}_$type")
-          .texture("particle", Id(particle).toString())
-      )
+    if (!waxed) {
+      for (i in 0 until count) {
+        add(
+          "metal_sheets/$oxidization${name}_${type}_$i", ParentedModel.block("${parent}_$i")
+            .texture("0", "$ns:block/$name/$oxidization${name}_$type")
+            .texture("particle", Id(particle).toString())
+        )
+      }
     }
     add("$prefix${name}_$type", BlockState.create {
       for (i in 0 until count) {
-        variant("facing=north,rotation=$i", BlockStateModel("$ns:block/metal_sheets/${name}_${type}_$i", yRot = Rotation.NONE))
-        variant("facing=east,rotation=$i", BlockStateModel("$ns:block/metal_sheets/${name}_${type}_$i", yRot = Rotation.CW_90))
-        variant("facing=south,rotation=$i", BlockStateModel("$ns:block/metal_sheets/${name}_${type}_$i", yRot = Rotation.CW_180))
-        variant("facing=west,rotation=$i", BlockStateModel("$ns:block/metal_sheets/${name}_${type}_$i", yRot = Rotation.CW_270))
-        variant("facing=up,rotation=$i", BlockStateModel("$ns:block/metal_sheets/${name}_${type}_$i", xRot = Rotation.CW_270))
-        variant("facing=down,rotation=$i", BlockStateModel("$ns:block/metal_sheets/${name}_${type}_$i", xRot = Rotation.CW_90))
+        variant("facing=north,rotation=$i", BlockStateModel("$ns:block/metal_sheets/$oxidization${name}_${type}_$i", yRot = Rotation.NONE))
+        variant("facing=east,rotation=$i", BlockStateModel("$ns:block/metal_sheets/$oxidization${name}_${type}_$i", yRot = Rotation.CW_90))
+        variant("facing=south,rotation=$i", BlockStateModel("$ns:block/metal_sheets/$oxidization${name}_${type}_$i", yRot = Rotation.CW_180))
+        variant("facing=west,rotation=$i", BlockStateModel("$ns:block/metal_sheets/$oxidization${name}_${type}_$i", yRot = Rotation.CW_270))
+        variant("facing=up,rotation=$i", BlockStateModel("$ns:block/metal_sheets/$oxidization${name}_${type}_$i", xRot = Rotation.CW_270))
+        variant("facing=down,rotation=$i", BlockStateModel("$ns:block/metal_sheets/$oxidization${name}_${type}_$i", xRot = Rotation.CW_90))
       }
     })
     add("$prefix${name}_$type", ParentedModel.item("minecraft:item/generated").texture("layer0", "$ns:item/$name/$oxidization${name}_$type"))
