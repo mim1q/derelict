@@ -30,9 +30,10 @@ sealed class MetalSet(
   abstract val patch: SquarePatch
   abstract val sheet: RotatableCoverBlock.Normal
   abstract val chainLinkFence: PaneBlock
+  abstract val barbedWire: BarbedWireBlock
 
   fun getCutoutBlocks() = arrayOf(
-    chain, grate, ladder, chainLinkFence
+    chain, grate, ladder, chainLinkFence, barbedWire
   )
 
   class Regular(
@@ -53,6 +54,7 @@ sealed class MetalSet(
     override val patch: SquarePatch = registerBlockWithItem("$prefix${name}_patch", SquarePatch(defaultBlockSettings.nonOpaque()))
     override val sheet: RotatableCoverBlock.Normal = registerBlockWithItem("$prefix${name}_sheet", RotatableCoverBlock.Normal(defaultBlockSettings.nonOpaque()))
     override val chainLinkFence: PaneBlock = registerBlockWithItem("$prefix${name}_chain_link_fence", PaneBlock(defaultBlockSettings.nonOpaque()))
+    override val barbedWire: BarbedWireBlock = registerBlockWithItem("$prefix${name}_barbed_wire", BarbedWireBlock(defaultBlockSettings.nonOpaque().noCollision()))
   }
 
   class Oxidized internal constructor(
@@ -74,6 +76,7 @@ sealed class MetalSet(
     override val patch: SquarePatch = registerBlockWithItem("$prefix${name}_patch", OxidizableSquarePatch(level, defaultBlockSettings.nonOpaque()))
     override val sheet: RotatableCoverBlock.Normal = registerBlockWithItem("$prefix${name}_sheet", OxidizableNormal(level, defaultBlockSettings.nonOpaque()))
     override val chainLinkFence: PaneBlock = registerBlockWithItem("$prefix${name}_chain_link_fence", OxidizablePaneBlock(level, defaultBlockSettings.nonOpaque()))
+    override val barbedWire: BarbedWireBlock = registerBlockWithItem("$prefix${name}_barbed_wire", OxidizableBarbedWireBlock(level, defaultBlockSettings.nonOpaque().noCollision()))
 
     private fun registerOxidizable(base: Block, moreOxidized: Block?, waxed: Block) {
       if (moreOxidized != null) {
@@ -96,6 +99,7 @@ sealed class MetalSet(
       registerOxidizable(patch, moreOxidizedSet?.patch, waxedSet.patch)
       registerOxidizable(sheet, moreOxidizedSet?.sheet, waxedSet.sheet)
       registerOxidizable(chainLinkFence, moreOxidizedSet?.chainLinkFence, waxedSet.chainLinkFence)
+      registerOxidizable(barbedWire, moreOxidizedSet?.barbedWire, waxedSet.barbedWire)
       return this
     }
   }

@@ -95,6 +95,14 @@ object CustomMetalPresets {
 
     add(chainLinkFence(id, oxidization, waxed))
 
+    add(blockName("_barbed_wire"), ParentedModel.block("derelict:block/barbed_wire").texture("0", blockTexture("_barbed_wire", folder = "block/")))
+    add(blockName("_barbed_wire"), BlockState.create {
+      variant("axis=x", BlockStateModel(namespacedBlockName("_barbed_wire", "", "block/")))
+      variant("axis=z", BlockStateModel(namespacedBlockName("_barbed_wire", "", "block/"), yRot = Rotation.CW_90))
+    })
+    add(blockName("_barbed_wire"), ParentedModel.item("minecraft:item/generated").texture("layer0", blockTexture("_barbed_wire", folder = "item/")))
+
+
     TagManager.add("minecraft:blocks/climbable", namespacedBlockName("_ladder"))
     // Item Tags
     TagManager.add("derelict:items/${if (waxed) "waxed" else "unwaxed"}_metals",
@@ -102,7 +110,7 @@ object CustomMetalPresets {
       namespacedBlockName("_stairs", "cut_"), namespacedBlockName("_slab", "cut_"), namespacedBlockName("_chain"),
       namespacedBlockName("_grate"),  namespacedBlockName("_beam"), namespacedBlockName("_beam_pile"),
       namespacedBlockName("_ladder"), namespacedBlockName("_patch"), namespacedBlockName("_sheet"),
-      namespacedBlockName("_chain_link_fence")
+      namespacedBlockName("_chain_link_fence"), namespacedBlockName("_barbed_wire")
     )
   }
 
