@@ -1,5 +1,9 @@
 package com.github.mim1q.derelict.featureset
 
+import com.github.mim1q.derelict.block.RotatableCoverBlock
+import com.github.mim1q.derelict.block.RotatableCoverBlock.Normal.OxidizableNormal
+import com.github.mim1q.derelict.block.RotatableCoverBlock.SquarePatch
+import com.github.mim1q.derelict.block.RotatableCoverBlock.SquarePatch.OxidizableSquarePatch
 import com.github.mim1q.derelict.block.metal.*
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
@@ -22,6 +26,8 @@ sealed class MetalSet(
   abstract val beam: BeamBlock
   abstract val beamPile: BeamBlock
   abstract val ladder: LadderBlock
+  abstract val patch: SquarePatch
+  abstract val sheet: RotatableCoverBlock.Normal
 
   class Regular(
     id: Identifier,
@@ -38,6 +44,8 @@ sealed class MetalSet(
     override val beam: BeamBlock = registerBlockWithItem("$prefix${name}_beam", BeamBlock(defaultBlockSettings.nonOpaque()))
     override val beamPile: BeamBlock = registerBlockWithItem("$prefix${name}_beam_pile", BeamBlock(defaultBlockSettings.nonOpaque(), true))
     override val ladder: LadderBlock = registerBlockWithItem("$prefix${name}_ladder", MetalLadderBlock(defaultBlockSettings.nonOpaque()))
+    override val patch: SquarePatch = registerBlockWithItem("$prefix${name}_patch", SquarePatch(defaultBlockSettings.nonOpaque()))
+    override val sheet: RotatableCoverBlock.Normal = registerBlockWithItem("$prefix${name}_sheet", RotatableCoverBlock.Normal(defaultBlockSettings.nonOpaque()))
   }
 
   class Oxidized internal constructor(
@@ -56,6 +64,8 @@ sealed class MetalSet(
     override val beam: BeamBlock = registerBlockWithItem("$prefix${name}_beam", OxidizableBeamBlock(level, defaultBlockSettings.nonOpaque()))
     override val beamPile: BeamBlock = registerBlockWithItem("$prefix${name}_beam_pile", OxidizableBeamBlock(level, defaultBlockSettings.nonOpaque(), true))
     override val ladder: LadderBlock = registerBlockWithItem("$prefix${name}_ladder", OxidizableMetalLadderBlock(level, defaultBlockSettings.nonOpaque()))
+    override val patch: SquarePatch = registerBlockWithItem("$prefix${name}_patch", OxidizableSquarePatch(level, defaultBlockSettings.nonOpaque()))
+    override val sheet: RotatableCoverBlock.Normal = registerBlockWithItem("$prefix${name}_sheet", OxidizableNormal(level, defaultBlockSettings.nonOpaque()))
 
     private fun registerOxidizable(base: Block, moreOxidized: Block?, waxed: Block) {
       if (moreOxidized != null) {
@@ -73,6 +83,10 @@ sealed class MetalSet(
       registerOxidizable(chain, moreOxidizedSet?.chain, waxedSet.chain)
       registerOxidizable(grate, moreOxidizedSet?.grate, waxedSet.grate)
       registerOxidizable(beam, moreOxidizedSet?.beam, waxedSet.beam)
+      registerOxidizable(beamPile, moreOxidizedSet?.beamPile, waxedSet.beamPile)
+      registerOxidizable(ladder, moreOxidizedSet?.ladder, waxedSet.ladder)
+      registerOxidizable(patch, moreOxidizedSet?.patch, waxedSet.patch)
+      registerOxidizable(sheet, moreOxidizedSet?.sheet, waxedSet.sheet)
       return this
     }
   }

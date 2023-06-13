@@ -1,6 +1,7 @@
 package datagen
 
 import tada.lib.presets.Preset
+import tada.lib.presets.common.CommonDropPresets
 import tada.lib.presets.common.CommonModelPresets
 import tada.lib.resources.blockstate.BlockState
 import tada.lib.resources.blockstate.BlockStateModel
@@ -85,14 +86,46 @@ object CustomMetalPresets {
     })
     add(blockName("_ladder"), ParentedModel.item("minecraft:item/generated").texture("layer0", blockTexture("_ladder", folder = "block/")))
 
+    for (i in 1..3) {
+      add(blockName("_patch/$i"), ParentedModel.block("derelict:block/metal_patch/$i").texture("0", blockTexture("_patch", folder = "block/")))
+    }
+
+    add(rotatableMetalSheet("$ns:$name", blockTexture("_block", folder = "block/"), prefix,"patch", count = 4, waxed = waxed))
+    add(rotatableMetalSheet("$ns:$name", blockTexture("_block", folder = "block/"), prefix, "sheet", count = 8, waxed = waxed))
+
     TagManager.add("minecraft:blocks/climbable", namespacedBlockName("_ladder"))
     // Item Tags
     TagManager.add("derelict:items/${if (waxed) "waxed" else "unwaxed"}_metals",
       namespacedBlockName("_block"), namespacedBlockName("", "cut_"), namespacedBlockName("_pillar"),
       namespacedBlockName("_stairs", "cut_"), namespacedBlockName("_slab", "cut_"), namespacedBlockName("_chain"),
       namespacedBlockName("_grate"),  namespacedBlockName("_beam"), namespacedBlockName("_beam_pile"),
-      namespacedBlockName("_ladder")
+      namespacedBlockName("_ladder"), namespacedBlockName("_patch"), namespacedBlockName("_sheet")
     )
+  }
+
+  private fun rotatableMetalSheet(id: String, particle: String, oxidization: String, type: String, count: Int = 8, waxed: Boolean = false) = Preset {
+    val (ns, name) = Id(id)
+    val parent = "derelict:block/metal_sheets/$type"
+    val prefix = (if (waxed) "waxed_" else "") + oxidization
+    for (i in 0 until count) {
+      add(
+        "metal_sheets/${name}_${type}_$i", ParentedModel.block("${parent}_$i")
+          .texture("0", "$ns:block/$name/$oxidization${name}_$type")
+          .texture("particle", Id(particle).toString())
+      )
+    }
+    add("$prefix${name}_$type", BlockState.create {
+      for (i in 0 until count) {
+        variant("facing=north,rotation=$i", BlockStateModel("$ns:block/metal_sheets/${name}_${type}_$i", yRot = Rotation.NONE))
+        variant("facing=east,rotation=$i", BlockStateModel("$ns:block/metal_sheets/${name}_${type}_$i", yRot = Rotation.CW_90))
+        variant("facing=south,rotation=$i", BlockStateModel("$ns:block/metal_sheets/${name}_${type}_$i", yRot = Rotation.CW_180))
+        variant("facing=west,rotation=$i", BlockStateModel("$ns:block/metal_sheets/${name}_${type}_$i", yRot = Rotation.CW_270))
+        variant("facing=up,rotation=$i", BlockStateModel("$ns:block/metal_sheets/${name}_${type}_$i", xRot = Rotation.CW_270))
+        variant("facing=down,rotation=$i", BlockStateModel("$ns:block/metal_sheets/${name}_${type}_$i", xRot = Rotation.CW_90))
+      }
+    })
+    add("$prefix${name}_$type", ParentedModel.item("minecraft:item/generated").texture("layer0", "$ns:item/$name/$oxidization${name}_$type"))
+    add(CommonDropPresets.simpleDrop("$ns:${name}_$type"))
   }
 
   fun fullMetalSet(id: String) = Preset {

@@ -1,0 +1,23 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "derelict:block/construction_steel/construction_steel_sheet",
+		"particle": "derelict:block/construction_steel/construction_steel_sheet"
+	},
+	"elements": [
+		{
+			"from": [-1, -6, 15],
+			"to": [17, 22, 16],
+			"rotation": {"angle": 0, "axis": "z", "origin": [8, 8, 15.5]},
+			"faces": {
+				"north": {"uv": [0, 9, 14, 0], "rotation": 90, "texture": "#0"},
+				"east": {"uv": [0, 0.5, 14, 0], "rotation": 270, "texture": "#0"},
+				"south": {"uv": [0, 8.5, 14, 0], "rotation": 270, "texture": "#0"},
+				"west": {"uv": [0, 9, 14, 8.5], "rotation": 270, "texture": "#0"},
+				"up": {"uv": [0, 8.5, 0.5, 0], "rotation": 270, "texture": "#0"},
+				"down": {"uv": [13.5, 8.5, 14, 0], "rotation": 270, "texture": "#0"}
+			}
+		}
+	]
+}

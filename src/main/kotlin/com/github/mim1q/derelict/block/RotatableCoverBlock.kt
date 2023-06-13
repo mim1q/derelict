@@ -2,11 +2,10 @@ package com.github.mim1q.derelict.block
 
 import com.github.mim1q.derelict.util.ShapeUtil
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
-import net.minecraft.block.Block
-import net.minecraft.block.BlockState
-import net.minecraft.block.ShapeContext
+import net.minecraft.block.*
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemPlacementContext
+import net.minecraft.server.world.ServerWorld
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.DirectionProperty
 import net.minecraft.state.property.IntProperty
@@ -17,11 +16,12 @@ import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction.*
 import net.minecraft.util.math.MathHelper
+import net.minecraft.util.math.random.Random
 import net.minecraft.util.shape.VoxelShape
 import net.minecraft.world.BlockView
 import net.minecraft.world.World
 
-sealed class CoverBoardBlock(
+sealed class RotatableCoverBlock(
   settings: FabricBlockSettings
 ) : Block(settings.nonOpaque()) {
   protected abstract fun getRotationProperty(): IntProperty
@@ -69,7 +69,7 @@ sealed class CoverBoardBlock(
 
   override fun isTranslucent(state: BlockState, world: BlockView, pos: BlockPos) = true
 
-  class Normal(settings: FabricBlockSettings) : CoverBoardBlock(settings) {
+  open class Normal(settings: FabricBlockSettings) : RotatableCoverBlock(settings) {
     override fun getRotationProperty(): IntProperty = ROTATION_8
     override fun getRotation(ctx: ItemPlacementContext): Int {
       val up = ctx.side == UP
@@ -77,15 +77,58 @@ sealed class CoverBoardBlock(
       val rotation = (yaw / 22.5F).toInt() % 8
       return if (ctx.side == UP) rotation else 7 - rotation
     }
+
+    class OxidizableNormal(
+      private val level: Oxidizable.OxidationLevel,
+      settings: FabricBlockSettings
+    ) : Normal(settings), Oxidizable {
+      override fun getDegradationLevel() = level
+
+      @Suppress("OVERRIDE_DEPRECATION")
+      override fun randomTick(state: BlockState, world: ServerWorld, pos: BlockPos, random: Random) {
+        tickDegradation(state, world, pos, random)
+      }
+
+      override fun hasRandomTicks(state: BlockState): Boolean {
+        return Oxidizable.getIncreasedOxidationBlock(state.block).isPresent
+      }
+    }
   }
 
-  class Crossed(settings: FabricBlockSettings) : CoverBoardBlock(settings) {
+  class Crossed(settings: FabricBlockSettings) : RotatableCoverBlock(settings) {
     override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
       builder.add(ROTATION_3, FACING)
     }
 
     override fun getRotationProperty(): IntProperty = ROTATION_3
     override fun getRotation(ctx: ItemPlacementContext): Int = if (ctx.playerFacing.axis == Axis.X) 2 else 0
+  }
+
+  open class SquarePatch(settings: FabricBlockSettings) : RotatableCoverBlock(settings) {
+    override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
+      builder.add(ROTATION_4, FACING)
+    }
+
+    override fun getRotationProperty(): IntProperty = ROTATION_4
+    override fun getRotation(ctx: ItemPlacementContext): Int {
+      return 0
+    }
+
+    class OxidizableSquarePatch(
+      private val level: Oxidizable.OxidationLevel,
+      settings: FabricBlockSettings
+    ) : SquarePatch(settings), Oxidizable {
+      override fun getDegradationLevel() = level
+
+      @Suppress("OVERRIDE_DEPRECATION")
+      override fun randomTick(state: BlockState, world: ServerWorld, pos: BlockPos, random: Random) {
+        tickDegradation(state, world, pos, random)
+      }
+
+      override fun hasRandomTicks(state: BlockState): Boolean {
+        return Oxidizable.getIncreasedOxidationBlock(state.block).isPresent
+      }
+    }
   }
 
   companion object {
@@ -96,5 +139,6 @@ sealed class CoverBoardBlock(
     val FACING: DirectionProperty = Properties.FACING
     val ROTATION_8: IntProperty = IntProperty.of("rotation", 0, 7)
     val ROTATION_3: IntProperty = IntProperty.of("rotation", 0, 2)
+    val ROTATION_4: IntProperty = IntProperty.of("rotation", 0, 3)
   }
 }
