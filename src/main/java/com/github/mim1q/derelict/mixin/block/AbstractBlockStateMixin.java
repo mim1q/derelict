@@ -23,15 +23,15 @@ abstract class AbstractBlockStateMixin {
     cancellable = true
   )
   public void derelict$injectGetModelOffset(BlockView world, BlockPos pos, CallbackInfoReturnable<Vec3d> cir) {
-    if (this.isIn(ModBlockTags.INSTANCE.getCOVER_BOARDS())) {
-      var x = pos.getX() % 2;
-      var y = pos.getY() % 2;
-      var z = pos.getZ() % 2;
+    if (this.isIn(ModBlockTags.INSTANCE.getPREVENT_Z_FIGHTING())) {
+      var x = pos.getX() % 3;
+      var y = pos.getY() % 3;
+      var z = pos.getZ() % 3;
       cir.setReturnValue(
         new Vec3d(
-          (z * 0.0015) + (y * 0.001),
-          (x * 0.0015) + (z * 0.001),
-          (y * 0.0015) + (x * 0.001)
+          (z * 0.0003) + (y * 0.0005),
+          (x * 0.0003) + (z * 0.0005),
+          (y * 0.0003) + (x * 0.0005)
         )
       );
     }

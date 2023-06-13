@@ -1,0 +1,17 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "derelict:block/construction_steel/construction_steel_chain_link",
+		"particle": "#0"
+	},
+	"elements": [
+		{
+			"from": [8, 0, 0],
+			"to": [8, 16, 8],
+			"faces": {
+				"east": {"uv": [8, 0, 16, 16], "texture": "#0"},
+				"west": {"uv": [0, 0, 8, 16], "texture": "#0"}
+			}
+		}
+	]
+}

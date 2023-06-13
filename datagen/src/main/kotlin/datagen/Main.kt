@@ -80,6 +80,7 @@ fun main(args: Array<String>) {
       "derelict:burned_sign", "derelict:burned_log", "derelict:burned_wood", "derelict:stripped_burned_log",
       "derelict:stripped_burned_wood", "derelict:burned_leaves", "derelict:smoldering_leaves", "derelict:burned_trapdoor"
     )
+    TagManager.add("derelict:blocks/prevent_z_fighting", "#derelict:cover_boards", "#derelict:metal_sheets")
   }
   generator.generate()
   FileCopyManager.copyFiles()

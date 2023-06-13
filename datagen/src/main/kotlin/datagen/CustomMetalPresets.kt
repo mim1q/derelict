@@ -11,13 +11,13 @@ import tada.lib.tags.TagManager
 import tada.lib.util.Id
 
 object CustomMetalPresets {
-  fun metalSet(id: String, prefix: String = "", waxed: Boolean = false) = Preset {
+  fun metalSet(id: String, oxidization: String = "", waxed: Boolean = false) = Preset {
     val (ns, name) = Id(id)
 
     fun blockTexture(suffix: String = "", variant: String = "", folder: String = "")
-    = "$ns:$folder${name}/${prefix}$variant${name}$suffix"
+    = "$ns:$folder${name}/${oxidization}$variant${name}$suffix"
     fun blockName(suffix: String = "", variant: String = "", original: Boolean = false)
-    = "${if(waxed && !original) "waxed_" else ""}${prefix}$variant${name}$suffix"
+    = "${if(waxed && !original) "waxed_" else ""}${oxidization}$variant${name}$suffix"
     fun namespacedBlockName(suffix: String = "", variant: String = "", folder: String = "", original: Boolean = false)
     = "$ns:$folder${blockName(suffix, variant, original)}"
 
@@ -90,8 +90,10 @@ object CustomMetalPresets {
       add(blockName("_patch/$i"), ParentedModel.block("derelict:block/metal_patch/$i").texture("0", blockTexture("_patch", folder = "block/")))
     }
 
-    add(rotatableMetalSheet("$ns:$name", blockTexture("_block", folder = "block/"), prefix,"patch", count = 4, waxed = waxed))
-    add(rotatableMetalSheet("$ns:$name", blockTexture("_block", folder = "block/"), prefix, "sheet", count = 8, waxed = waxed))
+    add(rotatableMetalSheet("$ns:$name", blockTexture("_block", folder = "block/"), oxidization,"patch", count = 4, waxed = waxed))
+    add(rotatableMetalSheet("$ns:$name", blockTexture("_block", folder = "block/"), oxidization, "sheet", count = 8, waxed = waxed))
+
+    add(chainLinkFence(id, oxidization, waxed))
 
     TagManager.add("minecraft:blocks/climbable", namespacedBlockName("_ladder"))
     // Item Tags
@@ -99,7 +101,8 @@ object CustomMetalPresets {
       namespacedBlockName("_block"), namespacedBlockName("", "cut_"), namespacedBlockName("_pillar"),
       namespacedBlockName("_stairs", "cut_"), namespacedBlockName("_slab", "cut_"), namespacedBlockName("_chain"),
       namespacedBlockName("_grate"),  namespacedBlockName("_beam"), namespacedBlockName("_beam_pile"),
-      namespacedBlockName("_ladder"), namespacedBlockName("_patch"), namespacedBlockName("_sheet")
+      namespacedBlockName("_ladder"), namespacedBlockName("_patch"), namespacedBlockName("_sheet"),
+      namespacedBlockName("_chain_link_fence")
     )
   }
 
@@ -128,6 +131,32 @@ object CustomMetalPresets {
     })
     add("$prefix${name}_$type", ParentedModel.item("minecraft:item/generated").texture("layer0", "$ns:item/$name/$oxidization${name}_$type"))
     add(CommonDropPresets.simpleDrop("$ns:${name}_$type"))
+    TagManager.add("derelict:blocks/metal_sheets", "$ns:$prefix${name}_$type")
+  }
+
+  private fun chainLinkFence(id: String, oxidization: String, waxed: Boolean) = Preset {
+    val (ns, name) = Id(id)
+    val prefix = (if (waxed) "waxed_" else "") + oxidization
+
+    if (!waxed) {
+      add("$oxidization${name}_chain_link_fence_post", ParentedModel.block("derelict:block/chain_link/post").texture("0", "$ns:block/$name/$oxidization${name}_block"))
+      add("$oxidization${name}_chain_link_fence_side", ParentedModel.block("derelict:block/chain_link/side").texture("0", "$ns:block/$name/$oxidization${name}_chain_link_fence"))
+    }
+
+    fun sideModel(rotation: Rotation) = BlockStateModel("$ns:block/$oxidization${name}_chain_link_fence_side", yRot = rotation)
+
+    add("$prefix${name}_chain_link_fence", BlockState.createMultipart {
+      applyWhen(sideModel(Rotation.NONE), "north=true")
+      applyWhen(sideModel(Rotation.CW_90), "east=true")
+      applyWhen(sideModel(Rotation.CW_180), "south=true")
+      applyWhen(sideModel(Rotation.CW_270), "west=true")
+      applyWhen(BlockStateModel("$ns:block/$oxidization${name}_chain_link_fence_post"), "north=false,east=false,south=false,west=false")
+    })
+
+    add("$prefix${name}_chain_link_fence", ParentedModel.item("minecraft:item/generated")
+      .texture("layer0", "$ns:block/$name/$oxidization${name}_chain_link_fence"))
+
+    TagManager.add("minecraft:blocks/climbable", "$ns:$prefix${name}_chain_link_fence")
   }
 
   fun fullMetalSet(id: String) = Preset {

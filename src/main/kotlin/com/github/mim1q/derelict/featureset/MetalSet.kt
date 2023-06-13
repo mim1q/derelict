@@ -28,6 +28,7 @@ sealed class MetalSet(
   abstract val ladder: LadderBlock
   abstract val patch: SquarePatch
   abstract val sheet: RotatableCoverBlock.Normal
+  abstract val chainLinkFence: PaneBlock
 
   class Regular(
     id: Identifier,
@@ -46,6 +47,7 @@ sealed class MetalSet(
     override val ladder: LadderBlock = registerBlockWithItem("$prefix${name}_ladder", MetalLadderBlock(defaultBlockSettings.nonOpaque()))
     override val patch: SquarePatch = registerBlockWithItem("$prefix${name}_patch", SquarePatch(defaultBlockSettings.nonOpaque()))
     override val sheet: RotatableCoverBlock.Normal = registerBlockWithItem("$prefix${name}_sheet", RotatableCoverBlock.Normal(defaultBlockSettings.nonOpaque()))
+    override val chainLinkFence: PaneBlock = registerBlockWithItem("$prefix${name}_chain_link_fence", PaneBlock(defaultBlockSettings.nonOpaque()))
   }
 
   class Oxidized internal constructor(
@@ -66,6 +68,7 @@ sealed class MetalSet(
     override val ladder: LadderBlock = registerBlockWithItem("$prefix${name}_ladder", OxidizableMetalLadderBlock(level, defaultBlockSettings.nonOpaque()))
     override val patch: SquarePatch = registerBlockWithItem("$prefix${name}_patch", OxidizableSquarePatch(level, defaultBlockSettings.nonOpaque()))
     override val sheet: RotatableCoverBlock.Normal = registerBlockWithItem("$prefix${name}_sheet", OxidizableNormal(level, defaultBlockSettings.nonOpaque()))
+    override val chainLinkFence: PaneBlock = registerBlockWithItem("$prefix${name}_chain_link_fence", OxidizablePaneBlock(level, defaultBlockSettings.nonOpaque()))
 
     private fun registerOxidizable(base: Block, moreOxidized: Block?, waxed: Block) {
       if (moreOxidized != null) {
@@ -87,6 +90,7 @@ sealed class MetalSet(
       registerOxidizable(ladder, moreOxidizedSet?.ladder, waxedSet.ladder)
       registerOxidizable(patch, moreOxidizedSet?.patch, waxedSet.patch)
       registerOxidizable(sheet, moreOxidizedSet?.sheet, waxedSet.sheet)
+      registerOxidizable(chainLinkFence, moreOxidizedSet?.chainLinkFence, waxedSet.chainLinkFence)
       return this
     }
   }
@@ -105,8 +109,9 @@ sealed class MetalSet(
       unaffected.grate, unaffected.chain, unaffected.ladder, waxedUnaffected.grate, waxedUnaffected.chain, waxedUnaffected.ladder,
       exposed.grate, exposed.chain, exposed.ladder, waxedExposed.grate, waxedExposed.chain, waxedExposed.ladder,
       weathered.grate, weathered.chain, weathered.ladder, waxedWeathered.grate, waxedWeathered.chain, waxedWeathered.ladder,
-      oxidized.grate, oxidized.chain, oxidized.ladder, waxedOxidized.grate, waxedOxidized.chain, waxedOxidized.ladder
-
+      oxidized.grate, oxidized.chain, oxidized.ladder, waxedOxidized.grate, waxedOxidized.chain, waxedOxidized.ladder,
+      unaffected.chainLinkFence, waxedUnaffected.chainLinkFence, exposed.chainLinkFence, waxedExposed.chainLinkFence,
+      weathered.chainLinkFence, waxedWeathered.chainLinkFence, oxidized.chainLinkFence, waxedOxidized.chainLinkFence
     )
 
     override fun register(): FullOxidizable {
