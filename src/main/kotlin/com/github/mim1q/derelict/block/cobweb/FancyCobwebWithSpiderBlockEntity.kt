@@ -11,8 +11,9 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.MathHelper
 import net.minecraft.world.World
-import java.util.Random
+import java.util.*
 import kotlin.math.atan2
+import kotlin.math.max
 
 class FancyCobwebWithSpiderBlockEntity(pos: BlockPos, state: BlockState) : BlockEntity(ModBlockEntities.FANCY_COBWEB_WITH_SPIDER, pos, state) {
   private val rng = Random(pos.hashCode().toLong())
@@ -55,7 +56,7 @@ class FancyCobwebWithSpiderBlockEntity(pos: BlockPos, state: BlockState) : Block
       for (i in 1..16) {
         if (!world.getBlockState(pos.down(i)).isSolidBlock(world, pos)) availableBlocks++ else break
       }
-      val newDistance = availableBlocks.toDouble() - distanceFromGround
+      val newDistance = max(0.0, availableBlocks.toDouble() - distanceFromGround)
       if (newDistance != distance) {
         distance = newDistance
         markDirty()
