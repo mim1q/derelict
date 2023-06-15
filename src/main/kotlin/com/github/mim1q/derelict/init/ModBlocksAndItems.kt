@@ -68,9 +68,9 @@ object ModBlocksAndItems {
 
   fun init() { }
 
-  internal fun <T : Block> register(name: String, block: T): T {
-    Registry.register(Registry.BLOCK, Derelict.id(name), block)
-    Registry.register(Registry.ITEM, Derelict.id(name), BlockItem(block, FabricItemSettings().group(Derelict.ITEM_GROUP)))
+  internal fun <T : Block> register(name: String, block: T, category: ItemCategory = ItemCategory.GENERAL): T {
+    registerBlock(name, block)
+    registerItem(name, BlockItem(block, defaultItemSettings()), category)
     return block
   }
 
@@ -78,9 +78,21 @@ object ModBlocksAndItems {
     Registry.BLOCK, Derelict.id(name), block
   )
 
-  internal fun <T: Item> registerItem(name: String, item: T): T = Registry.register(
-    Registry.ITEM, Derelict.id(name), item
-  )
+  internal fun <T: Item> registerItem(name: String, item: T, category: ItemCategory = ItemCategory.GENERAL): T {
+    category.add(item)
+    return Registry.register(Registry.ITEM, Derelict.id(name), item)
+  }
 
   private fun defaultItemSettings() = FabricItemSettings().group(Derelict.ITEM_GROUP)
+
+  enum class ItemCategory {
+    GENERAL,
+    METAL_BLOCKS,
+    METAL_DECORATION,
+    WAXED_METAL_BLOCKS,
+    WAXED_METAL_DECORATION;
+
+    val items: MutableList<Item> = mutableListOf()
+    fun add(item: Item) = items.add(item)
+  }
 }

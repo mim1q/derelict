@@ -1,6 +1,7 @@
 package com.github.mim1q.derelict.featureset
 
 import com.github.mim1q.derelict.init.ModBlocksAndItems
+import com.github.mim1q.derelict.init.ModBlocksAndItems.ItemCategory
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.minecraft.block.Block
@@ -19,12 +20,17 @@ abstract class FeatureSet(
   protected fun id(name: String) = Identifier(namespace, name)
   open fun register(): FeatureSet = this
 
-  protected fun <I : Item> registerItem(name: String, item: I): I = ModBlocksAndItems.registerItem(name, item)
+  protected fun <I : Item> registerItem(
+    name: String,
+    item: I,
+    category: ItemCategory = ItemCategory.GENERAL
+  ): I = ModBlocksAndItems.registerItem(name, item, category)
 
   protected fun <B : Block> registerBlock(name: String, block: B): B = ModBlocksAndItems.registerBlock(name, block)
 
   protected fun <B : Block> registerBlockWithItem(
     name: String,
-    block: B
-  ): B = ModBlocksAndItems.register(name, block)
+    block: B,
+    category: ItemCategory = ItemCategory.GENERAL
+  ): B = ModBlocksAndItems.register(name, block, category)
 }
