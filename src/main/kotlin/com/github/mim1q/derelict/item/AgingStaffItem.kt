@@ -8,7 +8,8 @@ import net.minecraft.util.ActionResult
 
 class AgingStaffItem(settings: Settings) : Item(settings) {
   override fun useOnBlock(context: ItemUsageContext): ActionResult {
-    var block = context.world.getBlockState(context.blockPos).block
+    val state = context.world.getBlockState(context.blockPos)
+    var block = state.block
     var waxed = false
     HoneycombItem.WAXED_TO_UNWAXED_BLOCKS.get()[block]?.let {
       waxed = true
@@ -20,7 +21,7 @@ class AgingStaffItem(settings: Settings) : Item(settings) {
       if (waxed) {
         newBlock = HoneycombItem.UNWAXED_TO_WAXED_BLOCKS.get()[newBlock] ?: newBlock
       }
-      context.world.setBlockState(context.blockPos, newBlock.defaultState)
+      context.world.setBlockState(context.blockPos, newBlock.getStateWithProperties(state))
       context.stack.damage(1, context.player) { context.player?.sendToolBreakStatus(context.hand) }
       return ActionResult.SUCCESS
     }
