@@ -1,7 +1,7 @@
 package com.github.mim1q.derelict.init.client
 
 import com.github.mim1q.derelict.Derelict
-import com.github.mim1q.derelict.client.render.FancyCobwebWithSpiderRenderer
+import com.github.mim1q.derelict.client.render.block.FancyCobwebWithSpiderRenderer
 import com.github.mim1q.derelict.init.ModBlockEntities
 import com.github.mim1q.derelict.init.ModBlocksAndItems
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap

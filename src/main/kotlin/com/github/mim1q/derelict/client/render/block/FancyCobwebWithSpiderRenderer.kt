@@ -1,4 +1,4 @@
-package com.github.mim1q.derelict.client.render
+package com.github.mim1q.derelict.client.render.block
 
 import com.github.mim1q.derelict.Derelict
 import com.github.mim1q.derelict.block.cobweb.FancyCobwebWithSpiderBlockEntity

@@ -1,12 +1,20 @@
 package com.github.mim1q.derelict.util
 
 import com.github.mim1q.derelict.Derelict
+import com.github.mim1q.derelict.item.CrosshairTipItem
 import com.mojang.blaze3d.systems.RenderSystem
+import net.minecraft.block.Block
+import net.minecraft.client.MinecraftClient
+import net.minecraft.client.gui.DrawableHelper
 import net.minecraft.client.render.GameRenderer
 import net.minecraft.client.render.Tessellator
 import net.minecraft.client.render.VertexFormat
 import net.minecraft.client.render.VertexFormats
+import net.minecraft.client.util.math.MatrixStack
+import net.minecraft.item.Item
 import net.minecraft.util.Identifier
+import net.minecraft.util.hit.BlockHitResult
+import net.minecraft.util.hit.HitResult
 
 object RenderUtil {
   private val HONEYCOMB_TEXTURE = Identifier("textures/item/honeycomb.png")
@@ -28,5 +36,23 @@ object RenderUtil {
     bufferBuilder.vertex(x, y, z).texture(0f, 0f).color(255, 255, 255, 255).next()
     tessellator.draw()
     RenderSystem.disableBlend()
+  }
+
+  fun renderCrosshairTip(item: CrosshairTipItem) {
+    val target = MinecraftClient.getInstance().crosshairTarget
+    if (target?.type == HitResult.Type.BLOCK) {
+      val block = MinecraftClient.getInstance().world?.getBlockState((target as BlockHitResult).blockPos)?.block
+      if (item.shouldShowTip(block)) {
+        renderCrosshairTipTexture(item.getTipTexture())
+      }
+    }
+  }
+
+  private fun renderCrosshairTipTexture(texture: Identifier) {
+    RenderSystem.setShader(GameRenderer::getPositionTexShader)
+    RenderSystem.setShaderTexture(0, texture)
+    val x = MinecraftClient.getInstance().window.scaledWidth / 2 + 6
+    val y = MinecraftClient.getInstance().window.scaledHeight / 2 - 8
+    DrawableHelper.drawTexture(MatrixStack(), x, y, 0F, 0F, 16, 16, 16, 16)
   }
 }
