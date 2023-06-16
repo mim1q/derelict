@@ -25,9 +25,13 @@ object DerelictClient : ClientModInitializer {
     )
 
     HudRenderCallback.EVENT.register { _, _ ->
-      val item = MinecraftClient.getInstance().player?.mainHandStack?.item
-      if (item != null && item is CrosshairTipItem || item == Items.HONEYCOMB) {
-        RenderUtil.renderCrosshairTip(item as CrosshairTipItem)
+      MinecraftClient.getInstance().player?.let {player ->
+        listOf(player.mainHandStack.item, player.offHandStack.item)
+      }?.forEach { item ->
+        if (item != null && item is CrosshairTipItem || item == Items.HONEYCOMB) {
+          RenderUtil.renderCrosshairTip(item as CrosshairTipItem)
+          return@register
+        }
       }
     }
   }
