@@ -29,9 +29,9 @@ abstract class AbstractBlockStateMixin {
       var z = pos.getZ() % 3;
       cir.setReturnValue(
         new Vec3d(
-          (z * 0.0003) + (y * 0.0005),
-          (x * 0.0003) + (z * 0.0005),
-          (y * 0.0003) + (x * 0.0005)
+          (z * 0.001) + (y * 0.0015),
+          (x * 0.001) + (z * 0.0015),
+          (y * 0.001) + (x * 0.0015)
         )
       );
     }
