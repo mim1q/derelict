@@ -2,19 +2,22 @@ package com.github.mim1q.derelict.init.client
 
 import com.github.mim1q.derelict.Derelict
 import com.github.mim1q.derelict.client.render.block.FancyCobwebWithSpiderRenderer
+import com.github.mim1q.derelict.client.render.entity.boss.ArachneEntityRenderer
+import com.github.mim1q.derelict.client.render.entity.boss.ArachneTexturedModelData
 import com.github.mim1q.derelict.init.ModBlockEntities
 import com.github.mim1q.derelict.init.ModBlocksAndItems
+import com.github.mim1q.derelict.init.ModEntities
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry.TexturedModelDataProvider
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories
 import net.minecraft.client.render.entity.model.EntityModelLayer
 
 object ModRender {
-  val FANCY_COBWEB_SPIDER_LAYER = registerLayer(
-    FancyCobwebWithSpiderRenderer.SpiderModel::getTexturedModelData, "fancy_cobweb_spider"
-  )
+  val FANCY_COBWEB_SPIDER_LAYER = registerLayer(FancyCobwebWithSpiderRenderer.SpiderModel::getTexturedModelData, "fancy_cobweb_spider")
+  val ARACHNE_LAYER = registerLayer(ArachneTexturedModelData::create, "arachne")
 
   fun init() {
     BlockRenderLayerMap.INSTANCE.putBlocks(
@@ -30,9 +33,11 @@ object ModRender {
     )
 
     BlockEntityRendererFactories.register(ModBlockEntities.FANCY_COBWEB_WITH_SPIDER, ::FancyCobwebWithSpiderRenderer)
+
+    EntityRendererRegistry.register(ModEntities.ARACHNE, ::ArachneEntityRenderer)
   }
 
-  private fun registerLayer(provider: TexturedModelDataProvider, path: String, name: String = "main"): EntityModelLayer
+  private fun registerLayer(provider: TexturedModelDataProvider, path: String, name: String = "main")
     = EntityModelLayer(Derelict.id(path), name).also {
       EntityModelLayerRegistry.registerModelLayer(it, provider)
     }

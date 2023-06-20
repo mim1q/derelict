@@ -57,7 +57,7 @@ class FancyCobwebWithSpiderRenderer(context: Context) : BlockEntityRenderer<Fanc
   override fun rendersOutsideBoundingBox(blockEntity: FancyCobwebWithSpiderBlockEntity) = true
 
   companion object {
-    val TEXTURE = Derelict.id("textures/blockentity/spider.png")
+    val TEXTURE = Derelict.id("textures/entity/spiderling.png")
   }
 
   class SpiderModel(root: ModelPart) : Model(RenderLayer::getEntityCutout) {

@@ -2,10 +2,7 @@ package com.github.mim1q.derelict
 
 import com.github.mim1q.derelict.config.DerelictClientConfig
 import com.github.mim1q.derelict.config.DerelictConfig
-import com.github.mim1q.derelict.init.ModBlockEntities
-import com.github.mim1q.derelict.init.ModBlocksAndItems
-import com.github.mim1q.derelict.init.ModItemGroups
-import com.github.mim1q.derelict.init.ModParticles
+import com.github.mim1q.derelict.init.*
 import io.wispforest.owo.itemgroup.OwoItemGroup
 import net.fabricmc.api.ModInitializer
 import net.minecraft.util.Identifier
@@ -24,6 +21,7 @@ object Derelict : ModInitializer {
     ModBlocksAndItems.init()
     ModBlockEntities.init()
     ModParticles.init()
+    ModEntities.init()
   }
   fun id(value: String) = Identifier(MOD_ID, value)
 }
