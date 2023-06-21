@@ -5,7 +5,6 @@ import com.github.mim1q.derelict.util.Easing.smoothStep
 import com.github.mim1q.derelict.util.extensions.radians
 import com.github.mim1q.derelict.util.extensions.setPartialAngles
 import com.github.mim1q.derelict.util.extensions.setPartialAnglesDegrees
-import net.minecraft.client.MinecraftClient
 import net.minecraft.client.model.ModelPart
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumer
@@ -99,19 +98,20 @@ class ArachneEntityModel(root: ModelPart) : EntityModel<ArachneEntity>(RenderLay
     headYaw: Float,
     headPitch: Float
   ) {
-    resetRotations()
+    head.setAngles(headPitch.radians(), headYaw.radians(), 0F)
+  }
 
-    val tickDelta = MinecraftClient.getInstance().tickDelta
+  override fun animateModel(entity: ArachneEntity, limbAngle: Float, limbDistance: Float, tickDelta: Float) {
+    resetRotations()
+    val animationProgress = entity.age + tickDelta
     val speedProgress = entity.getSpeedChangeProgress(tickDelta) * 2F
     val speedDelta = entity.getSpeedChangeDelta(tickDelta)
     val yawProgress = entity.getYawChangeProgress(tickDelta)
     val yawDelta = entity.getYawChangeDelta(tickDelta)
 
-    idleAnimation(animationProgress, 1F - speedDelta)
+    idleAnimation(animationProgress * 0.1F, 1F - speedDelta)
     rotationAnimation(yawProgress, yawDelta)
     walkAnimation(speedProgress, speedDelta)
-
-    head.setAngles(headPitch.radians(), headYaw.radians(), 0F)
 
     eggs.forEachIndexed { index, egg ->
       val speed = 7F + sin(index * 100F) * 3F
@@ -129,24 +129,24 @@ class ArachneEntityModel(root: ModelPart) : EntityModel<ArachneEntity>(RenderLay
   }
 
   private fun idleAnimation(animationProgress: Float, delta: Float) {
-    additionalBodyHeight = sin(animationProgress * 0.1F) * 3F * delta
+    additionalBodyHeight = sin(animationProgress) * 3F * delta
     val additionalRoll = additionalBodyHeight * -2F
     body.pivotY = 14F - additionalBodyHeight
-    abdomen.setPartialAnglesDegrees(pitch = sin(animationProgress * 0.1F - 0.5F) * 10F + 10F, delta = delta)
+    abdomen.setPartialAnglesDegrees(pitch = sin(animationProgress - 0.5F) * 10F + 10F, delta = delta)
     leftLegs.forEach { it.setAnglesFromDefaults(rollDegrees = additionalRoll, delta = delta) }
     rightLegs.forEach { it.setAnglesFromDefaults(rollDegrees = additionalRoll, delta = delta) }
   }
 
   private fun walkAnimation(progress: Float, delta: Float) {
-    additionalBodyHeight = sin(progress) * delta
+    additionalBodyHeight = sin(progress) * 2F * delta
     body.pivotY -= additionalBodyHeight
     body.setPartialAnglesDegrees(
       yaw = sin(progress),
       delta = delta
     )
     abdomen.setPartialAnglesDegrees(
-      yaw = sin(progress + 60F.radians()) * 2F,
-      pitch = 10F + sin(progress * 2F + 45F.radians()) * 2F,
+      yaw = sin(progress + 60F.radians()) * 5F,
+      pitch = 5F + sin(progress * 2F + 45F.radians()) * 5F,
       delta = delta
     )
     leftLegs.forEachIndexed { index, leg -> walkLeg(leg, progress, delta, index, false) }
@@ -154,12 +154,13 @@ class ArachneEntityModel(root: ModelPart) : EntityModel<ArachneEntity>(RenderLay
   }
 
   private fun walkLeg(leg: BigSpiderLimbParts, progress: Float, delta: Float, index: Int, right: Boolean) {
-    val offset = index * 15F.radians()
-    val yaw = sin(progress + offset) * 20F
     val multiplier = legMultiplier(right, index)
-    val rollMultiplier = if (index == 0) 2F else 1F
+    val offset = index * 15F.radians() + if (right) 5F.radians() else 0F
+    val yaw = sin(progress + offset) * 20F
+    val roll = multiplier * sin(progress - 100F.radians() + offset).let {
+      if (index == 0) it * 15F + multiplier * 15F else it * 5F + multiplier * 5F
+    }
     val additionalRoll = smoothStep(multiplier * sin(progress + 90F.radians() + offset) + 0.25F, 0F, 1.25F) * 20F
-    val roll = smoothStep(multiplier * sin(progress + 100F.radians() + offset)) * 20F * rollMultiplier
     leg.setAnglesFromDefaults(yaw * multiplier, roll, additionalRoll, delta = delta)
   }
 

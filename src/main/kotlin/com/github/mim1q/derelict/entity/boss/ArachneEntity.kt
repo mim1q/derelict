@@ -1,6 +1,7 @@
 package com.github.mim1q.derelict.entity.boss
 
 import net.minecraft.entity.EntityType
+import net.minecraft.entity.ai.control.BodyControl
 import net.minecraft.entity.ai.goal.*
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
@@ -8,10 +9,7 @@ import net.minecraft.entity.mob.HostileEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.util.math.MathHelper.clamp
 import net.minecraft.world.World
-import kotlin.math.max
-import kotlin.math.min
-import kotlin.math.pow
-import kotlin.math.sqrt
+import kotlin.math.*
 
 class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : HostileEntity(entityType, world) {
   private var yawChangeProgress = 0.0F
@@ -30,9 +28,9 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
   override fun initGoals() {
     goalSelector.add(3, LookAtEntityGoal(this, PlayerEntity::class.java, 24F))
     goalSelector.add(4, LookAroundGoal(this))
-    goalSelector.add(2, WanderAroundGoal(this, 0.5))
-    goalSelector.add(2, WanderAroundFarGoal(this, 0.5))
-    goalSelector.add(0, MeleeAttackGoal(this, 0.8, true))
+    goalSelector.add(2, WanderAroundGoal(this, 0.4))
+    goalSelector.add(2, WanderAroundFarGoal(this, 0.4))
+    goalSelector.add(0, MeleeAttackGoal(this, 0.6, true))
     targetSelector.add(0, ActiveTargetGoal(this, PlayerEntity::class.java, false))
   }
 
@@ -43,7 +41,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
     prevSpeedChangeDelta = speedChangeDelta
     prevSpeedChangeProgress = speedChangeProgress
 
-    if (prevBodyYaw == bodyYaw) {
+    if (abs(prevBodyYaw - bodyYaw) < 0.1F) {
       yawChangeDelta = max(yawChangeDelta - 0.1F, 0.0F)
     } else {
       yawChangeDelta = min(yawChangeDelta + 0.1F, 0.5F)
@@ -63,10 +61,10 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
   fun getSpeedChangeProgress(tickDelta: Float = 1F) = prevSpeedChangeProgress + (speedChangeProgress - prevSpeedChangeProgress) * tickDelta
   fun getSpeedChangeDelta(tickDelta: Float = 1F) = prevSpeedChangeDelta + (speedChangeDelta - prevSpeedChangeDelta) * tickDelta
 
-  override fun getMaxLookYawChange() = 1
+  override fun createBodyControl(): BodyControl = ArachneBodyControl(this)
 
   companion object {
     fun createArachneAttributes(): DefaultAttributeContainer.Builder = createHostileAttributes()
-      .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3)
+      .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.6)
   }
 }
