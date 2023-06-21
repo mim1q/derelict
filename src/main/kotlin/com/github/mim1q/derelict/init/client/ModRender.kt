@@ -2,8 +2,8 @@ package com.github.mim1q.derelict.init.client
 
 import com.github.mim1q.derelict.Derelict
 import com.github.mim1q.derelict.client.render.block.FancyCobwebWithSpiderRenderer
-import com.github.mim1q.derelict.client.render.entity.boss.ArachneEntityRenderer
-import com.github.mim1q.derelict.client.render.entity.boss.ArachneTexturedModelData
+import com.github.mim1q.derelict.client.render.entity.boss.arachne.ArachneEntityRenderer
+import com.github.mim1q.derelict.client.render.entity.boss.arachne.ArachneTexturedModelData
 import com.github.mim1q.derelict.init.ModBlockEntities
 import com.github.mim1q.derelict.init.ModBlocksAndItems
 import com.github.mim1q.derelict.init.ModEntities

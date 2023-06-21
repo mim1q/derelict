@@ -1,4 +1,4 @@
-package com.github.mim1q.derelict.client.render.entity.boss
+package com.github.mim1q.derelict.client.render.entity.boss.arachne
 
 import com.github.mim1q.derelict.Derelict
 import com.github.mim1q.derelict.entity.boss.ArachneEntity

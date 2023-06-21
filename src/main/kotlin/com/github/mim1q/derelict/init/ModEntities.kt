@@ -13,7 +13,7 @@ import net.minecraft.entity.mob.ZombieEntity
 import net.minecraft.util.registry.Registry
 
 object ModEntities {
-  val ARACHNE = register("arachne", ::ArachneEntity) {
+  val ARACHNE = register("arachne", ::ArachneEntity, attributes = ArachneEntity.createArachneAttributes()) {
     dimensions(EntityDimensions.fixed(2.5F, 2.0F))
   }
 
