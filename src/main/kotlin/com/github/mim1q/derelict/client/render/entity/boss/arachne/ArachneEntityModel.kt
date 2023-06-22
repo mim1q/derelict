@@ -1,6 +1,6 @@
 package com.github.mim1q.derelict.client.render.entity.boss.arachne
 
-import com.github.mim1q.derelict.entity.boss.ArachneEntity
+import com.github.mim1q.derelict.entity.boss.BigSpider
 import com.github.mim1q.derelict.util.Easing.smoothStep
 import com.github.mim1q.derelict.util.extensions.radians
 import com.github.mim1q.derelict.util.extensions.setPartialAngles
@@ -10,11 +10,14 @@ import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.render.entity.model.EntityModel
 import net.minecraft.client.util.math.MatrixStack
+import net.minecraft.entity.LivingEntity
 import net.minecraft.util.math.MathHelper
 import kotlin.math.acos
 import kotlin.math.sin
 
-class ArachneEntityModel(root: ModelPart) : EntityModel<ArachneEntity>(RenderLayer::getEntityCutout) {
+class ArachneEntityModel<T>(root: ModelPart) : EntityModel<T>(RenderLayer::getEntityCutout)
+  where T : LivingEntity,
+        T : BigSpider {
   private val body = root.getChild("body")
   private val sternum = body.getChild("sternum")
   private val abdomen = sternum.getChild("abdomen")
@@ -24,7 +27,7 @@ class ArachneEntityModel(root: ModelPart) : EntityModel<ArachneEntity>(RenderLay
   private var additionalBodyHeight = 0.0F
 
   class BigSpiderLimbParts(
-    private val parent: ArachneEntityModel,
+    private val parent: ArachneEntityModel<*>,
     private val defaultYaw: Float,
     private val defaultRoll: Float,
     private val height: Float,
@@ -91,7 +94,7 @@ class ArachneEntityModel(root: ModelPart) : EntityModel<ArachneEntity>(RenderLay
   }
 
   override fun setAngles(
-    entity: ArachneEntity,
+    entity: T,
     limbAngle: Float,
     limbDistance: Float,
     animationProgress: Float,
@@ -101,7 +104,7 @@ class ArachneEntityModel(root: ModelPart) : EntityModel<ArachneEntity>(RenderLay
     head.setAngles(headPitch.radians(), headYaw.radians(), 0F)
   }
 
-  override fun animateModel(entity: ArachneEntity, limbAngle: Float, limbDistance: Float, tickDelta: Float) {
+  override fun animateModel(entity: T, limbAngle: Float, limbDistance: Float, tickDelta: Float) {
     resetRotations()
     val animationProgress = entity.age + tickDelta
     val speedProgress = entity.getSpeedChangeProgress(tickDelta) * 2F
