@@ -5,16 +5,18 @@ import net.minecraft.util.math.MathHelper
 import kotlin.math.*
 
 interface BigSpider {
-  val animationProperties: BigSpiderAnimationProperties
+  val bigSpiderAnimationProperties: BigSpiderAnimationProperties
+  private val properties
+    get() = bigSpiderAnimationProperties
 
   fun getYawChangeProgress(tickDelta: Float = 1F) =
-    MathHelper.lerp(tickDelta, animationProperties.prevYawChangeProgress, animationProperties.yawChangeProgress)
+    MathHelper.lerp(tickDelta, properties.prevYawChangeProgress, properties.yawChangeProgress)
   fun getYawChangeDelta(tickDelta: Float = 1F) =
-    MathHelper.lerp(tickDelta, animationProperties.prevYawChangeDelta, animationProperties.yawChangeDelta)
+    MathHelper.lerp(tickDelta, properties.prevYawChangeDelta, properties.yawChangeDelta)
   fun getSpeedChangeProgress(tickDelta: Float = 1F) =
-    MathHelper.lerp(tickDelta, animationProperties.prevSpeedChangeProgress, animationProperties.speedChangeProgress)
+    MathHelper.lerp(tickDelta, properties.prevSpeedChangeProgress, properties.speedChangeProgress)
   fun getSpeedChangeDelta(tickDelta: Float = 1F) =
-    MathHelper.lerp(tickDelta, animationProperties.prevSpeedChangeDelta, animationProperties.speedChangeDelta)
+    MathHelper.lerp(tickDelta, properties.prevSpeedChangeDelta, properties.speedChangeDelta)
 }
 
 class BigSpiderAnimationProperties(private val entity: LivingEntity) {

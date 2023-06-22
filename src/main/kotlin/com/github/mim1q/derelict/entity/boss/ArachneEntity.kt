@@ -9,7 +9,7 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.world.World
 
 class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : HostileEntity(entityType, world), BigSpider {
-  override val animationProperties = BigSpiderAnimationProperties(this)
+  override val bigSpiderAnimationProperties = BigSpiderAnimationProperties(this)
 
   init {
     stepHeight = 2F
@@ -26,7 +26,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
 
   override fun tick() {
     tick()
-    if (world.isClient) animationProperties.tick()
+    if (world.isClient) bigSpiderAnimationProperties.tick()
   }
 
   override fun createBodyControl() = ArachneBodyControl(this)
