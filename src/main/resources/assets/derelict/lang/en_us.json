@@ -1,16 +1,6 @@
 {
-  "itemGroup.derelict.derelict": [
-    { "text": "Derelict", "color": "#FFFFFF" }
-  ],
-  "itemGroup.derelict.derelict.tab.general": [
-    { "text": "General Items & Blocks", "color": "#FFFFFF" }
-  ],
-  "itemGroup.derelict.derelict.tab.unwaxed_metals": [
-    { "text": "Unwaxed Metals", "color": "#FFFFFF" }
-  ],
-  "itemGroup.derelict.derelict.tab.waxed_metals": [
-    { "text": "Waxed Metals", "color": "#FFFFFF" }
-  ],
+  "itemGroup.derelict.derelict": [{ "text": "Derelict", "color": "#FFFFFF" }],
+  "itemGroup.derelict.derelict.tab.general": [{ "text": "General Items & Blocks", "color": "#FFFFFF" }],
 
   "item.derelict.aging_staff": "Aging Staff",
   "item.derelict.waxing_staff": "Waxing Staff",
@@ -155,5 +145,45 @@
   "block.derelict.waxed_oxidized_construction_steel_grate": "Waxed Rusted Construction Steel Grate",
   "block.derelict.waxed_oxidized_construction_steel_chain": "Waxed Rusted Construction Steel Chain",
   "block.derelict.waxed_oxidized_construction_steel_beam": "Waxed Rusted Construction Steel Beam",
-  "block.derelict.waxed_oxidized_construction_steel_beam_pile": "Waxed Rusted Construction Steel Beam Pile"
+  "block.derelict.waxed_oxidized_construction_steel_beam_pile": "Waxed Rusted Construction Steel Beam Pile",
+  "block.derelict.construction_steel_ladder": "Construction Steel Ladder",
+  "block.derelict.construction_steel_patch": "Construction Steel Patch",
+  "block.derelict.construction_steel_sheet": "Construction Steel Sheet",
+  "block.derelict.construction_steel_chain_link_fence": "Construction Steel Chain Link Fence",
+  "block.derelict.construction_steel_barbed_wire": "Construction Steel Barbed Wire",
+  "block.derelict.exposed_construction_steel_ladder": "Exposed Construction Steel Ladder",
+  "block.derelict.exposed_construction_steel_patch": "Exposed Construction Steel Patch",
+  "block.derelict.exposed_construction_steel_sheet": "Exposed Construction Steel Sheet",
+  "block.derelict.exposed_construction_steel_chain_link_fence": "Exposed Construction Steel Chain Link Fence",
+  "block.derelict.exposed_construction_steel_barbed_wire": "Exposed Construction Steel Barbed Wire",
+  "block.derelict.weathered_construction_steel_ladder": "Weathered Construction Steel Ladder",
+  "block.derelict.weathered_construction_steel_patch": "Weathered Construction Steel Patch",
+  "block.derelict.weathered_construction_steel_sheet": "Weathered Construction Steel Sheet",
+  "block.derelict.weathered_construction_steel_chain_link_fence": "Weathered Construction Steel Chain Link Fence",
+  "block.derelict.weathered_construction_steel_barbed_wire": "Weathered Construction Steel Barbed Wire",
+  "block.derelict.oxidized_construction_steel_ladder": "Oxidized Construction Steel Ladder",
+  "block.derelict.oxidized_construction_steel_patch": "Oxidized Construction Steel Patch",
+  "block.derelict.oxidized_construction_steel_sheet": "Oxidized Construction Steel Sheet",
+  "block.derelict.oxidized_construction_steel_chain_link_fence": "Oxidized Construction Steel Chain Link Fence",
+  "block.derelict.oxidized_construction_steel_barbed_wire": "Oxidized Construction Steel Barbed Wire",
+  "block.derelict.waxed_construction_steel_ladder": "Waxed Construction Steel Ladder",
+  "block.derelict.waxed_construction_steel_patch": "Waxed Construction Steel Patch",
+  "block.derelict.waxed_construction_steel_sheet": "Waxed Construction Steel Sheet",
+  "block.derelict.waxed_construction_steel_chain_link_fence": "Waxed Construction Steel Chain Link Fence",
+  "block.derelict.waxed_construction_steel_barbed_wire": "Waxed Construction Steel Barbed Wire",
+  "block.derelict.waxed_exposed_construction_steel_ladder": "Waxed Exposed Construction Steel Ladder",
+  "block.derelict.waxed_exposed_construction_steel_patch": "Waxed Exposed Construction Steel Patch",
+  "block.derelict.waxed_exposed_construction_steel_sheet": "Waxed Exposed Construction Steel Sheet",
+  "block.derelict.waxed_exposed_construction_steel_chain_link_fence": "Waxed Exposed Construction Steel Chain Link Fence",
+  "block.derelict.waxed_exposed_construction_steel_barbed_wire": "Waxed Exposed Construction Steel Barbed Wire",
+  "block.derelict.waxed_weathered_construction_steel_ladder": "Waxed Weathered Construction Steel Ladder",
+  "block.derelict.waxed_weathered_construction_steel_patch": "Waxed Weathered Construction Steel Patch",
+  "block.derelict.waxed_weathered_construction_steel_sheet": "Waxed Weathered Construction Steel Sheet",
+  "block.derelict.waxed_weathered_construction_steel_chain_link_fence": "Waxed Weathered Construction Steel Chain Link Fence",
+  "block.derelict.waxed_weathered_construction_steel_barbed_wire": "Waxed Weathered Construction Steel Barbed Wire",
+  "block.derelict.waxed_oxidized_construction_steel_ladder": "Waxed Oxidized Construction Steel Ladder",
+  "block.derelict.waxed_oxidized_construction_steel_patch": "Waxed Oxidized Construction Steel Patch",
+  "block.derelict.waxed_oxidized_construction_steel_sheet": "Waxed Oxidized Construction Steel Sheet",
+  "block.derelict.waxed_oxidized_construction_steel_chain_link_fence": "Waxed Oxidized Construction Steel Chain Link Fence",
+  "block.derelict.waxed_oxidized_construction_steel_barbed_wire": "Waxed Oxidized Construction Steel Barbed Wire"
 }
