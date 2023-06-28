@@ -4,12 +4,15 @@ import datagen.custom.AnimationPresets
 import tada.lib.presets.common.CommonModelPresets
 import tada.lib.presets.Preset
 import tada.lib.presets.common.CommonDropPresets
+import tada.lib.presets.common.CommonRecipePresets
 import tada.lib.resources.blockstate.BlockState
 import tada.lib.resources.blockstate.BlockStateModel
 import tada.lib.resources.blockstate.BlockStateModel.Rotation
 import tada.lib.resources.blockstate.MultipartBlockState
 import tada.lib.resources.blockstate.MultipartBlockState.Entry.ConditionType
 import tada.lib.resources.model.ParentedModel
+import tada.lib.resources.recipe.CraftingRecipe
+import tada.lib.resources.recipe.SmeltingRecipe
 import tada.lib.tags.TagManager
 import tada.lib.util.Id
 
@@ -87,6 +90,49 @@ object CustomPresets {
     TagManager.add("derelict:items/general_tab", "derelict:smoldering_leaves")
   }
 
+  fun additionalBurnedBlocksRecipes() = Preset {
+    listOf(
+      "unburned_planks" to "burned_planks",
+      "unburned_logs" to "burned_log",
+      "unburned_stripped_logs" to "stripped_burned_log",
+      "unburned_wood" to "burned_wood",
+      "unburned_stripped_wood" to "stripped_burned_wood",
+      "unburned_wooden_stairs" to "burned_stairs",
+      "unburned_wooden_slabs" to "burned_slab",
+      "unburned_wooden_doors" to "burned_door",
+      "unburned_wooden_trapdoors" to "burned_trapdoor",
+      "unburned_wooden_fences" to "burned_fence",
+      "unburned_wooden_fences_gates" to "burned_fence_gate",
+      "unburned_wooden_pressure_plates" to "burned_pressure_plate",
+      "unburned_wooden_buttons" to "burned_button",
+      "unburned_wooden_signs" to "burned_sign",
+      "unburned_leaves" to "burned_leaves",
+      "unburned_cover_boards" to "burned_cover_board",
+      "unburned_double_cover_boards" to "double_burned_cover_boards",
+      "unburned_crossed_cover_boards" to "crossed_burned_cover_boards",
+    ).forEach {
+      val tag = "#derelict:${it.first}"
+      val result = "derelict:${it.second}"
+      add("${it.second}_from_${it.first}_blasting", SmeltingRecipe.blasting(tag, result, 1.0))
+    }
+    add("smoldering_embers", CraftingRecipe.shaped("derelict:smoldering_embers", 16) {
+      pattern("CCC")
+      pattern("CFC")
+      pattern("CCC")
+      key("C", "#c:coal")
+      key("F", "minecraft:fire_charge")
+    })
+    add(CommonRecipePresets.oneToOne("derelict:smoldering_embers", "derelict:smoking_embers"))
+    add("smoldering_leaves", CraftingRecipe.shapeless("derelict:smoldering_leaves", 1) {
+      ingredient("derelict:burned_leaves")
+      ingredient("derelict:smoldering_embers")
+    })
+    listOf<(String) -> String>({ "${it}grass" }, { "${it}grass_block" }, { "tall_${it}grass" }).forEach {
+      add("${it("dried_")}_blasting", SmeltingRecipe.blasting("minecraft:${it("")}", "derelict:${it("dried_")}", 1.0))
+      add("${it("burned_")}_blasting", SmeltingRecipe.blasting("derelict:${it("dried_")}", "derelict:${it("burned_")}", 1.0))
+    }
+  }
+
   private fun rotatableCoverBoard(id: String, particle: String, type: String, count: Int = 8) = Preset {
     val (ns, name) = Id(id)
     val parent = "derelict:block/cover_boards/$type"
@@ -115,11 +161,36 @@ object CustomPresets {
     add(CommonDropPresets.simpleDrop("$ns:${prefix}${name}_cover_board$suffix"))
   }
 
-  fun coverBoards(id: String, particle: String) = Preset {
+  fun coverBoards(id: String, planks: String) = Preset {
     val (ns, name) = Id(id)
+    val (pNs, pName) = Id(planks)
+    val particle = "$pNs:block/$pName"
     add(rotatableCoverBoard(id, particle, "single"))
     add(rotatableCoverBoard(id, particle, "double"))
     add(rotatableCoverBoard(id, particle, "crossed", 3))
+
+    add("${name}_cover_board", CraftingRecipe.shaped("$ns:${name}_cover_board", 2) {
+      pattern("###")
+      key("#", planks)
+    })
+    add("double_${name}_cover_boards", CraftingRecipe.shaped("${ns}:double_${name}_cover_boards", 1) {
+      pattern("#")
+      pattern("#")
+      key("#", "$ns:${name}_cover_board")
+    })
+    add("crossed_${name}_cover_boards", CraftingRecipe.shaped("${ns}:crossed_${name}_cover_boards", 1) {
+      pattern(" #")
+      pattern("# ")
+      key("#", "$ns:${name}_cover_board")
+    })
+    add("crossed_${name}_cover_boards_flipped", CraftingRecipe.shaped("${ns}:crossed_${name}_cover_boards", 1) {
+      pattern("# ")
+      pattern(" #")
+      key("#", "$ns:${name}_cover_board")
+    })
+    add(CommonRecipePresets.oneToOne("$ns:double_${name}_cover_boards", "$ns:${name}_cover_board", 2))
+    add(CommonRecipePresets.oneToOne("$ns:crossed_${name}_cover_boards", "$ns:${name}_cover_board", 2))
+
     TagManager.add("derelict:items/general_tab",
       "$ns:${name}_cover_board", "$ns:double_${name}_cover_boards", "$ns:crossed_${name}_cover_boards"
     )

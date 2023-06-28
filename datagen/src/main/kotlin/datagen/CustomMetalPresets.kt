@@ -3,10 +3,12 @@ package datagen
 import tada.lib.presets.Preset
 import tada.lib.presets.common.CommonDropPresets
 import tada.lib.presets.common.CommonModelPresets
+import tada.lib.presets.common.CommonRecipePresets
 import tada.lib.resources.blockstate.BlockState
 import tada.lib.resources.blockstate.BlockStateModel
 import tada.lib.resources.blockstate.BlockStateModel.Rotation
 import tada.lib.resources.model.ParentedModel
+import tada.lib.resources.recipe.CraftingRecipe
 import tada.lib.tags.TagManager
 import tada.lib.util.Id
 
@@ -59,7 +61,7 @@ object CustomMetalPresets {
     }
     listOf("", "_pile").forEach {
       add(blockName("_beam$it"), BlockState.create {
-        listOf(false to "horizontal", true to "vertical").forEach {pair ->
+        listOf(false to "horizontal", true to "vertical").forEach { pair ->
           variant("vertical=${pair.first},facing=north", BlockStateModel(namespacedBlockName("_beam/${pair.second}$it", "", "block/"), yRot = Rotation.NONE))
           variant("vertical=${pair.first},facing=east", BlockStateModel(namespacedBlockName("_beam/${pair.second}$it", "", "block/"), yRot = Rotation.CW_90))
           variant("vertical=${pair.first},facing=south", BlockStateModel(namespacedBlockName("_beam/${pair.second}$it", "", "block/"), yRot = Rotation.CW_180))
@@ -102,7 +104,58 @@ object CustomMetalPresets {
     })
     add(blockName("_barbed_wire"), ParentedModel.item("minecraft:item/generated").texture("layer0", blockTexture("_barbed_wire", folder = "item/")))
 
-
+    // Recipes
+    add(CommonRecipePresets.slab(namespacedBlockName("", "cut_"), namespacedBlockName("_slab", "cut_")))
+    add(CommonRecipePresets.stairs(namespacedBlockName("", "cut_"), namespacedBlockName("_stairs", "cut_")))
+    add(CommonRecipePresets.packed2x2(namespacedBlockName("_block"), namespacedBlockName("", "cut_")))
+    add(blockName("_pillar"), CraftingRecipe.shaped(namespacedBlockName("_pillar"), 2) {
+      pattern("S")
+      pattern("S")
+      key("S", namespacedBlockName("_slab", "cut_"))
+    })
+    add(blockName("_sheet"), CraftingRecipe.shaped(namespacedBlockName("_sheet"), 2) {
+      pattern("BB")
+      key("B", namespacedBlockName("_block"))
+    })
+    add(CommonRecipePresets.oneToOne(namespacedBlockName("_sheet"), namespacedBlockName("_patch"), 2))
+    add(blockName("_chain"), CraftingRecipe.shaped(namespacedBlockName("_chain"), 2) {
+      pattern("P")
+      pattern("S")
+      pattern("P")
+      key("P", namespacedBlockName("_patch"))
+      key("S", namespacedBlockName("_sheet"))
+    })
+    add(blockName("_chain_link_fence"), CraftingRecipe.shaped(namespacedBlockName("_chain_link_fence"), 6) {
+      pattern("CCC")
+      pattern("CCC")
+      key("C", namespacedBlockName("_chain"))
+    })
+    add(blockName("_barbed_wire"), CraftingRecipe.shaped(namespacedBlockName("_barbed_wire"), 3) {
+      pattern("CCC")
+      pattern("FFF")
+      key("C", namespacedBlockName("_chain"))
+      key("F", namespacedBlockName("_chain_link_fence"))
+    })
+    add(blockName("_ladder"), CraftingRecipe.shaped(namespacedBlockName("_ladder"), 6) {
+      pattern("S S")
+      pattern("SSS")
+      pattern("S S")
+      key("S", namespacedBlockName("_sheet"))
+    })
+    add(blockName("_beam"), CraftingRecipe.shaped(namespacedBlockName("_beam"), 6) {
+      pattern("SSS")
+      pattern("BBB")
+      pattern("SSS")
+      key("B", namespacedBlockName("_block"))
+      key("S", namespacedBlockName("_sheet"))
+    })
+    add(CommonRecipePresets.packed2x2(namespacedBlockName("_beam"), namespacedBlockName("_beam_pile")))
+    add(blockName("_grate"), CraftingRecipe.shaped(namespacedBlockName("_grate"), 5) {
+      pattern("S S")
+      pattern(" S ")
+      pattern("S S")
+      key("S", namespacedBlockName("_sheet"))
+    })
     TagManager.add("minecraft:blocks/climbable", namespacedBlockName("_ladder"))
     // Item Tags
     val all = arrayOf(
@@ -116,6 +169,12 @@ object CustomMetalPresets {
 
     if (waxed) {
       TagManager.add("c:items/waxed", namespacedBlockName("_block"), *all)
+      all.forEach {
+        add("${it.replace(ns, "").replace(":", "")}_from_unwaxed", CraftingRecipe.shapeless(it, 1) {
+          ingredient(it.replace("waxed_", ""))
+          ingredient("minecraft:honeycomb")
+        })
+      }
     }
   }
 
@@ -163,7 +222,23 @@ object CustomMetalPresets {
       applyWhen(sideModel(Rotation.CW_90), "east=true")
       applyWhen(sideModel(Rotation.CW_180), "south=true")
       applyWhen(sideModel(Rotation.CW_270), "west=true")
-      applyWhen(BlockStateModel("$ns:block/$oxidization${name}_chain_link_fence_post"), "north=false,east=false,south=false,west=false")
+      applyWhenAny(
+        BlockStateModel("$ns:block/$oxidization${name}_chain_link_fence_post"),
+        "north=false,east=false,south=false,west=false",
+        "north=true,east=false,south=false,west=false",
+        "north=false,east=true,south=false,west=false",
+        "north=false,east=false,south=true,west=false",
+        "north=false,east=false,south=false,west=true",
+        "north=true,east=true,south=false,west=false",
+        "north=false,east=true,south=true,west=false",
+        "north=false,east=false,south=true,west=true",
+        "north=true,east=false,south=false,west=true",
+        "north=true,east=true,south=true,west=false",
+        "north=false,east=true,south=true,west=true",
+        "north=true,east=false,south=true,west=true",
+        "north=true,east=true,south=false,west=true",
+        "north=true,east=true,south=true,west=true",
+      )
     })
 
     add("$prefix${name}_chain_link_fence", ParentedModel.item("minecraft:item/generated")

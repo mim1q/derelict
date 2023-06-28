@@ -25,7 +25,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
   }
 
   override fun tick() {
-    tick()
+    super.tick()
     if (world.isClient) bigSpiderAnimationProperties.tick()
   }
 

@@ -1,5 +1,6 @@
 package datagen
 
+import datagen.custom.CustomTagPresets
 import datagen.custom.FileCopyManager
 import tada.lib.generator.ResourceGenerator
 import tada.lib.lang.LanguageHelper
@@ -21,6 +22,8 @@ fun main(args: Array<String>) {
   val generator = ResourceGenerator.create("derelict", generatedPath).apply {
     // Assets to generate
     add(BlockSets.basicWoodSet("derelict:burned"))
+    add(CustomPresets.additionalBurnedBlocksRecipes())
+    add(CustomTagPresets.unburnedWoodTags())
     add(CustomPresets.smolderingLeaves())
     add(CommonDropPresets.silkTouchOrShearsOnlyDrop("derelict:smoldering_leaves"))
     add(CommonModelPresets.cubeAllBlock("derelict:burned_leaves"))
@@ -30,9 +33,9 @@ fun main(args: Array<String>) {
     add(CommonDropPresets.simpleDrop("derelict:smoking_embers"))
     add(CommonDropPresets.simpleDrop("derelict:smoldering_embers"))
     listOf("oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "mangrove", "crimson", "warped").forEach {
-      add(CustomPresets.coverBoards("derelict:$it", "minecraft:block/${it}_planks"))
+      add(CustomPresets.coverBoards("derelict:$it", "minecraft:${it}_planks"))
     }
-    add(CustomPresets.coverBoards("derelict:burned", "derelict:block/burned_planks"))
+    add(CustomPresets.coverBoards("derelict:burned", "derelict:burned_planks"))
     listOf("dried", "burned").forEach {
       add(CustomPresets.grassSet("derelict:$it"))
     }
