@@ -3,12 +3,13 @@
   "minVersion": "0.8",
   "package": "com.github.mim1q.derelict.mixin",
   "mixins": [
+    "block.AbstractBlockMixin",
     "block.entity.BlockEntityTypeMixin"
   ],
   "client": [
     "block.AbstractBlockStateMixin",
-    "client.render.ItemRendererMixin",
-    "client.item.HoneycombItemClientMixin"
+    "client.item.HoneycombItemClientMixin",
+    "client.render.ItemRendererMixin"
   ],
   "server": [],
   "injectors": {

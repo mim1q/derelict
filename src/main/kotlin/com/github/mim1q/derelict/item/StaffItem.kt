@@ -1,5 +1,6 @@
 package com.github.mim1q.derelict.item
 
+import com.github.mim1q.derelict.Derelict
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.block.Block
 import net.minecraft.block.Oxidizable
@@ -59,6 +60,9 @@ sealed class StaffItem(settings: FabricItemSettings) : Item(settings), Crosshair
         ?.let { HoneycombItem.UNWAXED_TO_WAXED_BLOCKS.get()[it] }
       }
     )
+
+    override fun shouldShowTip(block: Block?)
+      = Derelict.CLIENT_CONFIG.ageableCrosshairTip() && super.shouldShowTip(block)
   }
 
   class Waxing(settings: FabricItemSettings) : StaffItem(settings) {
@@ -69,6 +73,9 @@ sealed class StaffItem(settings: FabricItemSettings) : Item(settings), Crosshair
     override fun getBlockConversion(block: Block): Block? = firstNonNull(
       { HoneycombItem.UNWAXED_TO_WAXED_BLOCKS.get()[block] }
     )
+
+    override fun shouldShowTip(block: Block?)
+      = Derelict.CLIENT_CONFIG.waxableCrosshairTip() && super.shouldShowTip(block)
   }
 
   protected fun firstNonNull(vararg suppliers: () -> Block?): Block? {

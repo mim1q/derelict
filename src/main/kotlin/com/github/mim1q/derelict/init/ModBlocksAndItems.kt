@@ -14,16 +14,21 @@ import com.github.mim1q.derelict.featureset.CoverBoardsSet
 import com.github.mim1q.derelict.featureset.GrassSet
 import com.github.mim1q.derelict.featureset.MetalSet
 import com.github.mim1q.derelict.featureset.WoodSet
+import com.github.mim1q.derelict.interfaces.AbstractBlockAccessor
 import com.github.mim1q.derelict.item.StaffItem
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.minecraft.block.*
 import net.minecraft.item.BlockItem
+import net.minecraft.item.HoneycombItem
 import net.minecraft.item.Item
 import net.minecraft.util.registry.Registry
 
 @Suppress("UNUSED")
 object ModBlocksAndItems {
+  private val lastAgeable = mutableSetOf<Block>()
+  private val lastWaxable = mutableSetOf<Block>()
+
   val AGING_STAFF = registerItem("aging_staff", StaffItem.Aging(defaultItemSettings()))
   val WAXING_STAFF = registerItem("waxing_staff", StaffItem.Waxing(defaultItemSettings()))
 
@@ -66,6 +71,22 @@ object ModBlocksAndItems {
   val CONSTRUCTION_STEEL = MetalSet.FullOxidizable(Derelict.id("construction_steel"), defaultItemSettings()).register()
 
   fun init() { }
+
+  fun setupWaxableAndAgeable() {
+    lastWaxable.forEach { (it as AbstractBlockAccessor).isWaxable = false }
+    lastAgeable.forEach { (it as AbstractBlockAccessor).isAgeable = false }
+    HoneycombItem.UNWAXED_TO_WAXED_BLOCKS.get().forEach { (from, _) ->
+      (from as AbstractBlockAccessor).isWaxable = true
+      lastWaxable.add(from)
+    }
+    Oxidizable.OXIDATION_LEVEL_INCREASES.get().forEach { (from, _) ->
+      (from as AbstractBlockAccessor).isAgeable = true
+      lastAgeable.add(from)
+    }
+    HoneycombItem.WAXED_TO_UNWAXED_BLOCKS.get().forEach {
+      (from, to) -> if (Oxidizable.OXIDATION_LEVEL_INCREASES.get().containsKey(to)) (from as AbstractBlockAccessor).isAgeable = true
+    }
+  }
 
   internal fun <T : Block> register(name: String, block: T, category: ItemCategory = ItemCategory.GENERAL): T {
     registerBlock(name, block)

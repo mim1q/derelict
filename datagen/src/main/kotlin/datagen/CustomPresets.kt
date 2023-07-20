@@ -170,7 +170,9 @@ object CustomPresets {
     add(rotatableCoverBoard(id, particle, "crossed", 3))
 
     add("${name}_cover_board", CraftingRecipe.shaped("$ns:${name}_cover_board", 2) {
-      pattern("###")
+      pattern("#")
+      pattern("#")
+      pattern("#")
       key("#", planks)
     })
     add("double_${name}_cover_boards", CraftingRecipe.shaped("${ns}:double_${name}_cover_boards", 1) {
