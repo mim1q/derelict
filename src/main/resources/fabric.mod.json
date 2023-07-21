@@ -10,13 +10,13 @@
     "main": [
       {
         "adapter": "kotlin",
-        "value": "com.github.mim1q.derelict.Derelict"
+        "value": "dev.mim1q.derelict.Derelict"
       }
     ],
     "client": [
       {
         "adapter": "kotlin",
-        "value": "com.github.mim1q.derelict.DerelictClient"
+        "value": "dev.mim1q.derelict.DerelictClient"
       }
     ]
   },

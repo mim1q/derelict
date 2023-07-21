@@ -6,7 +6,7 @@ plugins {
   id("application")
 }
 
-group = "com.github.mim1q.derelict"
+group = "dev.mim1q.derelict"
 
 repositories {
   mavenCentral()
