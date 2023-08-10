@@ -6,12 +6,13 @@ import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.init.client.ModRender
 import dev.mim1q.derelict.interfaces.AbstractBlockAccessor
 import dev.mim1q.derelict.item.CrosshairTipItem
-import com.mojang.blaze3d.systems.RenderSystem
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext
 import net.minecraft.client.MinecraftClient
-import net.minecraft.client.gui.DrawableHelper
+import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.model.*
-import net.minecraft.client.render.*
+import net.minecraft.client.render.OverlayTexture
+import net.minecraft.client.render.RenderLayer
+import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.render.entity.model.EntityModelLoader
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.item.Items
@@ -27,41 +28,30 @@ object RenderUtil {
   private val MARKER_TEXTURE = Derelict.id("textures/block/marker.png")
   private var MARKER_MODEL: Model? = null
 
-  fun renderWaxedIndicator(x: Double, y: Double) {
-    val size = Derelict.CLIENT_CONFIG.waxedIndicatorScale() * 16
+  fun renderWaxedIndicator(textureDrawer: (Identifier, Int, Int, Int, Int, Float) -> Unit, x: Int, y: Int) {
+    val size = (Derelict.CLIENT_CONFIG.waxedIndicatorScale() * 16).toInt()
+    val startX = x - size / 2
+    val startY = y - size / 2
     val alpha = Derelict.CLIENT_CONFIG.waxedIndicatorOpacity()
-    val tessellator = Tessellator.getInstance()
-    val bufferBuilder = tessellator.buffer
-    RenderSystem.setShader(GameRenderer::getPositionTexColorShader)
-    RenderSystem.setShaderTexture(0, HONEYCOMB_TEXTURE)
-    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha)
-    RenderSystem.enableBlend()
-    bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR)
-    val z = 300.0
-    bufferBuilder.vertex(x, y + size, z).texture(0f, 1f).color(255, 255, 255, 255).next()
-    bufferBuilder.vertex(x + size, y + size, z).texture(1f, 1f).color(255, 255, 255, 255).next()
-    bufferBuilder.vertex(x + size, y, z).texture(1f, 0f).color(255, 255, 255, 255).next()
-    bufferBuilder.vertex(x, y, z).texture(0f, 0f).color(255, 255, 255, 255).next()
-    tessellator.draw()
-    RenderSystem.disableBlend()
+    textureDrawer(HONEYCOMB_TEXTURE, startX, startY, 300, size, alpha)
   }
 
-  fun renderCrosshairTip(item: CrosshairTipItem) {
+  fun renderCrosshairTip(context: DrawContext, item: CrosshairTipItem) {
     val target = MinecraftClient.getInstance().crosshairTarget
     if (target?.type == HitResult.Type.BLOCK) {
       val block = MinecraftClient.getInstance().world?.getBlockState((target as BlockHitResult).blockPos)?.block
       if (item.shouldShowTip(block)) {
-        renderCrosshairTipTexture(item.getTipTexture())
+        renderCrosshairTipTexture(context, item.getTipTexture())
       }
     }
   }
 
-  private fun renderCrosshairTipTexture(texture: Identifier) {
-    RenderSystem.setShader(GameRenderer::getPositionTexShader)
-    RenderSystem.setShaderTexture(0, texture)
+  private fun renderCrosshairTipTexture(context: DrawContext, texture: Identifier) {
+//    RenderSystem.setShader(GameRenderer::getPositionTexProgram)
     val x = MinecraftClient.getInstance().window.scaledWidth / 2 + 6
     val y = MinecraftClient.getInstance().window.scaledHeight / 2 - 8
-    DrawableHelper.drawTexture(MatrixStack(), x, y, 0F, 0F, 16, 16, 16, 16)
+
+    context.drawTexture(texture, x, y, 0F, 0F, 16, 16, 16, 16)
   }
 
   fun setupMarkerModel(loader: EntityModelLoader) {

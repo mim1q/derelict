@@ -8,7 +8,8 @@ import dev.mim1q.derelict.particle.spider.SpiderParticle
 import dev.mim1q.derelict.particle.spider.SpiderParticleType
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry
 import net.minecraft.particle.ParticleType
-import net.minecraft.util.registry.Registry
+import net.minecraft.registry.Registries
+import net.minecraft.registry.Registry
 
 object ModParticles {
   val SPRAY = register("spray", ColoredParticleType.create())
@@ -22,5 +23,5 @@ object ModParticles {
   }
 
   private fun <P, T : ParticleType<P>> register(name: String, particle: T): T =
-    Registry.register(Registry.PARTICLE_TYPE, Derelict.id(name), particle)
+    Registry.register(Registries.PARTICLE_TYPE, Derelict.id(name), particle)
 }

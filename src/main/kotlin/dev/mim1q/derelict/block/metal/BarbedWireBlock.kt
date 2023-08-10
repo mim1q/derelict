@@ -5,7 +5,6 @@ import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.ShapeContext
 import net.minecraft.entity.Entity
-import net.minecraft.entity.damage.DamageSource
 import net.minecraft.item.ItemPlacementContext
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.EnumProperty
@@ -27,12 +26,12 @@ open class BarbedWireBlock(settings: FabricBlockSettings) : Block(settings) {
     = if (state[AXIS] == Axis.X) SHAPE else SHAPE_ROTATED
 
   override fun getPlacementState(ctx: ItemPlacementContext): BlockState
-    = defaultState.with(AXIS, ctx.playerFacing.rotateYClockwise().axis)
+    = defaultState.with(AXIS, ctx.horizontalPlayerFacing.rotateYClockwise().axis)
 
   @Suppress("OVERRIDE_DEPRECATION")
   override fun onEntityCollision(state: BlockState, world: World, pos: BlockPos, entity: Entity) {
     entity.slowMovement(state, Vec3d(0.5, 0.5, 0.5))
-    entity.damage(DamageSource.CACTUS, 1.5F)
+    entity.damage(world.damageSources.cactus(), 1.5F)
   }
 
   companion object {

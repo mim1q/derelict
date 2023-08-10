@@ -67,7 +67,7 @@ sealed class RotatableCoverBlock(
     return ActionResult.SUCCESS
   }
 
-  override fun isTranslucent(state: BlockState, world: BlockView, pos: BlockPos) = true
+  override fun isTransparent(state: BlockState, world: BlockView, pos: BlockPos) = true
 
   open class Normal(settings: FabricBlockSettings) : RotatableCoverBlock(settings) {
     override fun getRotationProperty(): IntProperty = ROTATION_8
@@ -101,7 +101,7 @@ sealed class RotatableCoverBlock(
     }
 
     override fun getRotationProperty(): IntProperty = ROTATION_3
-    override fun getRotation(ctx: ItemPlacementContext): Int = if (ctx.playerFacing.axis == Axis.X) 2 else 0
+    override fun getRotation(ctx: ItemPlacementContext): Int = if (ctx.horizontalPlayerFacing.axis == Axis.X) 2 else 0
   }
 
   open class SquarePatch(settings: FabricBlockSettings) : RotatableCoverBlock(settings) {

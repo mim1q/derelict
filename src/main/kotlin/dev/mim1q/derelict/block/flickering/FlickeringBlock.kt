@@ -23,7 +23,7 @@ interface FlickeringBlock {
     }
 
     world.setBlockState(pos, state.with(LIGHT_STATE, lightState))
-    world.createAndScheduleBlockTick(pos, block, delay)
+    world.scheduleBlockTick(pos, block, delay)
   }
 
   fun nextFancyFlicker(random: Random, currentState: LightState): Pair<LightState, Int> {

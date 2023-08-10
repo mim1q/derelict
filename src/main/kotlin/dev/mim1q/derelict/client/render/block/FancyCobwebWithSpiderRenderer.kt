@@ -4,6 +4,7 @@ import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.block.cobweb.FancyCobwebWithSpiderBlockEntity
 import dev.mim1q.derelict.init.client.ModRender
 import dev.mim1q.derelict.util.Easing
+import dev.mim1q.derelict.util.extensions.radians
 import net.minecraft.client.model.*
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumer
@@ -12,7 +13,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory.Context
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.math.MathHelper
-import net.minecraft.util.math.Vec3f
+import org.joml.Quaternionf
 
 fun MatrixStack.entry(setup: MatrixStack.() -> Unit) {
   push()
@@ -33,7 +34,7 @@ class FancyCobwebWithSpiderRenderer(context: Context) : BlockEntityRenderer<Fanc
   ) {
     val linearProgress = MathHelper.lerp(tickDelta.toDouble(), entity.lastLoweringProgress, entity.loweringProgress)
     val progress = Easing.easeInOutQuad(0F, 1F, linearProgress.toFloat())
-    val yaw = MathHelper.lerp(tickDelta, entity.lastClientYaw, entity.clientYaw)
+    val yaw = MathHelper.lerp(tickDelta, entity.lastClientYaw, entity.clientYaw).radians()
     val vertices = vertexConsumers.getBuffer(RenderLayer.getEntityCutout(TEXTURE))
     matrices.entry {
       scale(-1F, -1F, 1F)
@@ -47,7 +48,7 @@ class FancyCobwebWithSpiderRenderer(context: Context) : BlockEntityRenderer<Fanc
 
       matrices.entry {
         translate(0.0, progress * entity.distance + 0.9F, 0.0)
-        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(yaw))
+        matrices.multiply(Quaternionf().rotationY(yaw))
         matrices.scale(entity.scale, entity.scale, entity.scale)
         model.render(matrices, vertices, light, overlay, 1F, 1F, 1F, 1F)
       }

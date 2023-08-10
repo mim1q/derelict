@@ -10,7 +10,8 @@ import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.SpawnGroup
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.mob.ZombieEntity
-import net.minecraft.util.registry.Registry
+import net.minecraft.registry.Registries
+import net.minecraft.registry.Registry
 
 object ModEntities {
   val ARACHNE = register("arachne", ::ArachneEntity, attributes = ArachneEntity.createArachneAttributes()) {
@@ -26,7 +27,7 @@ object ModEntities {
     attributes: DefaultAttributeContainer.Builder = ZombieEntity.createHostileAttributes(),
     builderSetup: FabricEntityTypeBuilder<E>.() -> Unit = { }
   ): EntityType<E> = Registry.register(
-      Registry.ENTITY_TYPE,
+      Registries.ENTITY_TYPE,
       Derelict.id(name),
       FabricEntityTypeBuilder.create(spawnGroup, entityFactory).apply(builderSetup).build()
     ).also {

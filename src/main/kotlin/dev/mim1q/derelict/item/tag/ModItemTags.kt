@@ -2,9 +2,9 @@ package dev.mim1q.derelict.item.tag
 
 import dev.mim1q.derelict.Derelict
 import net.minecraft.item.Item
-import net.minecraft.tag.TagKey
+import net.minecraft.registry.RegistryKeys
+import net.minecraft.registry.tag.TagKey
 import net.minecraft.util.Identifier
-import net.minecraft.util.registry.Registry
 
 object ModItemTags {
   val UNWAXED_METALS = of("unwaxed_metals")
@@ -13,6 +13,6 @@ object ModItemTags {
 
   val WAXED_COMMON = ofCommon("waxed")
 
-  private fun of(id: String): TagKey<Item> = TagKey.of(Registry.ITEM_KEY, Derelict.id(id))
-  private fun ofCommon(id: String): TagKey<Item> = TagKey.of(Registry.ITEM_KEY, Identifier("c", id))
+  private fun of(id: String): TagKey<Item> = TagKey.of(RegistryKeys.ITEM, Derelict.id(id))
+  private fun ofCommon(id: String): TagKey<Item> = TagKey.of(RegistryKeys.ITEM, Identifier("c", id))
 }

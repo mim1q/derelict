@@ -1,13 +1,13 @@
 package dev.mim1q.derelict.particle.spider
 
-import dev.mim1q.derelict.init.ModParticles
 import com.mojang.brigadier.StringReader
 import com.mojang.serialization.Codec
+import dev.mim1q.derelict.init.ModParticles
 import net.minecraft.network.PacketByteBuf
 import net.minecraft.particle.ParticleEffect
 import net.minecraft.particle.ParticleType
+import net.minecraft.registry.Registries
 import net.minecraft.util.math.Direction
-import net.minecraft.util.registry.Registry
 
 class SpiderParticleEffect(
   private val type: ParticleType<SpiderParticleEffect>,
@@ -19,7 +19,7 @@ class SpiderParticleEffect(
     buf.writeInt(direction.id)
   }
 
-  override fun asString(): String = "${Registry.PARTICLE_TYPE.getId(type)}$direction"
+  override fun asString(): String = "${Registries.PARTICLE_TYPE.getId(type)}$direction"
 
   @Suppress("DEPRECATION")
   object ParametersFactory : ParticleEffect.Factory<SpiderParticleEffect> {

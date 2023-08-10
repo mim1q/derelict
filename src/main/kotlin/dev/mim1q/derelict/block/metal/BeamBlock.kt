@@ -21,7 +21,7 @@ open class BeamBlock(settings: Settings, private val fullBlock: Boolean = false)
 
   override fun getPlacementState(ctx: ItemPlacementContext): BlockState {
     if (ctx.side.axis.isVertical) {
-      return defaultState.with(VERTICAL, false).with(FACING, ctx.playerFacing)
+      return defaultState.with(VERTICAL, false).with(FACING, ctx.horizontalPlayerFacing)
     }
     return defaultState.with(VERTICAL, true).with(FACING, ctx.side)
   }

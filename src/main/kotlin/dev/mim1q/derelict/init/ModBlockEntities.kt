@@ -6,7 +6,8 @@ import net.fabricmc.fabric.api.`object`.builder.v1.block.entity.FabricBlockEntit
 import net.minecraft.block.Block
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.block.entity.BlockEntityType
-import net.minecraft.util.registry.Registry
+import net.minecraft.registry.Registries
+import net.minecraft.registry.Registry
 
 object ModBlockEntities {
 
@@ -24,7 +25,7 @@ object ModBlockEntities {
     factory: FabricBlockEntityTypeBuilder.Factory<T>,
     vararg blocks: Block
   ) = Registry.register(
-    Registry.BLOCK_ENTITY_TYPE,
+    Registries.BLOCK_ENTITY_TYPE,
     Derelict.id(id),
     FabricBlockEntityTypeBuilder.create(factory).addBlocks(*blocks).build()
   )

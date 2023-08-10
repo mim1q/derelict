@@ -5,7 +5,7 @@ import com.mojang.serialization.Codec
 import net.minecraft.network.PacketByteBuf
 import net.minecraft.particle.ParticleEffect
 import net.minecraft.particle.ParticleType
-import net.minecraft.util.registry.Registry
+import net.minecraft.registry.Registries
 
 
 @JvmRecord
@@ -16,7 +16,7 @@ data class ColoredParticleEffect(val type: ParticleType<*>, val color: Int) : Pa
     buf.writeInt(color)
   }
 
-  override fun asString(): String = "${Registry.PARTICLE_TYPE.getId(type)}$color"
+  override fun asString(): String = "${Registries.PARTICLE_TYPE.getId(type)}$color"
 
   companion object {
     @Suppress("DEPRECATION")

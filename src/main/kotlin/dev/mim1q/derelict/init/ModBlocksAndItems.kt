@@ -18,11 +18,18 @@ import dev.mim1q.derelict.interfaces.AbstractBlockAccessor
 import dev.mim1q.derelict.item.StaffItem
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
+import net.fabricmc.fabric.mixin.`object`.builder.AbstractBlockSettingsAccessor
 import net.minecraft.block.*
+import net.minecraft.block.AbstractBlock.Offsetter
 import net.minecraft.item.BlockItem
 import net.minecraft.item.HoneycombItem
 import net.minecraft.item.Item
-import net.minecraft.util.registry.Registry
+import net.minecraft.registry.Registries
+import net.minecraft.registry.Registry
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Vec3d
+import net.minecraft.world.BlockView
+import java.util.*
 
 @Suppress("UNUSED")
 object ModBlocksAndItems {
@@ -35,9 +42,9 @@ object ModBlocksAndItems {
   val BURNED_WOOD = WoodSet(Derelict.id("burned"), defaultItemSettings()).register()
   val BURNED_LEAVES = register("burned_leaves", LeavesBlock(FabricBlockSettings.copyOf(Blocks.OAK_LEAVES)))
   val SMOLDERING_LEAVES = register("smoldering_leaves", SmolderingLeavesBlock(FabricBlockSettings.copyOf(Blocks.OAK_LEAVES)))
-  val SMOKING_EMBERS = register("smoking_embers", EmbersBlock.Smoking(FabricBlockSettings.of(Material.FIRE)))
+  val SMOKING_EMBERS = register("smoking_embers", EmbersBlock.Smoking(FabricBlockSettings.copyOf(Blocks.MAGMA_BLOCK)))
   val SMOLDERING_EMBERS = register("smoldering_embers", EmbersBlock.Smoldering(
-    FabricBlockSettings.of(Material.FIRE).luminance(4).emissiveLighting {_, _, _ -> true}
+    FabricBlockSettings.copyOf(Blocks.MAGMA_BLOCK).luminance(4).emissiveLighting {_, _, _ -> true}
   ))
   val DRIED_GRASS = GrassSet(Derelict.id("dried"), defaultItemSettings())
   val BURNED_GRASS = GrassSet(Derelict.id("burned"), defaultItemSettings())
@@ -95,15 +102,15 @@ object ModBlocksAndItems {
   }
 
   internal fun <T: Block> registerBlock(name: String, block: T): T = Registry.register(
-    Registry.BLOCK, Derelict.id(name), block
+    Registries.BLOCK, Derelict.id(name), block
   )
 
   internal fun <T: Item> registerItem(name: String, item: T, category: ItemCategory = ItemCategory.GENERAL): T {
     category.add(item)
-    return Registry.register(Registry.ITEM, Derelict.id(name), item)
+    return Registry.register(Registries.ITEM, Derelict.id(name), item)
   }
 
-  private fun defaultItemSettings() = FabricItemSettings().group(Derelict.ITEM_GROUP)
+  private fun defaultItemSettings() = FabricItemSettings()
 
   enum class ItemCategory {
     GENERAL,
@@ -115,4 +122,24 @@ object ModBlocksAndItems {
     val items: MutableList<Item> = mutableListOf()
     fun add(item: Item) = items.add(item)
   }
+}
+
+object NoZFightingOffsetter : Offsetter {
+  override fun evaluate(state: BlockState, world: BlockView, pos: BlockPos): Vec3d {
+    val x = pos.x % 3
+    val y = pos.y % 3
+    val z = pos.z % 3
+    return(Vec3d(
+      (z * 0.001) + (y * 0.0015),
+      (x * 0.001) + (z * 0.0015),
+      (y * 0.001) + (x * 0.0015)
+    ))
+  }
+}
+
+@Suppress("UnstableApiUsage")
+fun <T : AbstractBlock.Settings> T.noZFighting(): T {
+  (this as AbstractBlockSettingsAccessor).offsetter = Optional.of(NoZFightingOffsetter)
+  this.dynamicBounds = true
+  return this
 }

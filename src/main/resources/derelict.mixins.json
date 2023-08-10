@@ -7,9 +7,8 @@
     "block.entity.BlockEntityTypeMixin"
   ],
   "client": [
-    "block.AbstractBlockStateMixin",
     "client.item.HoneycombItemClientMixin",
-    "client.render.ItemRendererMixin"
+    "client.render.DrawContextMixin"
   ],
   "server": [],
   "injectors": {
