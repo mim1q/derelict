@@ -37,6 +37,8 @@ val generatedDir = projectDir.resolve("../src/main/generated")
 val resourceDir = projectDir.resolve("src/main/resources/")
 val langDir = projectDir.resolve("../src/main/resources/assets/derelict/lang")
 val langHelperDir = projectDir.resolve("../lang")
+val datagenImgDir = projectDir.resolve("img")
+
 tasks {
   withType<JavaExec> {
     doFirst {

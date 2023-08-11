@@ -10,6 +10,7 @@ import dev.mim1q.derelict.block.metal.GrateBlock
 import dev.mim1q.derelict.block.metal.MetalLadderBlock
 import dev.mim1q.derelict.block.metal.oxidizable.*
 import dev.mim1q.derelict.init.ModBlocksAndItems.ItemCategory
+import dev.mim1q.derelict.init.noZFighting
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry
@@ -55,8 +56,8 @@ sealed class MetalSet(
     override val beam: BeamBlock = registerBlockWithItem("$prefix${name}_beam", BeamBlock(defaultBlockSettings.nonOpaque()), ItemCategory.WAXED_METAL_DECORATION)
     override val beamPile: BeamBlock = registerBlockWithItem("$prefix${name}_beam_pile", BeamBlock(defaultBlockSettings.nonOpaque(), true), ItemCategory.WAXED_METAL_DECORATION)
     override val ladder: LadderBlock = registerBlockWithItem("$prefix${name}_ladder", MetalLadderBlock(defaultBlockSettings.nonOpaque()), ItemCategory.WAXED_METAL_DECORATION)
-    override val patch: SquarePatch = registerBlockWithItem("$prefix${name}_patch", SquarePatch(defaultBlockSettings.nonOpaque()), ItemCategory.WAXED_METAL_DECORATION)
-    override val sheet: RotatableCoverBlock.Normal = registerBlockWithItem("$prefix${name}_sheet", RotatableCoverBlock.Normal(defaultBlockSettings.nonOpaque()), ItemCategory.WAXED_METAL_DECORATION)
+    override val patch: SquarePatch = registerBlockWithItem("$prefix${name}_patch", SquarePatch(defaultBlockSettings.nonOpaque().noZFighting()), ItemCategory.WAXED_METAL_DECORATION)
+    override val sheet: RotatableCoverBlock.Normal = registerBlockWithItem("$prefix${name}_sheet", RotatableCoverBlock.Normal(defaultBlockSettings.nonOpaque().noZFighting()), ItemCategory.WAXED_METAL_DECORATION)
     override val chainLinkFence: PaneBlock = registerBlockWithItem("$prefix${name}_chain_link_fence", PaneBlock(defaultBlockSettings.nonOpaque()), ItemCategory.WAXED_METAL_DECORATION)
     override val barbedWire: BarbedWireBlock = registerBlockWithItem("$prefix${name}_barbed_wire", BarbedWireBlock(defaultBlockSettings.nonOpaque().noCollision()), ItemCategory.WAXED_METAL_DECORATION)
   }
@@ -77,8 +78,8 @@ sealed class MetalSet(
     override val beam: BeamBlock = registerBlockWithItem("$prefix${name}_beam", OxidizableBeamBlock(level, defaultBlockSettings.nonOpaque()), ItemCategory.METAL_DECORATION)
     override val beamPile: BeamBlock = registerBlockWithItem("$prefix${name}_beam_pile", OxidizableBeamBlock(level, defaultBlockSettings.nonOpaque(), true), ItemCategory.METAL_DECORATION)
     override val ladder: LadderBlock = registerBlockWithItem("$prefix${name}_ladder", OxidizableMetalLadderBlock(level, defaultBlockSettings.nonOpaque()), ItemCategory.METAL_DECORATION)
-    override val patch: SquarePatch = registerBlockWithItem("$prefix${name}_patch", OxidizableSquarePatch(level, defaultBlockSettings.nonOpaque()), ItemCategory.METAL_DECORATION)
-    override val sheet: RotatableCoverBlock.Normal = registerBlockWithItem("$prefix${name}_sheet", OxidizableNormal(level, defaultBlockSettings.nonOpaque()), ItemCategory.METAL_DECORATION)
+    override val patch: SquarePatch = registerBlockWithItem("$prefix${name}_patch", OxidizableSquarePatch(level, defaultBlockSettings.nonOpaque().noZFighting()), ItemCategory.METAL_DECORATION)
+    override val sheet: RotatableCoverBlock.Normal = registerBlockWithItem("$prefix${name}_sheet", OxidizableNormal(level, defaultBlockSettings.nonOpaque().noZFighting()), ItemCategory.METAL_DECORATION)
     override val chainLinkFence: PaneBlock = registerBlockWithItem("$prefix${name}_chain_link_fence", OxidizablePaneBlock(level, defaultBlockSettings.nonOpaque()), ItemCategory.METAL_DECORATION)
     override val barbedWire: BarbedWireBlock = registerBlockWithItem("$prefix${name}_barbed_wire", OxidizableBarbedWireBlock(level, defaultBlockSettings.nonOpaque().noCollision()), ItemCategory.METAL_DECORATION)
 

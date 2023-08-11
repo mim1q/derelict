@@ -2,6 +2,7 @@ package datagen
 
 import datagen.custom.CustomTagPresets
 import datagen.custom.FileCopyManager
+import datagen.custom.ImageAtlases
 import tada.lib.generator.ResourceGenerator
 import tada.lib.lang.LanguageHelper
 import tada.lib.presets.blocksets.BlockSets
@@ -83,7 +84,6 @@ fun main(args: Array<String>) {
       "derelict:burned_sign", "derelict:burned_log", "derelict:burned_wood", "derelict:stripped_burned_log",
       "derelict:stripped_burned_wood", "derelict:burned_leaves", "derelict:smoldering_leaves", "derelict:burned_trapdoor"
     )
-    TagManager.add("derelict:blocks/prevent_z_fighting", "#derelict:cover_boards", "#derelict:metal_sheets")
     listOf("", "exposed_", "weathered_", "oxidized_").forEach {
       val suffix = if (it == "") "_block" else ""
       TagManager.add(
@@ -99,4 +99,6 @@ fun main(args: Array<String>) {
     automaticallyGenerateBlockEntries(generator)
     generateMissingLangEntries()
   }
+
+  ImageAtlases.getMetalAtlas(resourcePath.resolve("atlas"), generatedPath, "construction_steel").save()
 }
