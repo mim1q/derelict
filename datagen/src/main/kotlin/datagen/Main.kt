@@ -33,7 +33,7 @@ fun main(args: Array<String>) {
     add(CustomPresets.eachWallBlock("derelict:smoking_embers"))
     add(CommonDropPresets.simpleDrop("derelict:smoking_embers"))
     add(CommonDropPresets.simpleDrop("derelict:smoldering_embers"))
-    listOf("oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "mangrove", "crimson", "warped").forEach {
+    listOf("oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "mangrove", "crimson", "warped", "cherry", "bamboo").forEach {
       add(CustomPresets.coverBoards("derelict:$it", "minecraft:${it}_planks"))
     }
     add(CustomPresets.coverBoards("derelict:burned", "derelict:burned_planks"))
