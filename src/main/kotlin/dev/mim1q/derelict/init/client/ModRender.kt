@@ -7,7 +7,7 @@ import dev.mim1q.derelict.client.render.entity.boss.arachne.ArachneTexturedModel
 import dev.mim1q.derelict.init.ModBlockEntities
 import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.init.ModEntities
-import dev.mim1q.derelict.util.RenderUtil
+import dev.mim1q.derelict.util.BlockMarkerUtils
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry.TexturedModelDataProvider
@@ -19,7 +19,7 @@ import net.minecraft.client.render.entity.model.EntityModelLayer
 object ModRender {
   val FANCY_COBWEB_SPIDER_LAYER = registerLayer(FancyCobwebWithSpiderRenderer.SpiderModel::getTexturedModelData, "fancy_cobweb_spider")
   val ARACHNE_LAYER = registerLayer(ArachneTexturedModelData::create, "arachne")
-  val MARKER_LAYER = registerLayer(RenderUtil::getMarkerTexturedModelData, "marker")
+  val MARKER_LAYER = registerLayer(BlockMarkerUtils::getMarkerTexturedModelData, "marker")
 
   fun init() {
     BlockRenderLayerMap.INSTANCE.putBlocks(

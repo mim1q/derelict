@@ -2,7 +2,7 @@ package dev.mim1q.derelict.mixin.client.render;
 
 import dev.mim1q.derelict.Derelict;
 import dev.mim1q.derelict.item.tag.ModItemTags;
-import dev.mim1q.derelict.util.RenderUtil;
+import dev.mim1q.derelict.util.BlockMarkerUtils;
 import kotlin.Unit;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.math.MatrixStack;
@@ -34,7 +34,7 @@ public abstract class DrawContextMixin {
       stack.isIn(ModItemTags.INSTANCE.getWAXED_COMMON())
       && Derelict.INSTANCE.getCLIENT_CONFIG().waxedIndicatorOpacity() > 0F
     ) {
-      RenderUtil.INSTANCE.renderWaxedIndicator(this::derelict$drawTexture, x, y);
+      BlockMarkerUtils.INSTANCE.renderWaxedIndicator(this::derelict$drawTexture, x, y);
     }
   }
 

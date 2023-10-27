@@ -23,7 +23,7 @@ import net.minecraft.util.math.BlockPos
 import kotlin.math.sin
 
 
-object RenderUtil {
+object BlockMarkerUtils {
   private val HONEYCOMB_TEXTURE = Identifier("textures/item/honeycomb.png")
   private val MARKER_TEXTURE = Derelict.id("textures/block/marker.png")
   private var MARKER_MODEL: Model? = null
