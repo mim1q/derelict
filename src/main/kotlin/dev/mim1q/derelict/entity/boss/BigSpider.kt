@@ -43,11 +43,13 @@ class BigSpiderAnimationProperties(private val entity: LivingEntity) {
     prevSpeedChangeDelta = speedChangeDelta
     prevSpeedChangeProgress = speedChangeProgress
 
-    if (abs(entity.prevBodyYaw - entity.bodyYaw) < 0.1F) {
+    val yawChange = abs(entity.prevBodyYaw - entity.bodyYaw)
+    if (yawChange < 0.1F) {
       yawChangeDelta = max(yawChangeDelta - 0.1F, 0.0F)
     } else {
-      yawChangeDelta = min(yawChangeDelta + 0.1F, 0.5F)
-      yawChangeProgress += if (entity.prevBodyYaw > entity.bodyYaw) -0.25F else 0.25F
+      val clampedYawChange = min(yawChange, 0.1F)
+      yawChangeDelta = min(yawChangeDelta + clampedYawChange, 0.5F)
+      yawChangeProgress += if (entity.prevBodyYaw > entity.bodyYaw) (-clampedYawChange * 2F) else (clampedYawChange * 2F)
     }
     val distance = (entity.x - entity.prevX).pow(2) + (entity.z - entity.prevZ).pow(2)
     if (distance <= 0.001) {
