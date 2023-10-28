@@ -13,8 +13,8 @@ class WoodSet(
   id: Identifier,
   defaultItemSettings: FabricItemSettings = FabricItemSettings()
 ) : FeatureSet(id, defaultItemSettings, FabricBlockSettings.copyOf(Blocks.OAK_WOOD)) {
-  val blockSetType = BlockSetTypeBuilder.copyOf(BlockSetType.OAK).build(id)
-  val woodType = WoodTypeBuilder.copyOf(WoodType.OAK).build(id, blockSetType)
+  val blockSetType = BlockSetTypeBuilder.copyOf(BlockSetType.OAK).register(id)
+  val woodType = WoodTypeBuilder.copyOf(WoodType.OAK).register(id, blockSetType)
 
   val planks = Block(defaultBlockSettings)
   val log = PillarBlock(defaultBlockSettings)
