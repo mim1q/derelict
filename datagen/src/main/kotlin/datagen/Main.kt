@@ -24,6 +24,7 @@ fun main(args: Array<String>) {
     // Assets to generate
     add(BlockSets.basicWoodSet("derelict:burned"))
     add(CustomPresets.additionalBurnedBlocksRecipes())
+    add(CustomPresets.miscRecipes())
     add(CustomTagPresets.unburnedWoodTags())
     add(CustomPresets.smolderingLeaves())
     add(CommonDropPresets.silkTouchOrShearsOnlyDrop("derelict:smoldering_leaves"))
@@ -66,7 +67,7 @@ fun main(args: Array<String>) {
       "minecraft:block/soul_lantern", "derelict:block/soul_lantern_half_on", "derelict:block/broken_lantern"
     ))
     // Metal
-    add(CustomMetalPresets.threeOxidationMetalSet("derelict:construction_steel"))
+    add(CustomMetalPresets.threeOxidationMetalSet("derelict:noctisteel"))
     // Handheld items
     listOf("aging_staff", "waxing_staff").forEach {
       add(it, ParentedModel.item("minecraft:item/handheld").texture("layer0", "derelict:item/$it"))
@@ -100,5 +101,5 @@ fun main(args: Array<String>) {
     generateMissingLangEntries()
   }
 
-  ImageAtlases.getMetalAtlas(resourcePath.resolve("atlas"), generatedPath, "construction_steel").save()
+  ImageAtlases.getMetalAtlas(resourcePath.resolve("atlas"), generatedPath, "noctisteel").save()
 }

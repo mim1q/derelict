@@ -36,8 +36,8 @@ object ModBlocksAndItems {
   private val lastAgeable = mutableSetOf<Block>()
   private val lastWaxable = mutableSetOf<Block>()
 
-  val AGING_STAFF = registerItem("aging_staff", StaffItem.Aging(defaultItemSettings()))
-  val WAXING_STAFF = registerItem("waxing_staff", StaffItem.Waxing(defaultItemSettings()))
+  val AGING_STAFF = registerItem("aging_staff", StaffItem.Aging(defaultItemSettings().maxCount(1)))
+  val WAXING_STAFF = registerItem("waxing_staff", StaffItem.Waxing(defaultItemSettings().maxCount(1)))
 
   val BURNED_WOOD = WoodSet(Derelict.id("burned"), defaultItemSettings()).register()
   val BURNED_LEAVES = register("burned_leaves", LeavesBlock(FabricBlockSettings.copyOf(Blocks.OAK_LEAVES)))
@@ -77,7 +77,7 @@ object ModBlocksAndItems {
   val CORNER_COBWEB = register("corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
   val FANCY_CORNER_COBWEB = register("fancy_corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
 
-  val CONSTRUCTION_STEEL = MetalSet.ThreeLevelOxidizable(Derelict.id("construction_steel"), defaultItemSettings()).register()
+  val NOCTISTEEL = MetalSet.ThreeLevelOxidizable(Derelict.id("noctisteel"), defaultItemSettings()).register()
 
   fun init() { }
 

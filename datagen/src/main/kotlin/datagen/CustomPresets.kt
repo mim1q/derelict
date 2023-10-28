@@ -407,4 +407,35 @@ object CustomPresets {
     TagManager.add("derelict:blocks/cobwebs", id)
     TagManager.add("derelict:items/general_tab", id)
   }
+
+  fun miscRecipes() = Preset {
+    add("aging_staff", CraftingRecipe.shaped("derelict:aging_staff") {
+      pattern("  C")
+      pattern(" /~")
+      pattern("O  ")
+      key("C", "minecraft:clock")
+      key("/", "minecraft:stick")
+      key("~", "minecraft:string")
+      key("O", "minecraft:crying_obsidian")
+    })
+
+    add("waxing_staff", CraftingRecipe.shaped("derelict:waxing_staff") {
+      pattern(" *W")
+      pattern("*/*")
+      pattern("D* ")
+      key("*", "minecraft:honeycomb")
+      key("W", "minecraft:honeycomb_block")
+      key("/", "minecraft:stick")
+      key("D", "minecraft:diamond")
+    })
+
+    add("noctisteel_block", CraftingRecipe.shaped("derelict:noctisteel_block", 16) {
+      pattern("CIC")
+      pattern("IOI")
+      pattern("CIC")
+      key("C", "#c:coal")
+      key("I", "minecraft:iron_ingot")
+      key("O", "minecraft:obsidian")
+    })
+  }
 }

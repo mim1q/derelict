@@ -31,7 +31,7 @@ object ModRender {
       ModBlocksAndItems.BROKEN_LANTERN, ModBlocksAndItems.FANCY_COBWEB, ModBlocksAndItems.FANCY_COBWEB_WITH_SPIDER_NEST,
       ModBlocksAndItems.FANCY_COBWEB_WITH_SPIDER,  ModBlocksAndItems.FANCY_COBWEB_WITH_SHY_SPIDER, ModBlocksAndItems.FANCY_CORNER_COBWEB,
       ModBlocksAndItems.CORNER_COBWEB,
-      *ModBlocksAndItems.CONSTRUCTION_STEEL.getCutoutBlocks()
+      *ModBlocksAndItems.NOCTISTEEL.getCutoutBlocks()
     )
 
     BlockEntityRendererFactories.register(ModBlockEntities.FANCY_COBWEB_WITH_SPIDER, ::FancyCobwebWithSpiderRenderer)
