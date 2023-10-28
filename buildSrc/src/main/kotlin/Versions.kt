@@ -8,7 +8,7 @@ object Versions {
   const val loom = "1.3-SNAPSHOT"
   const val fabricLanguageKotlin = "1.10.8+kotlin.1.9.0"
   const val kotlin = "1.9.0"
-  const val owoLib = "0.11.1+1.20"
+  const val owoLib = "0.11.2-pre.14+1.20"
   const val jankson = "1.2.1"
 
   // Publishing

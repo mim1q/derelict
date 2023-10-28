@@ -10,8 +10,8 @@ class Animation(
   private val frameTime: Int,
   private val interpolate: Boolean,
   private val frames: List<Int>
-) : MinecraftResource {
-  override fun generate(): JsonElement {
+) : MinecraftResource() {
+  override fun generate(): JsonObject {
     return JsonObject().apply {
       add("animation", JsonObject().apply {
         addProperty("frametime", frameTime)
