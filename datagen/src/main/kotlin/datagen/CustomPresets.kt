@@ -437,5 +437,23 @@ object CustomPresets {
       key("I", "minecraft:iron_ingot")
       key("O", "minecraft:obsidian")
     })
+
+    add("corner_cobweb", CraftingRecipe.shaped("derelict:corner_cobweb", 4) {
+      pattern(" S")
+      pattern("SS")
+      key("S", "minecraft:string")
+    })
+    add("fancy_corner_cobweb", CraftingRecipe.shaped("derelict:fancy_corner_cobweb", 2) {
+      pattern("SS")
+      pattern("SS")
+      key("S", "derelict:corner_cobweb")
+    })
+    add("fancy_cobweb", CraftingRecipe.shaped("derelict:fancy_cobweb", 2) {
+      pattern(" C ")
+      pattern("CSC")
+      pattern(" C ")
+      key("S", "minecraft:string")
+      key("C", "derelict:corner_cobweb")
+    })
   }
 }
