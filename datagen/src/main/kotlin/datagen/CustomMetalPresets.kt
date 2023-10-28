@@ -247,13 +247,11 @@ object CustomMetalPresets {
     TagManager.add("minecraft:blocks/climbable", "$ns:$prefix${name}_chain_link_fence")
   }
 
-  fun fullMetalSet(id: String) = Preset {
+  fun threeOxidationMetalSet(id: String) = Preset {
     add(metalSet(id))
-    add(metalSet(id, "exposed_"))
     add(metalSet(id, "weathered_"))
     add(metalSet(id, "oxidized_"))
     add(metalSet(id, waxed = true))
-    add(metalSet(id, "exposed_", waxed = true))
     add(metalSet(id, "weathered_", waxed = true))
     add(metalSet(id, "oxidized_", waxed = true))
   }

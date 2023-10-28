@@ -25,7 +25,7 @@ object ImageAtlases {
       { "item/$metal/$it${metal}_patch" },
       { "item/$metal/$it${metal}_sheet" },
     )
-    val types = listOf("", "exposed_", "weathered_", "oxidized_")
+    val types = listOf("", "weathered_", "oxidized_")
 
     blocks.forEach { block ->
       types.forEach { type ->

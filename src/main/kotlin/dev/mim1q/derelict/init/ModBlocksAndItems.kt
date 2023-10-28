@@ -77,7 +77,7 @@ object ModBlocksAndItems {
   val CORNER_COBWEB = register("corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
   val FANCY_CORNER_COBWEB = register("fancy_corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
 
-  val CONSTRUCTION_STEEL = MetalSet.FullOxidizable(Derelict.id("construction_steel"), defaultItemSettings()).register()
+  val CONSTRUCTION_STEEL = MetalSet.ThreeLevelOxidizable(Derelict.id("construction_steel"), defaultItemSettings()).register()
 
   fun init() { }
 

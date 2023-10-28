@@ -66,7 +66,7 @@ fun main(args: Array<String>) {
       "minecraft:block/soul_lantern", "derelict:block/soul_lantern_half_on", "derelict:block/broken_lantern"
     ))
     // Metal
-    add(CustomMetalPresets.fullMetalSet("derelict:construction_steel"))
+    add(CustomMetalPresets.threeOxidationMetalSet("derelict:construction_steel"))
     // Handheld items
     listOf("aging_staff", "waxing_staff").forEach {
       add(it, ParentedModel.item("minecraft:item/handheld").texture("layer0", "derelict:item/$it"))

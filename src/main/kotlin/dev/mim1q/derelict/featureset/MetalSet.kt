@@ -109,24 +109,21 @@ sealed class MetalSet(
     }
   }
 
-  class FullOxidizable(id: Identifier, defaultItemSettings: FabricItemSettings) : FeatureSet(id, defaultItemSettings) {
+  class ThreeLevelOxidizable(id: Identifier, defaultItemSettings: FabricItemSettings) : FeatureSet(id, defaultItemSettings) {
     val waxedUnaffected = Regular(id, defaultItemSettings, "waxed_")
-    val waxedExposed = Regular(id, defaultItemSettings, "waxed_exposed_")
     val waxedWeathered = Regular(id, defaultItemSettings, "waxed_weathered_")
     val waxedOxidized = Regular(id, defaultItemSettings, "waxed_oxidized_")
     val unaffected = Oxidized(id, "", defaultItemSettings, OxidationLevel.UNAFFECTED)
-    val exposed = Oxidized(id, "exposed_", defaultItemSettings, OxidationLevel.EXPOSED)
     val weathered = Oxidized(id, "weathered_", defaultItemSettings, OxidationLevel.WEATHERED)
     val oxidized = Oxidized(id, "oxidized_", defaultItemSettings, OxidationLevel.OXIDIZED)
 
-    fun getCutoutBlocks() = unaffected.getCutoutBlocks() + waxedUnaffected.getCutoutBlocks() +
-      exposed.getCutoutBlocks() + waxedExposed.getCutoutBlocks() +
+    fun getCutoutBlocks() =
+      unaffected.getCutoutBlocks() + waxedUnaffected.getCutoutBlocks() +
       weathered.getCutoutBlocks() + waxedWeathered.getCutoutBlocks() +
       oxidized.getCutoutBlocks() + waxedOxidized.getCutoutBlocks()
 
-    override fun register(): FullOxidizable {
-      unaffected.register(exposed, waxedUnaffected)
-      exposed.register(weathered, waxedExposed)
+    override fun register(): ThreeLevelOxidizable {
+      unaffected.register(weathered, waxedUnaffected)
       weathered.register(oxidized, waxedWeathered)
       oxidized.register(null, waxedOxidized)
       return this
