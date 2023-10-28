@@ -79,11 +79,26 @@ object ModBlocksAndItems {
 
   val NOCTISTEEL = MetalSet.ThreeLevelOxidizable(Derelict.id("noctisteel"), defaultItemSettings()).register()
 
+  val BLOCK_AGING_MAP = mapOf(
+    Blocks.REDSTONE_LAMP to FLICKERING_REDSTONE_LAMP,
+    Blocks.SEA_LANTERN to FLICKERING_SEA_LANTERN,
+    FLICKERING_SEA_LANTERN to BROKEN_SEA_LANTERN,
+    Blocks.JACK_O_LANTERN to FLICKERING_JACK_O_LANTERN,
+    Blocks.LANTERN to FLICKERING_LANTERN,
+    FLICKERING_LANTERN to BROKEN_LANTERN,
+    Blocks.SOUL_LANTERN to FLICKERING_SOUL_LANTERN,
+    FLICKERING_SOUL_LANTERN to BROKEN_LANTERN
+  )
+
   fun init() { }
 
   fun setupWaxableAndAgeable() {
     lastWaxable.forEach { (it as AbstractBlockAccessor).isWaxable = false }
     lastAgeable.forEach { (it as AbstractBlockAccessor).isAgeable = false }
+    BLOCK_AGING_MAP.forEach { (from, _) ->
+      (from as AbstractBlockAccessor).isAgeable = true
+      lastAgeable.add(from)
+    }
     HoneycombItem.UNWAXED_TO_WAXED_BLOCKS.get().forEach { (from, _) ->
       (from as AbstractBlockAccessor).isWaxable = true
       lastWaxable.add(from)

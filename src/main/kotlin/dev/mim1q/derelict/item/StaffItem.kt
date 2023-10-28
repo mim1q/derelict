@@ -1,6 +1,7 @@
 package dev.mim1q.derelict.item
 
 import dev.mim1q.derelict.Derelict
+import dev.mim1q.derelict.init.ModBlocksAndItems
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.block.Block
 import net.minecraft.block.Oxidizable
@@ -54,6 +55,7 @@ sealed class StaffItem(settings: FabricItemSettings) : Item(settings), Crosshair
     override val sound: SoundEvent = SoundEvents.BLOCK_STONE_BREAK
 
     override fun getBlockConversion(block: Block): Block? = firstNonNull(
+      { ModBlocksAndItems.BLOCK_AGING_MAP[block] },
       { Oxidizable.getIncreasedOxidationBlock(block).orElse(null) },
       { HoneycombItem.WAXED_TO_UNWAXED_BLOCKS.get()[block]
         ?.let { Oxidizable.getIncreasedOxidationBlock(it).orElse(null) }

@@ -1,7 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "derelict:block/construction_steel/weathered_construction_steel_ladder",
+		"0": "derelict:block/noctisteel/weathered_noctisteel_ladder",
 		"particle": "#0"
 	},
 	"elements": [

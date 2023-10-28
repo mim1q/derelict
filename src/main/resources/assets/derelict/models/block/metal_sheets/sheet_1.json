@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "derelict:block/construction_steel/construction_steel_sheet",
-		"particle": "derelict:block/construction_steel/construction_steel_sheet"
+		"0": "derelict:block/noctisteel/noctisteel_sheet",
+		"particle": "derelict:block/noctisteel/noctisteel_sheet"
 	},
 	"elements": [
 		{

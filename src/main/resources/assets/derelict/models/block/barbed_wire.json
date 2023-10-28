@@ -3,8 +3,8 @@
 	"ambientocclusion": false,
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "derelict:block/construction_steel/construction_steel_barbed_wire",
-		"particle": "derelict:block/construction_steel/construction_steel_barbed_wire"
+		"0": "derelict:block/noctisteel/noctisteel_barbed_wire",
+		"particle": "derelict:block/noctisteel/noctisteel_barbed_wire"
 	},
 	"elements": [
 		{

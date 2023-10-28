@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"textures": {
-		"0": "derelict:block/construction_steel/construction_steel_beam",
-		"particle": "derelict:block/construction_steel/construction_steel_beam"
+		"0": "derelict:block/noctisteel/noctisteel_beam",
+		"particle": "derelict:block/noctisteel/noctisteel_beam"
 	},
 	"elements": [
 		{

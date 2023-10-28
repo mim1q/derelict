@@ -18,6 +18,11 @@ It also helps create such builds, with the carefully crafted selection of blocks
 
 Currently, it only adds decorative blocks and the Waxing Staff and Aging Staff. This is only the beginning :)
 
+## Tip
+
+Use the Aging Staff on a vanilla light source (Redstone Lamp, Sea Lantern, Jack o'Lantern, Lantern or Soul Lantern) 
+to turn it into a flickering version of itself.
+
 # Configuration
 
 Two config files: `derelict.json5` and `derelict-client.json5` are provided.  
