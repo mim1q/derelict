@@ -94,7 +94,7 @@ if (secrets.isModrinthReady()) {
     versionName.set(newVersionName)
     versionType.set(ModData.versionType)
     changelog.set(newChangelog)
-    syncBodyFrom.set(rootProject.file("PROJECT.md").readText())
+    syncBodyFrom.set(rootProject.file("project/PROJECT.md").readText())
     gameVersions.set(ModData.mcVersions)
     loaders.set(listOf("fabric"))
     dependencies {
