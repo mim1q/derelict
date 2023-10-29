@@ -1,6 +1,7 @@
 package dev.mim1q.derelict.item
 
 import dev.mim1q.derelict.Derelict
+import dev.mim1q.derelict.block.flickering.FlickeringBlock
 import dev.mim1q.derelict.init.ModBlocksAndItems
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.block.Block
@@ -44,6 +45,9 @@ sealed class StaffItem(settings: FabricItemSettings) : Item(settings), Crosshair
       if (world.isClient) ParticleUtil.spawnParticle(world, pos, particle, UniformIntProvider.create(3, 5))
       world.playSound(null, pos, sound, SoundCategory.BLOCKS, 1F, 1F)
       world.setBlockState(context.blockPos, conversion.getStateWithProperties(state))
+      if (conversion is FlickeringBlock) {
+        world.scheduleBlockTick(pos, conversion, 1)
+      }
       return ActionResult.SUCCESS
     }
     return ActionResult.PASS
