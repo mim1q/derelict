@@ -132,6 +132,9 @@ if (secrets.isCurseforgeReady()) {
   }
 }
 
+tasks.getByName("sourcesJar").dependsOn("compileJava")
+tasks.getByName("modrinth").dependsOn("optimizeOutputsOfRemapJar")
+
 kotlin {
   jvmToolchain(17)
 }

@@ -20,8 +20,9 @@ import net.minecraft.util.Identifier
 
 sealed class MetalSet(
   id: Identifier,
-  defaultItemSettings: FabricItemSettings
-) : FeatureSet(id, defaultItemSettings, FabricBlockSettings.copyOf(Blocks.IRON_BLOCK)) {
+  defaultItemSettings: FabricItemSettings,
+  defaultBlockSettings: FabricBlockSettings
+) : FeatureSet(id, defaultItemSettings, defaultBlockSettings) {
   abstract val block: Block
   abstract val cut: Block
   abstract val pillar: PillarBlock
@@ -44,44 +45,46 @@ sealed class MetalSet(
   class Regular(
     id: Identifier,
     defaultItemSettings: FabricItemSettings,
+    defaultBlockSettings: FabricBlockSettings,
     prefix: String = ""
-  ) : MetalSet(id, defaultItemSettings) {
-    override val block: Block = registerBlockWithItem("$prefix${name}_block", Block(defaultBlockSettings), ItemCategory.WAXED_METAL_BLOCKS)
-    override val cut: Block = registerBlockWithItem("${prefix}cut_$name", Block(defaultBlockSettings), ItemCategory.WAXED_METAL_BLOCKS)
-    override val pillar: PillarBlock = registerBlockWithItem("$prefix${name}_pillar", PillarBlock(defaultBlockSettings), ItemCategory.WAXED_METAL_BLOCKS)
-    override val stairs: StairsBlock = registerBlockWithItem("${prefix}cut_${name}_stairs", StairsBlock(block.defaultState, defaultBlockSettings.nonOpaque()), ItemCategory.WAXED_METAL_BLOCKS)
-    override val slab: SlabBlock = registerBlockWithItem("${prefix}cut_${name}_slab", SlabBlock(defaultBlockSettings.nonOpaque()), ItemCategory.WAXED_METAL_BLOCKS)
-    override val chain: ChainBlock = registerBlockWithItem("$prefix${name}_chain", ChainBlock(defaultBlockSettings.nonOpaque()), ItemCategory.WAXED_METAL_DECORATION)
-    override val grate: GrateBlock = registerBlockWithItem("$prefix${name}_grate", GrateBlock(defaultBlockSettings.nonOpaque()), ItemCategory.WAXED_METAL_DECORATION)
-    override val beam: BeamBlock = registerBlockWithItem("$prefix${name}_beam", BeamBlock(defaultBlockSettings.nonOpaque()), ItemCategory.WAXED_METAL_DECORATION)
-    override val beamPile: BeamBlock = registerBlockWithItem("$prefix${name}_beam_pile", BeamBlock(defaultBlockSettings.nonOpaque(), true), ItemCategory.WAXED_METAL_DECORATION)
-    override val ladder: LadderBlock = registerBlockWithItem("$prefix${name}_ladder", MetalLadderBlock(defaultBlockSettings.nonOpaque()), ItemCategory.WAXED_METAL_DECORATION)
-    override val patch: SquarePatch = registerBlockWithItem("$prefix${name}_patch", SquarePatch(defaultBlockSettings.nonOpaque().noZFighting()), ItemCategory.WAXED_METAL_DECORATION)
-    override val sheet: RotatableCoverBlock.Normal = registerBlockWithItem("$prefix${name}_sheet", RotatableCoverBlock.Normal(defaultBlockSettings.nonOpaque().noZFighting()), ItemCategory.WAXED_METAL_DECORATION)
-    override val chainLinkFence: PaneBlock = registerBlockWithItem("$prefix${name}_chain_link_fence", PaneBlock(defaultBlockSettings.nonOpaque()), ItemCategory.WAXED_METAL_DECORATION)
-    override val barbedWire: BarbedWireBlock = registerBlockWithItem("$prefix${name}_barbed_wire", BarbedWireBlock(defaultBlockSettings.nonOpaque().noCollision()), ItemCategory.WAXED_METAL_DECORATION)
+  ) : MetalSet(id, defaultItemSettings, defaultBlockSettings) {
+    override val block: Block = registerBlockWithItem("$prefix${name}_block", Block(defaultBlockSettings()), ItemCategory.WAXED_METAL_BLOCKS)
+    override val cut: Block = registerBlockWithItem("${prefix}cut_$name", Block(defaultBlockSettings()), ItemCategory.WAXED_METAL_BLOCKS)
+    override val pillar: PillarBlock = registerBlockWithItem("$prefix${name}_pillar", PillarBlock(defaultBlockSettings()), ItemCategory.WAXED_METAL_BLOCKS)
+    override val stairs: StairsBlock = registerBlockWithItem("${prefix}cut_${name}_stairs", StairsBlock(block.defaultState, defaultBlockSettings().nonOpaque()), ItemCategory.WAXED_METAL_BLOCKS)
+    override val slab: SlabBlock = registerBlockWithItem("${prefix}cut_${name}_slab", SlabBlock(defaultBlockSettings().nonOpaque()), ItemCategory.WAXED_METAL_BLOCKS)
+    override val chain: ChainBlock = registerBlockWithItem("$prefix${name}_chain", ChainBlock(defaultBlockSettings().nonOpaque()), ItemCategory.WAXED_METAL_DECORATION)
+    override val grate: GrateBlock = registerBlockWithItem("$prefix${name}_grate", GrateBlock(defaultBlockSettings().nonOpaque()), ItemCategory.WAXED_METAL_DECORATION)
+    override val beam: BeamBlock = registerBlockWithItem("$prefix${name}_beam", BeamBlock(defaultBlockSettings().nonOpaque()), ItemCategory.WAXED_METAL_DECORATION)
+    override val beamPile: BeamBlock = registerBlockWithItem("$prefix${name}_beam_pile", BeamBlock(defaultBlockSettings().nonOpaque(), true), ItemCategory.WAXED_METAL_DECORATION)
+    override val ladder: LadderBlock = registerBlockWithItem("$prefix${name}_ladder", MetalLadderBlock(defaultBlockSettings().nonOpaque()), ItemCategory.WAXED_METAL_DECORATION)
+    override val patch: SquarePatch = registerBlockWithItem("$prefix${name}_patch", SquarePatch(defaultBlockSettings().nonOpaque().noZFighting()), ItemCategory.WAXED_METAL_DECORATION)
+    override val sheet: RotatableCoverBlock.Normal = registerBlockWithItem("$prefix${name}_sheet", RotatableCoverBlock.Normal(defaultBlockSettings().nonOpaque().noZFighting()), ItemCategory.WAXED_METAL_DECORATION)
+    override val chainLinkFence: PaneBlock = registerBlockWithItem("$prefix${name}_chain_link_fence", PaneBlock(defaultBlockSettings().nonOpaque()), ItemCategory.WAXED_METAL_DECORATION)
+    override val barbedWire: BarbedWireBlock = registerBlockWithItem("$prefix${name}_barbed_wire", BarbedWireBlock(defaultBlockSettings().nonOpaque().noCollision()), ItemCategory.WAXED_METAL_DECORATION)
   }
 
   class Oxidized internal constructor(
     id: Identifier,
     prefix: String,
     defaultItemSettings: FabricItemSettings,
+    defaultBlockSettings: FabricBlockSettings,
     level: OxidationLevel
-  ) : MetalSet(id, defaultItemSettings) {
-    override val block: Block = registerBlockWithItem("$prefix${name}_block", OxidizableBlock(level, defaultBlockSettings), ItemCategory.METAL_BLOCKS)
-    override val cut: Block = registerBlockWithItem("${prefix}cut_$name", OxidizableBlock(level, defaultBlockSettings), ItemCategory.METAL_BLOCKS)
-    override val pillar: PillarBlock = registerBlockWithItem("$prefix${name}_pillar", OxidizablePillarBlock(level, defaultBlockSettings), ItemCategory.METAL_BLOCKS)
-    override val stairs: StairsBlock = registerBlockWithItem("${prefix}cut_${name}_stairs", OxidizableStairsBlock(level, block.defaultState, defaultBlockSettings.nonOpaque()), ItemCategory.METAL_BLOCKS)
-    override val slab: SlabBlock = registerBlockWithItem("${prefix}cut_${name}_slab", OxidizableSlabBlock(level, defaultBlockSettings.nonOpaque()), ItemCategory.METAL_BLOCKS)
-    override val chain: ChainBlock = registerBlockWithItem("$prefix${name}_chain", OxidizableChainBlock(level, defaultBlockSettings.nonOpaque()), ItemCategory.METAL_DECORATION)
-    override val grate: GrateBlock = registerBlockWithItem("$prefix${name}_grate", OxidizableGrateBlock(level, defaultBlockSettings.nonOpaque()), ItemCategory.METAL_DECORATION)
-    override val beam: BeamBlock = registerBlockWithItem("$prefix${name}_beam", OxidizableBeamBlock(level, defaultBlockSettings.nonOpaque()), ItemCategory.METAL_DECORATION)
-    override val beamPile: BeamBlock = registerBlockWithItem("$prefix${name}_beam_pile", OxidizableBeamBlock(level, defaultBlockSettings.nonOpaque(), true), ItemCategory.METAL_DECORATION)
-    override val ladder: LadderBlock = registerBlockWithItem("$prefix${name}_ladder", OxidizableMetalLadderBlock(level, defaultBlockSettings.nonOpaque()), ItemCategory.METAL_DECORATION)
-    override val patch: SquarePatch = registerBlockWithItem("$prefix${name}_patch", OxidizableSquarePatch(level, defaultBlockSettings.nonOpaque().noZFighting()), ItemCategory.METAL_DECORATION)
-    override val sheet: RotatableCoverBlock.Normal = registerBlockWithItem("$prefix${name}_sheet", OxidizableNormal(level, defaultBlockSettings.nonOpaque().noZFighting()), ItemCategory.METAL_DECORATION)
-    override val chainLinkFence: PaneBlock = registerBlockWithItem("$prefix${name}_chain_link_fence", OxidizablePaneBlock(level, defaultBlockSettings.nonOpaque()), ItemCategory.METAL_DECORATION)
-    override val barbedWire: BarbedWireBlock = registerBlockWithItem("$prefix${name}_barbed_wire", OxidizableBarbedWireBlock(level, defaultBlockSettings.nonOpaque().noCollision()), ItemCategory.METAL_DECORATION)
+  ) : MetalSet(id, defaultItemSettings, defaultBlockSettings) {
+    override val block: Block = registerBlockWithItem("$prefix${name}_block", OxidizableBlock(level, defaultBlockSettings()), ItemCategory.METAL_BLOCKS)
+    override val cut: Block = registerBlockWithItem("${prefix}cut_$name", OxidizableBlock(level, defaultBlockSettings()), ItemCategory.METAL_BLOCKS)
+    override val pillar: PillarBlock = registerBlockWithItem("$prefix${name}_pillar", OxidizablePillarBlock(level, defaultBlockSettings()), ItemCategory.METAL_BLOCKS)
+    override val stairs: StairsBlock = registerBlockWithItem("${prefix}cut_${name}_stairs", OxidizableStairsBlock(level, block.defaultState, defaultBlockSettings().nonOpaque()), ItemCategory.METAL_BLOCKS)
+    override val slab: SlabBlock = registerBlockWithItem("${prefix}cut_${name}_slab", OxidizableSlabBlock(level, defaultBlockSettings().nonOpaque()), ItemCategory.METAL_BLOCKS)
+    override val chain: ChainBlock = registerBlockWithItem("$prefix${name}_chain", OxidizableChainBlock(level, defaultBlockSettings().nonOpaque()), ItemCategory.METAL_DECORATION)
+    override val grate: GrateBlock = registerBlockWithItem("$prefix${name}_grate", OxidizableGrateBlock(level, defaultBlockSettings().nonOpaque()), ItemCategory.METAL_DECORATION)
+    override val beam: BeamBlock = registerBlockWithItem("$prefix${name}_beam", OxidizableBeamBlock(level, defaultBlockSettings().nonOpaque()), ItemCategory.METAL_DECORATION)
+    override val beamPile: BeamBlock = registerBlockWithItem("$prefix${name}_beam_pile", OxidizableBeamBlock(level, defaultBlockSettings().nonOpaque(), true), ItemCategory.METAL_DECORATION)
+    override val ladder: LadderBlock = registerBlockWithItem("$prefix${name}_ladder", OxidizableMetalLadderBlock(level, defaultBlockSettings().nonOpaque()), ItemCategory.METAL_DECORATION)
+    override val patch: SquarePatch = registerBlockWithItem("$prefix${name}_patch", OxidizableSquarePatch(level, defaultBlockSettings().nonOpaque().noZFighting()), ItemCategory.METAL_DECORATION)
+    override val sheet: RotatableCoverBlock.Normal = registerBlockWithItem("$prefix${name}_sheet", OxidizableNormal(level, defaultBlockSettings().nonOpaque().noZFighting()), ItemCategory.METAL_DECORATION)
+    override val chainLinkFence: PaneBlock = registerBlockWithItem("$prefix${name}_chain_link_fence", OxidizablePaneBlock(level, defaultBlockSettings().nonOpaque()), ItemCategory.METAL_DECORATION)
+    override val barbedWire: BarbedWireBlock = registerBlockWithItem("$prefix${name}_barbed_wire", OxidizableBarbedWireBlock(level, defaultBlockSettings().nonOpaque().noCollision()), ItemCategory.METAL_DECORATION)
 
     private fun registerOxidizable(base: Block, moreOxidized: Block?, waxed: Block) {
       if (moreOxidized != null) {
@@ -109,13 +112,17 @@ sealed class MetalSet(
     }
   }
 
-  class ThreeLevelOxidizable(id: Identifier, defaultItemSettings: FabricItemSettings) : FeatureSet(id, defaultItemSettings) {
-    val waxedUnaffected = Regular(id, defaultItemSettings, "waxed_")
-    val waxedWeathered = Regular(id, defaultItemSettings, "waxed_weathered_")
-    val waxedOxidized = Regular(id, defaultItemSettings, "waxed_oxidized_")
-    val unaffected = Oxidized(id, "", defaultItemSettings, OxidationLevel.UNAFFECTED)
-    val weathered = Oxidized(id, "weathered_", defaultItemSettings, OxidationLevel.WEATHERED)
-    val oxidized = Oxidized(id, "oxidized_", defaultItemSettings, OxidationLevel.OXIDIZED)
+  class ThreeLevelOxidizable(
+    id: Identifier,
+    defaultItemSettings: FabricItemSettings,
+    defaultBlockSettings: FabricBlockSettings
+  ) : FeatureSet(id, defaultItemSettings, defaultBlockSettings) {
+    val waxedUnaffected = Regular(id, defaultItemSettings, defaultBlockSettings, "waxed_")
+    val waxedWeathered = Regular(id, defaultItemSettings, defaultBlockSettings,"waxed_weathered_")
+    val waxedOxidized = Regular(id, defaultItemSettings, defaultBlockSettings,"waxed_oxidized_")
+    val unaffected = Oxidized(id, "", defaultItemSettings, defaultBlockSettings, OxidationLevel.UNAFFECTED)
+    val weathered = Oxidized(id, "weathered_", defaultItemSettings, defaultBlockSettings, OxidationLevel.WEATHERED)
+    val oxidized = Oxidized(id, "oxidized_", defaultItemSettings, defaultBlockSettings, OxidationLevel.OXIDIZED)
 
     fun getCutoutBlocks() =
       unaffected.getCutoutBlocks() + waxedUnaffected.getCutoutBlocks() +

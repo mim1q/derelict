@@ -12,7 +12,7 @@ import net.minecraft.util.Identifier
 abstract class FeatureSet(
   id: Identifier,
   protected val defaultItemSettings: FabricItemSettings = FabricItemSettings(),
-  protected val defaultBlockSettings: FabricBlockSettings = FabricBlockSettings.copyOf(Blocks.STONE)
+  private val defaultBlockSettings: FabricBlockSettings = FabricBlockSettings.copyOf(Blocks.STONE)
 ) {
   protected val name = id.path
   protected val namespace = id.namespace
@@ -33,4 +33,6 @@ abstract class FeatureSet(
     block: B,
     category: ItemCategory = ItemCategory.GENERAL
   ): B = ModBlocksAndItems.register(name, block, category)
+
+  protected fun defaultBlockSettings(): FabricBlockSettings = FabricBlockSettings.copyOf(defaultBlockSettings)
 }

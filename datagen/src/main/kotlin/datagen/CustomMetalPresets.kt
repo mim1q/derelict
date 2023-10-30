@@ -176,6 +176,10 @@ object CustomMetalPresets {
         })
       }
     }
+    TagManager.add("minecraft:blocks/mineable/pickaxe", *all)
+    all.forEach {
+      add(CommonDropPresets.simpleDrop(it))
+    }
   }
 
   private fun rotatableMetalSheet(id: String, particle: String, oxidization: String, type: String, count: Int = 8, waxed: Boolean = false) = Preset {
@@ -202,7 +206,6 @@ object CustomMetalPresets {
       }
     })
     add("$prefix${name}_$type", ParentedModel.item("minecraft:item/generated").texture("layer0", "$ns:item/$name/$oxidization${name}_$type"))
-    add(CommonDropPresets.simpleDrop("$ns:${name}_$type"))
     TagManager.add("derelict:blocks/metal_sheets", "$ns:$prefix${name}_$type")
   }
 

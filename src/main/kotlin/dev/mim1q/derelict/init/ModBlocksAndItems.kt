@@ -77,7 +77,7 @@ object ModBlocksAndItems {
   val CORNER_COBWEB = register("corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
   val FANCY_CORNER_COBWEB = register("fancy_corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
 
-  val NOCTISTEEL = MetalSet.ThreeLevelOxidizable(Derelict.id("noctisteel"), defaultItemSettings()).register()
+  val NOCTISTEEL = MetalSet.ThreeLevelOxidizable(Derelict.id("noctisteel"), defaultItemSettings(), FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).strength(2.0f, 1200f)).register()
 
   val BLOCK_AGING_MAP = mapOf(
     Blocks.REDSTONE_LAMP to FLICKERING_REDSTONE_LAMP,
