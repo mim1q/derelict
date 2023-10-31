@@ -77,6 +77,9 @@ fun main(args: Array<String>) {
     TagManager.add("blocks/leaves", "derelict:burned_leaves", "derelict:smoldering_leaves")
     TagManager.add("blocks/mineable/hoe", "derelict:burned_leaves", "derelict:smoldering_leaves")
     TagManager.add("blocks/mineable/axe", "#derelict:cover_boards")
+    TagManager.add("blocks/mineable/pickaxe",
+      "derelict:broken_lantern", "derelict:broken_sea_lantern"
+    )
     TagManager.copy("blocks/leaves", "items/leaves")
     TagManager.add("derelict:items/general_tab",
       "derelict:aging_staff", "derelict:waxing_staff",

@@ -42,9 +42,9 @@ object ModBlocksAndItems {
   val BURNED_WOOD = WoodSet(Derelict.id("burned"), defaultItemSettings()).register()
   val BURNED_LEAVES = register("burned_leaves", LeavesBlock(FabricBlockSettings.copyOf(Blocks.OAK_LEAVES)))
   val SMOLDERING_LEAVES = register("smoldering_leaves", SmolderingLeavesBlock(FabricBlockSettings.copyOf(Blocks.OAK_LEAVES)))
-  val SMOKING_EMBERS = register("smoking_embers", EmbersBlock.Smoking(FabricBlockSettings.copyOf(Blocks.MAGMA_BLOCK)))
+  val SMOKING_EMBERS = register("smoking_embers", EmbersBlock.Smoking(FabricBlockSettings.copyOf(Blocks.FIRE).breakInstantly()))
   val SMOLDERING_EMBERS = register("smoldering_embers", EmbersBlock.Smoldering(
-    FabricBlockSettings.copyOf(Blocks.MAGMA_BLOCK).luminance(4).emissiveLighting {_, _, _ -> true}
+    FabricBlockSettings.copyOf(Blocks.FIRE).luminance(4).emissiveLighting {_, _, _ -> true}.breakInstantly()
   ))
   val DRIED_GRASS = GrassSet(Derelict.id("dried"), defaultItemSettings())
   val BURNED_GRASS = GrassSet(Derelict.id("burned"), defaultItemSettings())

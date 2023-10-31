@@ -25,7 +25,7 @@ object CustomTagPresets {
       "unburned_double_cover_boards" to { "derelict:double_${it}_cover_boards" },
       "unburned_crossed_cover_boards" to { "derelict:crossed_${it}_cover_boards" },
     ).forEach {
-      val vanillaWoods = listOf("oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "mangrove")
+      val vanillaWoods = listOf("oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "mangrove", "cherry")
       TagManager.add("derelict:items/${it.first}", *vanillaWoods.map { type -> it.second(type) }.toTypedArray())
     }
   }

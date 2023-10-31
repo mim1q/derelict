@@ -4,7 +4,8 @@
   "package": "dev.mim1q.derelict.mixin",
   "mixins": [
     "block.AbstractBlockMixin",
-    "block.entity.BlockEntityTypeMixin"
+    "block.entity.BlockEntityTypeMixin",
+    "item.SwordAndShearsSuitableBlocksMixin"
   ],
   "client": [
     "client.item.HoneycombItemClientMixin",
