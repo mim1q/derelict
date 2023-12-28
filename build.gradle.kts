@@ -3,11 +3,11 @@ import net.fabricmc.loom.task.RemapJarTask
 import java.io.FileNotFoundException
 
 plugins {
-  id("fabric-loom") version Versions.loom
-  id("com.modrinth.minotaur") version Versions.minotaur
-  id("com.matthewprenger.cursegradle") version Versions.cursegradle
+  id("fabric-loom") version Versions.LOOM
+  id("com.modrinth.minotaur") version Versions.MINOTAUR
+  id("com.matthewprenger.cursegradle") version Versions.CURSEGRADLE
   id("io.github.p03w.machete") version "2.0.1"
-  kotlin("jvm") version Versions.kotlin
+  kotlin("jvm") version Versions.KOTLIN
 }
 
 java {
@@ -26,21 +26,26 @@ version = ModData.version
 repositories {
   mavenCentral()
   maven("https://maven.wispforest.io")
+  maven("https://maven.shedaniel.me/")
 }
 
 dependencies {
-  minecraft("com.mojang:minecraft:${Versions.minecraft}")
-  mappings("net.fabricmc:yarn:${Versions.yarn}:v2")
-  modImplementation("net.fabricmc:fabric-loader:${Versions.fabricLoader}")
-  modImplementation("net.fabricmc.fabric-api:fabric-api:${Versions.fabricApi}")
-  modImplementation("net.fabricmc:fabric-language-kotlin:${Versions.fabricLanguageKotlin}")
+  minecraft("com.mojang:minecraft:${Versions.MINECRAFT}")
+  mappings("net.fabricmc:yarn:${Versions.YARN}:v2")
+  modImplementation("net.fabricmc:fabric-loader:${Versions.FABRIC_LOADER}")
+  modImplementation("net.fabricmc.fabric-api:fabric-api:${Versions.FABRIC_API}")
+  modImplementation("net.fabricmc:fabric-language-kotlin:${Versions.FABRIC_LANUGAGE_KOTLIN}")
   implementation(kotlin("stdlib-jdk8"))
   // owo-lib
   val owoLib = configurations.create("owoLib")
-  owoLib(annotationProcessor(modImplementation("io.wispforest:owo-lib:${Versions.owoLib}")!!)!!)
-  include("io.wispforest:owo-sentinel:${Versions.owoLib}")
+  owoLib(annotationProcessor(modImplementation("io.wispforest:owo-lib:${Versions.OWO_LIB}")!!)!!)
+  include("io.wispforest:owo-sentinel:${Versions.OWO_LIB}")
   // Jankson for owo-lib config comments
-  implementation("blue.endless:jankson:${Versions.jankson}")
+  implementation("blue.endless:jankson:${Versions.JANKSON}")
+  // REI for recipe display integration
+  modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${Versions.REI}")
+  modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${Versions.REI}")
+  modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${Versions.REI}")
 }
 
 @Suppress("UnstableApiUsage")

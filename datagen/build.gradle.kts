@@ -2,7 +2,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 plugins {
-  kotlin("jvm") version Versions.kotlin
+  kotlin("jvm") version Versions.KOTLIN
   id("application")
 }
 
