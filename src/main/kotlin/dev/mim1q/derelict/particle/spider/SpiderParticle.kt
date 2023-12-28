@@ -21,7 +21,7 @@ class SpiderParticle(
   init {
     maxAge = 40 + random.nextInt(40)
     alpha = 0.0F
-    scale = random.nextFloat() * 0.1F + 0.075F
+    scale = random.nextFloat() * 0.01F + 0.075F
     velocityMultiplier = sqrt((vx * vx + vz * vz).toFloat())
   }
 
@@ -55,7 +55,7 @@ class SpiderParticle(
       markDead()
     }
     super.tick()
-    setSprite(spriteProvider.getSprite(age / 2 % 4, 3))
+    setSprite(spriteProvider.getSprite(age / 2 % 6, 6))
     if (age <= 2) {
       alpha = (age / 2.0F)
     }
