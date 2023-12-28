@@ -21,7 +21,7 @@ class SpiderParticle(
   init {
     maxAge = 40 + random.nextInt(40)
     alpha = 0.0F
-    scale = random.nextFloat() * 0.01F + 0.075F
+    scale = random.nextFloat() * 0.05F + 0.1F
     velocityMultiplier = sqrt((vx * vx + vz * vz).toFloat())
   }
 
@@ -46,7 +46,9 @@ class SpiderParticle(
   }
 
   override fun tick() {
-    rotation += (random.nextFloat() - 0.5F) * 0.5F
+    if (random.nextFloat() < 0.1) {
+      rotation += (random.nextFloat() - 0.5F) * 2F
+    }
     setAngle()
     setVelocity(vx, 0.0, vz)
     setBoundingBoxSpacing(0.01F, 0.01F)
@@ -55,7 +57,7 @@ class SpiderParticle(
       markDead()
     }
     super.tick()
-    setSprite(spriteProvider.getSprite(age / 2 % 6, 6))
+    setSprite(spriteProvider.getSprite((age / 2) % 6, 5))
     if (age <= 2) {
       alpha = (age / 2.0F)
     }
