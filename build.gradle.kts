@@ -27,6 +27,7 @@ repositories {
   mavenCentral()
   maven("https://maven.wispforest.io")
   maven("https://maven.shedaniel.me/")
+  mavenLocal()
 }
 
 dependencies {
@@ -46,6 +47,8 @@ dependencies {
   modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${Versions.REI}")
   modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${Versions.REI}")
   modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${Versions.REI}")
+  // Gimm1q for common Mim1q's mods code
+  modImplementation(include("dev.mim1q:gimm1q:${Versions.GIMM1Q}")!!)
 }
 
 @Suppress("UnstableApiUsage")

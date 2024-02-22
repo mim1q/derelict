@@ -16,6 +16,7 @@ import dev.mim1q.derelict.featureset.MetalSet
 import dev.mim1q.derelict.featureset.WoodSet
 import dev.mim1q.derelict.interfaces.AbstractBlockAccessor
 import dev.mim1q.derelict.item.StaffItem
+import dev.mim1q.derelict.item.weapon.Wildfire
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.fabricmc.fabric.mixin.`object`.builder.AbstractBlockSettingsAccessor
@@ -89,6 +90,8 @@ object ModBlocksAndItems {
     Blocks.SOUL_LANTERN to FLICKERING_SOUL_LANTERN,
     FLICKERING_SOUL_LANTERN to BROKEN_LANTERN
   )
+
+  val WILDFIRE = registerItem("wildfire", Wildfire(defaultItemSettings().maxCount(1)))
 
   fun init() { }
 

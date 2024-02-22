@@ -25,8 +25,6 @@ import kotlin.math.sin
 
 object BlockMarkerUtils {
   private val HONEYCOMB_TEXTURE = Identifier("textures/item/honeycomb.png")
-  private val MARKER_TEXTURE = Derelict.id("textures/block/marker.png")
-  private var MARKER_MODEL: Model? = null
 
   fun renderWaxedIndicator(textureDrawer: (Identifier, Int, Int, Int, Int, Float) -> Unit, x: Int, y: Int) {
     val size = (Derelict.CLIENT_CONFIG.waxedIndicatorScale() * 16).toInt()
@@ -52,66 +50,5 @@ object BlockMarkerUtils {
     val y = MinecraftClient.getInstance().window.scaledHeight / 2 - 8
 
     context.drawTexture(texture, x, y, 0F, 0F, 16, 16, 16, 16)
-  }
-
-  fun setupMarkerModel(loader: EntityModelLoader) {
-    if (MARKER_MODEL == null) MARKER_MODEL = MarkerModel(loader)
-  }
-
-  fun drawMarkers(ctx: WorldRenderContext) {
-    val range = Derelict.CLIENT_CONFIG.waxableAndAgeableHightlightRange()
-    if (range <= 0) return
-    val player = MinecraftClient.getInstance().player ?: return
-    val stack = player.mainHandStack
-    val waxing = Derelict.CLIENT_CONFIG.waxableHighlights()
-      && (stack.isOf(ModBlocksAndItems.WAXING_STAFF) || stack.isOf(Items.HONEYCOMB))
-    val aging = Derelict.CLIENT_CONFIG.ageableHighlights() && stack.isOf(ModBlocksAndItems.AGING_STAFF)
-    if (!aging && !waxing) return
-    val opacity = sin((ctx.world().time + ctx.tickDelta()) * 0.25F) * 0.2F + 0.5F
-    BlockPos.iterateOutwards(player.blockPos, range, range, range).forEach {
-      val block = ctx.world().getBlockState(it).block as AbstractBlockAccessor
-      if (
-        (aging && block.isAgeable)
-        || (waxing && block.isWaxable)
-      ) renderBlockMarker(ctx, it, 1F, 0.78F, 0.05F, opacity)
-    }
-  }
-
-  private fun renderBlockMarker(ctx: WorldRenderContext, pos: BlockPos, red: Float, green: Float, blue: Float, alpha: Float) {
-    val matrices = ctx.matrixStack()
-    val vertices = ctx.consumers() ?: return
-
-    matrices.entry {
-      val camera = ctx.camera()
-      val consumer = vertices.getBuffer(RenderLayer.getEntityTranslucentEmissive(MARKER_TEXTURE))
-      translate(-camera.pos.x + 0.5 + pos.x, -camera.pos.y - 0.5 + pos.y, -camera.pos.z + 0.5 + pos.z)
-      MARKER_MODEL?.render(matrices, consumer, 0xF000F0, OverlayTexture.DEFAULT_UV, red, green, blue, alpha)
-    }
-  }
-
-  fun getMarkerTexturedModelData(): TexturedModelData {
-    val modelData = ModelData()
-    val modelPartData = modelData.root
-    modelPartData.addChild(
-      "bb_main",
-      ModelPartBuilder.create().uv(0, 0).cuboid(-8.0f, -16.0f, -8.0f, 16.0f, 16.0f, 16.0f, Dilation(0.5f)),
-      ModelTransform.pivot(0.0f, 24.0f, 0.0f)
-    )
-    return TexturedModelData.of(modelData, 64, 64)
-  }
-
-  private class MarkerModel(loader: EntityModelLoader) : Model(RenderLayer::getEntityTranslucent) {
-    private val main = loader.getModelPart(ModRender.MARKER_LAYER)
-
-    override fun render(
-      matrices: MatrixStack,
-      vertices: VertexConsumer,
-      light: Int,
-      overlay: Int,
-      red: Float,
-      green: Float,
-      blue: Float,
-      alpha: Float
-    ) = main.render(matrices, vertices, light, overlay, red, green, blue, alpha)
   }
 }

@@ -12,6 +12,9 @@ object Versions {
   const val JANKSON = "1.2.1"
   const val REI = "12.0.684"
 
+  // Gimm1q
+  const val GIMM1Q = "0.1.2"
+
   // Publishing
   const val CURSEGRADLE = "1.4.0"
   const val MINOTAUR = "2.+"

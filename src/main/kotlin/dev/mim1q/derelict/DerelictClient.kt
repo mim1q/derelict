@@ -1,15 +1,18 @@
 package dev.mim1q.derelict
 
+import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.init.ModParticles
 import dev.mim1q.derelict.init.client.ModRender
+import dev.mim1q.derelict.interfaces.AbstractBlockAccessor
 import dev.mim1q.derelict.item.CrosshairTipItem
 import dev.mim1q.derelict.util.BlockMarkerUtils
+import dev.mim1q.gimm1q.client.highlight.HighlightDrawerCallback
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
-import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import net.minecraft.client.MinecraftClient
 import net.minecraft.item.Items
+import net.minecraft.util.math.BlockPos
+import kotlin.math.sin
 
 object DerelictClient : ClientModInitializer {
   override fun onInitializeClient() {
@@ -37,10 +40,31 @@ object DerelictClient : ClientModInitializer {
       }
     }
 
-    LivingEntityFeatureRendererRegistrationCallback.EVENT.register {
-      _, _, _, ctx -> BlockMarkerUtils.setupMarkerModel(ctx.modelLoader)
-    }
+    HighlightDrawerCallback.EVENT.register { drawer, ctx ->
+      val range = Derelict.CLIENT_CONFIG.waxableAndAgeableHightlightRange()
+      if (range <= 0) return@register
+      val stack = ctx.player.mainHandStack
 
-    WorldRenderEvents.AFTER_ENTITIES.register(BlockMarkerUtils::drawMarkers)
+      val waxing = Derelict.CLIENT_CONFIG.waxableHighlights()
+        && (stack.isOf(ModBlocksAndItems.WAXING_STAFF) || stack.isOf(Items.HONEYCOMB))
+      val aging = Derelict.CLIENT_CONFIG.ageableHighlights() && stack.isOf(ModBlocksAndItems.AGING_STAFF)
+
+      if (!aging && !waxing) return@register
+
+      val world = ctx.player.world
+      val tickDelta = MinecraftClient.getInstance().tickDelta
+      val opacity = (sin((world.time + tickDelta) * 0.25F) * 32F + 32F).toInt()
+      val color = (opacity shl 24) or 0xfcad03
+
+      BlockPos.iterateOutwards(ctx.player.blockPos, range, range, range).forEach {
+        val block = world.getBlockState(it).block as AbstractBlockAccessor
+        if (
+          (aging && block.isAgeable)
+          || (waxing && block.isWaxable)
+        ) {
+          drawer.highlightBlock(it, color, 0x80fcad03.toInt())
+        }
+      }
+    }
   }
 }
