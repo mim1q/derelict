@@ -19,7 +19,6 @@ import net.minecraft.client.render.entity.model.EntityModelLayer
 object ModRender {
   val FANCY_COBWEB_SPIDER_LAYER = registerLayer(FancyCobwebWithSpiderRenderer.SpiderModel::getTexturedModelData, "fancy_cobweb_spider")
   val ARACHNE_LAYER = registerLayer(ArachneTexturedModelData::create, "arachne")
-  val MARKER_LAYER = registerLayer(BlockMarkerUtils::getMarkerTexturedModelData, "marker")
 
   fun init() {
     BlockRenderLayerMap.INSTANCE.putBlocks(

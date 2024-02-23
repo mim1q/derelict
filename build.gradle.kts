@@ -27,6 +27,7 @@ repositories {
   mavenCentral()
   maven("https://maven.wispforest.io")
   maven("https://maven.shedaniel.me/")
+  maven("https://maven.terraformersmc.com/")
   mavenLocal()
 }
 
@@ -47,6 +48,9 @@ dependencies {
   modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${Versions.REI}")
   modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${Versions.REI}")
   modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${Versions.REI}")
+  // EMI, same as above
+  modCompileOnly("dev.emi:emi-fabric:${Versions.EMI}:api")
+  modLocalRuntime("dev.emi:emi-fabric:${Versions.EMI}")
   // Gimm1q for common Mim1q's mods code
   modImplementation(include("dev.mim1q:gimm1q:${Versions.GIMM1Q}")!!)
 }

@@ -92,3 +92,18 @@ sealed class StaffItem(settings: FabricItemSettings) : Item(settings), Crosshair
     return null
   }
 }
+
+fun getFullAgingMap(): Map<Block, Block> {
+  val map = mutableMapOf<Block, Block>()
+  map.putAll(ModBlocksAndItems.BLOCK_AGING_MAP)
+  Oxidizable.OXIDATION_LEVEL_INCREASES.get().forEach { (from, to) ->
+    map[from] = to
+  }
+  HoneycombItem.UNWAXED_TO_WAXED_BLOCKS.get().forEach { (from, to) ->
+    val aged = Oxidizable.getIncreasedOxidationBlock(to).orElse(null)
+    val agedWaxed = HoneycombItem.UNWAXED_TO_WAXED_BLOCKS.get()[aged]
+    if (agedWaxed != null) map[from] = agedWaxed
+  }
+
+  return map
+}

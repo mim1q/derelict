@@ -11,6 +11,7 @@ object Versions {
   const val OWO_LIB = "0.11.2-pre.14+1.20"
   const val JANKSON = "1.2.1"
   const val REI = "12.0.684"
+  const val EMI = "1.1.2+1.20.1"
 
   // Gimm1q
   const val GIMM1Q = "0.1.2"
