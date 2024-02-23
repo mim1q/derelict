@@ -16,8 +16,6 @@ class Wildfire(settings: Settings) : Item(settings) {
   override fun usageTick(world: World?, user: LivingEntity?, stack: ItemStack?, remainingUseTicks: Int) {
     if (world !is ServerWorld || user !is PlayerEntity) return
 
-    println(user.itemUseTime)
-
     val shootFlame = user.getItemUseTime() >= 20
     ScreenShakeUtils.shakeAround(
       world,

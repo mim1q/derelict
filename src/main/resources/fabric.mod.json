@@ -7,9 +7,10 @@
   "environment": "*",
   "icon": "assets/derelict/icon.png",
   "entrypoints": {
-    "main": [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.Derelict" }],
-    "client": [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.DerelictClient" }],
-    "emi": [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.compat.emi.EmiDerelictPlugin" }]
+    "main":       [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.Derelict" }],
+    "client":     [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.DerelictClient" }],
+    "emi":        [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.compat.emi.EmiDerelictPlugin" }],
+    "rei_client": [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.compat.rei.ReiDerelictPlugin" }]
   },
   "mixins": [
     "derelict.mixins.json"
