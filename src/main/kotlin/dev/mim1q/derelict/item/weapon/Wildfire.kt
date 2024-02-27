@@ -11,25 +11,38 @@ import net.minecraft.util.Hand
 import net.minecraft.util.TypedActionResult
 import net.minecraft.util.UseAction
 import net.minecraft.world.World
+import kotlin.math.min
 
 class Wildfire(settings: Settings) : Item(settings) {
   override fun usageTick(world: World?, user: LivingEntity?, stack: ItemStack?, remainingUseTicks: Int) {
-    if (world !is ServerWorld || user !is PlayerEntity) return
+    if (user !is PlayerEntity) return
 
     val shootFlame = user.getItemUseTime() >= 20
+    if (shootFlame) {
+      user.addVelocity(user.rotationVector.multiply(-1.0, 0.0, -1.0).multiply(0.03))
+    }
+
+    if (world !is ServerWorld) return
+
+    val shakeStrength = min(1f, user.itemUseTime * 0.05f)
+
+    user.yaw = 180f
+
     ScreenShakeUtils.shakeAround(
       world,
       user.pos,
-      if (shootFlame) 2f else 0.2f,
-      20,
+      shakeStrength,
+      40,
       5.0,
       32.0,
       "derelict_wildfire"
     )
   }
 
-  override fun getUseAction(stack: ItemStack) = UseAction.CROSSBOW
+  override fun getUseAction(stack: ItemStack) = UseAction.NONE
 
-  override fun use(world: World?, user: PlayerEntity?, hand: Hand?): TypedActionResult<ItemStack>
-    = ItemUsage.consumeHeldItem(world, user, hand)
+  override fun getMaxUseTime(stack: ItemStack) = 3600 * 20
+
+  override fun use(world: World?, user: PlayerEntity?, hand: Hand?): TypedActionResult<ItemStack> =
+    ItemUsage.consumeHeldItem(world, user, hand)
 }
