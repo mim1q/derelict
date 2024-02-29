@@ -19,9 +19,10 @@ object ModEntities {
     dimensions(EntityDimensions.fixed(2.5F, 2.0F))
   }
 
-  val SPIDERLING = register("spiderling", ::SpiderlingEntity, SpawnGroup.CREATURE) {
-    dimensions(EntityDimensions.fixed(0.5F, 0.5F))
-  }
+  val SPIDERLING =
+    register("spiderling", ::SpiderlingEntity, attributes = SpiderlingEntity.createSpiderlingAttributes()) {
+      dimensions(EntityDimensions.fixed(0.7F, 0.7F))
+    }
 
   fun init() {}
 
@@ -32,10 +33,10 @@ object ModEntities {
     attributes: DefaultAttributeContainer.Builder = ZombieEntity.createHostileAttributes(),
     builderSetup: FabricEntityTypeBuilder<E>.() -> Unit = { }
   ): EntityType<E> = Registry.register(
-      Registries.ENTITY_TYPE,
-      Derelict.id(name),
-      FabricEntityTypeBuilder.create(spawnGroup, entityFactory).apply(builderSetup).build()
-    ).also {
-      FabricDefaultAttributeRegistry.register(it, attributes)
+    Registries.ENTITY_TYPE,
+    Derelict.id(name),
+    FabricEntityTypeBuilder.create(spawnGroup, entityFactory).apply(builderSetup).build()
+  ).also {
+    FabricDefaultAttributeRegistry.register(it, attributes)
   }
 }
