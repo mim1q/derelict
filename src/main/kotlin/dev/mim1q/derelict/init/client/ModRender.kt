@@ -2,8 +2,10 @@ package dev.mim1q.derelict.init.client
 
 import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.client.render.block.FancyCobwebWithSpiderRenderer
+import dev.mim1q.derelict.client.render.entity.SpiderlingEntityRenderer
 import dev.mim1q.derelict.client.render.entity.boss.arachne.ArachneEntityRenderer
 import dev.mim1q.derelict.client.render.entity.boss.arachne.ArachneTexturedModelData
+import dev.mim1q.derelict.client.render.entity.getSpiderlingTexturedModelData
 import dev.mim1q.derelict.init.ModBlockEntities
 import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.init.ModEntities
@@ -18,6 +20,8 @@ import net.minecraft.client.render.entity.model.EntityModelLayer
 object ModRender {
   val FANCY_COBWEB_SPIDER_LAYER =
     registerLayer(FancyCobwebWithSpiderRenderer.SpiderModel::getTexturedModelData, "fancy_cobweb_spider")
+  val SPIDERLING_LAYER = registerLayer(::getSpiderlingTexturedModelData, "spiderling")
+
   val ARACHNE_LAYER = registerLayer(ArachneTexturedModelData::create, "arachne")
 
   fun init() {
@@ -49,6 +53,7 @@ object ModRender {
 
     BlockEntityRendererFactories.register(ModBlockEntities.FANCY_COBWEB_WITH_SPIDER, ::FancyCobwebWithSpiderRenderer)
     EntityRendererRegistry.register(ModEntities.ARACHNE, ::ArachneEntityRenderer)
+    EntityRendererRegistry.register(ModEntities.SPIDERLING, ::SpiderlingEntityRenderer)
   }
 
   private fun registerLayer(provider: TexturedModelDataProvider, path: String, name: String = "main") =

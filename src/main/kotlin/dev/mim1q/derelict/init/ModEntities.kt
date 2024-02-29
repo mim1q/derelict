@@ -1,6 +1,7 @@
 package dev.mim1q.derelict.init
 
 import dev.mim1q.derelict.Derelict
+import dev.mim1q.derelict.entity.SpiderlingEntity
 import dev.mim1q.derelict.entity.boss.ArachneEntity
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricDefaultAttributeRegistry
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
@@ -16,6 +17,10 @@ import net.minecraft.registry.Registry
 object ModEntities {
   val ARACHNE = register("arachne", ::ArachneEntity, attributes = ArachneEntity.createArachneAttributes()) {
     dimensions(EntityDimensions.fixed(2.5F, 2.0F))
+  }
+
+  val SPIDERLING = register("spiderling", ::SpiderlingEntity, SpawnGroup.CREATURE) {
+    dimensions(EntityDimensions.fixed(0.5F, 0.5F))
   }
 
   fun init() {}

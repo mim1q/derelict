@@ -66,6 +66,7 @@ tasks {
   withType<JavaCompile> {
     configureEach {
       options.release.set(17)
+      options.compilerArgs.add("-proc:none")
     }
   }
   register("runDatagenScript") {
