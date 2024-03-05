@@ -43,7 +43,7 @@ object ModBlocksAndItems {
   val BURNED_WOOD = WoodSet(Derelict.id("burned"), defaultItemSettings()).register()
   val BURNED_LEAVES = register("burned_leaves", LeavesBlock(FabricBlockSettings.copyOf(Blocks.OAK_LEAVES)))
   val SMOLDERING_LEAVES = register("smoldering_leaves", SmolderingLeavesBlock(FabricBlockSettings.copyOf(Blocks.OAK_LEAVES)))
-  val SMOKING_EMBERS = register("smoking_embers", EmbersBlock.Smoking(FabricBlockSettings.copyOf(Blocks.FIRE).breakInstantly()))
+  val SMOKING_EMBERS = register("smoking_embers", EmbersBlock.Smoking(FabricBlockSettings.copyOf(Blocks.FIRE).luminance(1).breakInstantly()))
   val SMOLDERING_EMBERS = register("smoldering_embers", EmbersBlock.Smoldering(
     FabricBlockSettings.copyOf(Blocks.FIRE).luminance(4).emissiveLighting {_, _, _ -> true}.breakInstantly()
   ))

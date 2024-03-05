@@ -66,6 +66,8 @@ tasks {
   withType<JavaCompile> {
     configureEach {
       options.release.set(17)
+    }
+    named("compileJava") {
       options.compilerArgs.add("-proc:none")
     }
   }
