@@ -31,7 +31,6 @@ sealed class MetalSet(
   abstract val chain: ChainBlock
   abstract val grate: GrateBlock
   abstract val beam: BeamBlock
-  abstract val beamPile: BeamBlock
   abstract val ladder: LadderBlock
   abstract val patch: SquarePatch
   abstract val sheet: RotatableCoverBlock.Normal
@@ -56,7 +55,6 @@ sealed class MetalSet(
     override val chain: ChainBlock = registerBlockWithItem("$prefix${name}_chain", ChainBlock(defaultBlockSettings().nonOpaque()), ItemCategory.WAXED_METAL_DECORATION)
     override val grate: GrateBlock = registerBlockWithItem("$prefix${name}_grate", GrateBlock(defaultBlockSettings().nonOpaque()), ItemCategory.WAXED_METAL_DECORATION)
     override val beam: BeamBlock = registerBlockWithItem("$prefix${name}_beam", BeamBlock(defaultBlockSettings().nonOpaque()), ItemCategory.WAXED_METAL_DECORATION)
-    override val beamPile: BeamBlock = registerBlockWithItem("$prefix${name}_beam_pile", BeamBlock(defaultBlockSettings().nonOpaque(), true), ItemCategory.WAXED_METAL_DECORATION)
     override val ladder: LadderBlock = registerBlockWithItem("$prefix${name}_ladder", MetalLadderBlock(defaultBlockSettings().nonOpaque()), ItemCategory.WAXED_METAL_DECORATION)
     override val patch: SquarePatch = registerBlockWithItem("$prefix${name}_patch", SquarePatch(defaultBlockSettings().nonOpaque().noZFighting()), ItemCategory.WAXED_METAL_DECORATION)
     override val sheet: RotatableCoverBlock.Normal = registerBlockWithItem("$prefix${name}_sheet", RotatableCoverBlock.Normal(defaultBlockSettings().nonOpaque().noZFighting()), ItemCategory.WAXED_METAL_DECORATION)
@@ -79,7 +77,6 @@ sealed class MetalSet(
     override val chain: ChainBlock = registerBlockWithItem("$prefix${name}_chain", OxidizableChainBlock(level, defaultBlockSettings().nonOpaque()), ItemCategory.METAL_DECORATION)
     override val grate: GrateBlock = registerBlockWithItem("$prefix${name}_grate", OxidizableGrateBlock(level, defaultBlockSettings().nonOpaque()), ItemCategory.METAL_DECORATION)
     override val beam: BeamBlock = registerBlockWithItem("$prefix${name}_beam", OxidizableBeamBlock(level, defaultBlockSettings().nonOpaque()), ItemCategory.METAL_DECORATION)
-    override val beamPile: BeamBlock = registerBlockWithItem("$prefix${name}_beam_pile", OxidizableBeamBlock(level, defaultBlockSettings().nonOpaque(), true), ItemCategory.METAL_DECORATION)
     override val ladder: LadderBlock = registerBlockWithItem("$prefix${name}_ladder", OxidizableMetalLadderBlock(level, defaultBlockSettings().nonOpaque()), ItemCategory.METAL_DECORATION)
     override val patch: SquarePatch = registerBlockWithItem("$prefix${name}_patch", OxidizableSquarePatch(level, defaultBlockSettings().nonOpaque().noZFighting()), ItemCategory.METAL_DECORATION)
     override val sheet: RotatableCoverBlock.Normal = registerBlockWithItem("$prefix${name}_sheet", OxidizableNormal(level, defaultBlockSettings().nonOpaque().noZFighting()), ItemCategory.METAL_DECORATION)
@@ -102,7 +99,6 @@ sealed class MetalSet(
       registerOxidizable(chain, moreOxidizedSet?.chain, waxedSet.chain)
       registerOxidizable(grate, moreOxidizedSet?.grate, waxedSet.grate)
       registerOxidizable(beam, moreOxidizedSet?.beam, waxedSet.beam)
-      registerOxidizable(beamPile, moreOxidizedSet?.beamPile, waxedSet.beamPile)
       registerOxidizable(ladder, moreOxidizedSet?.ladder, waxedSet.ladder)
       registerOxidizable(patch, moreOxidizedSet?.patch, waxedSet.patch)
       registerOxidizable(sheet, moreOxidizedSet?.sheet, waxedSet.sheet)
