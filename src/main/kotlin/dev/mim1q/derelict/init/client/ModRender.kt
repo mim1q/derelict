@@ -18,46 +18,49 @@ import net.minecraft.client.render.block.entity.BlockEntityRendererFactories
 import net.minecraft.client.render.entity.model.EntityModelLayer
 
 object ModRender {
-  val FANCY_COBWEB_SPIDER_LAYER =
-    registerLayer(FancyCobwebWithSpiderRenderer.SpiderModel::getTexturedModelData, "fancy_cobweb_spider")
-  val SPIDERLING_LAYER = registerLayer(::getSpiderlingTexturedModelData, "spiderling")
+    val FANCY_COBWEB_SPIDER_LAYER =
+        registerLayer(FancyCobwebWithSpiderRenderer.SpiderModel::getTexturedModelData, "fancy_cobweb_spider")
+    val SPIDERLING_LAYER = registerLayer(::getSpiderlingTexturedModelData, "spiderling")
 
-  val ARACHNE_LAYER = registerLayer(ArachneTexturedModelData::create, "arachne")
+    val ARACHNE_LAYER = registerLayer(ArachneTexturedModelData::create, "arachne")
 
-  fun init() {
-    BlockRenderLayerMap.INSTANCE.putBlocks(
-      RenderLayer.getCutout(),
-      ModBlocksAndItems.BURNED_WOOD.trapdoor,
-      ModBlocksAndItems.BURNED_WOOD.door,
-      ModBlocksAndItems.BURNED_LEAVES,
-      ModBlocksAndItems.SMOLDERING_LEAVES,
-      ModBlocksAndItems.BURNED_GRASS.grassBlock,
-      ModBlocksAndItems.BURNED_GRASS.grass,
-      ModBlocksAndItems.BURNED_GRASS.tallGrass,
-      ModBlocksAndItems.DRIED_GRASS.grassBlock,
-      ModBlocksAndItems.DRIED_GRASS.grass,
-      ModBlocksAndItems.DRIED_GRASS.tallGrass,
-      ModBlocksAndItems.SMOLDERING_EMBERS,
-      ModBlocksAndItems.SMOKING_EMBERS,
-      ModBlocksAndItems.FLICKERING_LANTERN,
-      ModBlocksAndItems.FLICKERING_SOUL_LANTERN,
-      ModBlocksAndItems.BROKEN_LANTERN,
-      ModBlocksAndItems.FANCY_COBWEB,
-      ModBlocksAndItems.FANCY_COBWEB_WITH_SPIDER_NEST,
-      ModBlocksAndItems.FANCY_COBWEB_WITH_SPIDER,
-      ModBlocksAndItems.FANCY_COBWEB_WITH_SHY_SPIDER,
-      ModBlocksAndItems.FANCY_CORNER_COBWEB,
-      ModBlocksAndItems.CORNER_COBWEB,
-      *ModBlocksAndItems.NOCTISTEEL.getCutoutBlocks()
-    )
+    fun init() {
+        BlockRenderLayerMap.INSTANCE.putBlocks(
+            RenderLayer.getCutout(),
+            ModBlocksAndItems.BURNED_WOOD.trapdoor,
+            ModBlocksAndItems.BURNED_WOOD.door,
+            ModBlocksAndItems.BURNED_LEAVES,
+            ModBlocksAndItems.SMOLDERING_LEAVES,
+            ModBlocksAndItems.BURNED_GRASS.grassBlock,
+            ModBlocksAndItems.BURNED_GRASS.grass,
+            ModBlocksAndItems.BURNED_GRASS.tallGrass,
+            ModBlocksAndItems.DRIED_GRASS.grassBlock,
+            ModBlocksAndItems.DRIED_GRASS.grass,
+            ModBlocksAndItems.DRIED_GRASS.tallGrass,
+            ModBlocksAndItems.SMOLDERING_EMBERS,
+            ModBlocksAndItems.SMOKING_EMBERS,
+            ModBlocksAndItems.FLICKERING_LANTERN,
+            ModBlocksAndItems.FLICKERING_SOUL_LANTERN,
+            ModBlocksAndItems.BROKEN_LANTERN,
+            ModBlocksAndItems.FANCY_COBWEB,
+            ModBlocksAndItems.FANCY_COBWEB_WITH_SPIDER_NEST,
+            ModBlocksAndItems.FANCY_COBWEB_WITH_SPIDER,
+            ModBlocksAndItems.FANCY_COBWEB_WITH_SHY_SPIDER,
+            ModBlocksAndItems.FANCY_CORNER_COBWEB,
+            ModBlocksAndItems.CORNER_COBWEB,
+            *ModBlocksAndItems.NOCTISTEEL.getCutoutBlocks()
+        )
 
-    BlockEntityRendererFactories.register(ModBlockEntities.FANCY_COBWEB_WITH_SPIDER, ::FancyCobwebWithSpiderRenderer)
-    EntityRendererRegistry.register(ModEntities.ARACHNE, ::ArachneEntityRenderer)
-    EntityRendererRegistry.register(ModEntities.SPIDERLING, ::SpiderlingEntityRenderer)
-  }
-
-  private fun registerLayer(provider: TexturedModelDataProvider, path: String, name: String = "main") =
-    EntityModelLayer(Derelict.id(path), name).also {
-      EntityModelLayerRegistry.registerModelLayer(it, provider)
+        BlockEntityRendererFactories.register(
+            ModBlockEntities.FANCY_COBWEB_WITH_SPIDER,
+            ::FancyCobwebWithSpiderRenderer
+        )
+        EntityRendererRegistry.register(ModEntities.ARACHNE, ::ArachneEntityRenderer)
+        EntityRendererRegistry.register(ModEntities.SPIDERLING, ::SpiderlingEntityRenderer)
     }
+
+    private fun registerLayer(provider: TexturedModelDataProvider, path: String, name: String = "main") =
+        EntityModelLayer(Derelict.id(path), name).also {
+            EntityModelLayerRegistry.registerModelLayer(it, provider)
+        }
 }

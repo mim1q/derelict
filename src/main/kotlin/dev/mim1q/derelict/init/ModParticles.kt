@@ -12,16 +12,16 @@ import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
 
 object ModParticles {
-  val SPRAY = register("spray", ColoredParticleType.create())
-  val SPIDER = register("spider", SpiderParticleType.create())
+    val SPRAY = register("spray", ColoredParticleType.create())
+    val SPIDER = register("spider", SpiderParticleType.create())
 
-  fun init() { }
+    fun init() {}
 
-  fun initClient() {
-    ParticleFactoryRegistry.getInstance().register(SPRAY, ColoredParticle.createFactory(::SprayParticle))
-    ParticleFactoryRegistry.getInstance().register(SPIDER, SpiderParticle::Factory)
-  }
+    fun initClient() {
+        ParticleFactoryRegistry.getInstance().register(SPRAY, ColoredParticle.createFactory(::SprayParticle))
+        ParticleFactoryRegistry.getInstance().register(SPIDER, SpiderParticle::Factory)
+    }
 
-  private fun <P, T : ParticleType<P>> register(name: String, particle: T): T =
-    Registry.register(Registries.PARTICLE_TYPE, Derelict.id(name), particle)
+    private fun <P, T : ParticleType<P>> register(name: String, particle: T): T =
+        Registry.register(Registries.PARTICLE_TYPE, Derelict.id(name), particle)
 }

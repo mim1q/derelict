@@ -17,27 +17,31 @@ import net.minecraft.world.BlockView
 import net.minecraft.world.World
 
 open class BarbedWireBlock(settings: FabricBlockSettings) : Block(settings) {
-  override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
-    builder.add(AXIS)
-  }
+    override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
+        builder.add(AXIS)
+    }
 
-  @Suppress("OVERRIDE_DEPRECATION")
-  override fun getOutlineShape(state: BlockState, world: BlockView, pos: BlockPos, context: ShapeContext): VoxelShape
-    = if (state[AXIS] == Axis.X) SHAPE else SHAPE_ROTATED
+    @Suppress("OVERRIDE_DEPRECATION")
+    override fun getOutlineShape(
+        state: BlockState,
+        world: BlockView,
+        pos: BlockPos,
+        context: ShapeContext
+    ): VoxelShape = if (state[AXIS] == Axis.X) SHAPE else SHAPE_ROTATED
 
-  override fun getPlacementState(ctx: ItemPlacementContext): BlockState
-    = defaultState.with(AXIS, ctx.horizontalPlayerFacing.rotateYClockwise().axis)
+    override fun getPlacementState(ctx: ItemPlacementContext): BlockState =
+        defaultState.with(AXIS, ctx.horizontalPlayerFacing.rotateYClockwise().axis)
 
-  @Suppress("OVERRIDE_DEPRECATION")
-  override fun onEntityCollision(state: BlockState, world: World, pos: BlockPos, entity: Entity) {
-    entity.slowMovement(state, Vec3d(0.5, 0.5, 0.5))
-    entity.damage(world.damageSources.cactus(), 1.5F)
-  }
+    @Suppress("OVERRIDE_DEPRECATION")
+    override fun onEntityCollision(state: BlockState, world: World, pos: BlockPos, entity: Entity) {
+        entity.slowMovement(state, Vec3d(0.5, 0.5, 0.5))
+        entity.damage(world.damageSources.cactus(), 1.5F)
+    }
 
-  companion object {
-    val SHAPE: VoxelShape = createCuboidShape(0.0, 0.0, 4.0, 16.0, 8.0, 12.0)
-    val SHAPE_ROTATED: VoxelShape = createCuboidShape(4.0, 0.0, 0.0, 12.0, 8.0, 16.0)
+    companion object {
+        val SHAPE: VoxelShape = createCuboidShape(0.0, 0.0, 4.0, 16.0, 8.0, 12.0)
+        val SHAPE_ROTATED: VoxelShape = createCuboidShape(4.0, 0.0, 0.0, 12.0, 8.0, 16.0)
 
-    val AXIS: EnumProperty<Axis> = Properties.HORIZONTAL_AXIS
-  }
+        val AXIS: EnumProperty<Axis> = Properties.HORIZONTAL_AXIS
+    }
 }

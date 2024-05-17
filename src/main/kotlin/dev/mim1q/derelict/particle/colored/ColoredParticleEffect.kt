@@ -10,43 +10,43 @@ import net.minecraft.registry.Registries
 
 @JvmRecord
 data class ColoredParticleEffect(val type: ParticleType<*>, val color: Int) : ParticleEffect {
-  override fun getType() = type
+    override fun getType() = type
 
-  override fun write(buf: PacketByteBuf) {
-    buf.writeInt(color)
-  }
-
-  override fun asString(): String = "${Registries.PARTICLE_TYPE.getId(type)}$color"
-
-  companion object {
-    @Suppress("DEPRECATION")
-    val PARAMETERS_FACTORY: ParticleEffect.Factory<ColoredParticleEffect> =
-      object : ParticleEffect.Factory<ColoredParticleEffect> {
-        override fun read(
-          particleType: ParticleType<ColoredParticleEffect>,
-          stringReader: StringReader
-        ): ColoredParticleEffect {
-          stringReader.expect(' ')
-          return ColoredParticleEffect(particleType, stringReader.readInt())
-        }
-
-        override fun read(
-          particleType: ParticleType<ColoredParticleEffect>,
-          packetByteBuf: PacketByteBuf
-        ): ColoredParticleEffect {
-          return ColoredParticleEffect(particleType, packetByteBuf.readInt())
-        }
-      }
-
-    fun createCodec(type: ParticleType<ColoredParticleEffect>): Codec<ColoredParticleEffect> {
-      return Codec.INT.xmap(
-        { color: Int ->
-          ColoredParticleEffect(
-            type,
-            color
-          )
-        }
-      ) { (_, color): ColoredParticleEffect -> color }
+    override fun write(buf: PacketByteBuf) {
+        buf.writeInt(color)
     }
-  }
+
+    override fun asString(): String = "${Registries.PARTICLE_TYPE.getId(type)}$color"
+
+    companion object {
+        @Suppress("DEPRECATION")
+        val PARAMETERS_FACTORY: ParticleEffect.Factory<ColoredParticleEffect> =
+            object : ParticleEffect.Factory<ColoredParticleEffect> {
+                override fun read(
+                    particleType: ParticleType<ColoredParticleEffect>,
+                    stringReader: StringReader
+                ): ColoredParticleEffect {
+                    stringReader.expect(' ')
+                    return ColoredParticleEffect(particleType, stringReader.readInt())
+                }
+
+                override fun read(
+                    particleType: ParticleType<ColoredParticleEffect>,
+                    packetByteBuf: PacketByteBuf
+                ): ColoredParticleEffect {
+                    return ColoredParticleEffect(particleType, packetByteBuf.readInt())
+                }
+            }
+
+        fun createCodec(type: ParticleType<ColoredParticleEffect>): Codec<ColoredParticleEffect> {
+            return Codec.INT.xmap(
+                { color: Int ->
+                    ColoredParticleEffect(
+                        type,
+                        color
+                    )
+                }
+            ) { (_, color): ColoredParticleEffect -> color }
+        }
+    }
 }

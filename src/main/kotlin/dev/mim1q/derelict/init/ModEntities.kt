@@ -15,28 +15,28 @@ import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
 
 object ModEntities {
-  val ARACHNE = register("arachne", ::ArachneEntity, attributes = ArachneEntity.createArachneAttributes()) {
-    dimensions(EntityDimensions.fixed(2.5F, 2.0F))
-  }
-
-  val SPIDERLING =
-    register("spiderling", ::SpiderlingEntity, attributes = SpiderlingEntity.createSpiderlingAttributes()) {
-      dimensions(EntityDimensions.fixed(0.7F, 0.7F))
+    val ARACHNE = register("arachne", ::ArachneEntity, attributes = ArachneEntity.createArachneAttributes()) {
+        dimensions(EntityDimensions.fixed(2.5F, 2.0F))
     }
 
-  fun init() {}
+    val SPIDERLING =
+        register("spiderling", ::SpiderlingEntity, attributes = SpiderlingEntity.createSpiderlingAttributes()) {
+            dimensions(EntityDimensions.fixed(0.7F, 0.7F))
+        }
 
-  private fun <E : LivingEntity> register(
-    name: String,
-    entityFactory: EntityType.EntityFactory<E>,
-    spawnGroup: SpawnGroup = SpawnGroup.MONSTER,
-    attributes: DefaultAttributeContainer.Builder = ZombieEntity.createHostileAttributes(),
-    builderSetup: FabricEntityTypeBuilder<E>.() -> Unit = { }
-  ): EntityType<E> = Registry.register(
-    Registries.ENTITY_TYPE,
-    Derelict.id(name),
-    FabricEntityTypeBuilder.create(spawnGroup, entityFactory).apply(builderSetup).build()
-  ).also {
-    FabricDefaultAttributeRegistry.register(it, attributes)
-  }
+    fun init() {}
+
+    private fun <E : LivingEntity> register(
+        name: String,
+        entityFactory: EntityType.EntityFactory<E>,
+        spawnGroup: SpawnGroup = SpawnGroup.MONSTER,
+        attributes: DefaultAttributeContainer.Builder = ZombieEntity.createHostileAttributes(),
+        builderSetup: FabricEntityTypeBuilder<E>.() -> Unit = { }
+    ): EntityType<E> = Registry.register(
+        Registries.ENTITY_TYPE,
+        Derelict.id(name),
+        FabricEntityTypeBuilder.create(spawnGroup, entityFactory).apply(builderSetup).build()
+    ).also {
+        FabricDefaultAttributeRegistry.register(it, attributes)
+    }
 }

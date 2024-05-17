@@ -1,26 +1,26 @@
 object Versions {
-  const val MINECRAFT = "1.20.1"
+    const val MINECRAFT = "1.20.1"
 
-  // Fabric
-  const val FABRIC_LOADER = "0.14.+"
-  const val FABRIC_API = "0.86.0+1.20.1"
-  const val YARN = "1.20.1+build.10"
-  const val LOOM = "1.3-SNAPSHOT"
+    // Fabric
+    const val FABRIC_LOADER = "0.14.+"
+    const val FABRIC_API = "0.86.0+1.20.1"
+    const val YARN = "1.20.1+build.10"
+    const val LOOM = "1.3-SNAPSHOT"
 
-  // Library dependencies
-  const val FABRIC_LANUGAGE_KOTLIN = "1.10.8+kotlin.1.9.0"
-  const val KOTLIN = "1.9.0"
-  const val OWO_LIB = "0.11.2-pre.14+1.20"
-  const val JANKSON = "1.2.1"
+    // Library dependencies
+    const val FABRIC_LANUGAGE_KOTLIN = "1.10.8+kotlin.1.9.0"
+    const val KOTLIN = "1.9.0"
+    const val OWO_LIB = "0.11.2-pre.14+1.20"
+    const val JANKSON = "1.2.1"
 
-  // Compatibility
-  const val REI = "12.0.684"
-  const val EMI = "1.1.2+1.20.1"
+    // Compatibility
+    const val REI = "12.0.684"
+    const val EMI = "1.1.2+1.20.1"
 
-  // Gimm1q
-  const val GIMM1Q = "0.5.3"
+    // Gimm1q
+    const val GIMM1Q = "0.5.3"
 
-  // Publishing
-  const val CURSEGRADLE = "1.4.0"
-  const val MINOTAUR = "2.+"
+    // Publishing
+    const val CURSEGRADLE = "1.4.0"
+    const val MINOTAUR = "2.+"
 }

@@ -7,14 +7,14 @@ import net.minecraft.particle.ParticleType
 
 
 class ColoredParticleType private constructor() :
-  ParticleType<ColoredParticleEffect>(true, ColoredParticleEffect.PARAMETERS_FACTORY) {
-  override fun getCodec(): Codec<ColoredParticleEffect> = ColoredParticleEffect.createCodec(this)
+    ParticleType<ColoredParticleEffect>(true, ColoredParticleEffect.PARAMETERS_FACTORY) {
+    override fun getCodec(): Codec<ColoredParticleEffect> = ColoredParticleEffect.createCodec(this)
 
-  fun get(color: Int): ParticleEffect = ColoredParticleEffect(this, color)
+    fun get(color: Int): ParticleEffect = ColoredParticleEffect(this, color)
 
-  companion object {
-    fun create(): ColoredParticleType {
-      return ColoredParticleType()
+    companion object {
+        fun create(): ColoredParticleType {
+            return ColoredParticleType()
+        }
     }
-  }
 }

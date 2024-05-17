@@ -34,132 +34,160 @@ import java.util.*
 
 @Suppress("UNUSED")
 object ModBlocksAndItems {
-  private val lastAgeable = mutableSetOf<Block>()
-  private val lastWaxable = mutableSetOf<Block>()
+    private val lastAgeable = mutableSetOf<Block>()
+    private val lastWaxable = mutableSetOf<Block>()
 
-  val AGING_STAFF = registerItem("aging_staff", StaffItem.Aging(defaultItemSettings().maxCount(1)))
-  val WAXING_STAFF = registerItem("waxing_staff", StaffItem.Waxing(defaultItemSettings().maxCount(1)))
+    val AGING_STAFF = registerItem("aging_staff", StaffItem.Aging(defaultItemSettings().maxCount(1)))
+    val WAXING_STAFF = registerItem("waxing_staff", StaffItem.Waxing(defaultItemSettings().maxCount(1)))
 
-  val BURNED_WOOD = WoodSet(Derelict.id("burned"), defaultItemSettings()).register()
-  val BURNED_LEAVES = register("burned_leaves", LeavesBlock(FabricBlockSettings.copyOf(Blocks.OAK_LEAVES)))
-  val SMOLDERING_LEAVES = register("smoldering_leaves", SmolderingLeavesBlock(FabricBlockSettings.copyOf(Blocks.OAK_LEAVES)))
-  val SMOKING_EMBERS = register("smoking_embers", EmbersBlock.Smoking(FabricBlockSettings.copyOf(Blocks.FIRE).luminance(1).breakInstantly()))
-  val SMOLDERING_EMBERS = register("smoldering_embers", EmbersBlock.Smoldering(
-    FabricBlockSettings.copyOf(Blocks.FIRE).luminance(4).emissiveLighting {_, _, _ -> true}.breakInstantly()
-  ))
-  val DRIED_GRASS = GrassSet(Derelict.id("dried"), defaultItemSettings())
-  val BURNED_GRASS = GrassSet(Derelict.id("burned"), defaultItemSettings())
+    val BURNED_WOOD = WoodSet(Derelict.id("burned"), defaultItemSettings()).register()
+    val BURNED_LEAVES = register("burned_leaves", LeavesBlock(FabricBlockSettings.copyOf(Blocks.OAK_LEAVES)))
+    val SMOLDERING_LEAVES =
+        register("smoldering_leaves", SmolderingLeavesBlock(FabricBlockSettings.copyOf(Blocks.OAK_LEAVES)))
+    val SMOKING_EMBERS = register(
+        "smoking_embers",
+        EmbersBlock.Smoking(FabricBlockSettings.copyOf(Blocks.FIRE).luminance(1).breakInstantly())
+    )
+    val SMOLDERING_EMBERS = register(
+        "smoldering_embers", EmbersBlock.Smoldering(
+            FabricBlockSettings.copyOf(Blocks.FIRE).luminance(4).emissiveLighting { _, _, _ -> true }.breakInstantly()
+        )
+    )
+    val DRIED_GRASS = GrassSet(Derelict.id("dried"), defaultItemSettings())
+    val BURNED_GRASS = GrassSet(Derelict.id("burned"), defaultItemSettings())
 
-  val OAK_COVER_BOARDS = CoverBoardsSet(Derelict.id("oak"), defaultItemSettings())
-  val SPRUCE_COVER_BOARDS = CoverBoardsSet(Derelict.id("spruce"), defaultItemSettings())
-  val BIRCH_COVER_BOARDS = CoverBoardsSet(Derelict.id("birch"), defaultItemSettings())
-  val JUNGLE_COVER_BOARDS = CoverBoardsSet(Derelict.id("jungle"), defaultItemSettings())
-  val ACACIA_COVER_BOARDS = CoverBoardsSet(Derelict.id("acacia"), defaultItemSettings())
-  val DARK_OAK_COVER_BOARDS = CoverBoardsSet(Derelict.id("dark_oak"), defaultItemSettings())
-  val MANGROVE_COVER_BOARDS = CoverBoardsSet(Derelict.id("mangrove"), defaultItemSettings())
-  val CHERRY_COVER_BOARDS = CoverBoardsSet(Derelict.id("cherry"), defaultItemSettings())
-  val BAMBOO_COVER_BOARD = CoverBoardsSet(Derelict.id("bamboo"), defaultItemSettings())
-  val WARPED_COVER_BOARDS = CoverBoardsSet(Derelict.id("warped"), defaultItemSettings())
-  val CRIMSON_COVER_BOARDS = CoverBoardsSet(Derelict.id("crimson"), defaultItemSettings())
-  val BURNED_COVER_BOARDS = CoverBoardsSet(Derelict.id("burned"), defaultItemSettings())
+    val OAK_COVER_BOARDS = CoverBoardsSet(Derelict.id("oak"), defaultItemSettings())
+    val SPRUCE_COVER_BOARDS = CoverBoardsSet(Derelict.id("spruce"), defaultItemSettings())
+    val BIRCH_COVER_BOARDS = CoverBoardsSet(Derelict.id("birch"), defaultItemSettings())
+    val JUNGLE_COVER_BOARDS = CoverBoardsSet(Derelict.id("jungle"), defaultItemSettings())
+    val ACACIA_COVER_BOARDS = CoverBoardsSet(Derelict.id("acacia"), defaultItemSettings())
+    val DARK_OAK_COVER_BOARDS = CoverBoardsSet(Derelict.id("dark_oak"), defaultItemSettings())
+    val MANGROVE_COVER_BOARDS = CoverBoardsSet(Derelict.id("mangrove"), defaultItemSettings())
+    val CHERRY_COVER_BOARDS = CoverBoardsSet(Derelict.id("cherry"), defaultItemSettings())
+    val BAMBOO_COVER_BOARD = CoverBoardsSet(Derelict.id("bamboo"), defaultItemSettings())
+    val WARPED_COVER_BOARDS = CoverBoardsSet(Derelict.id("warped"), defaultItemSettings())
+    val CRIMSON_COVER_BOARDS = CoverBoardsSet(Derelict.id("crimson"), defaultItemSettings())
+    val BURNED_COVER_BOARDS = CoverBoardsSet(Derelict.id("burned"), defaultItemSettings())
 
-  val FLICKERING_REDSTONE_LAMP = register("flickering_redstone_lamp", FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.REDSTONE_LAMP)))
-  val FLICKERING_SEA_LANTERN = register("flickering_sea_lantern", FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.SEA_LANTERN)))
-  val BROKEN_SEA_LANTERN = register("broken_sea_lantern", Block(FabricBlockSettings.copyOf(Blocks.SEA_LANTERN).luminance { 0 }))
-  val FLICKERING_JACK_O_LANTERN = register("flickering_jack_o_lantern", FlickeringCarvedPumpkinBlock(FabricBlockSettings.copyOf(Blocks.JACK_O_LANTERN)))
-  val FLICKERING_LANTERN = register("flickering_lantern", FlickeringLanternBlock(FabricBlockSettings.copyOf(Blocks.LANTERN)))
-  val BROKEN_LANTERN = register("broken_lantern", LanternBlock(FabricBlockSettings.copyOf(Blocks.LANTERN).luminance { 0 }))
-  val FLICKERING_SOUL_LANTERN = register("flickering_soul_lantern", FlickeringLanternBlock(FabricBlockSettings.copyOf(Blocks.SOUL_LANTERN)))
+    val FLICKERING_REDSTONE_LAMP =
+        register("flickering_redstone_lamp", FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.REDSTONE_LAMP)))
+    val FLICKERING_SEA_LANTERN =
+        register("flickering_sea_lantern", FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.SEA_LANTERN)))
+    val BROKEN_SEA_LANTERN =
+        register("broken_sea_lantern", Block(FabricBlockSettings.copyOf(Blocks.SEA_LANTERN).luminance { 0 }))
+    val FLICKERING_JACK_O_LANTERN = register(
+        "flickering_jack_o_lantern",
+        FlickeringCarvedPumpkinBlock(FabricBlockSettings.copyOf(Blocks.JACK_O_LANTERN))
+    )
+    val FLICKERING_LANTERN =
+        register("flickering_lantern", FlickeringLanternBlock(FabricBlockSettings.copyOf(Blocks.LANTERN)))
+    val BROKEN_LANTERN =
+        register("broken_lantern", LanternBlock(FabricBlockSettings.copyOf(Blocks.LANTERN).luminance { 0 }))
+    val FLICKERING_SOUL_LANTERN =
+        register("flickering_soul_lantern", FlickeringLanternBlock(FabricBlockSettings.copyOf(Blocks.SOUL_LANTERN)))
 
-  val FANCY_COBWEB = register("fancy_cobweb", FancyCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
-  val FANCY_COBWEB_WITH_SPIDER_NEST = register("fancy_cobweb_with_spider_nest", FancyCobwebWithSpiderNestBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
-  val FANCY_COBWEB_WITH_SPIDER = register("fancy_cobweb_with_spider", FancyCobwebWithSpiderBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
-  val FANCY_COBWEB_WITH_SHY_SPIDER = register("fancy_cobweb_with_shy_spider", FancyCobwebWithSpiderBlock(FabricBlockSettings.copyOf(Blocks.COBWEB), true))
-  val CORNER_COBWEB = register("corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
-  val FANCY_CORNER_COBWEB = register("fancy_corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
+    val FANCY_COBWEB = register("fancy_cobweb", FancyCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
+    val FANCY_COBWEB_WITH_SPIDER_NEST = register(
+        "fancy_cobweb_with_spider_nest",
+        FancyCobwebWithSpiderNestBlock(FabricBlockSettings.copyOf(Blocks.COBWEB))
+    )
+    val FANCY_COBWEB_WITH_SPIDER =
+        register("fancy_cobweb_with_spider", FancyCobwebWithSpiderBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
+    val FANCY_COBWEB_WITH_SHY_SPIDER = register(
+        "fancy_cobweb_with_shy_spider",
+        FancyCobwebWithSpiderBlock(FabricBlockSettings.copyOf(Blocks.COBWEB), true)
+    )
+    val CORNER_COBWEB = register("corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
+    val FANCY_CORNER_COBWEB =
+        register("fancy_corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
 
-  val NOCTISTEEL = MetalSet.ThreeLevelOxidizable(Derelict.id("noctisteel"), defaultItemSettings(), FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).strength(2.0f, 1200f)).register()
+    val NOCTISTEEL = MetalSet.ThreeLevelOxidizable(
+        Derelict.id("noctisteel"),
+        defaultItemSettings(),
+        FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).strength(2.0f, 1200f)
+    ).register()
 
-  val BLOCK_AGING_MAP = mapOf(
-    Blocks.REDSTONE_LAMP to FLICKERING_REDSTONE_LAMP,
-    Blocks.SEA_LANTERN to FLICKERING_SEA_LANTERN,
-    FLICKERING_SEA_LANTERN to BROKEN_SEA_LANTERN,
-    Blocks.JACK_O_LANTERN to FLICKERING_JACK_O_LANTERN,
-    Blocks.LANTERN to FLICKERING_LANTERN,
-    FLICKERING_LANTERN to BROKEN_LANTERN,
-    Blocks.SOUL_LANTERN to FLICKERING_SOUL_LANTERN,
-    FLICKERING_SOUL_LANTERN to BROKEN_LANTERN
-  )
+    val BLOCK_AGING_MAP = mapOf(
+        Blocks.REDSTONE_LAMP to FLICKERING_REDSTONE_LAMP,
+        Blocks.SEA_LANTERN to FLICKERING_SEA_LANTERN,
+        FLICKERING_SEA_LANTERN to BROKEN_SEA_LANTERN,
+        Blocks.JACK_O_LANTERN to FLICKERING_JACK_O_LANTERN,
+        Blocks.LANTERN to FLICKERING_LANTERN,
+        FLICKERING_LANTERN to BROKEN_LANTERN,
+        Blocks.SOUL_LANTERN to FLICKERING_SOUL_LANTERN,
+        FLICKERING_SOUL_LANTERN to BROKEN_LANTERN
+    )
 
-  val WILDFIRE = registerItem("wildfire", Wildfire(defaultItemSettings().maxCount(1)))
+    val WILDFIRE = registerItem("wildfire", Wildfire(defaultItemSettings().maxCount(1)))
 
-  fun init() { }
+    fun init() {}
 
-  fun setupWaxableAndAgeable() {
-    lastWaxable.forEach { (it as AbstractBlockAccessor).isWaxable = false }
-    lastAgeable.forEach { (it as AbstractBlockAccessor).isAgeable = false }
-    BLOCK_AGING_MAP.forEach { (from, _) ->
-      (from as AbstractBlockAccessor).isAgeable = true
-      lastAgeable.add(from)
+    fun setupWaxableAndAgeable() {
+        lastWaxable.forEach { (it as AbstractBlockAccessor).isWaxable = false }
+        lastAgeable.forEach { (it as AbstractBlockAccessor).isAgeable = false }
+        BLOCK_AGING_MAP.forEach { (from, _) ->
+            (from as AbstractBlockAccessor).isAgeable = true
+            lastAgeable.add(from)
+        }
+        HoneycombItem.UNWAXED_TO_WAXED_BLOCKS.get().forEach { (from, _) ->
+            (from as AbstractBlockAccessor).isWaxable = true
+            lastWaxable.add(from)
+        }
+        Oxidizable.OXIDATION_LEVEL_INCREASES.get().forEach { (from, _) ->
+            (from as AbstractBlockAccessor).isAgeable = true
+            lastAgeable.add(from)
+        }
+        HoneycombItem.WAXED_TO_UNWAXED_BLOCKS.get().forEach { (from, to) ->
+            if (Oxidizable.OXIDATION_LEVEL_INCREASES.get().containsKey(to)) (from as AbstractBlockAccessor).isAgeable =
+                true
+        }
     }
-    HoneycombItem.UNWAXED_TO_WAXED_BLOCKS.get().forEach { (from, _) ->
-      (from as AbstractBlockAccessor).isWaxable = true
-      lastWaxable.add(from)
+
+    internal fun <T : Block> register(name: String, block: T, category: ItemCategory = ItemCategory.GENERAL): T {
+        registerBlock(name, block)
+        registerItem(name, BlockItem(block, defaultItemSettings()), category)
+        return block
     }
-    Oxidizable.OXIDATION_LEVEL_INCREASES.get().forEach { (from, _) ->
-      (from as AbstractBlockAccessor).isAgeable = true
-      lastAgeable.add(from)
+
+    internal fun <T : Block> registerBlock(name: String, block: T): T = Registry.register(
+        Registries.BLOCK, Derelict.id(name), block
+    )
+
+    internal fun <T : Item> registerItem(name: String, item: T, category: ItemCategory = ItemCategory.GENERAL): T {
+        category.add(item)
+        return Registry.register(Registries.ITEM, Derelict.id(name), item)
     }
-    HoneycombItem.WAXED_TO_UNWAXED_BLOCKS.get().forEach {
-      (from, to) -> if (Oxidizable.OXIDATION_LEVEL_INCREASES.get().containsKey(to)) (from as AbstractBlockAccessor).isAgeable = true
+
+    private fun defaultItemSettings() = FabricItemSettings()
+
+    enum class ItemCategory {
+        GENERAL,
+        METAL_BLOCKS,
+        METAL_DECORATION,
+        WAXED_METAL_BLOCKS,
+        WAXED_METAL_DECORATION;
+
+        val items: MutableList<Item> = mutableListOf()
+        fun add(item: Item) = items.add(item)
     }
-  }
-
-  internal fun <T : Block> register(name: String, block: T, category: ItemCategory = ItemCategory.GENERAL): T {
-    registerBlock(name, block)
-    registerItem(name, BlockItem(block, defaultItemSettings()), category)
-    return block
-  }
-
-  internal fun <T: Block> registerBlock(name: String, block: T): T = Registry.register(
-    Registries.BLOCK, Derelict.id(name), block
-  )
-
-  internal fun <T: Item> registerItem(name: String, item: T, category: ItemCategory = ItemCategory.GENERAL): T {
-    category.add(item)
-    return Registry.register(Registries.ITEM, Derelict.id(name), item)
-  }
-
-  private fun defaultItemSettings() = FabricItemSettings()
-
-  enum class ItemCategory {
-    GENERAL,
-    METAL_BLOCKS,
-    METAL_DECORATION,
-    WAXED_METAL_BLOCKS,
-    WAXED_METAL_DECORATION;
-
-    val items: MutableList<Item> = mutableListOf()
-    fun add(item: Item) = items.add(item)
-  }
 }
 
 object NoZFightingOffsetter : Offsetter {
-  override fun evaluate(state: BlockState, world: BlockView, pos: BlockPos): Vec3d {
-    val x = pos.x % 3
-    val y = pos.y % 3
-    val z = pos.z % 3
-    return(Vec3d(
-      (z * 0.001) + (y * 0.0015),
-      (x * 0.001) + (z * 0.0015),
-      (y * 0.001) + (x * 0.0015)
-    ))
-  }
+    override fun evaluate(state: BlockState, world: BlockView, pos: BlockPos): Vec3d {
+        val x = pos.x % 3
+        val y = pos.y % 3
+        val z = pos.z % 3
+        return (Vec3d(
+            (z * 0.001) + (y * 0.0015),
+            (x * 0.001) + (z * 0.0015),
+            (y * 0.001) + (x * 0.0015)
+        ))
+    }
 }
 
 @Suppress("UnstableApiUsage")
 fun <T : AbstractBlock.Settings> T.noZFighting(): T {
-  (this as AbstractBlockSettingsAccessor).offsetter = Optional.of(NoZFightingOffsetter)
-  this.dynamicBounds = true
-  return this
+    (this as AbstractBlockSettingsAccessor).offsetter = Optional.of(NoZFightingOffsetter)
+    this.dynamicBounds = true
+    return this
 }

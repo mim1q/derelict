@@ -11,27 +11,27 @@ import net.minecraft.item.HoneycombItem
 import net.minecraft.item.ItemConvertible
 
 object EmiDerelictPlugin : EmiPlugin {
-  override fun register(registry: EmiRegistry) {
-    HoneycombItem.UNWAXED_TO_WAXED_BLOCKS.get()?.forEach {
-      registry.addRecipe(
-        EmiWorldInteractionRecipe.builder()
-          .leftInput(it.key.emiStack())
-          .rightInput(EmiStack.of(WAXING_STAFF), true)
-          .output(it.value.emiStack())
-          .build()
-      )
+    override fun register(registry: EmiRegistry) {
+        HoneycombItem.UNWAXED_TO_WAXED_BLOCKS.get()?.forEach {
+            registry.addRecipe(
+                EmiWorldInteractionRecipe.builder()
+                    .leftInput(it.key.emiStack())
+                    .rightInput(EmiStack.of(WAXING_STAFF), true)
+                    .output(it.value.emiStack())
+                    .build()
+            )
+        }
+
+        getFullAgingMap().forEach {
+            registry.addRecipe(
+                EmiWorldInteractionRecipe.builder()
+                    .leftInput(it.key.emiStack())
+                    .rightInput(EmiStack.of(AGING_STAFF), true)
+                    .output(it.value.emiStack())
+                    .build()
+            )
+        }
     }
 
-    getFullAgingMap().forEach {
-      registry.addRecipe(
-        EmiWorldInteractionRecipe.builder()
-          .leftInput(it.key.emiStack())
-          .rightInput(EmiStack.of(AGING_STAFF), true)
-          .output(it.value.emiStack())
-          .build()
-      )
-    }
-  }
-
-  private fun ItemConvertible.emiStack(): EmiStack = EmiStack.of(this)
+    private fun ItemConvertible.emiStack(): EmiStack = EmiStack.of(this)
 }

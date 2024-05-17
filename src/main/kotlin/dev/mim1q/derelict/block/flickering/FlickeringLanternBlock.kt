@@ -12,23 +12,24 @@ import net.minecraft.util.math.random.Random
 import net.minecraft.world.World
 
 class FlickeringLanternBlock(
-  settings: Settings
+    settings: Settings
 ) : LanternBlock(settings.ticksRandomly().luminance(FlickeringBlock::getLuminance)),
-  FlickeringBlock {
-  init {
-    defaultState = defaultState.with(FlickeringBlock.LIGHT_STATE, FlickeringBlock.Companion.LightState.FLICKERING)
-  }
-  override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
-    super.appendProperties(builder)
-    builder.add(FlickeringBlock.LIGHT_STATE)
-  }
+    FlickeringBlock {
+    init {
+        defaultState = defaultState.with(FlickeringBlock.LIGHT_STATE, FlickeringBlock.Companion.LightState.FLICKERING)
+    }
 
-  @Suppress("OVERRIDE_DEPRECATION")
-  override fun scheduledTick(state: BlockState, world: ServerWorld, pos: BlockPos, random: Random) {
-    scheduleFlicker(world, state, pos, random, this)
-  }
+    override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
+        super.appendProperties(builder)
+        builder.add(FlickeringBlock.LIGHT_STATE)
+    }
 
-  override fun onPlaced(world: World, pos: BlockPos, state: BlockState, placer: LivingEntity?, itemStack: ItemStack) {
-    scheduleFlicker(world, state, pos, world.random, this)
-  }
+    @Suppress("OVERRIDE_DEPRECATION")
+    override fun scheduledTick(state: BlockState, world: ServerWorld, pos: BlockPos, random: Random) {
+        scheduleFlicker(world, state, pos, random, this)
+    }
+
+    override fun onPlaced(world: World, pos: BlockPos, state: BlockState, placer: LivingEntity?, itemStack: ItemStack) {
+        scheduleFlicker(world, state, pos, world.random, this)
+    }
 }

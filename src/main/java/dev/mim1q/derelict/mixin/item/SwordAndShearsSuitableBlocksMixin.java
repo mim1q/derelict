@@ -12,25 +12,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin({ShearsItem.class, SwordItem.class})
 public class SwordAndShearsSuitableBlocksMixin {
-  @Inject(
-    method = "isSuitableFor",
-    at = @At("HEAD"),
-    cancellable = true
-  )
-  private void derelict$isSuitableFor(BlockState state, CallbackInfoReturnable<Boolean> cir) {
-    if (state.isIn(ModBlockTags.INSTANCE.getCOBWEBS())) {
-      cir.setReturnValue(true);
+    @Inject(
+        method = "isSuitableFor",
+        at = @At("HEAD"),
+        cancellable = true
+    )
+    private void derelict$isSuitableFor(BlockState state, CallbackInfoReturnable<Boolean> cir) {
+        if (state.isIn(ModBlockTags.INSTANCE.getCOBWEBS())) {
+            cir.setReturnValue(true);
+        }
     }
-  }
 
-  @Inject(
-    method = "getMiningSpeedMultiplier",
-    at = @At("HEAD"),
-    cancellable = true
-  )
-  private void derelict$getMiningSpeedMultiplier(ItemStack stack, BlockState state, CallbackInfoReturnable<Float> cir) {
-    if (state.isIn(ModBlockTags.INSTANCE.getCOBWEBS())) {
-      cir.setReturnValue(15f);
+    @Inject(
+        method = "getMiningSpeedMultiplier",
+        at = @At("HEAD"),
+        cancellable = true
+    )
+    private void derelict$getMiningSpeedMultiplier(ItemStack stack, BlockState state, CallbackInfoReturnable<Float> cir) {
+        if (state.isIn(ModBlockTags.INSTANCE.getCOBWEBS())) {
+            cir.setReturnValue(15f);
+        }
     }
-  }
 }

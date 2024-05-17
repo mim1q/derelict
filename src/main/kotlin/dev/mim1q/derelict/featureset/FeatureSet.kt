@@ -10,29 +10,29 @@ import net.minecraft.item.Item
 import net.minecraft.util.Identifier
 
 abstract class FeatureSet(
-  id: Identifier,
-  protected val defaultItemSettings: FabricItemSettings = FabricItemSettings(),
-  private val defaultBlockSettings: FabricBlockSettings = FabricBlockSettings.copyOf(Blocks.STONE)
+    id: Identifier,
+    protected val defaultItemSettings: FabricItemSettings = FabricItemSettings(),
+    private val defaultBlockSettings: FabricBlockSettings = FabricBlockSettings.copyOf(Blocks.STONE)
 ) {
-  protected val name = id.path
-  protected val namespace = id.namespace
+    protected val name = id.path
+    protected val namespace = id.namespace
 
-  protected fun id(name: String) = Identifier(namespace, name)
-  open fun register(): FeatureSet = this
+    protected fun id(name: String) = Identifier(namespace, name)
+    open fun register(): FeatureSet = this
 
-  protected fun <I : Item> registerItem(
-    name: String,
-    item: I,
-    category: ItemCategory = ItemCategory.GENERAL
-  ): I = ModBlocksAndItems.registerItem(name, item, category)
+    protected fun <I : Item> registerItem(
+        name: String,
+        item: I,
+        category: ItemCategory = ItemCategory.GENERAL
+    ): I = ModBlocksAndItems.registerItem(name, item, category)
 
-  protected fun <B : Block> registerBlock(name: String, block: B): B = ModBlocksAndItems.registerBlock(name, block)
+    protected fun <B : Block> registerBlock(name: String, block: B): B = ModBlocksAndItems.registerBlock(name, block)
 
-  protected fun <B : Block> registerBlockWithItem(
-    name: String,
-    block: B,
-    category: ItemCategory = ItemCategory.GENERAL
-  ): B = ModBlocksAndItems.register(name, block, category)
+    protected fun <B : Block> registerBlockWithItem(
+        name: String,
+        block: B,
+        category: ItemCategory = ItemCategory.GENERAL
+    ): B = ModBlocksAndItems.register(name, block, category)
 
-  protected fun defaultBlockSettings(): FabricBlockSettings = FabricBlockSettings.copyOf(defaultBlockSettings)
+    protected fun defaultBlockSettings(): FabricBlockSettings = FabricBlockSettings.copyOf(defaultBlockSettings)
 }

@@ -20,90 +20,92 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.math.intprovider.UniformIntProvider
 
 sealed class StaffItem(settings: FabricItemSettings) : Item(settings), CrosshairTipItem {
-  private var lastBlock: Block? = null
-  private var didShowTip: Boolean = false
-  protected abstract val texture: Identifier
-  protected abstract val particle: ParticleEffect
-  protected abstract val sound: SoundEvent
+    private var lastBlock: Block? = null
+    private var didShowTip: Boolean = false
+    protected abstract val texture: Identifier
+    protected abstract val particle: ParticleEffect
+    protected abstract val sound: SoundEvent
 
-  override fun shouldShowTip(block: Block?): Boolean {
-    if (block == null) return false
-    if (block == lastBlock) return didShowTip
-    lastBlock = block
-    didShowTip = getBlockConversion(block) != null
-    return didShowTip
-  }
-  override fun getTipTexture(): Identifier = texture
-  abstract fun getBlockConversion(block: Block): Block?
-
-  override fun useOnBlock(context: ItemUsageContext): ActionResult {
-    val world = context.world
-    val pos = context.blockPos
-    val state = world.getBlockState(pos)
-    val conversion = getBlockConversion(state.block)
-    if (conversion != null) {
-      if (world.isClient) ParticleUtil.spawnParticle(world, pos, particle, UniformIntProvider.create(3, 5))
-      world.playSound(null, pos, sound, SoundCategory.BLOCKS, 1F, 1F)
-      world.setBlockState(context.blockPos, conversion.getStateWithProperties(state))
-      if (conversion is FlickeringBlock) {
-        world.scheduleBlockTick(pos, conversion, 1)
-      }
-      return ActionResult.SUCCESS
+    override fun shouldShowTip(block: Block?): Boolean {
+        if (block == null) return false
+        if (block == lastBlock) return didShowTip
+        lastBlock = block
+        didShowTip = getBlockConversion(block) != null
+        return didShowTip
     }
-    return ActionResult.PASS
-  }
 
-  class Aging(settings: FabricItemSettings) : StaffItem(settings) {
-    override val texture: Identifier = Identifier("textures/item/clock_00.png")
-    override val particle: ParticleEffect = ParticleTypes.WHITE_ASH
-    override val sound: SoundEvent = SoundEvents.BLOCK_STONE_BREAK
+    override fun getTipTexture(): Identifier = texture
+    abstract fun getBlockConversion(block: Block): Block?
 
-    override fun getBlockConversion(block: Block): Block? = firstNonNull(
-      { ModBlocksAndItems.BLOCK_AGING_MAP[block] },
-      { Oxidizable.getIncreasedOxidationBlock(block).orElse(null) },
-      { HoneycombItem.WAXED_TO_UNWAXED_BLOCKS.get()[block]
-        ?.let { Oxidizable.getIncreasedOxidationBlock(it).orElse(null) }
-        ?.let { HoneycombItem.UNWAXED_TO_WAXED_BLOCKS.get()[it] }
-      }
-    )
-
-    override fun shouldShowTip(block: Block?)
-      = Derelict.CLIENT_CONFIG.ageableCrosshairTip() && super.shouldShowTip(block)
-  }
-
-  class Waxing(settings: FabricItemSettings) : StaffItem(settings) {
-    override val texture: Identifier = Identifier("textures/item/honeycomb.png")
-    override val particle: ParticleEffect = ParticleTypes.WAX_ON
-    override val sound: SoundEvent = SoundEvents.ITEM_HONEYCOMB_WAX_ON
-
-    override fun getBlockConversion(block: Block): Block? = firstNonNull(
-      { HoneycombItem.UNWAXED_TO_WAXED_BLOCKS.get()[block] }
-    )
-
-    override fun shouldShowTip(block: Block?)
-      = Derelict.CLIENT_CONFIG.waxableCrosshairTip() && super.shouldShowTip(block)
-  }
-
-  protected fun firstNonNull(vararg suppliers: () -> Block?): Block? {
-    suppliers.forEach {
-      val block = it()
-      if (block != null) return block
+    override fun useOnBlock(context: ItemUsageContext): ActionResult {
+        val world = context.world
+        val pos = context.blockPos
+        val state = world.getBlockState(pos)
+        val conversion = getBlockConversion(state.block)
+        if (conversion != null) {
+            if (world.isClient) ParticleUtil.spawnParticle(world, pos, particle, UniformIntProvider.create(3, 5))
+            world.playSound(null, pos, sound, SoundCategory.BLOCKS, 1F, 1F)
+            world.setBlockState(context.blockPos, conversion.getStateWithProperties(state))
+            if (conversion is FlickeringBlock) {
+                world.scheduleBlockTick(pos, conversion, 1)
+            }
+            return ActionResult.SUCCESS
+        }
+        return ActionResult.PASS
     }
-    return null
-  }
+
+    class Aging(settings: FabricItemSettings) : StaffItem(settings) {
+        override val texture: Identifier = Identifier("textures/item/clock_00.png")
+        override val particle: ParticleEffect = ParticleTypes.WHITE_ASH
+        override val sound: SoundEvent = SoundEvents.BLOCK_STONE_BREAK
+
+        override fun getBlockConversion(block: Block): Block? = firstNonNull(
+            { ModBlocksAndItems.BLOCK_AGING_MAP[block] },
+            { Oxidizable.getIncreasedOxidationBlock(block).orElse(null) },
+            {
+                HoneycombItem.WAXED_TO_UNWAXED_BLOCKS.get()[block]
+                    ?.let { Oxidizable.getIncreasedOxidationBlock(it).orElse(null) }
+                    ?.let { HoneycombItem.UNWAXED_TO_WAXED_BLOCKS.get()[it] }
+            }
+        )
+
+        override fun shouldShowTip(block: Block?) =
+            Derelict.CLIENT_CONFIG.ageableCrosshairTip() && super.shouldShowTip(block)
+    }
+
+    class Waxing(settings: FabricItemSettings) : StaffItem(settings) {
+        override val texture: Identifier = Identifier("textures/item/honeycomb.png")
+        override val particle: ParticleEffect = ParticleTypes.WAX_ON
+        override val sound: SoundEvent = SoundEvents.ITEM_HONEYCOMB_WAX_ON
+
+        override fun getBlockConversion(block: Block): Block? = firstNonNull(
+            { HoneycombItem.UNWAXED_TO_WAXED_BLOCKS.get()[block] }
+        )
+
+        override fun shouldShowTip(block: Block?) =
+            Derelict.CLIENT_CONFIG.waxableCrosshairTip() && super.shouldShowTip(block)
+    }
+
+    protected fun firstNonNull(vararg suppliers: () -> Block?): Block? {
+        suppliers.forEach {
+            val block = it()
+            if (block != null) return block
+        }
+        return null
+    }
 }
 
 fun getFullAgingMap(): Map<Block, Block> {
-  val map = mutableMapOf<Block, Block>()
-  map.putAll(ModBlocksAndItems.BLOCK_AGING_MAP)
-  Oxidizable.OXIDATION_LEVEL_INCREASES.get().forEach { (from, to) ->
-    map[from] = to
-  }
-  HoneycombItem.UNWAXED_TO_WAXED_BLOCKS.get().forEach { (from, to) ->
-    val aged = Oxidizable.getIncreasedOxidationBlock(to).orElse(null)
-    val agedWaxed = HoneycombItem.UNWAXED_TO_WAXED_BLOCKS.get()[aged]
-    if (agedWaxed != null) map[from] = agedWaxed
-  }
+    val map = mutableMapOf<Block, Block>()
+    map.putAll(ModBlocksAndItems.BLOCK_AGING_MAP)
+    Oxidizable.OXIDATION_LEVEL_INCREASES.get().forEach { (from, to) ->
+        map[from] = to
+    }
+    HoneycombItem.UNWAXED_TO_WAXED_BLOCKS.get().forEach { (from, to) ->
+        val aged = Oxidizable.getIncreasedOxidationBlock(to).orElse(null)
+        val agedWaxed = HoneycombItem.UNWAXED_TO_WAXED_BLOCKS.get()[aged]
+        if (agedWaxed != null) map[from] = agedWaxed
+    }
 
-  return map
+    return map
 }

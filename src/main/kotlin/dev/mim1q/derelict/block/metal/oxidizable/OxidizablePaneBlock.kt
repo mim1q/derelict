@@ -9,17 +9,17 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.random.Random
 
 class OxidizablePaneBlock(
-  private val oxidizationLevel: Oxidizable.OxidationLevel,
-  settings: FabricBlockSettings
+    private val oxidizationLevel: Oxidizable.OxidationLevel,
+    settings: FabricBlockSettings
 ) : PaneBlock(settings), Oxidizable {
-  override fun getDegradationLevel() = oxidizationLevel
+    override fun getDegradationLevel() = oxidizationLevel
 
-  @Suppress("OVERRIDE_DEPRECATION")
-  override fun randomTick(state: BlockState, world: ServerWorld, pos: BlockPos, random: Random) {
-    tickDegradation(state, world, pos, random)
-  }
+    @Suppress("OVERRIDE_DEPRECATION")
+    override fun randomTick(state: BlockState, world: ServerWorld, pos: BlockPos, random: Random) {
+        tickDegradation(state, world, pos, random)
+    }
 
-  override fun hasRandomTicks(state: BlockState): Boolean {
-    return Oxidizable.getIncreasedOxidationBlock(state.block).isPresent
-  }
+    override fun hasRandomTicks(state: BlockState): Boolean {
+        return Oxidizable.getIncreasedOxidationBlock(state.block).isPresent
+    }
 }

@@ -11,36 +11,37 @@ import net.minecraft.util.math.Direction
 import net.minecraft.util.math.MathHelper
 
 class FancyCornerCobwebBlock(settings: Settings) : Block(settings) {
-  override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
-    super.appendProperties(builder)
-    builder.add(ROTATION, TYPE)
-  }
-
-  override fun getPlacementState(ctx: ItemPlacementContext): BlockState {
-    if (ctx.side.axis.isHorizontal) {
-      return defaultState
-        .with(ROTATION, getRotation(ctx, 45F))
-        .with(TYPE, Type.HORIZONTAL)
+    override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
+        super.appendProperties(builder)
+        builder.add(ROTATION, TYPE)
     }
-    return defaultState
-      .with(ROTATION, getRotation(ctx))
-      .with(TYPE, if (ctx.side == Direction.UP) Type.BOTTOM else Type.TOP)
-  }
 
-  private fun getRotation(ctx: ItemPlacementContext, offset: Float = 22.5F): Int {
-    val yaw = MathHelper.floorMod(ctx.player?.headYaw?.plus(offset) ?: 0.0F, 360.0F)
-    return (yaw / 45F).toInt() % 8
-  }
+    override fun getPlacementState(ctx: ItemPlacementContext): BlockState {
+        if (ctx.side.axis.isHorizontal) {
+            return defaultState
+                .with(ROTATION, getRotation(ctx, 45F))
+                .with(TYPE, Type.HORIZONTAL)
+        }
+        return defaultState
+            .with(ROTATION, getRotation(ctx))
+            .with(TYPE, if (ctx.side == Direction.UP) Type.BOTTOM else Type.TOP)
+    }
 
-  companion object {
-    val ROTATION: IntProperty = IntProperty.of("rotation", 0, 7)
-    val TYPE: EnumProperty<Type> = EnumProperty.of("type", Type::class.java)
-  }
+    private fun getRotation(ctx: ItemPlacementContext, offset: Float = 22.5F): Int {
+        val yaw = MathHelper.floorMod(ctx.player?.headYaw?.plus(offset) ?: 0.0F, 360.0F)
+        return (yaw / 45F).toInt() % 8
+    }
 
-  enum class Type(private val id: String) : StringIdentifiable {
-    TOP("top"),
-    BOTTOM("bottom"),
-    HORIZONTAL("horizontal");
-    override fun asString() = id
-  }
+    companion object {
+        val ROTATION: IntProperty = IntProperty.of("rotation", 0, 7)
+        val TYPE: EnumProperty<Type> = EnumProperty.of("type", Type::class.java)
+    }
+
+    enum class Type(private val id: String) : StringIdentifiable {
+        TOP("top"),
+        BOTTOM("bottom"),
+        HORIZONTAL("horizontal");
+
+        override fun asString() = id
+    }
 }
