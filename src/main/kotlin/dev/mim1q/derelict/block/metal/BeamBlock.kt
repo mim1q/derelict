@@ -18,15 +18,15 @@ import net.minecraft.world.BlockView
 
 open class BeamBlock(settings: Settings) : Block(settings) {
     companion object {
-        val SHAPE_HORIZONTAL: VoxelShape = VoxelShapes.union(
+        val SHAPE_VERTICAL: VoxelShape = VoxelShapes.union(
             createCuboidShape(0.0, 0.0, 0.0, 16.0, 16.0, 2.0),
             createCuboidShape(5.0, 0.0, 0.0, 11.0, 16.0, 16.0),
             createCuboidShape(0.0, 0.0, 14.0, 16.0, 16.0, 16.0)
         )
 
-        val SHAPE_VERTICAL: VoxelShape = VoxelShapes.union(
+        val SHAPE_HORIZONTAL: VoxelShape = VoxelShapes.union(
             createCuboidShape(0.0, 0.0, 0.0, 16.0, 2.0, 16.0),
-            createCuboidShape(5.0, 2.0, 16.0, 11.0, 14.0, 16.0),
+            createCuboidShape(5.0, 2.0, 0.0, 11.0, 14.0, 16.0),
             createCuboidShape(0.0, 14.0, 0.0, 16.0, 16.0, 16.0)
         )
 

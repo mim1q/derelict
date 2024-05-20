@@ -76,49 +76,17 @@ object CustomMetalPresets {
                 )
             )
         })
-//        listOf("vertical", "horizontal", "vertical_pile", "horizontal_pile").forEach {
-//            add(
-//                blockName("_beam/$it"),
-//                ParentedModel.block("derelict:block/construction_beam/$it")
-//                    .texture("0", blockTexture("_beam", folder = "block/"))
-//            )
-//        }
-//        listOf("", "_pile").forEach {
-//            add(blockName("_beam$it"), BlockState.create {
-//                listOf(false to "horizontal", true to "vertical").forEach { pair ->
-//                    variant(
-//                        "vertical=${pair.first},facing=north",
-//                        BlockStateModel(
-//                            namespacedBlockName("_beam/${pair.second}$it", "", "block/"),
-//                            yRot = Rotation.NONE
-//                        )
-//                    )
-//                    variant(
-//                        "vertical=${pair.first},facing=east",
-//                        BlockStateModel(
-//                            namespacedBlockName("_beam/${pair.second}$it", "", "block/"),
-//                            yRot = Rotation.CW_90
-//                        )
-//                    )
-//                    variant(
-//                        "vertical=${pair.first},facing=south",
-//                        BlockStateModel(
-//                            namespacedBlockName("_beam/${pair.second}$it", "", "block/"),
-//                            yRot = Rotation.CW_180
-//                        )
-//                    )
-//                    variant(
-//                        "vertical=${pair.first},facing=west",
-//                        BlockStateModel(
-//                            namespacedBlockName("_beam/${pair.second}$it", "", "block/"),
-//                            yRot = Rotation.CW_270
-//                        )
-//                    )
-//                }
-//            })
-//        }
-        add(blockName("_beam"), ParentedModel.item(namespacedBlockName("_beam/horizontal", "", "block/")))
-        add(blockName("_beam_pile"), ParentedModel.item(namespacedBlockName("_beam/horizontal_pile", "", "block/")))
+        add(blockName("_beam"), ParentedModel.block("derelict:block/metal_beam") {
+            texture("side", blockTexture("_beam", folder = "block/"))
+            texture("top", blockTexture("_beam_top", folder = "block/"))
+        })
+        add(blockName("_beam"), BlockState.create {
+            variant("axis=z", BlockStateModel(namespacedBlockName("_beam", "", "block/"), xRot = Rotation.CW_90))
+            variant("axis=x", BlockStateModel(namespacedBlockName("_beam", "", "block/"), xRot = Rotation.CW_90, yRot = Rotation.CW_90))
+            variant("axis=y_x", BlockStateModel(namespacedBlockName("_beam", "", "block/"), yRot = Rotation.CW_90))
+            variant("axis=y_z", BlockStateModel(namespacedBlockName("_beam", "", "block/")))
+        })
+        add(blockName("_beam"), ParentedModel.item(namespacedBlockName("_beam", "", "block/")))
         listOf(
             namespacedBlockName("_block"),
             namespacedBlockName("", "cut_"),
