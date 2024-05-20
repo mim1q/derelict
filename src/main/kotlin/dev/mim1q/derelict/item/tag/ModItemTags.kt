@@ -10,9 +10,7 @@ object ModItemTags {
     val UNWAXED_METALS = of("unwaxed_metals")
     val WAXED_METALS = of("waxed_metals")
     val GENERAL_TAB = of("general_tab")
-
-    val WAXED_COMMON = ofCommon("waxed")
+    val WAXED = of("waxed")
 
     private fun of(id: String): TagKey<Item> = TagKey.of(RegistryKeys.ITEM, Derelict.id(id))
-    private fun ofCommon(id: String): TagKey<Item> = TagKey.of(RegistryKeys.ITEM, Identifier("c", id))
 }

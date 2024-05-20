@@ -34,7 +34,7 @@ public abstract class DrawContextMixin {
     )
     void derelict$injectDrawItem(LivingEntity entity, World world, ItemStack stack, int x, int y, int seed, int z, CallbackInfo ci) {
         if (
-            stack.isIn(ModItemTags.INSTANCE.getWAXED_COMMON())
+            stack.isIn(ModItemTags.INSTANCE.getWAXED())
                 && Derelict.INSTANCE.getCLIENT_CONFIG().waxedIndicatorOpacity() > 0F
         ) {
             BlockMarkerUtils.INSTANCE.renderWaxedIndicator(this::derelict$drawTexture, x, y);

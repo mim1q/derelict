@@ -229,7 +229,7 @@ object CustomMetalPresets {
         TagManager.add("derelict:items/${if (waxed) "waxed" else "unwaxed"}_metals", *all)
 
         if (waxed) {
-            TagManager.add("c:items/waxed", namespacedBlockName("_block"), *all)
+            TagManager.add("derelict:items/waxed", namespacedBlockName("_block"), *all)
             all.forEach {
                 add("${it.replace(ns, "").replace(":", "")}_from_unwaxed", CraftingRecipe.shapeless(it, 1) {
                     ingredient(it.replace("waxed_", ""))
