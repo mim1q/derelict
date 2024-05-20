@@ -17,6 +17,7 @@ object ImageAtlases {
             { "block/$metal/$it${metal}_grate" },
             { "block/$metal/$it${metal}_chain" },
             { "block/$metal/$it${metal}_beam" },
+            { "block/$metal/$it${metal}_beam_top" },
             { "block/$metal/$it${metal}_chain_link_fence" },
             { "block/$metal/$it${metal}_ladder" },
             { "block/$metal/$it${metal}_patch" },

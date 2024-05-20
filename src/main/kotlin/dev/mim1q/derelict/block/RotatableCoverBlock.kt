@@ -1,6 +1,6 @@
 package dev.mim1q.derelict.block
 
-import dev.mim1q.derelict.util.ShapeUtil
+import dev.mim1q.derelict.util.ShapeUtil.rotate
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
@@ -50,7 +50,7 @@ sealed class RotatableCoverBlock(
         UP -> SHAPE_BOTTOM
         DOWN -> SHAPE_TOP
         else -> {
-            ShapeUtil.rotate(facing, SHAPE)
+            SHAPE.rotate(facing)
         }
     }
 

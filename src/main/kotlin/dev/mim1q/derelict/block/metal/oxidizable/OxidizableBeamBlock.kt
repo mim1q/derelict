@@ -10,9 +10,8 @@ import net.minecraft.util.math.random.Random
 
 class OxidizableBeamBlock(
     private val oxidizationLevel: OxidationLevel,
-    settings: Settings,
-    fullCube: Boolean = false
-) : BeamBlock(settings, fullCube), Oxidizable {
+    settings: Settings
+) : BeamBlock(settings), Oxidizable {
     override fun getDegradationLevel() = oxidizationLevel
 
     @Suppress("OVERRIDE_DEPRECATION")

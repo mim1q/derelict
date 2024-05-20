@@ -13,7 +13,7 @@ import tada.lib.tags.TagManager
 import tada.lib.util.Id
 
 object CustomMetalPresets {
-    fun metalSet(id: String, oxidization: String = "", waxed: Boolean = false) = Preset {
+    private fun metalSet(id: String, oxidization: String = "", waxed: Boolean = false) = Preset {
         val (ns, name) = Id(id)
 
         fun blockTexture(suffix: String = "", variant: String = "", folder: String = "") =
@@ -56,19 +56,9 @@ object CustomMetalPresets {
         )
         add(
             blockName("_grate"),
-            ParentedModel.block("derelict:block/metal_grate").texture("0", blockTexture("_grate", folder = "block/"))
+            ParentedModel.block("minecraft:block/cube_all").texture("all", blockTexture("_grate", folder = "block/"))
         )
-        add(blockName("_grate"), BlockState.create {
-            variant("facing=north", BlockStateModel(namespacedBlockName("_grate", "", "block/"), yRot = Rotation.NONE))
-            variant("facing=east", BlockStateModel(namespacedBlockName("_grate", "", "block/"), yRot = Rotation.CW_90))
-            variant(
-                "facing=south",
-                BlockStateModel(namespacedBlockName("_grate", "", "block/"), yRot = Rotation.CW_180)
-            )
-            variant("facing=west", BlockStateModel(namespacedBlockName("_grate", "", "block/"), yRot = Rotation.CW_270))
-            variant("facing=up", BlockStateModel(namespacedBlockName("_grate", "", "block/"), xRot = Rotation.CW_270))
-            variant("facing=down", BlockStateModel(namespacedBlockName("_grate", "", "block/"), xRot = Rotation.CW_90))
-        })
+        add(blockName("_grate"), BlockState.createSingle(namespacedBlockName("_grate", folder = "block/")))
         add(
             blockName("_chain"), ParentedModel.block("minecraft:block/chain")
                 .texture("all", blockTexture("_chain", folder = "block/"))
@@ -86,47 +76,47 @@ object CustomMetalPresets {
                 )
             )
         })
-        listOf("vertical", "horizontal", "vertical_pile", "horizontal_pile").forEach {
-            add(
-                blockName("_beam/$it"),
-                ParentedModel.block("derelict:block/construction_beam/$it")
-                    .texture("0", blockTexture("_beam", folder = "block/"))
-            )
-        }
-        listOf("", "_pile").forEach {
-            add(blockName("_beam$it"), BlockState.create {
-                listOf(false to "horizontal", true to "vertical").forEach { pair ->
-                    variant(
-                        "vertical=${pair.first},facing=north",
-                        BlockStateModel(
-                            namespacedBlockName("_beam/${pair.second}$it", "", "block/"),
-                            yRot = Rotation.NONE
-                        )
-                    )
-                    variant(
-                        "vertical=${pair.first},facing=east",
-                        BlockStateModel(
-                            namespacedBlockName("_beam/${pair.second}$it", "", "block/"),
-                            yRot = Rotation.CW_90
-                        )
-                    )
-                    variant(
-                        "vertical=${pair.first},facing=south",
-                        BlockStateModel(
-                            namespacedBlockName("_beam/${pair.second}$it", "", "block/"),
-                            yRot = Rotation.CW_180
-                        )
-                    )
-                    variant(
-                        "vertical=${pair.first},facing=west",
-                        BlockStateModel(
-                            namespacedBlockName("_beam/${pair.second}$it", "", "block/"),
-                            yRot = Rotation.CW_270
-                        )
-                    )
-                }
-            })
-        }
+//        listOf("vertical", "horizontal", "vertical_pile", "horizontal_pile").forEach {
+//            add(
+//                blockName("_beam/$it"),
+//                ParentedModel.block("derelict:block/construction_beam/$it")
+//                    .texture("0", blockTexture("_beam", folder = "block/"))
+//            )
+//        }
+//        listOf("", "_pile").forEach {
+//            add(blockName("_beam$it"), BlockState.create {
+//                listOf(false to "horizontal", true to "vertical").forEach { pair ->
+//                    variant(
+//                        "vertical=${pair.first},facing=north",
+//                        BlockStateModel(
+//                            namespacedBlockName("_beam/${pair.second}$it", "", "block/"),
+//                            yRot = Rotation.NONE
+//                        )
+//                    )
+//                    variant(
+//                        "vertical=${pair.first},facing=east",
+//                        BlockStateModel(
+//                            namespacedBlockName("_beam/${pair.second}$it", "", "block/"),
+//                            yRot = Rotation.CW_90
+//                        )
+//                    )
+//                    variant(
+//                        "vertical=${pair.first},facing=south",
+//                        BlockStateModel(
+//                            namespacedBlockName("_beam/${pair.second}$it", "", "block/"),
+//                            yRot = Rotation.CW_180
+//                        )
+//                    )
+//                    variant(
+//                        "vertical=${pair.first},facing=west",
+//                        BlockStateModel(
+//                            namespacedBlockName("_beam/${pair.second}$it", "", "block/"),
+//                            yRot = Rotation.CW_270
+//                        )
+//                    )
+//                }
+//            })
+//        }
         add(blockName("_beam"), ParentedModel.item(namespacedBlockName("_beam/horizontal", "", "block/")))
         add(blockName("_beam_pile"), ParentedModel.item(namespacedBlockName("_beam/horizontal_pile", "", "block/")))
         listOf(

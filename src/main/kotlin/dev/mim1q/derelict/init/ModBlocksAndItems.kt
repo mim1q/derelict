@@ -104,7 +104,7 @@ object ModBlocksAndItems {
     val NOCTISTEEL = MetalSet.ThreeLevelOxidizable(
         Derelict.id("noctisteel"),
         defaultItemSettings(),
-        FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).strength(2.0f, 1200f)
+        FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).strength(2.0f, 1200f).nonOpaque()
     ).register()
 
     val BLOCK_AGING_MAP = mapOf(

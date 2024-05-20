@@ -148,7 +148,7 @@ sealed class MetalSet(
             OxidizableChainBlock(level, defaultBlockSettings().nonOpaque()),
             ItemCategory.METAL_DECORATION
         )
-        override val grate: GrateBlock = registerBlockWithItem(
+        override val grate: OxidizableGrateBlock = registerBlockWithItem(
             "$prefix${name}_grate",
             OxidizableGrateBlock(level, defaultBlockSettings().nonOpaque()),
             ItemCategory.METAL_DECORATION

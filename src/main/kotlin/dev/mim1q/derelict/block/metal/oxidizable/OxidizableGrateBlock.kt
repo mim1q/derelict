@@ -9,17 +9,15 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.random.Random
 
 class OxidizableGrateBlock(
-    private val oxidizationLevel: OxidationLevel,
+    private val level: OxidationLevel,
     settings: Settings
 ) : GrateBlock(settings), Oxidizable {
-    override fun getDegradationLevel() = oxidizationLevel
+    override fun getDegradationLevel(): OxidationLevel = level
+
+    override fun hasRandomTicks(state: BlockState): Boolean =
+        Oxidizable.getIncreasedOxidationBlock(state.block).isPresent
 
     @Suppress("OVERRIDE_DEPRECATION")
-    override fun randomTick(state: BlockState, world: ServerWorld, pos: BlockPos, random: Random) {
+    override fun randomTick(state: BlockState, world: ServerWorld, pos: BlockPos, random: Random) =
         tickDegradation(state, world, pos, random)
-    }
-
-    override fun hasRandomTicks(state: BlockState): Boolean {
-        return Oxidizable.getIncreasedOxidationBlock(state.block).isPresent
-    }
 }
