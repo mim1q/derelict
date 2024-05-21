@@ -20,9 +20,10 @@ public class DerelictConfigModel {
         FAST, FANCY, FABULOUS
     }
 
-    @Comment("The chance for a Spiderling to spawn when an entity dies. " +
-        "Entities that this applies to are defined in the `derelict:entity_types/spawns_spiderlings_on_death` tag.\n" +
-        "0.0 - 1.0"
+    @Comment("""
+        The chance for a Spiderling to spawn when an entity dies.
+        Entities that this applies to are defined in the `derelict:entity_types/spawns_spiderlings_on_death` tag.
+        Value is a percentage, 0 - 100"""
     )
-    public double spiderlingSpawnChance = 0.1f;
+    public float spiderlingSpawnChance = 10f;
 }

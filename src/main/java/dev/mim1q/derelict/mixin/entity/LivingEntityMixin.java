@@ -28,7 +28,7 @@ public abstract class LivingEntityMixin extends Entity {
     private void onDeath(DamageSource source, CallbackInfo ci) {
         if (this.getType().isIn(ModEntityTags.INSTANCE.getSPAWNS_SPIDERLINGS_ON_DEATH())
             && !getWorld().isClient
-            && random.nextFloat() < Derelict.INSTANCE.getCONFIG().spiderlingSpawnChance()
+            && random.nextFloat() < Derelict.INSTANCE.getCONFIG().spiderlingSpawnChance() / 100f
         ) {
             var spiderling = ModEntities.INSTANCE.getSPIDERLING().create(getWorld());
             if (spiderling == null) return;
