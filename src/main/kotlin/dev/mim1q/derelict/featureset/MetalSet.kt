@@ -28,6 +28,7 @@ sealed class MetalSet(
     abstract val pillar: PillarBlock
     abstract val stairs: StairsBlock
     abstract val slab: SlabBlock
+    abstract val trapdoor: TrapdoorBlock
     abstract val chain: ChainBlock
     abstract val grate: GrateBlock
     abstract val beam: BeamBlock
@@ -38,7 +39,7 @@ sealed class MetalSet(
     abstract val barbedWire: BarbedWireBlock
 
     fun getCutoutBlocks() = arrayOf(
-        chain, grate, ladder, chainLinkFence, barbedWire
+        chain, grate, ladder, chainLinkFence, barbedWire, trapdoor
     )
 
     class Regular(
@@ -67,6 +68,11 @@ sealed class MetalSet(
         override val slab: SlabBlock = registerBlockWithItem(
             "${prefix}cut_${name}_slab",
             SlabBlock(defaultBlockSettings().nonOpaque()),
+            ItemCategory.WAXED_METAL_BLOCKS
+        )
+        override val trapdoor: TrapdoorBlock = registerBlockWithItem(
+            "$prefix${name}_trapdoor",
+            TrapdoorBlock(defaultBlockSettings().nonOpaque(), BlockSetType.IRON),
             ItemCategory.WAXED_METAL_BLOCKS
         )
         override val chain: ChainBlock = registerBlockWithItem(
@@ -143,6 +149,11 @@ sealed class MetalSet(
             OxidizableSlabBlock(level, defaultBlockSettings().nonOpaque()),
             ItemCategory.METAL_BLOCKS
         )
+        override val trapdoor: TrapdoorBlock = registerBlockWithItem(
+            "$prefix${name}_trapdoor",
+            OxidizableTrapdoorBlock(level, defaultBlockSettings().nonOpaque(), BlockSetType.IRON),
+            ItemCategory.METAL_BLOCKS
+        )
         override val chain: ChainBlock = registerBlockWithItem(
             "$prefix${name}_chain",
             OxidizableChainBlock(level, defaultBlockSettings().nonOpaque()),
@@ -197,6 +208,7 @@ sealed class MetalSet(
             registerOxidizable(pillar, moreOxidizedSet?.pillar, waxedSet.pillar)
             registerOxidizable(stairs, moreOxidizedSet?.stairs, waxedSet.stairs)
             registerOxidizable(slab, moreOxidizedSet?.slab, waxedSet.slab)
+            registerOxidizable(trapdoor, moreOxidizedSet?.trapdoor, waxedSet.trapdoor)
             registerOxidizable(chain, moreOxidizedSet?.chain, waxedSet.chain)
             registerOxidizable(grate, moreOxidizedSet?.grate, waxedSet.grate)
             registerOxidizable(beam, moreOxidizedSet?.beam, waxedSet.beam)

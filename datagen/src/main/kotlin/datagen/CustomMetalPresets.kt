@@ -1,6 +1,7 @@
 package datagen
 
 import tada.lib.presets.Preset
+import tada.lib.presets.blocksets.WoodPresets
 import tada.lib.presets.common.CommonDropPresets
 import tada.lib.presets.common.CommonModelPresets
 import tada.lib.presets.common.CommonRecipePresets
@@ -82,11 +83,19 @@ object CustomMetalPresets {
         })
         add(blockName("_beam"), BlockState.create {
             variant("axis=z", BlockStateModel(namespacedBlockName("_beam", "", "block/"), xRot = Rotation.CW_90))
-            variant("axis=x", BlockStateModel(namespacedBlockName("_beam", "", "block/"), xRot = Rotation.CW_90, yRot = Rotation.CW_90))
+            variant(
+                "axis=x",
+                BlockStateModel(
+                    namespacedBlockName("_beam", "", "block/"),
+                    xRot = Rotation.CW_90,
+                    yRot = Rotation.CW_90
+                )
+            )
             variant("axis=y_x", BlockStateModel(namespacedBlockName("_beam", "", "block/"), yRot = Rotation.CW_90))
             variant("axis=y_z", BlockStateModel(namespacedBlockName("_beam", "", "block/")))
         })
         add(blockName("_beam"), ParentedModel.item(namespacedBlockName("_beam", "", "block/")))
+        add(WoodPresets.trapdoor(namespacedBlockName(), blockTexture("_trapdoor", folder = "")))
         listOf(
             namespacedBlockName("_block"),
             namespacedBlockName("", "cut_"),
@@ -204,27 +213,33 @@ object CustomMetalPresets {
             key("S", namespacedBlockName("_sheet"))
         })
         add(blockName("_beam"), CraftingRecipe.shaped(namespacedBlockName("_beam"), 6) {
-            pattern("SSS")
-            pattern("BBB")
-            pattern("SSS")
+            pattern("S S")
+            pattern("SBS")
+            pattern("S S")
             key("B", namespacedBlockName("_block"))
             key("S", namespacedBlockName("_sheet"))
         })
-        add(CommonRecipePresets.packed2x2(namespacedBlockName("_beam"), namespacedBlockName("_beam_pile")))
         add(blockName("_grate"), CraftingRecipe.shaped(namespacedBlockName("_grate"), 5) {
             pattern("S S")
             pattern(" S ")
             pattern("S S")
             key("S", namespacedBlockName("_sheet"))
         })
+        add(blockName("_trapdoor"), CraftingRecipe.shaped(namespacedBlockName("_trapdoor"), 2) {
+            pattern("SSS")
+            pattern("SSS")
+            key("S", namespacedBlockName("_block"))
+        })
         TagManager.add("minecraft:blocks/climbable", namespacedBlockName("_ladder"))
+        TagManager.add("minecraft:blocks/trapdoors", namespacedBlockName("_trapdoor"))
+        TagManager.add("minecraft:items/trapdoors", namespacedBlockName("_trapdoor"))
         // Item Tags
         val all = arrayOf(
             namespacedBlockName("_block"), namespacedBlockName("", "cut_"), namespacedBlockName("_pillar"),
             namespacedBlockName("_stairs", "cut_"), namespacedBlockName("_slab", "cut_"), namespacedBlockName("_chain"),
-            namespacedBlockName("_grate"), namespacedBlockName("_beam"), namespacedBlockName("_beam_pile"),
-            namespacedBlockName("_ladder"), namespacedBlockName("_patch"), namespacedBlockName("_sheet"),
-            namespacedBlockName("_chain_link_fence"), namespacedBlockName("_barbed_wire")
+            namespacedBlockName("_grate"), namespacedBlockName("_beam"), namespacedBlockName("_ladder"),
+            namespacedBlockName("_patch"), namespacedBlockName("_sheet"), namespacedBlockName("_chain_link_fence"),
+            namespacedBlockName("_barbed_wire")
         )
         TagManager.add("derelict:items/${if (waxed) "waxed" else "unwaxed"}_metals", *all)
 

@@ -15,6 +15,7 @@ object ImageAtlases {
             { "block/$metal/$it${metal}_pillar_top" },
             { "block/$metal/$it${metal}_pillar" },
             { "block/$metal/$it${metal}_grate" },
+            { "block/$metal/$it${metal}_trapdoor" },
             { "block/$metal/$it${metal}_chain" },
             { "block/$metal/$it${metal}_beam" },
             { "block/$metal/$it${metal}_beam_top" },
