@@ -1,12 +1,16 @@
 package dev.mim1q.derelict.particle.spider
 
+import dev.mim1q.derelict.client.render.block.entry
 import net.minecraft.client.particle.*
 import net.minecraft.client.render.Camera
 import net.minecraft.client.render.VertexConsumer
+import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.client.world.ClientWorld
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.MathHelper.*
+import net.minecraft.util.math.RotationAxis
 import net.minecraft.util.math.Vec3d
+import org.joml.Vector3f
 
 class SpiderParticle(
     world: ClientWorld,
@@ -35,15 +39,42 @@ class SpiderParticle(
     override fun getType(): ParticleTextureSheet = ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT
 
     override fun buildGeometry(vertexConsumer: VertexConsumer, camera: Camera, tickDelta: Float) {
-        val pitch = when (direction) {
-            Direction.DOWN -> 90.0F
-            Direction.UP -> -90.0F
-            else -> 0.0F
+        val matrices = MatrixStack()
+        matrices.entry {
+            val x = lerp(tickDelta.toDouble(), prevPosX, x)
+            val y = lerp(tickDelta.toDouble(), prevPosY, y)
+            val z = lerp(tickDelta.toDouble(), prevPosZ, z)
+
+            translate(x - camera.pos.x, y - camera.pos.y, z - camera.pos.z)
+            scale(scale, scale, scale)
+            rotateMatrices(matrices, direction, angle)
+
+            drawBillboard(
+                vertexConsumer,
+                matrices,
+                0xF000F0,
+            )
         }
-        val offset = Vec3d.of(direction.vector).multiply(0.01)
-        FakeCamera.setRotationAndPosition(direction.asRotation(), pitch, camera.pos.add(offset.x, offset.y, offset.z))
-        super.buildGeometry(vertexConsumer, FakeCamera, tickDelta)
     }
+
+    private fun rotateMatrices(matrices: MatrixStack, direction: Direction, angle: Float) =
+        when (direction) {
+            Direction.UP -> {
+                matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90.0F))
+                matrices.multiply(RotationAxis.POSITIVE_Z.rotation(HALF_PI - angle))
+            }
+
+            Direction.DOWN -> {
+                matrices.multiply(RotationAxis.NEGATIVE_X.rotationDegrees(90.0F))
+                matrices.multiply(RotationAxis.POSITIVE_Z.rotation(-HALF_PI - angle))
+            }
+
+            else -> {
+                matrices.multiply(RotationAxis.NEGATIVE_Y.rotationDegrees(direction.asRotation()))
+                matrices.multiply(RotationAxis.POSITIVE_Z.rotation(angle))
+            }
+        }
+
 
     override fun tick() {
         if (random.nextFloat() < 0.1) {
@@ -102,6 +133,42 @@ class SpiderParticle(
             particle.setSprite(spriteProvider)
             return particle
         }
+    }
+
+    private fun drawBillboard(vertexConsumer: VertexConsumer, matrices: MatrixStack, light: Int) {
+        val vertices = arrayOf(
+            Vector3f(-1.0f, -1.0f, 0.0f),
+            Vector3f(-1.0f, 1.0f, 0.0f),
+            Vector3f(1.0f, 1.0f, 0.0f),
+            Vector3f(1.0f, -1.0f, 0.0f)
+        )
+
+        val posMatrix = matrices.peek().positionMatrix
+
+        vertexConsumer
+            .vertex(posMatrix, vertices[0].x, vertices[0].y, vertices[0].z)
+            .texture(maxU, maxV)
+            .color(this.red, this.green, this.blue, this.alpha)
+            .light(light)
+            .next()
+        vertexConsumer
+            .vertex(posMatrix, vertices[1].x, vertices[1].y, vertices[1].z)
+            .texture(maxU, minV)
+            .color(this.red, this.green, this.blue, this.alpha)
+            .light(light)
+            .next()
+        vertexConsumer
+            .vertex(posMatrix, vertices[2].x, vertices[2].y, vertices[2].z)
+            .texture(minU, minV)
+            .color(this.red, this.green, this.blue, this.alpha)
+            .light(light)
+            .next()
+        vertexConsumer
+            .vertex(posMatrix, vertices[3].x, vertices[3].y, vertices[3].z)
+            .texture(minU, maxV)
+            .color(this.red, this.green, this.blue, this.alpha)
+            .light(light)
+            .next()
     }
 
     private object FakeCamera : Camera() {
