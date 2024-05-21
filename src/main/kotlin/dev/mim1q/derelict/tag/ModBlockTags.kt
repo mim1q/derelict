@@ -1,4 +1,4 @@
-package dev.mim1q.derelict.block.tag
+package dev.mim1q.derelict.tag
 
 import dev.mim1q.derelict.Derelict
 import net.minecraft.block.Block

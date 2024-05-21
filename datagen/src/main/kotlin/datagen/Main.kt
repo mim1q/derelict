@@ -128,10 +128,14 @@ fun main(args: Array<String>) {
         listOf("", "exposed_", "weathered_", "oxidized_").forEach {
             val suffix = if (it == "") "_block" else ""
             TagManager.add(
-                "c:items/waxed", "minecraft:waxed_${it}copper$suffix", "minecraft:waxed_${it}cut_copper",
+                "derelict:items/waxed", "minecraft:waxed_${it}copper$suffix", "minecraft:waxed_${it}cut_copper",
                 "minecraft:waxed_${it}cut_copper_stairs", "minecraft:waxed_${it}cut_copper_slab"
             )
         }
+        TagManager.add("derelict:entity_types/spawns_spiderlings_on_death",
+            "minecraft:spider",
+            "minecraft:cave_spider",
+        )
     }
     generator.generate()
     FileCopyManager.copyFiles()

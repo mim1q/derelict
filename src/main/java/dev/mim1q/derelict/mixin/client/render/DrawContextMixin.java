@@ -1,7 +1,7 @@
 package dev.mim1q.derelict.mixin.client.render;
 
 import dev.mim1q.derelict.Derelict;
-import dev.mim1q.derelict.item.tag.ModItemTags;
+import dev.mim1q.derelict.tag.ModItemTags;
 import dev.mim1q.derelict.util.BlockMarkerUtils;
 import kotlin.Unit;
 import net.minecraft.client.gui.DrawContext;

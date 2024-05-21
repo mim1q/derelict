@@ -1,6 +1,6 @@
 package dev.mim1q.derelict.block.cobweb
 
-import dev.mim1q.derelict.block.tag.ModBlockTags
+import dev.mim1q.derelict.tag.ModBlockTags
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.CobwebBlock

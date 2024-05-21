@@ -1,10 +1,9 @@
-package dev.mim1q.derelict.item.tag
+package dev.mim1q.derelict.tag
 
 import dev.mim1q.derelict.Derelict
 import net.minecraft.item.Item
 import net.minecraft.registry.RegistryKeys
 import net.minecraft.registry.tag.TagKey
-import net.minecraft.util.Identifier
 
 object ModItemTags {
     val UNWAXED_METALS = of("unwaxed_metals")

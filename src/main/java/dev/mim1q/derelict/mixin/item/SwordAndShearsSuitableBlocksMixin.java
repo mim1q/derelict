@@ -1,6 +1,6 @@
 package dev.mim1q.derelict.mixin.item;
 
-import dev.mim1q.derelict.block.tag.ModBlockTags;
+import dev.mim1q.derelict.tag.ModBlockTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShearsItem;

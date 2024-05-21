@@ -5,6 +5,7 @@
   "mixins": [
     "block.AbstractBlockMixin",
     "block.entity.BlockEntityTypeMixin",
+    "entity.LivingEntityMixin",
     "item.SwordAndShearsSuitableBlocksMixin"
   ],
   "client": [

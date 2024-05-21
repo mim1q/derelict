@@ -19,4 +19,10 @@ public class DerelictConfigModel {
     public enum FlickeringLightsSetting {
         FAST, FANCY, FABULOUS
     }
+
+    @Comment("The chance for a Spiderling to spawn when an entity dies. " +
+        "Entities that this applies to are defined in the `derelict:entity_types/spawns_spiderlings_on_death` tag.\n" +
+        "0.0 - 1.0"
+    )
+    public double spiderlingSpawnChance = 0.1f;
 }
