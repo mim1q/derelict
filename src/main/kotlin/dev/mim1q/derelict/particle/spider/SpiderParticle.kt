@@ -1,6 +1,7 @@
 package dev.mim1q.derelict.particle.spider
 
 import dev.mim1q.derelict.client.render.block.entry
+import dev.mim1q.derelict.util.extensions.radians
 import net.minecraft.client.particle.*
 import net.minecraft.client.render.Camera
 import net.minecraft.client.render.VertexConsumer
@@ -11,6 +12,10 @@ import net.minecraft.util.math.MathHelper.*
 import net.minecraft.util.math.RotationAxis
 import net.minecraft.util.math.Vec3d
 import org.joml.Vector3f
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 class SpiderParticle(
     world: ClientWorld,
@@ -19,11 +24,10 @@ class SpiderParticle(
     z: Double,
     vx: Double,
     vz: Double,
-    private val spriteProvider: SpriteProvider,
     private val direction: Direction
 ) : SpriteBillboardParticle(world, x, y, z, 0.0, 0.0, 0.0) {
     init {
-        maxAge = 40 + random.nextInt(40)
+        maxAge = 400 + random.nextInt(40)
         alpha = 0.0F
         scale = random.nextFloat() * 0.05F + 0.1F
         velocityMultiplier = sqrt((vx * vx + vz * vz).toFloat())
@@ -46,13 +50,60 @@ class SpiderParticle(
             val z = lerp(tickDelta.toDouble(), prevPosZ, z)
 
             translate(x - camera.pos.x, y - camera.pos.y, z - camera.pos.z)
+            val scale = scale / 8f
             scale(scale, scale, scale)
             rotateMatrices(matrices, direction, angle)
+            translate(0.0, 0.0, -0.01)
 
+            matrices.entry {
+                translate(-1.5, 0.0, 0.0)
+                drawBillboard(
+                    vertexConsumer,
+                    matrices,
+                    0xF000F0,
+                    3f,
+                    8f
+                )
+            }
+
+            val time = (age + tickDelta) * 0.5f
+
+            val angle1 = abs(sin(time))
+            val angle2 = abs(sin(time + 90f.radians()))
+            val angle3 = abs(sin(time + 15f.radians()))
+            val angle4 = abs(sin(time + 105f.radians()))
+
+            drawLeg(matrices, vertexConsumer, -1.0, 5.0, 20f)
+            drawLeg(matrices, vertexConsumer, -1.0, 4.5, 50f)
+            drawLeg(matrices, vertexConsumer, -1.0, 3.5, 130f)
+            drawLeg(matrices, vertexConsumer, -1.25, 2.5, 160f)
+
+            drawLeg(matrices, vertexConsumer, 1.0, 5.0, -20f)
+            drawLeg(matrices, vertexConsumer, 1.0, 4.5, -50f)
+            drawLeg(matrices, vertexConsumer, 1.0, 3.5, -130f)
+            drawLeg(matrices, vertexConsumer, 1.25, 2.5, -160f)
+
+        }
+    }
+
+    private fun drawLeg(
+        matrices: MatrixStack,
+        vertexConsumer: VertexConsumer,
+        xOffset: Double,
+        zOffset: Double,
+        angle: Float
+    ) {
+        matrices.entry {
+            translate(xOffset, zOffset, 0.005)
+            multiply(RotationAxis.POSITIVE_Z.rotationDegrees(angle))
+            translate(-0.5, 0.0, 0.0)
             drawBillboard(
                 vertexConsumer,
                 matrices,
                 0xF000F0,
+                1f,
+                6f,
+                4f / 16f,
             )
         }
     }
@@ -60,13 +111,13 @@ class SpiderParticle(
     private fun rotateMatrices(matrices: MatrixStack, direction: Direction, angle: Float) =
         when (direction) {
             Direction.UP -> {
-                matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90.0F))
-                matrices.multiply(RotationAxis.POSITIVE_Z.rotation(HALF_PI - angle))
+                matrices.multiply(RotationAxis.NEGATIVE_X.rotationDegrees(90.0F))
+                matrices.multiply(RotationAxis.POSITIVE_Z.rotation(angle + HALF_PI))
             }
 
             Direction.DOWN -> {
-                matrices.multiply(RotationAxis.NEGATIVE_X.rotationDegrees(90.0F))
-                matrices.multiply(RotationAxis.POSITIVE_Z.rotation(-HALF_PI - angle))
+                matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90.0F))
+                matrices.multiply(RotationAxis.POSITIVE_Z.rotation(angle - HALF_PI))
             }
 
             else -> {
@@ -78,7 +129,7 @@ class SpiderParticle(
 
     override fun tick() {
         if (random.nextFloat() < 0.1) {
-            rotation += (random.nextFloat() - 0.5F) * 2F
+//            rotation += (random.nextFloat() - 0.5F) * 2F
         }
         setAngle()
         setVelocity(vx, 0.0, vz)
@@ -88,7 +139,7 @@ class SpiderParticle(
             markDead()
         }
         super.tick()
-        setSprite(spriteProvider.getSprite((age / 2) % 6, 5))
+
         if (age <= 2) {
             alpha = (age / 2.0F)
         }
@@ -129,19 +180,32 @@ class SpiderParticle(
             velocityY: Double,
             velocityZ: Double
         ): Particle {
-            val particle = SpiderParticle(world, x, y, z, velocityX, velocityZ, spriteProvider, parameters.direction)
+            val particle = SpiderParticle(world, x, y, z, velocityX, velocityZ, parameters.direction)
             particle.setSprite(spriteProvider)
             return particle
         }
     }
 
-    private fun drawBillboard(vertexConsumer: VertexConsumer, matrices: MatrixStack, light: Int) {
+    private fun drawBillboard(
+        vertexConsumer: VertexConsumer,
+        matrices: MatrixStack,
+        light: Int,
+        width: Float = 1f,
+        height: Float = 1f,
+        u: Float = 0f,
+    ) {
         val vertices = arrayOf(
-            Vector3f(-1.0f, -1.0f, 0.0f),
-            Vector3f(-1.0f, 1.0f, 0.0f),
-            Vector3f(1.0f, 1.0f, 0.0f),
-            Vector3f(1.0f, -1.0f, 0.0f)
+            Vector3f(0f, 0f, 0.0f),
+            Vector3f(0f, height, 0.0f),
+            Vector3f(width, height, 0.0f),
+            Vector3f(width, 0f, 0.0f)
         )
+
+        val uOffset = (maxU - minU) * u
+        val maxU = lerp(width / 16f, this.minU, maxU) + uOffset
+        val maxV = lerp(height / 16f, this.minV, maxV)
+        val minU = minU + uOffset
+        val minV = minV
 
         val posMatrix = matrices.peek().positionMatrix
 
@@ -169,16 +233,5 @@ class SpiderParticle(
             .color(this.red, this.green, this.blue, this.alpha)
             .light(light)
             .next()
-    }
-
-    private object FakeCamera : Camera() {
-        init {
-            setRotation(0.0F, 90.0F)
-        }
-
-        fun setRotationAndPosition(yaw: Float, pitch: Float, pos: Vec3d) {
-            setRotation(yaw, pitch)
-            this.pos = pos
-        }
     }
 }
