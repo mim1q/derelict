@@ -1,5 +1,7 @@
 {
   "textures": [
-    "derelict:spider/0"
+    "derelict:spider/0",
+    "derelict:spider/1",
+    "derelict:spider/2"
   ]
 }

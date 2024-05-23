@@ -129,7 +129,7 @@ class SpiderParticle(
 
     override fun tick() {
         if (random.nextFloat() < 0.1) {
-//            rotation += (random.nextFloat() - 0.5F) * 2F
+            rotation += (random.nextFloat() - 0.5F) * 2F
         }
         setAngle()
         setVelocity(vx, 0.0, vz)
