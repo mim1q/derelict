@@ -86,6 +86,25 @@ object ModBlocksAndItems {
     val FLICKERING_SOUL_LANTERN =
         register("flickering_soul_lantern", FlickeringLanternBlock(FabricBlockSettings.copyOf(Blocks.SOUL_LANTERN)))
 
+    val FLICKERING_OCHRE_FROGLIGHT = register(
+        "flickering_ochre_froglight",
+        FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.OCHRE_FROGLIGHT))
+    )
+    val BROKEN_OCHRE_FROGLIGHT =
+        register("broken_ochre_froglight", Block(FabricBlockSettings.copyOf(Blocks.OCHRE_FROGLIGHT).luminance { 0 }))
+    val FLICKERING_VERDANT_FROGLIGHT = register(
+        "flickering_verdant_froglight",
+        FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.VERDANT_FROGLIGHT))
+    )
+    val BROKEN_VERDANT_FROGLIGHT =
+        register("broken_verdant_froglight", Block(FabricBlockSettings.copyOf(Blocks.VERDANT_FROGLIGHT).luminance { 0 }))
+    val FLICKERING_PEARLESCENT_FROGLIGHT = register(
+        "flickering_pearlescent_froglight",
+        FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.PEARLESCENT_FROGLIGHT))
+    )
+    val BROKEN_PEARLESCENT_FROGLIGHT =
+        register("broken_pearlescent_froglight", Block(FabricBlockSettings.copyOf(Blocks.PEARLESCENT_FROGLIGHT).luminance { 0 }))
+
     val FANCY_COBWEB = register("fancy_cobweb", FancyCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
     val FANCY_COBWEB_WITH_SPIDER_NEST = register(
         "fancy_cobweb_with_spider_nest",

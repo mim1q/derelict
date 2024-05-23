@@ -74,6 +74,21 @@ fun main(args: Array<String>) {
                 "derelict:block/redstone_lamp_half_on", "minecraft:block/redstone_lamp"
             )
         )
+        // Froglights
+        listOf("ochre", "verdant", "pearlescent").forEach {
+            add(CommonModelPresets.cubeAllBlock("derelict:broken_${it}_froglight"))
+            add(CommonDropPresets.simpleDrop("derelict:broken_${it}_froglight"))
+            add(
+                CustomPresets.flickeringCubeAll(
+                    "derelict:flickering_${it}_froglight",
+                    8,
+                    30,
+                    "minecraft:block/${it}_froglight_side",
+                    "derelict:block/${it}_froglight_half_on",
+                    "derelict:block/broken_${it}_froglight"
+                )
+            )
+        }
         add(CustomPresets.flickeringJackOLantern(8, 30))
         add(
             CustomPresets.flickeringLantern(
@@ -132,7 +147,8 @@ fun main(args: Array<String>) {
                 "minecraft:waxed_${it}cut_copper_stairs", "minecraft:waxed_${it}cut_copper_slab"
             )
         }
-        TagManager.add("derelict:entity_types/spawns_spiderlings_on_death",
+        TagManager.add(
+            "derelict:entity_types/spawns_spiderlings_on_death",
             "minecraft:spider",
             "minecraft:cave_spider",
         )
