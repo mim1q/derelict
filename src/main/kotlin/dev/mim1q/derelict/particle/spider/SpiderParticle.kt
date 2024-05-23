@@ -56,7 +56,7 @@ class SpiderParticle(
             translate(0.0, 0.0, -0.01)
 
             matrices.entry {
-                translate(-1.5, 0.0, 0.0)
+                translate(-1.5, 0.0, -0.2)
                 drawBillboard(
                     vertexConsumer,
                     matrices,
@@ -70,18 +70,18 @@ class SpiderParticle(
 
             val angle1 = abs(sin(time))
             val angle2 = abs(sin(time + 90f.radians()))
-            val angle3 = abs(sin(time + 15f.radians()))
-            val angle4 = abs(sin(time + 105f.radians()))
+            val angle3 = abs(sin(time + 45f.radians()))
+            val angle4 = abs(sin(time + 135f.radians()))
 
-            drawLeg(matrices, vertexConsumer, -1.0, 5.0, 20f)
-            drawLeg(matrices, vertexConsumer, -1.0, 4.5, 50f)
-            drawLeg(matrices, vertexConsumer, -1.0, 3.5, 130f)
-            drawLeg(matrices, vertexConsumer, -1.25, 2.5, 160f)
+            drawLeg(matrices, vertexConsumer, -1.0, 5.0, 60f - angle1 * 50f)
+            drawLeg(matrices, vertexConsumer, -1.0, 4.5, 100f - angle2 * 50f)
+            drawLeg(matrices, vertexConsumer, -1.0, 3.5, 140f - angle3 * 40f)
+            drawLeg(matrices, vertexConsumer, -1.25, 2.5, 180f - angle4 * 50f)
 
-            drawLeg(matrices, vertexConsumer, 1.0, 5.0, -20f)
-            drawLeg(matrices, vertexConsumer, 1.0, 4.5, -50f)
-            drawLeg(matrices, vertexConsumer, 1.0, 3.5, -130f)
-            drawLeg(matrices, vertexConsumer, 1.25, 2.5, -160f)
+            drawLeg(matrices, vertexConsumer, 1.0, 5.0, -60f + angle4 * 50f)
+            drawLeg(matrices, vertexConsumer, 1.0, 4.5, -100f + angle1 * 50f)
+            drawLeg(matrices, vertexConsumer, 1.0, 3.5, -140f + angle2 * 40f)
+            drawLeg(matrices, vertexConsumer, 1.25, 2.5, -180f + angle3 * 50f)
 
         }
     }
