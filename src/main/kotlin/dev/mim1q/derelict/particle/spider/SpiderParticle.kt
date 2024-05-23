@@ -8,14 +8,11 @@ import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.client.world.ClientWorld
 import net.minecraft.util.math.Direction
-import net.minecraft.util.math.MathHelper.*
+import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.RotationAxis
 import net.minecraft.util.math.Vec3d
 import org.joml.Vector3f
-import kotlin.math.atan2
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.sqrt
+import kotlin.math.abs
 
 class SpiderParticle(
     world: ClientWorld,
@@ -27,60 +24,63 @@ class SpiderParticle(
     private val direction: Direction
 ) : SpriteBillboardParticle(world, x, y, z, 0.0, 0.0, 0.0) {
     init {
-        maxAge = 400 + random.nextInt(40)
+        maxAge = 40 + random.nextInt(40)
         alpha = 0.0F
         scale = random.nextFloat() * 0.05F + 0.1F
-        velocityMultiplier = sqrt((vx * vx + vz * vz).toFloat())
+        velocityMultiplier = MathHelper.sqrt((vx * vx + vz * vz).toFloat())
     }
 
-    private var rotation = atan2(vz, vx).toFloat()
+    private var rotation = MathHelper.atan2(vz, vx).toFloat()
 
     private val vx
-        get() = sin(HALF_PI - rotation) * velocityMultiplier.toDouble()
+        get() = MathHelper.sin(MathHelper.HALF_PI - rotation) * velocityMultiplier.toDouble()
     private val vz
-        get() = cos(HALF_PI - rotation) * velocityMultiplier.toDouble()
+        get() = MathHelper.cos(MathHelper.HALF_PI - rotation) * velocityMultiplier.toDouble()
 
     override fun getType(): ParticleTextureSheet = ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT
 
     override fun buildGeometry(vertexConsumer: VertexConsumer, camera: Camera, tickDelta: Float) {
         val matrices = MatrixStack()
         matrices.entry {
-            val x = lerp(tickDelta.toDouble(), prevPosX, x)
-            val y = lerp(tickDelta.toDouble(), prevPosY, y)
-            val z = lerp(tickDelta.toDouble(), prevPosZ, z)
+            val x = MathHelper.lerp(tickDelta.toDouble(), prevPosX, x)
+            val y = MathHelper.lerp(tickDelta.toDouble(), prevPosY, y)
+            val z = MathHelper.lerp(tickDelta.toDouble(), prevPosZ, z)
 
             translate(x - camera.pos.x, y - camera.pos.y, z - camera.pos.z)
             val scale = scale / 8f
             scale(scale, scale, scale)
-            rotateMatrices(matrices, direction, angle)
+            rotateMatrices(matrices, direction, MathHelper.lerp(tickDelta, prevAngle, angle))
             translate(0.0, 0.0, -0.01)
 
             matrices.entry {
                 translate(-1.5, 0.0, -0.2)
-                drawBillboard(
-                    vertexConsumer,
-                    matrices,
-                    0xF000F0,
-                    3f,
-                    8f
-                )
+                repeat(3) {
+                    drawBillboard(
+                        vertexConsumer,
+                        matrices,
+                        getBrightness(0f),
+                        3f,
+                        8f
+                    )
+                    translate(0.0, 0.0, -0.3)
+                }
             }
 
-            val time = (age + tickDelta) * 0.5f
+            val time = (age + tickDelta) * 0.67f
 
-            val angle1 = abs(sin(time))
-            val angle2 = abs(sin(time + 90f.radians()))
-            val angle3 = abs(sin(time + 45f.radians()))
-            val angle4 = abs(sin(time + 135f.radians()))
+            val angle1 = MathHelper.abs(MathHelper.sin(time))
+            val angle2 = MathHelper.abs(MathHelper.sin(time + 90f.radians()))
+            val angle3 = MathHelper.abs(MathHelper.sin(time + 45f.radians()))
+            val angle4 = MathHelper.abs(MathHelper.sin(time + 135f.radians()))
 
             drawLeg(matrices, vertexConsumer, -1.0, 5.0, 60f - angle1 * 50f)
-            drawLeg(matrices, vertexConsumer, -1.0, 4.5, 100f - angle2 * 50f)
-            drawLeg(matrices, vertexConsumer, -1.0, 3.5, 140f - angle3 * 40f)
+            drawLeg(matrices, vertexConsumer, -0.5, 4.5, 100f - angle2 * 50f)
+            drawLeg(matrices, vertexConsumer, -0.5, 3.5, 140f - angle3 * 40f)
             drawLeg(matrices, vertexConsumer, -1.25, 2.5, 180f - angle4 * 50f)
 
             drawLeg(matrices, vertexConsumer, 1.0, 5.0, -60f + angle4 * 50f)
-            drawLeg(matrices, vertexConsumer, 1.0, 4.5, -100f + angle1 * 50f)
-            drawLeg(matrices, vertexConsumer, 1.0, 3.5, -140f + angle2 * 40f)
+            drawLeg(matrices, vertexConsumer, 0.5, 4.5, -100f + angle1 * 50f)
+            drawLeg(matrices, vertexConsumer, 0.5, 3.5, -140f + angle2 * 40f)
             drawLeg(matrices, vertexConsumer, 1.25, 2.5, -180f + angle3 * 50f)
 
         }
@@ -100,7 +100,7 @@ class SpiderParticle(
             drawBillboard(
                 vertexConsumer,
                 matrices,
-                0xF000F0,
+                getBrightness(0f),
                 1f,
                 6f,
                 4f / 16f,
@@ -112,12 +112,12 @@ class SpiderParticle(
         when (direction) {
             Direction.UP -> {
                 matrices.multiply(RotationAxis.NEGATIVE_X.rotationDegrees(90.0F))
-                matrices.multiply(RotationAxis.POSITIVE_Z.rotation(angle + HALF_PI))
+                matrices.multiply(RotationAxis.POSITIVE_Z.rotation(angle + MathHelper.HALF_PI))
             }
 
             Direction.DOWN -> {
                 matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90.0F))
-                matrices.multiply(RotationAxis.POSITIVE_Z.rotation(angle - HALF_PI))
+                matrices.multiply(RotationAxis.POSITIVE_Z.rotation(angle - MathHelper.HALF_PI))
             }
 
             else -> {
@@ -128,16 +128,24 @@ class SpiderParticle(
 
 
     override fun tick() {
-        if (random.nextFloat() < 0.1) {
-            rotation += (random.nextFloat() - 0.5F) * 2F
-        }
+        rotation += (random.nextFloat() - 0.5F) * if (random.nextFloat() < 0.1f) 1.0f else 0.2f
         setAngle()
         setVelocity(vx, 0.0, vz)
         setBoundingBoxSpacing(0.01F, 0.01F)
+
         val offset = Vec3d(velocityX, velocityY, velocityZ).multiply(1.5).add(Vec3d.of(direction.vector).multiply(0.5))
-        if (world.getBlockCollisions(null, boundingBox.offset(offset.x, offset.y, offset.z)).none()) {
+        val xVel = abs(x - prevPosX) < MathHelper.EPSILON
+        val yVel = abs(y - prevPosY) < MathHelper.EPSILON
+        val zVel = abs(z - prevPosZ) < MathHelper.EPSILON
+
+        if (
+            (age > 2 && (xVel xor yVel xor zVel xor true))
+            || world.getBlockCollisions(null, boundingBox.offset(offset.x, offset.y, offset.z)).none()
+        ) {
             markDead()
+            return
         }
+
         super.tick()
 
         if (age <= 2) {
@@ -161,9 +169,9 @@ class SpiderParticle(
         prevAngle = angle
         angle = when (direction) {
             Direction.DOWN -> rotation
-            Direction.UP -> PI - rotation
-            Direction.NORTH -> HALF_PI - rotation
-            Direction.SOUTH -> rotation - HALF_PI
+            Direction.UP -> MathHelper.PI - rotation
+            Direction.NORTH -> MathHelper.HALF_PI - rotation
+            Direction.SOUTH -> rotation - MathHelper.HALF_PI
             Direction.EAST -> rotation
             Direction.WEST -> -rotation
         }
@@ -202,8 +210,8 @@ class SpiderParticle(
         )
 
         val uOffset = (maxU - minU) * u
-        val maxU = lerp(width / 16f, this.minU, maxU) + uOffset
-        val maxV = lerp(height / 16f, this.minV, maxV)
+        val maxU = MathHelper.lerp(width / 16f, this.minU, maxU) + uOffset
+        val maxV = MathHelper.lerp(height / 16f, this.minV, maxV)
         val minU = minU + uOffset
         val minV = minV
 
