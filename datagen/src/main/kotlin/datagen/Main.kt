@@ -89,6 +89,14 @@ fun main(args: Array<String>) {
                 )
             )
         }
+        add(CustomPresets.flickeringCubeAll("derelict:flickering_glowstone", 8, 40, "minecraft:block/glowstone", "derelict:block/glowstone_half_on", "derelict:block/broken_glowstone"))
+        add(CommonModelPresets.cubeAllBlock("derelict:broken_glowstone"))
+        add(CommonDropPresets.simpleDrop("derelict:broken_glowstone"))
+
+        add(CustomPresets.flickeringCubeAll("derelict:flickering_shroomlight", 8, 50, "minecraft:block/shroomlight", "derelict:block/shroomlight_half_on", "derelict:block/broken_shroomlight"))
+        add(CommonModelPresets.cubeAllBlock("derelict:broken_shroomlight"))
+        add(CommonDropPresets.simpleDrop("derelict:broken_shroomlight"))
+
         add(CustomPresets.flickeringJackOLantern(8, 30))
         add(
             CustomPresets.flickeringLantern(

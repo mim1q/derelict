@@ -104,6 +104,16 @@ object ModBlocksAndItems {
     )
     val BROKEN_PEARLESCENT_FROGLIGHT =
         register("broken_pearlescent_froglight", Block(FabricBlockSettings.copyOf(Blocks.PEARLESCENT_FROGLIGHT).luminance { 0 }))
+    val FLICKERING_GLOWSTONE = register(
+        "flickering_glowstone",
+        FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.GLOWSTONE))
+    )
+    val BROKEN_GLOWSTONE = register("broken_glowstone", Block(FabricBlockSettings.copyOf(Blocks.GLOWSTONE).luminance { 0 }))
+    val FLICKERING_SHROOMLIGHT = register(
+        "flickering_shroomlight",
+        FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.SHROOMLIGHT))
+    )
+    val BROKEN_SHROOMLIGHT = register("broken_shroomlight", Block(FabricBlockSettings.copyOf(Blocks.SHROOMLIGHT).luminance { 0 }))
 
     val FANCY_COBWEB = register("fancy_cobweb", FancyCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
     val FANCY_COBWEB_WITH_SPIDER_NEST = register(
@@ -163,8 +173,8 @@ object ModBlocksAndItems {
             lastAgeable.add(from)
         }
         HoneycombItem.WAXED_TO_UNWAXED_BLOCKS.get().forEach { (from, to) ->
-            if (Oxidizable.OXIDATION_LEVEL_INCREASES.get().containsKey(to)) (from as AbstractBlockAccessor).isAgeable =
-                true
+            if (Oxidizable.OXIDATION_LEVEL_INCREASES.get().containsKey(to))
+                (from as AbstractBlockAccessor).isAgeable = true
         }
     }
 
