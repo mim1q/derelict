@@ -73,7 +73,7 @@ sealed class MetalSet(
         override val trapdoor: TrapdoorBlock = registerBlockWithItem(
             "$prefix${name}_trapdoor",
             TrapdoorBlock(defaultBlockSettings().nonOpaque(), BlockSetType.IRON),
-            ItemCategory.WAXED_METAL_BLOCKS
+            ItemCategory.WAXED_METAL_DECORATION
         )
         override val chain: ChainBlock = registerBlockWithItem(
             "$prefix${name}_chain",
@@ -152,7 +152,7 @@ sealed class MetalSet(
         override val trapdoor: TrapdoorBlock = registerBlockWithItem(
             "$prefix${name}_trapdoor",
             OxidizableTrapdoorBlock(level, defaultBlockSettings().nonOpaque(), BlockSetType.IRON),
-            ItemCategory.METAL_BLOCKS
+            ItemCategory.METAL_DECORATION
         )
         override val chain: ChainBlock = registerBlockWithItem(
             "$prefix${name}_chain",
