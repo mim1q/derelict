@@ -12,7 +12,8 @@ public class DerelictConfigModel {
           FANCY: Affects emitted light, worse performance. Best option to use with custom texture packs
           FABULOUS: Affects emitted light, looks the best, slightly worse performance than fancy. Best option for vanilla textures
 
-        Note: when switching from FAST to FANCY/FABULOUS, all existing flickering light blocks will have to be replaced in order for the change to take place"""
+        Note: - When switching from FAST to FANCY/FABULOUS, all existing flickering light blocks will have to be replaced in order for the change to take place.
+              - Consider using FAST if you're hosting a server with a lot of players, or if any of the players might be sensitive to flickering lights."""
     )
     public FlickeringLightsSetting flickeringLights = FlickeringLightsSetting.FABULOUS;
 
@@ -23,7 +24,7 @@ public class DerelictConfigModel {
     @Comment("""
         The chance for a Spiderling to spawn when an entity dies.
         Entities that this applies to are defined in the `derelict:entity_types/spawns_spiderlings_on_death` tag.
-        Value is a percentage, 0 - 100"""
+        Value is a percentage, 0.0 - 100.0"""
     )
     public float spiderlingSpawnChance = 10f;
 }

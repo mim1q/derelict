@@ -49,12 +49,11 @@ interface FlickeringBlock {
     }
 
     companion object {
-        fun getLuminance(state: BlockState): Int {
-            return when (state[LIGHT_STATE]) {
-                LightState.HALF_ON -> 5
-                LightState.ON -> 10
-                else -> 0
-            }
+        fun getLuminance(state: BlockState) = when (state[LIGHT_STATE]) {
+            LightState.HALF_ON -> 5
+            LightState.ON -> 10
+            LightState.FLICKERING -> 7
+            else -> 0
         }
 
         val LIGHT_STATE: EnumProperty<LightState> = EnumProperty.of("light_state", LightState::class.java)
