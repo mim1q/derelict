@@ -8,6 +8,7 @@ import tada.lib.presets.common.CommonRecipePresets
 import tada.lib.resources.blockstate.BlockState
 import tada.lib.resources.blockstate.BlockStateModel
 import tada.lib.resources.blockstate.BlockStateModel.Rotation
+import tada.lib.resources.blockstate.BlockStateModel.Rotation.*
 import tada.lib.resources.blockstate.MultipartBlockState
 import tada.lib.resources.blockstate.MultipartBlockState.Entry.ConditionType
 import tada.lib.resources.model.ParentedModel
@@ -28,29 +29,29 @@ object CustomPresets {
         add(name, BlockState.createMultipart {
             applyWhen(BlockStateModel("$ns:block/$name"), "north=true")
             applyWhen(BlockStateModel("$ns:block/$name"), "east=false,south=false,west=false,up=false,down=false")
-            applyWhen(BlockStateModel("$ns:block/$name", yRot = Rotation.CW_90, uvlock = true), "east=true")
+            applyWhen(BlockStateModel("$ns:block/$name", yRot = CW_90, uvlock = true), "east=true")
             applyWhen(
-                BlockStateModel("$ns:block/$name", yRot = Rotation.CW_90, uvlock = true),
+                BlockStateModel("$ns:block/$name", yRot = CW_90, uvlock = true),
                 "north=false,south=false,west=false,up=false,down=false"
             )
-            applyWhen(BlockStateModel("$ns:block/$name", yRot = Rotation.CW_180, uvlock = true), "south=true")
+            applyWhen(BlockStateModel("$ns:block/$name", yRot = CW_180, uvlock = true), "south=true")
             applyWhen(
-                BlockStateModel("$ns:block/$name", yRot = Rotation.CW_180, uvlock = true),
+                BlockStateModel("$ns:block/$name", yRot = CW_180, uvlock = true),
                 "north=false,east=false,west=false,up=false,down=false"
             )
-            applyWhen(BlockStateModel("$ns:block/$name", yRot = Rotation.CW_270, uvlock = true), "west=true")
+            applyWhen(BlockStateModel("$ns:block/$name", yRot = CW_270, uvlock = true), "west=true")
             applyWhen(
-                BlockStateModel("$ns:block/$name", yRot = Rotation.CW_270, uvlock = true),
+                BlockStateModel("$ns:block/$name", yRot = CW_270, uvlock = true),
                 "north=false,east=false,south=false,up=false,down=false"
             )
-            applyWhen(BlockStateModel("$ns:block/$name", xRot = Rotation.CW_270, uvlock = true), "up=true")
+            applyWhen(BlockStateModel("$ns:block/$name", xRot = CW_270, uvlock = true), "up=true")
             applyWhen(
-                BlockStateModel("$ns:block/$name", xRot = Rotation.CW_270, uvlock = true),
+                BlockStateModel("$ns:block/$name", xRot = CW_270, uvlock = true),
                 "north=false,east=false,south=false,west=false,down=false"
             )
-            applyWhen(BlockStateModel("$ns:block/$name", xRot = Rotation.CW_90, uvlock = true), "down=true")
+            applyWhen(BlockStateModel("$ns:block/$name", xRot = CW_90, uvlock = true), "down=true")
             applyWhen(
-                BlockStateModel("$ns:block/$name", xRot = Rotation.CW_90, uvlock = true),
+                BlockStateModel("$ns:block/$name", xRot = CW_90, uvlock = true),
                 "north=false,east=false,south=false,west=false,up=false"
             )
         })
@@ -62,8 +63,8 @@ object CustomPresets {
         val variantList = listOf("0", "1", "2", "3")
         fun entry(
             condition: String,
-            yRot: Rotation = Rotation.NONE,
-            xRot: Rotation = Rotation.NONE
+            yRot: Rotation = NONE,
+            xRot: Rotation = NONE
         ): MultipartBlockState.Entry {
             val models =
                 variantList.map { BlockStateModel("derelict:block/$name/$it", yRot = yRot, xRot = xRot, uvlock = true) }
@@ -84,15 +85,15 @@ object CustomPresets {
         add(name, BlockState.createMultipart {
             addEntry(entry("north=true"))
             applyWhen(BlockStateModel("block/air"), "east=false,south=false,west=false,up=false,down=false")
-            addEntry(entry("east=true", yRot = Rotation.CW_90))
+            addEntry(entry("east=true", yRot = CW_90))
             applyWhen(BlockStateModel("block/air"), "north=false,south=false,west=false,up=false,down=false")
-            addEntry(entry("south=true", yRot = Rotation.CW_180))
+            addEntry(entry("south=true", yRot = CW_180))
             applyWhen(BlockStateModel("block/air"), "north=false,east=false,west=false,up=false,down=false")
-            addEntry(entry("west=true", yRot = Rotation.CW_270))
+            addEntry(entry("west=true", yRot = CW_270))
             applyWhen(BlockStateModel("block/air"), "north=false,east=false,south=false,up=false,down=false")
-            addEntry(entry("up=true", xRot = Rotation.CW_270))
+            addEntry(entry("up=true", xRot = CW_270))
             applyWhen(BlockStateModel("block/air"), "north=false,east=false,south=false,west=false,down=false")
-            addEntry(entry("down=true", xRot = Rotation.CW_90))
+            addEntry(entry("down=true", xRot = CW_90))
             applyWhen(BlockStateModel("block/air"), "north=false,east=false,south=false,west=false,up=false")
         })
         TagManager.add("derelict:items/general_tab", "derelict:smoldering_embers")
@@ -179,27 +180,27 @@ object CustomPresets {
             for (i in 0 until count) {
                 variant(
                     "facing=north,rotation=$i",
-                    BlockStateModel("$ns:block/cover_boards/${type}_${name}_$i", yRot = Rotation.NONE)
+                    BlockStateModel("$ns:block/cover_boards/${type}_${name}_$i", yRot = NONE)
                 )
                 variant(
                     "facing=east,rotation=$i",
-                    BlockStateModel("$ns:block/cover_boards/${type}_${name}_$i", yRot = Rotation.CW_90)
+                    BlockStateModel("$ns:block/cover_boards/${type}_${name}_$i", yRot = CW_90)
                 )
                 variant(
                     "facing=south,rotation=$i",
-                    BlockStateModel("$ns:block/cover_boards/${type}_${name}_$i", yRot = Rotation.CW_180)
+                    BlockStateModel("$ns:block/cover_boards/${type}_${name}_$i", yRot = CW_180)
                 )
                 variant(
                     "facing=west,rotation=$i",
-                    BlockStateModel("$ns:block/cover_boards/${type}_${name}_$i", yRot = Rotation.CW_270)
+                    BlockStateModel("$ns:block/cover_boards/${type}_${name}_$i", yRot = CW_270)
                 )
                 variant(
                     "facing=up,rotation=$i",
-                    BlockStateModel("$ns:block/cover_boards/${type}_${name}_$i", xRot = Rotation.CW_270)
+                    BlockStateModel("$ns:block/cover_boards/${type}_${name}_$i", xRot = CW_270)
                 )
                 variant(
                     "facing=down,rotation=$i",
-                    BlockStateModel("$ns:block/cover_boards/${type}_${name}_$i", xRot = Rotation.CW_90)
+                    BlockStateModel("$ns:block/cover_boards/${type}_${name}_$i", xRot = CW_90)
                 )
             }
         })
@@ -360,40 +361,40 @@ object CustomPresets {
         add("flickering_jack_o_lantern", BlockState.create {
             variant(
                 "light_state=flickering,facing=north",
-                BlockStateModel(first, yRot = Rotation.NONE),
-                *rest(Rotation.NONE)
+                BlockStateModel(first, yRot = NONE),
+                *rest(NONE)
             )
             variant(
                 "light_state=flickering,facing=east",
-                BlockStateModel(first, yRot = Rotation.CW_90),
-                *rest(Rotation.CW_90)
+                BlockStateModel(first, yRot = CW_90),
+                *rest(CW_90)
             )
             variant(
                 "light_state=flickering,facing=south",
-                BlockStateModel(first, yRot = Rotation.CW_180),
-                *rest(Rotation.CW_180)
+                BlockStateModel(first, yRot = CW_180),
+                *rest(CW_180)
             )
             variant(
                 "light_state=flickering,facing=west",
-                BlockStateModel(first, yRot = Rotation.CW_270),
-                *rest(Rotation.CW_270)
+                BlockStateModel(first, yRot = CW_270),
+                *rest(CW_270)
             )
             listOf("on", "half_on", "off").forEach {
                 variant(
                     "light_state=$it,facing=north",
-                    BlockStateModel("derelict:block/flickering_jack_o_lantern/$it", yRot = Rotation.NONE)
+                    BlockStateModel("derelict:block/flickering_jack_o_lantern/$it", yRot = NONE)
                 )
                 variant(
                     "light_state=$it,facing=east",
-                    BlockStateModel("derelict:block/flickering_jack_o_lantern/$it", yRot = Rotation.CW_90)
+                    BlockStateModel("derelict:block/flickering_jack_o_lantern/$it", yRot = CW_90)
                 )
                 variant(
                     "light_state=$it,facing=south",
-                    BlockStateModel("derelict:block/flickering_jack_o_lantern/$it", yRot = Rotation.CW_180)
+                    BlockStateModel("derelict:block/flickering_jack_o_lantern/$it", yRot = CW_180)
                 )
                 variant(
                     "light_state=$it,facing=west",
-                    BlockStateModel("derelict:block/flickering_jack_o_lantern/$it", yRot = Rotation.CW_270)
+                    BlockStateModel("derelict:block/flickering_jack_o_lantern/$it", yRot = CW_270)
                 )
             }
         })
@@ -401,6 +402,66 @@ object CustomPresets {
         TagManager.add("minecraft:blocks/mineable/axe", "derelict:flickering_jack_o_lantern")
         TagManager.add("derelict:items/general_tab", "derelict:flickering_jack_o_lantern")
         add(CommonDropPresets.simpleDrop("derelict:flickering_jack_o_lantern"))
+    }
+
+    fun flickeringEndRod(
+        id: String,
+        count: Int,
+        seed: Long,
+        onTexture: String,
+        halfOnTexture: String,
+        offTexture: String
+    ) = Preset {
+        val (ns, name) = Id(id)
+        fun rest(xRot: Rotation = NONE, yRot: Rotation = NONE) = IntRange(1, count - 1).map {
+            BlockStateModel("$ns:block/$name/$it", xRot, yRot)
+        }.toTypedArray()
+        add(flickerVariants(id, "block/end_rod", "end_rod", count, seed))
+        add("${name}/on", ParentedModel.block("block/end_rod").texture("end_rod", onTexture))
+        add("${name}/half_on", ParentedModel.block("block/end_rod").texture("end_rod", halfOnTexture))
+        add("${name}/off", ParentedModel.block("block/end_rod").texture("end_rod", offTexture))
+
+        add(name, BlockState.create {
+            listOf("flickering", "on", "half_on", "off").forEach {
+                fun v(facing: String, xRot: Rotation = NONE, yRot: Rotation = NONE) =
+                    if (it == "flickering") variant(
+                        "light_state=flickering,facing=${facing}",
+                        BlockStateModel("$ns:block/$name/0"),
+                        *rest(xRot, yRot)
+                    )
+                    else variant("light_state=$it,facing=${facing}", BlockStateModel("$ns:block/$name/$it", xRot, yRot))
+
+                v("up")
+                v("down", xRot = CW_180)
+                v("north", xRot = CW_90)
+                v("east", xRot = CW_90, yRot = CW_90)
+                v("south", xRot = CW_90, yRot = CW_180)
+                v("west", xRot = CW_90, yRot = CW_270)
+            }
+        })
+
+        add(name, ParentedModel.item("$ns:block/$name/0"))
+        AnimationPresets.createIndexedBlockTextureCopies(id, count)
+        TagManager.add("minecraft:blocks/mineable/pickaxe", id)
+        add(AnimationPresets.flicker("$ns:item/$name", seed))
+        add(CommonDropPresets.simpleDrop(id))
+    }
+
+    fun endRod(id: String) = Preset {
+        val (ns, name) = Id(id)
+        add(CommonModelPresets.itemBlockModel(id))
+        add(name, ParentedModel.block("block/end_rod").texture("end_rod", "$ns:block/$name"))
+        add(name, BlockState.create {
+            variant("facing=up", BlockStateModel("$ns:block/$name"))
+            variant("facing=down", BlockStateModel("$ns:block/$name", xRot = CW_180))
+            variant("facing=north", BlockStateModel("$ns:block/$name", xRot = CW_90))
+            variant("facing=east", BlockStateModel("$ns:block/$name", xRot = CW_90, yRot = CW_90))
+            variant("facing=south", BlockStateModel("$ns:block/$name", xRot = CW_90, yRot = CW_180))
+            variant("facing=west", BlockStateModel("$ns:block/$name", xRot = CW_90, yRot = CW_270))
+        })
+
+        TagManager.add("minecraft:blocks/mineable/pickaxe", id)
+        add(CommonDropPresets.simpleDrop(id))
     }
 
     fun flickeringLantern(
@@ -466,18 +527,18 @@ object CustomPresets {
         fun fullModel() = BlockStateModel("derelict:block/fancy_cobweb/full")
         add(CommonDropPresets.silkTouchOrShearsOnlyDrop(id))
         add(name, BlockState.createMultipart {
-            applyWhenAll(topModel(Rotation.NONE), "up=true", "north=true")
-            applyWhenAll(topModel(Rotation.CW_90), "up=true", "east=true")
-            applyWhenAll(topModel(Rotation.CW_180), "up=true", "south=true")
-            applyWhenAll(topModel(Rotation.CW_270), "up=true", "west=true")
-            applyWhenAll(bottomModel(Rotation.NONE), "down=true", "north=true")
-            applyWhenAll(bottomModel(Rotation.CW_90), "down=true", "east=true")
-            applyWhenAll(bottomModel(Rotation.CW_180), "down=true", "south=true")
-            applyWhenAll(bottomModel(Rotation.CW_270), "down=true", "west=true")
-            applyWhenAll(sideModel(Rotation.NONE), "west=true", "north=true")
-            applyWhenAll(sideModel(Rotation.CW_90), "north=true", "east=true")
-            applyWhenAll(sideModel(Rotation.CW_180), "east=true", "south=true")
-            applyWhenAll(sideModel(Rotation.CW_270), "south=true", "west=true")
+            applyWhenAll(topModel(NONE), "up=true", "north=true")
+            applyWhenAll(topModel(CW_90), "up=true", "east=true")
+            applyWhenAll(topModel(CW_180), "up=true", "south=true")
+            applyWhenAll(topModel(CW_270), "up=true", "west=true")
+            applyWhenAll(bottomModel(NONE), "down=true", "north=true")
+            applyWhenAll(bottomModel(CW_90), "down=true", "east=true")
+            applyWhenAll(bottomModel(CW_180), "down=true", "south=true")
+            applyWhenAll(bottomModel(CW_270), "down=true", "west=true")
+            applyWhenAll(sideModel(NONE), "west=true", "north=true")
+            applyWhenAll(sideModel(CW_90), "north=true", "east=true")
+            applyWhenAll(sideModel(CW_180), "east=true", "south=true")
+            applyWhenAll(sideModel(CW_270), "south=true", "west=true")
             applyWhen(fullModel(), "north=false,east=false,west=false,south=false,up=false,down=false")
             applyWhen(fullModel(), "north=true,east=false,west=false,south=false,up=false,down=false")
             applyWhen(fullModel(), "north=false,east=true,west=false,south=false,up=false,down=false")
@@ -505,44 +566,44 @@ object CustomPresets {
         add(name, BlockState.create {
             listOf("top", "bottom").forEach {
                 variant("rotation=0,type=$it", BlockStateModel("$ns:block/${name}_straight_$it"))
-                variant("rotation=1,type=$it", BlockStateModel("$ns:block/${name}_rotated_$it", yRot = Rotation.CW_90))
-                variant("rotation=2,type=$it", BlockStateModel("$ns:block/${name}_straight_$it", yRot = Rotation.CW_90))
-                variant("rotation=3,type=$it", BlockStateModel("$ns:block/${name}_rotated_$it", yRot = Rotation.CW_180))
+                variant("rotation=1,type=$it", BlockStateModel("$ns:block/${name}_rotated_$it", yRot = CW_90))
+                variant("rotation=2,type=$it", BlockStateModel("$ns:block/${name}_straight_$it", yRot = CW_90))
+                variant("rotation=3,type=$it", BlockStateModel("$ns:block/${name}_rotated_$it", yRot = CW_180))
                 variant(
                     "rotation=4,type=$it",
-                    BlockStateModel("$ns:block/${name}_straight_$it", yRot = Rotation.CW_180)
+                    BlockStateModel("$ns:block/${name}_straight_$it", yRot = CW_180)
                 )
-                variant("rotation=5,type=$it", BlockStateModel("$ns:block/${name}_rotated_$it", yRot = Rotation.CW_270))
+                variant("rotation=5,type=$it", BlockStateModel("$ns:block/${name}_rotated_$it", yRot = CW_270))
                 variant(
                     "rotation=6,type=$it",
-                    BlockStateModel("$ns:block/${name}_straight_$it", yRot = Rotation.CW_270)
+                    BlockStateModel("$ns:block/${name}_straight_$it", yRot = CW_270)
                 )
                 variant("rotation=7,type=$it", BlockStateModel("$ns:block/${name}_rotated_$it"))
             }
             variant("rotation=0,type=horizontal", BlockStateModel("$ns:block/${name}_horizontal"))
             variant(
                 "rotation=1,type=horizontal",
-                BlockStateModel("$ns:block/${name}_horizontal", yRot = Rotation.CW_90)
+                BlockStateModel("$ns:block/${name}_horizontal", yRot = CW_90)
             )
             variant(
                 "rotation=2,type=horizontal",
-                BlockStateModel("$ns:block/${name}_horizontal", yRot = Rotation.CW_90)
+                BlockStateModel("$ns:block/${name}_horizontal", yRot = CW_90)
             )
             variant(
                 "rotation=3,type=horizontal",
-                BlockStateModel("$ns:block/${name}_horizontal", yRot = Rotation.CW_180)
+                BlockStateModel("$ns:block/${name}_horizontal", yRot = CW_180)
             )
             variant(
                 "rotation=4,type=horizontal",
-                BlockStateModel("$ns:block/${name}_horizontal", yRot = Rotation.CW_180)
+                BlockStateModel("$ns:block/${name}_horizontal", yRot = CW_180)
             )
             variant(
                 "rotation=5,type=horizontal",
-                BlockStateModel("$ns:block/${name}_horizontal", yRot = Rotation.CW_270)
+                BlockStateModel("$ns:block/${name}_horizontal", yRot = CW_270)
             )
             variant(
                 "rotation=6,type=horizontal",
-                BlockStateModel("$ns:block/${name}_horizontal", yRot = Rotation.CW_270)
+                BlockStateModel("$ns:block/${name}_horizontal", yRot = CW_270)
             )
             variant("rotation=7,type=horizontal", BlockStateModel("$ns:block/${name}_horizontal"))
         })

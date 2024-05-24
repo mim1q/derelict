@@ -111,6 +111,12 @@ fun main(args: Array<String>) {
                 "minecraft:block/soul_lantern", "derelict:block/soul_lantern_half_on", "derelict:block/broken_lantern"
             )
         )
+
+        add(CustomPresets.flickeringEndRod(
+            "derelict:flickering_end_rod", 8, 60, "minecraft:block/end_rod", "derelict:block/end_rod_half_on", "derelict:block/broken_end_rod"
+        ))
+        add(CustomPresets.endRod("derelict:broken_end_rod"))
+
         // Metal
         add(CustomMetalPresets.threeOxidationMetalSet("derelict:noctisteel"))
         // Handheld items
