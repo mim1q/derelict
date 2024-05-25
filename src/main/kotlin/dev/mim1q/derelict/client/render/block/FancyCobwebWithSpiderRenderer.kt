@@ -6,6 +6,7 @@ import dev.mim1q.derelict.init.client.ModRender
 import dev.mim1q.derelict.util.Easing
 import dev.mim1q.derelict.util.extensions.drawBillboard
 import dev.mim1q.derelict.util.extensions.radians
+import dev.mim1q.derelict.util.render.entry
 import net.minecraft.client.model.*
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumer
@@ -16,12 +17,6 @@ import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.math.MathHelper
 import org.joml.Quaternionf
 import org.joml.Vector2f
-
-fun MatrixStack.entry(setup: MatrixStack.() -> Unit) {
-    push()
-    setup()
-    pop()
-}
 
 class FancyCobwebWithSpiderRenderer(context: Context) : BlockEntityRenderer<FancyCobwebWithSpiderBlockEntity> {
     private val model = SpiderModel(context.getLayerModelPart(ModRender.FANCY_COBWEB_SPIDER_LAYER))

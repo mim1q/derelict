@@ -1,7 +1,7 @@
 package dev.mim1q.derelict.particle.spider
 
-import dev.mim1q.derelict.client.render.block.entry
 import dev.mim1q.derelict.util.extensions.radians
+import dev.mim1q.derelict.util.render.entry
 import net.minecraft.client.particle.*
 import net.minecraft.client.render.Camera
 import net.minecraft.client.render.VertexConsumer
@@ -23,6 +23,10 @@ class SpiderParticle(
     vz: Double,
     private val direction: Direction
 ) : SpriteBillboardParticle(world, x, y, z, 0.0, 0.0, 0.0) {
+    companion object {
+        val matrices = MatrixStack()
+    }
+
     init {
         maxAge = 40 + random.nextInt(40)
         alpha = 0.0F
@@ -40,12 +44,13 @@ class SpiderParticle(
     override fun getType(): ParticleTextureSheet = ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT
 
     override fun buildGeometry(vertexConsumer: VertexConsumer, camera: Camera, tickDelta: Float) {
-        val matrices = MatrixStack()
+//        matrices.loadIdentity()
         matrices.entry {
             val x = MathHelper.lerp(tickDelta.toDouble(), prevPosX, x)
             val y = MathHelper.lerp(tickDelta.toDouble(), prevPosY, y)
             val z = MathHelper.lerp(tickDelta.toDouble(), prevPosZ, z)
 
+            val light = getBrightness(0f)
             translate(x - camera.pos.x, y - camera.pos.y, z - camera.pos.z)
             val scale = scale / 8f
             scale(scale, scale, scale)
@@ -58,7 +63,7 @@ class SpiderParticle(
                     drawBillboard(
                         vertexConsumer,
                         matrices,
-                        getBrightness(0f),
+                        light,
                         3f,
                         8f
                     )
@@ -73,15 +78,15 @@ class SpiderParticle(
             val angle3 = MathHelper.abs(MathHelper.sin(time + 45f.radians()))
             val angle4 = MathHelper.abs(MathHelper.sin(time + 135f.radians()))
 
-            drawLeg(matrices, vertexConsumer, -1.0, 5.0, 60f - angle1 * 50f)
-            drawLeg(matrices, vertexConsumer, -0.5, 4.5, 100f - angle2 * 50f)
-            drawLeg(matrices, vertexConsumer, -0.5, 3.5, 140f - angle3 * 40f)
-            drawLeg(matrices, vertexConsumer, -1.25, 2.5, 180f - angle4 * 50f)
+            drawLeg(matrices, vertexConsumer, light, -1.0, 5.0, 60f - angle1 * 50f)
+            drawLeg(matrices, vertexConsumer, light, -0.5, 4.5, 100f - angle2 * 50f)
+            drawLeg(matrices, vertexConsumer, light, -0.5, 3.5, 140f - angle3 * 40f)
+            drawLeg(matrices, vertexConsumer, light, -1.25, 2.5, 180f - angle4 * 50f)
 
-            drawLeg(matrices, vertexConsumer, 1.0, 5.0, -60f + angle4 * 50f)
-            drawLeg(matrices, vertexConsumer, 0.5, 4.5, -100f + angle1 * 50f)
-            drawLeg(matrices, vertexConsumer, 0.5, 3.5, -140f + angle2 * 40f)
-            drawLeg(matrices, vertexConsumer, 1.25, 2.5, -180f + angle3 * 50f)
+            drawLeg(matrices, vertexConsumer, light, 1.0, 5.0, -60f + angle4 * 50f)
+            drawLeg(matrices, vertexConsumer, light, 0.5, 4.5, -100f + angle1 * 50f)
+            drawLeg(matrices, vertexConsumer, light, 0.5, 3.5, -140f + angle2 * 40f)
+            drawLeg(matrices, vertexConsumer, light, 1.25, 2.5, -180f + angle3 * 50f)
 
         }
     }
@@ -89,6 +94,7 @@ class SpiderParticle(
     private fun drawLeg(
         matrices: MatrixStack,
         vertexConsumer: VertexConsumer,
+        light: Int,
         xOffset: Double,
         zOffset: Double,
         angle: Float
@@ -100,7 +106,7 @@ class SpiderParticle(
             drawBillboard(
                 vertexConsumer,
                 matrices,
-                getBrightness(0f),
+                light,
                 1f,
                 6f,
                 4f / 16f,
