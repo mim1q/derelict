@@ -44,7 +44,6 @@ class SpiderParticle(
     override fun getType(): ParticleTextureSheet = ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT
 
     override fun buildGeometry(vertexConsumer: VertexConsumer, camera: Camera, tickDelta: Float) {
-//        matrices.loadIdentity()
         matrices.entry {
             val x = MathHelper.lerp(tickDelta.toDouble(), prevPosX, x)
             val y = MathHelper.lerp(tickDelta.toDouble(), prevPosY, y)
