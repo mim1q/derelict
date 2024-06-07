@@ -1,12 +1,10 @@
 package dev.mim1q.derelict.init.client
 
 import dev.mim1q.derelict.Derelict
-import dev.mim1q.derelict.client.render.block.FancyCobwebWithSpiderRenderer
 import dev.mim1q.derelict.client.render.entity.SpiderlingEntityRenderer
 import dev.mim1q.derelict.client.render.entity.boss.arachne.ArachneEntityRenderer
 import dev.mim1q.derelict.client.render.entity.boss.arachne.ArachneTexturedModelData
 import dev.mim1q.derelict.client.render.entity.getSpiderlingTexturedModelData
-import dev.mim1q.derelict.init.ModBlockEntities
 import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.init.ModEntities
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap
@@ -14,12 +12,9 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry.TexturedModelDataProvider
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry
 import net.minecraft.client.render.RenderLayer
-import net.minecraft.client.render.block.entity.BlockEntityRendererFactories
 import net.minecraft.client.render.entity.model.EntityModelLayer
 
 object ModRender {
-    val FANCY_COBWEB_SPIDER_LAYER =
-        registerLayer(FancyCobwebWithSpiderRenderer.SpiderModel::getTexturedModelData, "fancy_cobweb_spider")
     val SPIDERLING_LAYER = registerLayer(::getSpiderlingTexturedModelData, "spiderling")
 
     val ARACHNE_LAYER = registerLayer(ArachneTexturedModelData::create, "arachne")
@@ -44,17 +39,11 @@ object ModRender {
             ModBlocksAndItems.BROKEN_LANTERN,
             ModBlocksAndItems.FANCY_COBWEB,
             ModBlocksAndItems.FANCY_COBWEB_WITH_SPIDER_NEST,
-            ModBlocksAndItems.FANCY_COBWEB_WITH_SPIDER,
-            ModBlocksAndItems.FANCY_COBWEB_WITH_SHY_SPIDER,
             ModBlocksAndItems.FANCY_CORNER_COBWEB,
             ModBlocksAndItems.CORNER_COBWEB,
             *ModBlocksAndItems.NOCTISTEEL.getCutoutBlocks()
         )
 
-        BlockEntityRendererFactories.register(
-            ModBlockEntities.FANCY_COBWEB_WITH_SPIDER,
-            ::FancyCobwebWithSpiderRenderer
-        )
         EntityRendererRegistry.register(ModEntities.ARACHNE, ::ArachneEntityRenderer)
         EntityRendererRegistry.register(ModEntities.SPIDERLING, ::SpiderlingEntityRenderer)
     }

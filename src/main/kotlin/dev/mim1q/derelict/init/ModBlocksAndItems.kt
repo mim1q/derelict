@@ -4,7 +4,6 @@ import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.block.EmbersBlock
 import dev.mim1q.derelict.block.SmolderingLeavesBlock
 import dev.mim1q.derelict.block.cobweb.FancyCobwebBlock
-import dev.mim1q.derelict.block.cobweb.FancyCobwebWithSpiderBlock
 import dev.mim1q.derelict.block.cobweb.FancyCobwebWithSpiderNestBlock
 import dev.mim1q.derelict.block.cobweb.FancyCornerCobwebBlock
 import dev.mim1q.derelict.block.flickering.*
@@ -13,6 +12,7 @@ import dev.mim1q.derelict.featureset.GrassSet
 import dev.mim1q.derelict.featureset.MetalSet
 import dev.mim1q.derelict.featureset.WoodSet
 import dev.mim1q.derelict.interfaces.AbstractBlockAccessor
+import dev.mim1q.derelict.item.SpiderlingBucketItem
 import dev.mim1q.derelict.item.StaffItem
 import dev.mim1q.derelict.item.weapon.Wildfire
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
@@ -89,10 +89,9 @@ object ModBlocksAndItems {
 
     val FANCY_COBWEB = register("fancy_cobweb", FancyCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
     val FANCY_COBWEB_WITH_SPIDER_NEST = register("fancy_cobweb_with_spider_nest", FancyCobwebWithSpiderNestBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
-    val FANCY_COBWEB_WITH_SPIDER = register("fancy_cobweb_with_spider", FancyCobwebWithSpiderBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
-    val FANCY_COBWEB_WITH_SHY_SPIDER = register("fancy_cobweb_with_shy_spider", FancyCobwebWithSpiderBlock(FabricBlockSettings.copyOf(Blocks.COBWEB), true))
     val CORNER_COBWEB = register("corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
     val FANCY_CORNER_COBWEB = register("fancy_corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
+    val SPIDERLING_IN_A_BUCKET = registerItem("spiderling_in_a_bucket", SpiderlingBucketItem(defaultItemSettings().maxCount(1)))
 
     val NOCTISTEEL = MetalSet.ThreeLevelOxidizable(
         Derelict.id("noctisteel"),

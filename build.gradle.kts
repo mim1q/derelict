@@ -28,7 +28,10 @@ repositories {
     maven("https://maven.wispforest.io")
     maven("https://maven.shedaniel.me/")
     maven("https://maven.terraformersmc.com/")
-    maven("https://jitpack.io")
+    maven {
+        url = uri("https://maven.mim1q.dev/")
+        name = "Mim1q Maven"
+    }
     mavenLocal()
 }
 
@@ -53,7 +56,7 @@ dependencies {
     modCompileOnly("dev.emi:emi-fabric:${Versions.EMI}:api")
     modLocalRuntime("dev.emi:emi-fabric:${Versions.EMI}")
     // Gimm1q for common Mim1q's mods code
-    modImplementation(include("com.github.mim1q:gimm1q:${Versions.GIMM1Q}")!!)
+    modImplementation(include("dev.mim1q:gimm1q:${Versions.GIMM1Q}")!!)
 }
 
 @Suppress("UnstableApiUsage")

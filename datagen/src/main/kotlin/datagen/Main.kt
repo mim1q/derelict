@@ -123,6 +123,10 @@ fun main(args: Array<String>) {
         listOf("aging_staff", "waxing_staff").forEach {
             add(it, ParentedModel.item("minecraft:item/handheld").texture("layer0", "derelict:item/$it"))
         }
+        // Generated items
+        listOf("spiderling_in_a_bucket").forEach {
+            add(it, ParentedModel.item("minecraft:item/generated").texture("layer0", "derelict:item/$it"))
+        }
         // Custom Tags
         TagManager.add("derelict:blocks/cobwebs", "minecraft:cobweb")
         TagManager.add("blocks/leaves", "derelict:burned_leaves", "derelict:smoldering_leaves")
