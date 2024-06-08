@@ -36,7 +36,7 @@ class SpiderlingEntityRenderer(context: EntityRendererFactory.Context) :
 
         if (mob.anchorPosition == null) return
 
-        val yOffset = 0.75
+        val yOffset = 0.65
 
         val vertexConsumer = vertexConsumerProvider.getBuffer(RenderLayer.getEntityCutout(getTexture(mob)))
         val anchor = mob.anchorPosition!!
@@ -70,7 +70,7 @@ class SpiderlingEntityRenderer(context: EntityRendererFactory.Context) :
         }
     }
 
-    override fun getLyingAngle(entity: SpiderlingEntity) = if (entity.anchorPosition != null) 15f else super.getLyingAngle(entity)
+    override fun getLyingAngle(entity: SpiderlingEntity) = if (entity.anchorPosition != null) 15f else 180f
 }
 
 class SpiderlingModel(
@@ -132,9 +132,16 @@ class SpiderlingModel(
         walkLeg(7, 35f, progress, 115f, 0.6f * limbDistance)
 
         neck.yaw = 0f
+        head.yaw = 0f
         head.pitch = 0f
 
         neck.pitch = headPitch.radians() - entity.anchored.value * 75f.radians()
+
+        if (entity.anchorPosition == null) {
+            head.pitch = headPitch.radians()
+            neck.pitch = 0f
+        }
+
         head.yaw = headYaw.radians()
     }
 

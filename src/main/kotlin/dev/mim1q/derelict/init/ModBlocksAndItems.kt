@@ -7,12 +7,12 @@ import dev.mim1q.derelict.block.cobweb.FancyCobwebBlock
 import dev.mim1q.derelict.block.cobweb.FancyCobwebWithSpiderNestBlock
 import dev.mim1q.derelict.block.cobweb.FancyCornerCobwebBlock
 import dev.mim1q.derelict.block.flickering.*
+import dev.mim1q.derelict.entity.SpiderlingEntity
 import dev.mim1q.derelict.featureset.CoverBoardsSet
 import dev.mim1q.derelict.featureset.GrassSet
 import dev.mim1q.derelict.featureset.MetalSet
 import dev.mim1q.derelict.featureset.WoodSet
 import dev.mim1q.derelict.interfaces.AbstractBlockAccessor
-import dev.mim1q.derelict.item.SpiderlingBucketItem
 import dev.mim1q.derelict.item.StaffItem
 import dev.mim1q.derelict.item.weapon.Wildfire
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
@@ -20,12 +20,16 @@ import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.fabricmc.fabric.mixin.`object`.builder.AbstractBlockSettingsAccessor
 import net.minecraft.block.*
 import net.minecraft.block.AbstractBlock.Offsetter
-import net.minecraft.item.BlockItem
-import net.minecraft.item.HoneycombItem
-import net.minecraft.item.Item
+import net.minecraft.entity.SpawnReason
+import net.minecraft.item.*
 import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
+import net.minecraft.server.world.ServerWorld
+import net.minecraft.sound.SoundCategory
+import net.minecraft.sound.SoundEvents
+import net.minecraft.util.ActionResult
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.BlockView
 import java.util.*
@@ -91,7 +95,34 @@ object ModBlocksAndItems {
     val FANCY_COBWEB_WITH_SPIDER_NEST = register("fancy_cobweb_with_spider_nest", FancyCobwebWithSpiderNestBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
     val CORNER_COBWEB = register("corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
     val FANCY_CORNER_COBWEB = register("fancy_corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
-    val SPIDERLING_IN_A_BUCKET = registerItem("spiderling_in_a_bucket", SpiderlingBucketItem(defaultItemSettings().maxCount(1)))
+
+    val SPIDERLING_IN_A_BUCKET = registerItem("spiderling_in_a_bucket", object : Item(defaultItemSettings().maxCount(1)) {
+        override fun useOnBlock(context: ItemUsageContext): ActionResult {
+            if (context.world.isClient) return ActionResult.SUCCESS
+
+            val entity = ModEntities.SPIDERLING.spawnFromItemStack(
+                context.world as ServerWorld,
+                context.stack, context.player,
+                context.blockPos.add(context.side.vector),
+                SpawnReason.BUCKET,
+                true,
+                false
+            )
+            if (entity is SpiderlingEntity) {
+                entity.copyDataFromNbt(context.stack.getOrCreateNbt())
+                entity.isFromBucket = true
+                if (context.side == Direction.DOWN) {
+                    entity.anchorPosition = context.blockPos
+                    entity.setVelocity(0.0, -0.01, 0.0)
+                }
+                entity.setPersistent()
+                context.world.spawnEntity(entity)
+                context.world.playSoundAtBlockCenter(context.blockPos, SoundEvents.ENTITY_SPIDER_STEP, SoundCategory.NEUTRAL, 1.0f, 1.0f, false)
+                context.player?.setStackInHand(context.hand, ItemStack(Items.BUCKET))
+            }
+            return ActionResult.SUCCESS
+        }
+    })
 
     val NOCTISTEEL = MetalSet.ThreeLevelOxidizable(
         Derelict.id("noctisteel"),
