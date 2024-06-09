@@ -14,7 +14,6 @@ import net.minecraft.entity.data.DataTracker
 import net.minecraft.entity.data.TrackedData
 import net.minecraft.entity.data.TrackedDataHandlerRegistry
 import net.minecraft.entity.mob.HostileEntity
-import net.minecraft.entity.passive.SheepEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
@@ -64,7 +63,6 @@ class SpiderlingEntity(entityType: EntityType<out HostileEntity>, world: World) 
         goalSelector.add(0, PounceAtTargetGoal(this, 0.3f))
         goalSelector.add(1, LookAtEntityGoal(this, PlayerEntity::class.java, 8.0f))
 
-        targetSelector.add(0, ActiveTargetGoal(this, SheepEntity::class.java, true))
         targetSelector.add(0, ActiveTargetGoal(this, PlayerEntity::class.java, true))
     }
 
@@ -92,12 +90,21 @@ class SpiderlingEntity(entityType: EntityType<out HostileEntity>, world: World) 
 
     override fun handleFallDamage(fallDistance: Float, damageMultiplier: Float, damageSource: DamageSource) = false
 
+    override fun damage(source: DamageSource, amount: Float): Boolean {
+        val result = super.damage(source, if (anchorPosition == null) amount else 0f)
+        if (!spawnedFromBucket && !world.isClient) {
+            anchorPosition = null
+        }
+        return result
+    }
+
     override fun writeCustomDataToNbt(nbt: NbtCompound) {
         super.writeCustomDataToNbt(nbt)
         val anchorPosition = anchorPosition
         if (anchorPosition != null) {
             nbt.putLong("AnchorPosition", anchorPosition.asLong())
         }
+        nbt.putBoolean("SpawnedFromBucket", spawnedFromBucket)
     }
 
     override fun readCustomDataFromNbt(nbt: NbtCompound) {
@@ -105,6 +112,7 @@ class SpiderlingEntity(entityType: EntityType<out HostileEntity>, world: World) 
         if (nbt.contains("AnchorPosition")) {
             anchorPosition = BlockPos.fromLong(nbt.getLong("AnchorPosition"))
         }
+        spawnedFromBucket = nbt.getBoolean("SpawnedFromBucket")
     }
 
     override fun isFromBucket(): Boolean = spawnedFromBucket
