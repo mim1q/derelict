@@ -42,20 +42,17 @@
   "block.derelict.burned_leaves": "Burned Leaves",
   "block.derelict.smoldering_embers": "Smoldering Embers",
   "block.derelict.smoking_embers": "Smoking Embers",
-
   "block.derelict.dried_grass_block": "Dried Grass Block",
   "block.derelict.dried_grass": "Dried Grass",
   "block.derelict.tall_dried_grass": "Tall Dried Grass",
   "block.derelict.burned_grass_block": "Burned Grass Block",
   "block.derelict.burned_grass": "Burned Grass",
   "block.derelict.tall_burned_grass": "Tall Burned Grass",
-
   "block.derelict": {
     // Cover boards
     "$_cover_board;double_$_cover_boards;crossed_$_cover_boards": {
       "oak;birch;spruce;jungle;dark_oak;acacia;mangrove;cherry;warped;crimson;burned;bamboo": "%"
     },
-
     // Extinguished and flickering blocks
     "flickering_$": {
       "redstone_lamp;soul_lantern;lantern": "%"
@@ -83,4 +80,21 @@
     "fancy_corner_cobweb": "Fancy Corner Cobweb",
     "corner_cobweb": "Corner Cobweb",
   },
+  // Tags
+  "tag.item.derelict": {
+    "general_tab": "General Derelict Items",
+    "burned_logs;unwaxed_metals;waxed_metals;waxed": "%",
+    "unburned_$": {
+      "cover_boards;crossed_cover_boards;double_cover_boards;leaves;logs;planks;stripped_logs;stripped_wood;wood": "%",
+      "wooden_$": {
+        "buttons;doors;fences;fence_gates;pressure_plates;signs;slabs;stairs;trapdoors": "%"
+      }
+    },
+  },
+  "tag.block.derelict": {
+    "burned_logs;cobwebs;cover_boards;metal_sheets": "%"
+  },
+  "tag.entity_type.derelict": {
+    "spawns_spiderlings_on_death": "%"
+  }
 }

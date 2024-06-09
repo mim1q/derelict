@@ -239,7 +239,7 @@ object CustomMetalPresets {
             namespacedBlockName("_stairs", "cut_"), namespacedBlockName("_slab", "cut_"), namespacedBlockName("_chain"),
             namespacedBlockName("_grate"), namespacedBlockName("_beam"), namespacedBlockName("_ladder"),
             namespacedBlockName("_patch"), namespacedBlockName("_sheet"), namespacedBlockName("_chain_link_fence"),
-            namespacedBlockName("_barbed_wire")
+            namespacedBlockName("_barbed_wire"), namespacedBlockName("_trapdoor")
         )
         TagManager.add("derelict:items/${if (waxed) "waxed" else "unwaxed"}_metals", *all)
 

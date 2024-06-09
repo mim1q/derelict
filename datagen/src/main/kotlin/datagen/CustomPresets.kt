@@ -127,7 +127,7 @@ object CustomPresets {
             "unburned_wooden_doors" to "burned_door",
             "unburned_wooden_trapdoors" to "burned_trapdoor",
             "unburned_wooden_fences" to "burned_fence",
-            "unburned_wooden_fences_gates" to "burned_fence_gate",
+            "unburned_wooden_fence_gates" to "burned_fence_gate",
             "unburned_wooden_pressure_plates" to "burned_pressure_plate",
             "unburned_wooden_buttons" to "burned_button",
             "unburned_wooden_signs" to "burned_sign",

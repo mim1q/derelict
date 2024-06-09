@@ -16,7 +16,7 @@ object CustomTagPresets {
             "unburned_wooden_doors" to { "${it}_door" },
             "unburned_wooden_trapdoors" to { "${it}_trapdoor" },
             "unburned_wooden_fences" to { "${it}_fence" },
-            "unburned_wooden_fences_gates" to { "${it}_fence_gate" },
+            "unburned_wooden_fence_gates" to { "${it}_fence_gate" },
             "unburned_wooden_pressure_plates" to { "${it}_pressure_plate" },
             "unburned_wooden_buttons" to { "${it}_button" },
             "unburned_wooden_signs" to { "${it}_sign" },
