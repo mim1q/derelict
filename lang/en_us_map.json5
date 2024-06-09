@@ -96,5 +96,7 @@
   },
   "tag.entity_type.derelict": {
     "spawns_spiderlings_on_death": "%"
-  }
+  },
+  // EMI categories
+  "category.derelict.aging": "%"
 }

@@ -46,5 +46,6 @@
   "tag.block.derelict.cobwebs": "Cobwebs",
   "tag.block.derelict.cover_boards": "Cover Boards",
   "tag.block.derelict.metal_sheets": "Metal Sheets",
-  "tag.entity_type.derelict.spawns_spiderlings_on_death": "Spawns Spiderlings On Death"
+  "tag.entity_type.derelict.spawns_spiderlings_on_death": "Spawns Spiderlings On Death",
+  "category.derelict.aging": "Aging"
 }

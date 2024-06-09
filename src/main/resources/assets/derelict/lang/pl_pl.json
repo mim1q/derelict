@@ -184,5 +184,7 @@
   "block.derelict.fancy_cobweb_with_spider_nest": "Zdobna pajęczyna z pajęczym gniazdem",
   "block.derelict.fancy_cobweb.disabled_tooltip": "",
   "block.derelict.fancy_corner_cobweb": "Zdobna narożna pajęczyna",
-  "block.derelict.corner_cobweb": "Narożna pajęczyna"
+  "block.derelict.corner_cobweb": "Narożna pajęczyna",
+
+  "category.derelict.aging": "Postarzanie"
 }

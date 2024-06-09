@@ -133,7 +133,7 @@ fun main(args: Array<String>) {
         // Custom Tags
         TagManager.add("derelict:blocks/cobwebs", "minecraft:cobweb")
         TagManager.add("blocks/leaves", "derelict:burned_leaves", "derelict:smoldering_leaves")
-        TagManager.add("blocks/mineable/hoe", "derelict:burned_leaves", "derelict:smoldering_leaves")
+        TagManager.add("blocks/mineable/hoe", "derelict:burned_leaves", "derelict:smoldering_leaves", "derelict:flickering_shroomlight", "derelict:extinguished_shroomlight")
         TagManager.add("blocks/mineable/axe", "#derelict:cover_boards")
         TagManager.add(
             "blocks/mineable/pickaxe",
