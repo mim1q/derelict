@@ -36,7 +36,7 @@ object ModRender {
             ModBlocksAndItems.SMOKING_EMBERS,
             ModBlocksAndItems.FLICKERING_LANTERN,
             ModBlocksAndItems.FLICKERING_SOUL_LANTERN,
-            ModBlocksAndItems.BROKEN_LANTERN,
+            ModBlocksAndItems.EXTINGUISHED_LANTERN,
             ModBlocksAndItems.FANCY_COBWEB,
             ModBlocksAndItems.FANCY_COBWEB_WITH_SPIDER_NEST,
             ModBlocksAndItems.FANCY_CORNER_COBWEB,

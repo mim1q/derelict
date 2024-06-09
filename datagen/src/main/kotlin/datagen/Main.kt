@@ -3,7 +3,10 @@ package datagen
 import datagen.custom.CustomTagPresets
 import datagen.custom.FileCopyManager
 import datagen.custom.ImageAtlases
+import tada.lib.generator.BeautifiedJsonFormatter
+import tada.lib.generator.FilesystemFileSaver
 import tada.lib.generator.ResourceGenerator
+import tada.lib.lang.FlattenedJson
 import tada.lib.lang.LanguageHelper
 import tada.lib.presets.blocksets.BlockSets
 import tada.lib.presets.common.CommonDropPresets
@@ -55,19 +58,17 @@ fun main(args: Array<String>) {
         }
         add(CustomPresets.fancyCobweb("derelict:fancy_cobweb"))
         add(CustomPresets.fancyCobweb("derelict:fancy_cobweb_with_spider_nest"))
-        add(CustomPresets.fancyCobweb("derelict:fancy_cobweb_with_spider"))
-        add(CustomPresets.fancyCobweb("derelict:fancy_cobweb_with_shy_spider"))
         add(CustomPresets.fancyCornerCobweb("derelict:fancy_corner_cobweb"))
         add(CustomPresets.fancyCornerCobweb("derelict:corner_cobweb"))
         // Flickering Lights
         add(
             CustomPresets.flickeringCubeAll(
                 "derelict:flickering_sea_lantern", 8, 10, "minecraft:block/sea_lantern",
-                "derelict:block/sea_lantern_half_on", "derelict:block/broken_sea_lantern"
+                "derelict:block/sea_lantern_half_on", "derelict:block/extinguished_sea_lantern"
             )
         )
-        add(CommonModelPresets.cubeAllBlock("derelict:broken_sea_lantern"))
-        add(CommonDropPresets.simpleDrop("derelict:broken_sea_lantern"))
+        add(CommonModelPresets.cubeAllBlock("derelict:extinguished_sea_lantern"))
+        add(CommonDropPresets.simpleDrop("derelict:extinguished_sea_lantern"))
         add(
             CustomPresets.flickeringCubeAll(
                 "derelict:flickering_redstone_lamp", 8, 20, "minecraft:block/redstone_lamp_on",
@@ -76,8 +77,8 @@ fun main(args: Array<String>) {
         )
         // Froglights
         listOf("ochre", "verdant", "pearlescent").forEach {
-            add(CommonModelPresets.cubeAllBlock("derelict:broken_${it}_froglight"))
-            add(CommonDropPresets.simpleDrop("derelict:broken_${it}_froglight"))
+            add(CommonModelPresets.cubeAllBlock("derelict:extinguished_${it}_froglight"))
+            add(CommonDropPresets.simpleDrop("derelict:extinguished_${it}_froglight"))
             add(
                 CustomPresets.flickeringCubeAll(
                     "derelict:flickering_${it}_froglight",
@@ -85,37 +86,39 @@ fun main(args: Array<String>) {
                     30,
                     "minecraft:block/${it}_froglight_side",
                     "derelict:block/${it}_froglight_half_on",
-                    "derelict:block/broken_${it}_froglight"
+                    "derelict:block/extinguished_${it}_froglight"
                 )
             )
         }
-        add(CustomPresets.flickeringCubeAll("derelict:flickering_glowstone", 8, 40, "minecraft:block/glowstone", "derelict:block/glowstone_half_on", "derelict:block/broken_glowstone"))
-        add(CommonModelPresets.cubeAllBlock("derelict:broken_glowstone"))
-        add(CommonDropPresets.simpleDrop("derelict:broken_glowstone"))
+        add(CustomPresets.flickeringCubeAll("derelict:flickering_glowstone", 8, 40, "minecraft:block/glowstone", "derelict:block/glowstone_half_on", "derelict:block/extinguished_glowstone"))
+        add(CommonModelPresets.cubeAllBlock("derelict:extinguished_glowstone"))
+        add(CommonDropPresets.simpleDrop("derelict:extinguished_glowstone"))
 
-        add(CustomPresets.flickeringCubeAll("derelict:flickering_shroomlight", 8, 50, "minecraft:block/shroomlight", "derelict:block/shroomlight_half_on", "derelict:block/broken_shroomlight"))
-        add(CommonModelPresets.cubeAllBlock("derelict:broken_shroomlight"))
-        add(CommonDropPresets.simpleDrop("derelict:broken_shroomlight"))
+        add(CustomPresets.flickeringCubeAll("derelict:flickering_shroomlight", 8, 50, "minecraft:block/shroomlight", "derelict:block/shroomlight_half_on", "derelict:block/extinguished_shroomlight"))
+        add(CommonModelPresets.cubeAllBlock("derelict:extinguished_shroomlight"))
+        add(CommonDropPresets.simpleDrop("derelict:extinguished_shroomlight"))
 
         add(CustomPresets.flickeringJackOLantern(8, 30))
         add(
             CustomPresets.flickeringLantern(
                 "derelict:flickering_lantern", 8, 40,
-                "minecraft:block/lantern", "derelict:block/lantern_half_on", "derelict:block/broken_lantern"
+                "minecraft:block/lantern", "derelict:block/lantern_half_on", "derelict:block/extinguished_lantern"
             )
         )
-        add(CustomPresets.lantern("derelict:broken_lantern"))
+        add(CustomPresets.lantern("derelict:extinguished_lantern"))
         add(
             CustomPresets.flickeringLantern(
                 "derelict:flickering_soul_lantern", 8, 50,
-                "minecraft:block/soul_lantern", "derelict:block/soul_lantern_half_on", "derelict:block/broken_lantern"
+                "minecraft:block/soul_lantern", "derelict:block/soul_lantern_half_on", "derelict:block/extinguished_lantern"
             )
         )
 
-        add(CustomPresets.flickeringEndRod(
-            "derelict:flickering_end_rod", 8, 60, "minecraft:block/end_rod", "derelict:block/end_rod_half_on", "derelict:block/broken_end_rod"
-        ))
-        add(CustomPresets.endRod("derelict:broken_end_rod"))
+        add(
+            CustomPresets.flickeringEndRod(
+                "derelict:flickering_end_rod", 8, 60, "minecraft:block/end_rod", "derelict:block/end_rod_half_on", "derelict:block/extinguished_end_rod"
+            )
+        )
+        add(CustomPresets.endRod("derelict:extinguished_end_rod"))
 
         // Metal
         add(CustomMetalPresets.threeOxidationMetalSet("derelict:noctisteel"))
@@ -134,7 +137,7 @@ fun main(args: Array<String>) {
         TagManager.add("blocks/mineable/axe", "#derelict:cover_boards")
         TagManager.add(
             "blocks/mineable/pickaxe",
-            "derelict:broken_lantern", "derelict:broken_sea_lantern"
+            "derelict:extinguished_lantern", "derelict:extinguished_sea_lantern"
         )
         TagManager.copy("blocks/leaves", "items/leaves")
         TagManager.add(
@@ -174,8 +177,17 @@ fun main(args: Array<String>) {
     generator.generate()
     FileCopyManager.copyFiles()
 
+    ResourceGenerator(
+        "derelict",
+        langPath.resolve("../../../"),
+        FilesystemFileSaver,
+        BeautifiedJsonFormatter
+    ).apply {
+        add("en_us", FlattenedJson(langHelperPath.resolve("en_us_map.json5").toFile(), "lang", "assets"))
+    }.generate()
+
     LanguageHelper.create(langPath, langHelperPath) {
-        automaticallyGenerateBlockEntries(generator)
+//        automaticallyGenerateBlockEntries(generator)
         generateMissingLangEntries()
     }
 

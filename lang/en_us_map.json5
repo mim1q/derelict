@@ -1,0 +1,120 @@
+{
+  "itemGroup.derelict.derelict": [
+    {
+      "text": "Derelict",
+      "color": "#F2A6FF"
+    }
+  ],
+  "itemGroup.derelict.derelict.tab.general": [
+    {
+      "text": "General Items & Blocks",
+      "color": "#F2A6FF"
+    }
+  ],
+  "item.derelict.aging_staff": "Aging Staff",
+  "item.derelict.waxing_staff": "Waxing Staff",
+  "entity.derelict.spiderling": "Spiderling",
+  "block.derelict.burned_planks": "Burned Planks",
+  "block.derelict.burned_log": "Burned Log",
+  "block.derelict.stripped_burned_log": "Stripped Burned Log",
+  "block.derelict.burned_wood": "Burned Wood",
+  "block.derelict.stripped_burned_wood": "Stripped Burned Wood",
+  "block.derelict.burned_stairs": "Burned Stairs",
+  "block.derelict.burned_slab": "Burned Slab",
+  "block.derelict.burned_fence": "Burned Fence",
+  "block.derelict.burned_fence_gate": "Burned Fence Gate",
+  "block.derelict.burned_door": "Burned Door",
+  "block.derelict.burned_trapdoor": "Burned Trapdoor",
+  "block.derelict.burned_button": "Burned Button",
+  "block.derelict.burned_pressure_plate": "Burned Pressure Plate",
+  "block.derelict.burned_sign": "Burned Sign",
+  "block.derelict.burned_wall_sign": "Burned Wall Sign",
+  "block.derelict.smoldering_leaves": "Smoldering Leaves",
+  "block.derelict.burned_leaves": "Burned Leaves",
+  "block.derelict.smoldering_embers": "Smoldering Embers",
+  "block.derelict.smoking_embers": "Smoking Embers",
+
+  "block.derelict.oak_cover_board": "Oak Cover Board",
+  "block.derelict.double_oak_cover_boards": "Double Oak Cover Boards",
+  "block.derelict.crossed_oak_cover_boards": "Crossed Oak Cover Boards",
+  "block.derelict.spruce_cover_board": "Spruce Cover Board",
+  "block.derelict.double_spruce_cover_boards": "Double Spruce Cover Boards",
+  "block.derelict.crossed_spruce_cover_boards": "Crossed Spruce Cover Boards",
+  "block.derelict.birch_cover_board": "Birch Cover Board",
+  "block.derelict.double_birch_cover_boards": "Double Birch Cover Boards",
+  "block.derelict.crossed_birch_cover_boards": "Crossed Birch Cover Boards",
+  "block.derelict.jungle_cover_board": "Jungle Cover Board",
+  "block.derelict.double_jungle_cover_boards": "Double Jungle Cover Boards",
+  "block.derelict.crossed_jungle_cover_boards": "Crossed Jungle Cover Boards",
+  "block.derelict.acacia_cover_board": "Acacia Cover Board",
+  "block.derelict.double_acacia_cover_boards": "Double Acacia Cover Boards",
+  "block.derelict.crossed_acacia_cover_boards": "Crossed Acacia Cover Boards",
+  "block.derelict.dark_oak_cover_board": "Dark Oak Cover Board",
+  "block.derelict.double_dark_oak_cover_boards": "Double Dark Oak Cover Boards",
+  "block.derelict.crossed_dark_oak_cover_boards": "Crossed Dark Oak Cover Boards",
+  "block.derelict.mangrove_cover_board": "Mangrove Cover Board",
+  "block.derelict.double_mangrove_cover_boards": "Double Mangrove Cover Boards",
+  "block.derelict.crossed_mangrove_cover_boards": "Crossed Mangrove Cover Boards",
+  "block.derelict.cherry_cover_board": "Cherry Cover Board",
+  "block.derelict.double_cherry_cover_boards": "Double Cherry Cover Boards",
+  "block.derelict.crossed_cherry_cover_boards": "Crossed Cherry Cover Boards",
+  "block.derelict.bamboo_cover_board": "Bamboo Cover Board",
+  "block.derelict.double_bamboo_cover_boards": "Double Bamboo Cover Boards",
+  "block.derelict.crossed_bamboo_cover_boards": "Crossed Bamboo Cover Boards",
+  "block.derelict.crimson_cover_board": "Crimson Cover Board",
+  "block.derelict.double_crimson_cover_boards": "Double Crimson Cover Boards",
+  "block.derelict.crossed_crimson_cover_boards": "Crossed Crimson Cover Boards",
+  "block.derelict.warped_cover_board": "Warped Cover Board",
+  "block.derelict.double_warped_cover_boards": "Double Warped Cover Boards",
+  "block.derelict.crossed_warped_cover_boards": "Crossed Warped Cover Boards",
+  "block.derelict.burned_cover_board": "Burned Cover Board",
+  "block.derelict.double_burned_cover_boards": "Double Burned Cover Boards",
+  "block.derelict.crossed_burned_cover_boards": "Crossed Burned Cover Boards",
+  "block.derelict.dried_grass_block": "Dried Grass Block",
+  "block.derelict.dried_grass": "Dried Grass",
+  "block.derelict.tall_dried_grass": "Tall Dried Grass",
+  "block.derelict.burned_grass_block": "Burned Grass Block",
+  "block.derelict.burned_grass": "Burned Grass",
+  "block.derelict.tall_burned_grass": "Tall Burned Grass",
+//  "block.derelict.flickering_sea_lantern": "Flickering Sea Lantern",
+//  "block.derelict.broken_sea_lantern": "Extinguished Sea Lantern",
+//  "block.derelict.flickering_redstone_lamp": "Flickering Redstone Lamp",
+//  "block.derelict.flickering_jack_o_lantern": "Flickering Jack o'Lantern",
+//  "block.derelict.flickering_lantern": "Flickering Lantern",
+//  "block.derelict.broken_lantern": "Extinguished Lantern",
+//  "block.derelict.flickering_soul_lantern": "Flickering Soul Lantern",
+
+  "block.derelict.fancy_cobweb": "Fancy Cobweb",
+  "block.derelict.fancy_cobweb_with_spider_nest": "Fancy Cobweb With Spider Nest",
+  "block.derelict.fancy_cobweb_with_spider": "Fancy Cobweb With Spider",
+  "block.derelict.fancy_cobweb_with_shy_spider": "Fancy Cobweb With Shy Spider",
+  "block.derelict.fancy_cobweb.disabled_tooltip": "",
+  "block.derelict.fancy_corner_cobweb": "Fancy Corner Cobweb",
+  "block.derelict.corner_cobweb": "Corner Cobweb",
+
+  "block.derelict": {
+
+
+    // Extinguished and flickering blocks
+    "flickering_$": {
+      "redstone_lamp;soul_lantern;lantern": "%"
+    },
+    "flickering_jack_o_lantern": "Flickering Jack o'Lantern",
+    "flickering_$;extinguished_$": {
+      "sea_lantern;glowstone;shroomlight;end_rod": "%",
+      "$_froglight": {
+        "verdant;ochre;pearlescent": "%"
+      }
+    },
+    "extinguished_lantern": "%",
+
+    // Metal Blocks
+    "$;waxed_$": {
+      "$;weathered_$;oxidized_$": {
+        "$_block;cut_$;$_pillar;cut_$_stairs;cut_$_slab;$_grate;$_chain;$_beam;$_trapdoor;$_ladder;$_patch;$_sheet;$_chain_link_fence;$_barbed_wire": {
+          "noctisteel": "%"
+        },
+      }
+    }
+  },
+}

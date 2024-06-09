@@ -1,1 +1,22 @@
-{}
+{
+  "entity.derelict.spiderling": "Spiderling",
+  "block.derelict.flickering_glowstone": "Flickering Glowstone",
+  "block.derelict.flickering_shroomlight": "Flickering Shroomlight",
+  "block.derelict.flickering_end_rod": "Flickering End Rod",
+  "block.derelict.flickering_verdant_froglight": "Flickering Verdant Froglight",
+  "block.derelict.flickering_ochre_froglight": "Flickering Ochre Froglight",
+  "block.derelict.flickering_pearlescent_froglight": "Flickering Pearlescent Froglight",
+  "block.derelict.extinguished_sea_lantern": "Extinguished Sea Lantern",
+  "block.derelict.extinguished_glowstone": "Extinguished Glowstone",
+  "block.derelict.extinguished_shroomlight": "Extinguished Shroomlight",
+  "block.derelict.extinguished_end_rod": "Extinguished End Rod",
+  "block.derelict.extinguished_verdant_froglight": "Extinguished Verdant Froglight",
+  "block.derelict.extinguished_ochre_froglight": "Extinguished Ochre Froglight",
+  "block.derelict.extinguished_pearlescent_froglight": "Extinguished Pearlescent Froglight",
+  "block.derelict.noctisteel_trapdoor": "Noctisteel Trapdoor",
+  "block.derelict.weathered_noctisteel_trapdoor": "Weathered Noctisteel Trapdoor",
+  "block.derelict.oxidized_noctisteel_trapdoor": "Oxidized Noctisteel Trapdoor",
+  "block.derelict.waxed_noctisteel_trapdoor": "Waxed Noctisteel Trapdoor",
+  "block.derelict.waxed_weathered_noctisteel_trapdoor": "Waxed Weathered Noctisteel Trapdoor",
+  "block.derelict.waxed_oxidized_noctisteel_trapdoor": "Waxed Oxidized Noctisteel Trapdoor"
+}
