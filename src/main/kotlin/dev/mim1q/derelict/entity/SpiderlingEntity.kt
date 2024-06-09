@@ -92,7 +92,7 @@ class SpiderlingEntity(entityType: EntityType<out HostileEntity>, world: World) 
     override fun handleFallDamage(fallDistance: Float, damageMultiplier: Float, damageSource: DamageSource) = false
 
     override fun damage(source: DamageSource, amount: Float): Boolean {
-        val result = super.damage(source, if (anchorPosition == null) amount else 0f)
+        val result = super.damage(source, if (anchorPosition == null || source.attacker?.isPlayer != true) amount else 0f)
         if (!spawnedFromBucket && !world.isClient) {
             anchorPosition = null
         }
