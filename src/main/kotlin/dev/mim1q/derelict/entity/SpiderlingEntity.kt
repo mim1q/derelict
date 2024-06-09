@@ -71,8 +71,9 @@ class SpiderlingEntity(entityType: EntityType<out HostileEntity>, world: World) 
         if (world.isClient) {
             anchored.transitionTo(if (anchorPosition != null) 1f else 0f, 10f)
         } else {
-            if (anchorPosition != null && !world.getBlockState(blockPos.down()).isAir) {
-                setVelocity(0.0, 0.01, 0.0)
+            if (anchorPosition != null) {
+                if (!world.getBlockState(blockPos.down()).isAir) setVelocity(0.0, 0.01, 0.0)
+                if (age % 5 == 0 && world.getBlockState(anchorPosition).isAir) anchorPosition = null
             }
         }
 
@@ -95,8 +96,11 @@ class SpiderlingEntity(entityType: EntityType<out HostileEntity>, world: World) 
         if (!spawnedFromBucket && !world.isClient) {
             anchorPosition = null
         }
+        velocity = velocity.multiply(1.0, 0.0, 1.0)
         return result
     }
+
+    override fun getPickBlockStack(): ItemStack = ModBlocksAndItems.SPIDERLING_IN_A_BUCKET.defaultStack
 
     override fun writeCustomDataToNbt(nbt: NbtCompound) {
         super.writeCustomDataToNbt(nbt)

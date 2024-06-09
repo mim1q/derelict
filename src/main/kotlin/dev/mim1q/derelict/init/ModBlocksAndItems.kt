@@ -118,8 +118,10 @@ object ModBlocksAndItems {
                 }
                 entity.setPersistent()
                 context.world.emitGameEvent(context.player, GameEvent.ENTITY_PLACE, context.blockPos)
-                context.world.playSoundAtBlockCenter(context.blockPos, SoundEvents.ENTITY_SPIDER_STEP, SoundCategory.NEUTRAL, 1.0f, 1.0f, false)
-                context.player?.setStackInHand(context.hand, ItemStack(Items.BUCKET))
+                context.world.playSound(null, context.blockPos, SoundEvents.ENTITY_SPIDER_STEP, SoundCategory.HOSTILE, 1.0f, 1.0f)
+                if (context.player?.isCreative == false) {
+                    context.player?.setStackInHand(context.hand, ItemStack(Items.BUCKET))
+                }
             }
             return ActionResult.SUCCESS
         }
