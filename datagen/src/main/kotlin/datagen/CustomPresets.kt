@@ -660,15 +660,9 @@ object CustomPresets {
             key("S", "minecraft:string")
             key("C", "derelict:corner_cobweb")
         })
-        add("fancy_cobweb_with_spider", CraftingRecipe.shapeless("derelict:fancy_cobweb_with_spider") {
+        add("fancy_cobweb_with_spider_nest", CraftingRecipe.shapeless("derelict:fancy_cobweb_with_spider_nest") {
             ingredient("derelict:fancy_cobweb")
             ingredient("minecraft:spider_eye")
         })
-        add("fancy_cobweb_with_spider_nest", CraftingRecipe.shapeless("derelict:fancy_cobweb_with_spider_nest") {
-            ingredient("derelict:fancy_cobweb")
-            ingredient("minecraft:fermented_spider_eye")
-        })
-        add(CommonRecipePresets.oneToOne("derelict:fancy_cobweb_with_spider", "derelict:fancy_cobweb_with_shy_spider"))
-        add(CommonRecipePresets.oneToOne("derelict:fancy_cobweb_with_shy_spider", "derelict:fancy_cobweb_with_spider"))
     }
 }
