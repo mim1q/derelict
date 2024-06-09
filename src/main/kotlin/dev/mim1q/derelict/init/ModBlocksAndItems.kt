@@ -32,6 +32,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.BlockView
+import net.minecraft.world.event.GameEvent
 import java.util.*
 
 @Suppress("UNUSED")
@@ -113,10 +114,10 @@ object ModBlocksAndItems {
                 entity.isFromBucket = true
                 if (context.side == Direction.DOWN) {
                     entity.anchorPosition = context.blockPos
-                    entity.setVelocity(0.0, -0.01, 0.0)
+                    entity.setVelocity(0.0, -0.1, 0.0)
                 }
                 entity.setPersistent()
-                context.world.spawnEntity(entity)
+                context.world.emitGameEvent(context.player, GameEvent.ENTITY_PLACE, context.blockPos)
                 context.world.playSoundAtBlockCenter(context.blockPos, SoundEvents.ENTITY_SPIDER_STEP, SoundCategory.NEUTRAL, 1.0f, 1.0f, false)
                 context.player?.setStackInHand(context.hand, ItemStack(Items.BUCKET))
             }
