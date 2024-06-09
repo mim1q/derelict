@@ -30,6 +30,6 @@ class FlickeringEndRodBlock(
     override fun onPlaced(world: World, pos: BlockPos, state: BlockState, placer: LivingEntity?, itemStack: ItemStack) = scheduleFlicker(world, state, pos, world.random, this)
 }
 
-class BrokenEndRodBlock(settings: Settings) : EndRodBlock(settings) {
+class ExtinguishedEndRodBlock(settings: Settings) : EndRodBlock(settings) {
     override fun randomDisplayTick(state: BlockState, world: World, pos: BlockPos, random: Random) = Unit
 }

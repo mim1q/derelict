@@ -73,23 +73,23 @@ object ModBlocksAndItems {
 
     val FLICKERING_REDSTONE_LAMP = register("flickering_redstone_lamp", FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.REDSTONE_LAMP)))
     val FLICKERING_SEA_LANTERN = register("flickering_sea_lantern", FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.SEA_LANTERN)))
-    val BROKEN_SEA_LANTERN = register("broken_sea_lantern", Block(FabricBlockSettings.copyOf(Blocks.SEA_LANTERN).luminance { 0 }))
+    val EXTINGUISHED_SEA_LANTERN = register("extinguished_sea_lantern", Block(FabricBlockSettings.copyOf(Blocks.SEA_LANTERN).luminance { 0 }))
     val FLICKERING_JACK_O_LANTERN = register("flickering_jack_o_lantern", FlickeringCarvedPumpkinBlock(FabricBlockSettings.copyOf(Blocks.JACK_O_LANTERN)))
     val FLICKERING_LANTERN = register("flickering_lantern", FlickeringLanternBlock(FabricBlockSettings.copyOf(Blocks.LANTERN)))
     val FLICKERING_SOUL_LANTERN = register("flickering_soul_lantern", FlickeringLanternBlock(FabricBlockSettings.copyOf(Blocks.SOUL_LANTERN)))
-    val BROKEN_LANTERN = register("broken_lantern", LanternBlock(FabricBlockSettings.copyOf(Blocks.LANTERN).luminance { 0 }))
+    val EXTINGUISHED_LANTERN = register("extinguished_lantern", LanternBlock(FabricBlockSettings.copyOf(Blocks.LANTERN).luminance { 0 }))
     val FLICKERING_OCHRE_FROGLIGHT = register("flickering_ochre_froglight", FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.OCHRE_FROGLIGHT)))
-    val BROKEN_OCHRE_FROGLIGHT = register("broken_ochre_froglight", Block(FabricBlockSettings.copyOf(Blocks.OCHRE_FROGLIGHT).luminance { 0 }))
+    val EXTINGUISHED_OCHRE_FROGLIGHT = register("extinguished_ochre_froglight", Block(FabricBlockSettings.copyOf(Blocks.OCHRE_FROGLIGHT).luminance { 0 }))
     val FLICKERING_VERDANT_FROGLIGHT = register("flickering_verdant_froglight", FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.VERDANT_FROGLIGHT)))
-    val BROKEN_VERDANT_FROGLIGHT = register("broken_verdant_froglight", Block(FabricBlockSettings.copyOf(Blocks.VERDANT_FROGLIGHT).luminance { 0 }))
+    val EXTINGUISHED_VERDANT_FROGLIGHT = register("extinguished_verdant_froglight", Block(FabricBlockSettings.copyOf(Blocks.VERDANT_FROGLIGHT).luminance { 0 }))
     val FLICKERING_PEARLESCENT_FROGLIGHT = register("flickering_pearlescent_froglight", FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.PEARLESCENT_FROGLIGHT)))
-    val BROKEN_PEARLESCENT_FROGLIGHT = register("broken_pearlescent_froglight", Block(FabricBlockSettings.copyOf(Blocks.PEARLESCENT_FROGLIGHT).luminance { 0 }))
+    val EXTINGUISHED_PEARLESCENT_FROGLIGHT = register("extinguished_pearlescent_froglight", Block(FabricBlockSettings.copyOf(Blocks.PEARLESCENT_FROGLIGHT).luminance { 0 }))
     val FLICKERING_GLOWSTONE = register("flickering_glowstone", FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.GLOWSTONE)))
-    val BROKEN_GLOWSTONE = register("broken_glowstone", Block(FabricBlockSettings.copyOf(Blocks.GLOWSTONE).luminance { 0 }))
+    val EXTINGUISHED_GLOWSTONE = register("extinguished_glowstone", Block(FabricBlockSettings.copyOf(Blocks.GLOWSTONE).luminance { 0 }))
     val FLICKERING_SHROOMLIGHT = register("flickering_shroomlight", FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.SHROOMLIGHT)))
-    val BROKEN_SHROOMLIGHT = register("broken_shroomlight", Block(FabricBlockSettings.copyOf(Blocks.SHROOMLIGHT).luminance { 0 }))
+    val EXTINGUISHED_SHROOMLIGHT = register("extinguished_shroomlight", Block(FabricBlockSettings.copyOf(Blocks.SHROOMLIGHT).luminance { 0 }))
     val FLICKERING_END_ROD = register("flickering_end_rod", FlickeringEndRodBlock(FabricBlockSettings.copyOf(Blocks.END_ROD)))
-    val BROKEN_END_ROD = register("broken_end_rod", BrokenEndRodBlock(FabricBlockSettings.copyOf(Blocks.END_ROD).luminance { 0 }))
+    val EXTINGUISHED_END_ROD = register("extinguished_end_rod", ExtinguishedEndRodBlock(FabricBlockSettings.copyOf(Blocks.END_ROD).luminance { 0 }))
 
     val FANCY_COBWEB = register("fancy_cobweb", FancyCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
     val FANCY_COBWEB_WITH_SPIDER_NEST = register("fancy_cobweb_with_spider_nest", FancyCobwebWithSpiderNestBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
@@ -133,27 +133,27 @@ object ModBlocksAndItems {
     val BLOCK_AGING_MAP = mapOf(
         Blocks.REDSTONE_LAMP to FLICKERING_REDSTONE_LAMP,
         Blocks.SEA_LANTERN to FLICKERING_SEA_LANTERN,
-        FLICKERING_SEA_LANTERN to BROKEN_SEA_LANTERN,
+        FLICKERING_SEA_LANTERN to EXTINGUISHED_SEA_LANTERN,
         Blocks.JACK_O_LANTERN to FLICKERING_JACK_O_LANTERN,
         Blocks.LANTERN to FLICKERING_LANTERN,
-        FLICKERING_LANTERN to BROKEN_LANTERN,
+        FLICKERING_LANTERN to EXTINGUISHED_LANTERN,
         Blocks.SOUL_LANTERN to FLICKERING_SOUL_LANTERN,
-        FLICKERING_SOUL_LANTERN to BROKEN_LANTERN,
+        FLICKERING_SOUL_LANTERN to EXTINGUISHED_LANTERN,
         Blocks.OCHRE_FROGLIGHT to FLICKERING_OCHRE_FROGLIGHT,
-        FLICKERING_OCHRE_FROGLIGHT to BROKEN_OCHRE_FROGLIGHT,
+        FLICKERING_OCHRE_FROGLIGHT to EXTINGUISHED_OCHRE_FROGLIGHT,
         Blocks.VERDANT_FROGLIGHT to FLICKERING_VERDANT_FROGLIGHT,
-        FLICKERING_VERDANT_FROGLIGHT to BROKEN_VERDANT_FROGLIGHT,
+        FLICKERING_VERDANT_FROGLIGHT to EXTINGUISHED_VERDANT_FROGLIGHT,
         Blocks.PEARLESCENT_FROGLIGHT to FLICKERING_PEARLESCENT_FROGLIGHT,
-        FLICKERING_PEARLESCENT_FROGLIGHT to BROKEN_PEARLESCENT_FROGLIGHT,
+        FLICKERING_PEARLESCENT_FROGLIGHT to EXTINGUISHED_PEARLESCENT_FROGLIGHT,
         Blocks.GLOWSTONE to FLICKERING_GLOWSTONE,
-        FLICKERING_GLOWSTONE to BROKEN_GLOWSTONE,
+        FLICKERING_GLOWSTONE to EXTINGUISHED_GLOWSTONE,
         Blocks.SHROOMLIGHT to FLICKERING_SHROOMLIGHT,
-        FLICKERING_SHROOMLIGHT to BROKEN_SHROOMLIGHT,
+        FLICKERING_SHROOMLIGHT to EXTINGUISHED_SHROOMLIGHT,
         Blocks.END_ROD to FLICKERING_END_ROD,
-        FLICKERING_END_ROD to BROKEN_END_ROD
+        FLICKERING_END_ROD to EXTINGUISHED_END_ROD
     )
 
-    val WILDFIRE = registerItem("wildfire", Wildfire(defaultItemSettings().maxCount(1)))
+    val WILDFIRE = registerItem("wildfire", Wildfire(defaultItemSettings().maxCount(1)), null)
 
     fun init() {}
 
@@ -188,8 +188,8 @@ object ModBlocksAndItems {
         Registries.BLOCK, Derelict.id(name), block
     )
 
-    internal fun <T : Item> registerItem(name: String, item: T, category: ItemCategory = ItemCategory.GENERAL): T {
-        category.add(item)
+    internal fun <T : Item> registerItem(name: String, item: T, category: ItemCategory? = ItemCategory.GENERAL): T {
+        category?.add(item)
         return Registry.register(Registries.ITEM, Derelict.id(name), item)
     }
 
