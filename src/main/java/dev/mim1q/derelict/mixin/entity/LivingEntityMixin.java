@@ -1,6 +1,6 @@
 package dev.mim1q.derelict.mixin.entity;
 
-import dev.mim1q.derelict.Derelict;
+import dev.mim1q.derelict.config.DerelictConfigs;
 import dev.mim1q.derelict.init.ModEntities;
 import dev.mim1q.derelict.tag.ModEntityTags;
 import net.minecraft.entity.Entity;
@@ -25,10 +25,10 @@ public abstract class LivingEntityMixin extends Entity {
         method = "onDeath",
         at = @At("HEAD")
     )
-    private void onDeath(DamageSource source, CallbackInfo ci) {
+    private void derelict$onDeath(DamageSource source, CallbackInfo ci) {
         if (this.getType().isIn(ModEntityTags.INSTANCE.getSPAWNS_SPIDERLINGS_ON_DEATH())
             && !getWorld().isClient
-            && random.nextFloat() < Derelict.INSTANCE.getCONFIG().spiderlingSpawnChance() / 100f
+            && random.nextFloat() < DerelictConfigs.CONFIG.spiderlingSpawnChance() / 100f
         ) {
             var spiderling = ModEntities.INSTANCE.getSPIDERLING().create(getWorld());
             if (spiderling == null) return;

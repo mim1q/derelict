@@ -1,5 +1,7 @@
 package dev.mim1q.derelict
 
+import dev.mim1q.derelict.config.DerelictClientConfig
+import dev.mim1q.derelict.config.DerelictConfigs
 import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.init.ModParticles
 import dev.mim1q.derelict.init.client.ModRender
@@ -15,7 +17,11 @@ import net.minecraft.util.math.BlockPos
 import kotlin.math.sin
 
 object DerelictClient : ClientModInitializer {
+    val CLIENT_CONFIG: DerelictClientConfig = DerelictConfigs.CLIENT_CONFIG
+
     override fun onInitializeClient() {
+        CLIENT_CONFIG.save()
+
         ModRender.init()
         ModParticles.initClient()
 
@@ -41,13 +47,13 @@ object DerelictClient : ClientModInitializer {
         }
 
         HighlightDrawerCallback.EVENT.register { drawer, ctx ->
-            val range = Derelict.CLIENT_CONFIG.waxableAndAgeableHightlightRange()
+            val range = CLIENT_CONFIG.waxableAndAgeableHightlightRange()
             if (range <= 0) return@register
             val stack = ctx.player.mainHandStack
 
-            val waxing = Derelict.CLIENT_CONFIG.waxableHighlights()
+            val waxing = CLIENT_CONFIG.waxableHighlights()
                 && (stack.isOf(ModBlocksAndItems.WAXING_STAFF) || stack.isOf(Items.HONEYCOMB))
-            val aging = Derelict.CLIENT_CONFIG.ageableHighlights() && stack.isOf(ModBlocksAndItems.AGING_STAFF)
+            val aging = CLIENT_CONFIG.ageableHighlights() && stack.isOf(ModBlocksAndItems.AGING_STAFF)
 
             if (!aging && !waxing) return@register
 

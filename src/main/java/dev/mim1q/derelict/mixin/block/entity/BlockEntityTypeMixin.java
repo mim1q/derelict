@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class BlockEntityTypeMixin {
     @SuppressWarnings("EqualsBetweenInconvertibleTypes")
     @Inject(method = "supports", at = @At("HEAD"), cancellable = true)
-    private void supports(BlockState state, CallbackInfoReturnable<Boolean> cir) {
+    private void derelict$supports(BlockState state, CallbackInfoReturnable<Boolean> cir) {
         if (BlockEntityType.SIGN.equals(this) && state.isIn(BlockTags.SIGNS)) {
             cir.setReturnValue(true);
         }

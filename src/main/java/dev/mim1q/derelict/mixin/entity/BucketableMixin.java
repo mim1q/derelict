@@ -23,7 +23,7 @@ public interface BucketableMixin {
             ordinal = 0
         )
     )
-    private static <T extends LivingEntity & Bucketable> Item modifyItemInTryBucket(
+    private static <T extends LivingEntity & Bucketable> Item derelict$modifyItemInTryBucket(
         ItemStack instance,
         Operation<Item> original,
         PlayerEntity playerEntity,

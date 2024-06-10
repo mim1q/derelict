@@ -1,6 +1,6 @@
 package dev.mim1q.derelict.item
 
-import dev.mim1q.derelict.Derelict
+import dev.mim1q.derelict.DerelictClient
 import dev.mim1q.derelict.block.flickering.FlickeringBlock
 import dev.mim1q.derelict.init.ModBlocksAndItems
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
@@ -70,7 +70,7 @@ sealed class StaffItem(settings: FabricItemSettings) : Item(settings), Crosshair
         )
 
         override fun shouldShowTip(block: Block?) =
-            Derelict.CLIENT_CONFIG.ageableCrosshairTip() && super.shouldShowTip(block)
+            DerelictClient.CLIENT_CONFIG.ageableCrosshairTip() && super.shouldShowTip(block)
     }
 
     class Waxing(settings: FabricItemSettings) : StaffItem(settings) {
@@ -83,7 +83,7 @@ sealed class StaffItem(settings: FabricItemSettings) : Item(settings), Crosshair
         )
 
         override fun shouldShowTip(block: Block?) =
-            Derelict.CLIENT_CONFIG.waxableCrosshairTip() && super.shouldShowTip(block)
+            DerelictClient.CLIENT_CONFIG.waxableCrosshairTip() && super.shouldShowTip(block)
     }
 
     protected fun firstNonNull(vararg suppliers: () -> Block?): Block? {

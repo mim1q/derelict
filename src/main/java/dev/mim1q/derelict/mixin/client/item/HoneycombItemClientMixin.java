@@ -1,6 +1,6 @@
 package dev.mim1q.derelict.mixin.client.item;
 
-import dev.mim1q.derelict.Derelict;
+import dev.mim1q.derelict.config.DerelictConfigs;
 import dev.mim1q.derelict.item.CrosshairTipItem;
 import net.minecraft.block.Block;
 import net.minecraft.item.HoneycombItem;
@@ -21,7 +21,7 @@ public class HoneycombItemClientMixin implements CrosshairTipItem {
 
     @Override
     public boolean shouldShowTip(@Nullable Block block) {
-        if (block == null || !Derelict.INSTANCE.getCLIENT_CONFIG().waxableCrosshairTip()) return false;
+        if (block == null || !DerelictConfigs.CLIENT_CONFIG.waxableCrosshairTip()) return false;
         if (block == lastBlock) return didShowTip;
         lastBlock = block;
         didShowTip = HoneycombItem.UNWAXED_TO_WAXED_BLOCKS.get().containsKey(block);

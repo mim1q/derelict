@@ -1,6 +1,6 @@
 package dev.mim1q.derelict.mixin.client.render;
 
-import dev.mim1q.derelict.Derelict;
+import dev.mim1q.derelict.config.DerelictConfigs;
 import dev.mim1q.derelict.tag.ModItemTags;
 import dev.mim1q.derelict.util.BlockMarkerUtils;
 import kotlin.Unit;
@@ -35,7 +35,7 @@ public abstract class DrawContextMixin {
     void derelict$injectDrawItem(LivingEntity entity, World world, ItemStack stack, int x, int y, int seed, int z, CallbackInfo ci) {
         if (
             stack.isIn(ModItemTags.INSTANCE.getWAXED())
-                && Derelict.INSTANCE.getCLIENT_CONFIG().waxedIndicatorOpacity() > 0F
+                && DerelictConfigs.CLIENT_CONFIG.waxedIndicatorOpacity() > 0F
         ) {
             BlockMarkerUtils.INSTANCE.renderWaxedIndicator(this::derelict$drawTexture, x, y);
         }

@@ -1,6 +1,6 @@
 package dev.mim1q.derelict.util
 
-import dev.mim1q.derelict.Derelict
+import dev.mim1q.derelict.DerelictClient
 import dev.mim1q.derelict.item.CrosshairTipItem
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext
@@ -13,10 +13,10 @@ object BlockMarkerUtils {
     private val HONEYCOMB_TEXTURE = Identifier("textures/item/honeycomb.png")
 
     fun renderWaxedIndicator(textureDrawer: (Identifier, Int, Int, Int, Int, Float) -> Unit, x: Int, y: Int) {
-        val size = (Derelict.CLIENT_CONFIG.waxedIndicatorScale() * 16).toInt()
+        val size = (DerelictClient.CLIENT_CONFIG.waxedIndicatorScale() * 16).toInt()
         val startX = x - size / 2
         val startY = y - size / 2
-        val alpha = Derelict.CLIENT_CONFIG.waxedIndicatorOpacity()
+        val alpha = DerelictClient.CLIENT_CONFIG.waxedIndicatorOpacity()
         textureDrawer(HONEYCOMB_TEXTURE, startX, startY, 300, size, alpha)
     }
 
