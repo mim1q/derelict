@@ -1,5 +1,6 @@
 package dev.mim1q.derelict
 
+import dev.mim1q.derelict.client.render.effect.SpiderWebModelFeature
 import dev.mim1q.derelict.config.DerelictClientConfig
 import dev.mim1q.derelict.config.DerelictConfigs
 import dev.mim1q.derelict.init.ModBlocksAndItems
@@ -11,7 +12,11 @@ import dev.mim1q.derelict.util.BlockMarkerUtils
 import dev.mim1q.gimm1q.client.highlight.HighlightDrawerCallback
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback
 import net.minecraft.client.MinecraftClient
+import net.minecraft.client.render.entity.LivingEntityRenderer
+import net.minecraft.client.render.entity.model.EntityModel
+import net.minecraft.entity.LivingEntity
 import net.minecraft.item.Items
 import net.minecraft.util.math.BlockPos
 import kotlin.math.sin
@@ -71,6 +76,14 @@ object DerelictClient : ClientModInitializer {
                     drawer.highlightBlock(it, color, 0x80fcad03.toInt())
                 }
             }
+        }
+
+        LivingEntityFeatureRendererRegistrationCallback.EVENT.register { entityType, entityRenderer, registrationHelper, context ->
+            if (entityRenderer is LivingEntityRenderer) {
+                @Suppress("UNCHECKED_CAST")
+                registrationHelper.register(SpiderWebModelFeature(entityRenderer as LivingEntityRenderer<LivingEntity, EntityModel<LivingEntity>>))
+            }
+
         }
     }
 }
