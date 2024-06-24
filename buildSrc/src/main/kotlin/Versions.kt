@@ -12,6 +12,7 @@ object Versions {
     const val KOTLIN = "2.0.0"
     const val OWO_LIB = "0.11.2-pre.14+1.20"
     const val JANKSON = "1.2.1"
+    const val CARDINAL_COMPONENTS = "5.2.2"
 
     // Compatibility
     const val REI = "12.0.684"

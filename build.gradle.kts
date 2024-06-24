@@ -29,8 +29,12 @@ repositories {
     maven("https://maven.shedaniel.me/")
     maven("https://maven.terraformersmc.com/")
     maven {
+        name = "Mim1q's Maven"
         url = uri("https://maven.mim1q.dev/")
-        name = "Mim1q Maven"
+    }
+    maven {
+        name = "Ladysnake Maven"
+        url = uri("https://maven.ladysnake.org/releases")
     }
     mavenLocal()
 }
@@ -56,6 +60,9 @@ dependencies {
     modLocalRuntime("dev.emi:emi-fabric:${Versions.EMI}")
     // Gimm1q for common Mim1q's mods code
     modImplementation(include("dev.mim1q:gimm1q:${Versions.GIMM1Q}")!!)
+    // Cardinal Components API for synced entity data
+    include(modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${Versions.CARDINAL_COMPONENTS}")!!)
+    include(modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${Versions.CARDINAL_COMPONENTS}")!!)
 }
 
 tasks {

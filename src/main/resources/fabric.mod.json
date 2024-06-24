@@ -7,10 +7,11 @@
   "environment": "*",
   "icon": "assets/derelict/icon.png",
   "entrypoints": {
-    "main":       [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.Derelict" }],
-    "client":     [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.DerelictClient" }],
-    "emi":        [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.compat.emi.EmiDerelictPlugin" }],
-    "rei_client": [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.compat.rei.ReiDerelictPlugin" }]
+    "main":                [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.Derelict" }],
+    "client":              [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.DerelictClient" }],
+    "emi":                 [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.compat.emi.EmiDerelictPlugin" }],
+    "rei_client":          [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.compat.rei.ReiDerelictPlugin" }],
+    "cardinal-components": [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.init.component.ModCardinalComponents" }]
   },
   "mixins": [
     "derelict.mixins.json"
@@ -21,6 +22,11 @@
     "minecraft": "1.20.1",
     "fabric-language-kotlin": ">=1.9.4+kotlin.1.8.21",
     "owo": ">=0.11.1"
+  },
+  "custom": {
+    "cardinal-components": [
+      "derelict:effect_flags"
+    ]
   },
   "license": "MIT"
 }

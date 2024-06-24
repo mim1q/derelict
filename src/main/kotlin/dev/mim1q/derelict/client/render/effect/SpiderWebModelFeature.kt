@@ -2,6 +2,8 @@ package dev.mim1q.derelict.client.render.effect
 
 import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.init.ModBlocksAndItems
+import dev.mim1q.derelict.init.ModStatusEffects
+import dev.mim1q.derelict.init.component.hasDerelictStatusEffect
 import dev.mim1q.derelict.util.render.entry
 import dev.mim1q.gimm1q.interpolation.Easing.lerp
 import net.minecraft.client.MinecraftClient
@@ -31,7 +33,7 @@ class SpiderWebModelFeature(
         headYaw: Float,
         headPitch: Float
     ) {
-//        if (!entity.hasStatusEffect(ModStatusEffects.WEBBED)) return
+        if (!entity.hasDerelictStatusEffect(ModStatusEffects.COBWEBBED)) return
 
         val blockRenderer = MinecraftClient.getInstance().blockRenderManager
         val cobweb = ModBlocksAndItems.CORNER_COBWEB.defaultState

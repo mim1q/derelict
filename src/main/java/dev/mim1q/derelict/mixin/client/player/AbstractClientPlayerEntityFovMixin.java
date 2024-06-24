@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static dev.mim1q.derelict.init.component.ModCardinalComponentsKt.hasDerelictStatusEffect;
+
 @Mixin(AbstractClientPlayerEntity.class)
 public abstract class AbstractClientPlayerEntityFovMixin extends PlayerEntity {
     public AbstractClientPlayerEntityFovMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile) {
@@ -24,6 +26,8 @@ public abstract class AbstractClientPlayerEntityFovMixin extends PlayerEntity {
     )
     private void derelict$modifyFovMultiplier(CallbackInfoReturnable<Float> cir) {
         // Make the webbed status effect not affect the FOV as much
-        if (this.hasStatusEffect(ModStatusEffects.INSTANCE.getWEBBED())) cir.setReturnValue(0.8f);
+        if (hasDerelictStatusEffect(this, ModStatusEffects.INSTANCE.getCOBWEBBED())) {
+            cir.setReturnValue(0.9f);
+        }
     }
 }
