@@ -18,6 +18,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Map;
 import java.util.Set;
 
+import static net.minecraft.util.math.MathHelper.EPSILON;
+
 @Mixin(ModelPart.Cuboid.class)
 public class CuboidMixin {
     @Unique
@@ -30,9 +32,13 @@ public class CuboidMixin {
         Direction.EAST.getUnitVector(),  new float[][]{{ 1, -1,  1}, { 1, -1, -1}, { 1,  1, -1}, { 1,  1,  1}},
         Direction.SOUTH.getUnitVector(), new float[][]{{-1, -1,  1}, { 1, -1,  1}, { 1,  1,  1}, {-1,  1,  1}}
     );
+    // @formatter:on
 
     @Unique
     private static final float[][] derelict$NO_OFFSETS = new float[][]{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+
+    @Unique
+    private static final float derelict$OVERLAY_TEXTURE_SIZE = 64f;
 
     @Shadow
     @Final
@@ -58,11 +64,11 @@ public class CuboidMixin {
         Set<Direction> set,
         CallbackInfo ci
     ) {
-        if (sizeX <= 0e-6f || sizeY <= 0e-6f || sizeZ <= 0e-6f || set.isEmpty()) {
+        if (sizeX <= EPSILON || sizeY <= EPSILON || sizeZ <= EPSILON || set.isEmpty()) {
             derelict$renderWhenWrapping = false;
         }
-        derelict$textureScaleHorizontal = textureWidth / 256f;
-        derelict$textureScaleVertical = textureHeight / 256f;
+        derelict$textureScaleHorizontal = textureWidth / derelict$OVERLAY_TEXTURE_SIZE;
+        derelict$textureScaleVertical = textureHeight / derelict$OVERLAY_TEXTURE_SIZE;
     }
 
     @Inject(

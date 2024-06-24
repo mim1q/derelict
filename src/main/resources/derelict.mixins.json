@@ -11,6 +11,7 @@
   ],
   "client": [
     "client.item.HoneycombItemClientMixin",
+    "client.player.AbstractClientPlayerEntityFovMixin",
     "client.render.CuboidMixin",
     "client.render.DrawContextMixin"
   ],
