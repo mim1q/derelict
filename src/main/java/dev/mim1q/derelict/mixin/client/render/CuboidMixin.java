@@ -1,24 +1,48 @@
 package dev.mim1q.derelict.mixin.client.render;
 
-import dev.mim1q.derelict.client.render.effect.OutlineCuboid;
 import dev.mim1q.derelict.client.render.effect.WrappingVertexConsumer;
-import dev.mim1q.derelict.interfaces.CuboidAccessor;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Direction;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Map;
 import java.util.Set;
 
 @Mixin(ModelPart.Cuboid.class)
-public class CuboidMixin implements CuboidAccessor {
+public class CuboidMixin {
     @Unique
-    private ModelPart.Cuboid derelict$outlineCuboid = null;
+    // @formatter:off
+    private static final Map<Vector3f, float[][]> derelict$OFFSETS = Map.of(
+        Direction.DOWN.getUnitVector(),  new float[][]{{ 1, -1,  1}, {-1, -1,  1}, {-1, -1, -1}, { 1, -1, -1}},
+        Direction.UP.getUnitVector(),    new float[][]{{ 1,  1, -1}, {-1,  1, -1}, {-1,  1,  1}, { 1,  1,  1}},
+        Direction.WEST.getUnitVector(),  new float[][]{{-1, -1, -1}, {-1, -1,  1}, {-1,  1,  1}, {-1,  1, -1}},
+        Direction.NORTH.getUnitVector(), new float[][]{{ 1, -1, -1}, {-1, -1, -1}, {-1,  1, -1}, { 1,  1, -1}},
+        Direction.EAST.getUnitVector(),  new float[][]{{ 1, -1,  1}, { 1, -1, -1}, { 1,  1, -1}, { 1,  1,  1}},
+        Direction.SOUTH.getUnitVector(), new float[][]{{-1, -1,  1}, { 1, -1,  1}, { 1,  1,  1}, {-1,  1,  1}}
+    );
+
+    @Unique
+    private static final float[][] derelict$NO_OFFSETS = new float[][]{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+
+    @Shadow
+    @Final
+    private ModelPart.Quad[] sides;
+    @Unique
+    private boolean derelict$renderWhenWrapping = true;
+    @Unique
+    private float derelict$textureScaleHorizontal = 1.0f;
+    @Unique
+    private float derelict$textureScaleVertical = 1.0f;
 
     @Inject(
         method = "<init>",
@@ -35,25 +59,10 @@ public class CuboidMixin implements CuboidAccessor {
         CallbackInfo ci
     ) {
         if (sizeX <= 0e-6f || sizeY <= 0e-6f || sizeZ <= 0e-6f || set.isEmpty()) {
-            return;
+            derelict$renderWhenWrapping = false;
         }
-        if (derelict$hasOutlineCuboid()) {
-            x += extraX;
-            y += extraY;
-            z += extraZ;
-
-            if (mirror) x -= sizeX;
-
-            this.derelict$outlineCuboid = new OutlineCuboid(
-                u, v,
-                x, y, z,
-                sizeX, sizeY, sizeZ,
-                extraX + 0.1f, extraY + 0.1f, extraZ + 0.1f,
-                false,
-                textureWidth, textureHeight,
-                set
-            );
-        }
+        derelict$textureScaleHorizontal = textureWidth / 256f;
+        derelict$textureScaleVertical = textureHeight / 256f;
     }
 
     @Inject(
@@ -69,16 +78,37 @@ public class CuboidMixin implements CuboidAccessor {
         float red, float green, float blue, float alpha,
         CallbackInfo ci
     ) {
-        if (vertexConsumer instanceof WrappingVertexConsumer) {
-            if (derelict$hasOutlineCuboid() && derelict$outlineCuboid != null) {
-                this.derelict$outlineCuboid.renderCuboid(entry, vertexConsumer, light, overlay, red, green, blue, alpha);
-            ci.cancel();
+        if (vertexConsumer instanceof WrappingVertexConsumer wrappingVertexConsumer) {
+            if (!derelict$renderWhenWrapping && wrappingVertexConsumer.getSkipPlanes()) {
+                ci.cancel();
+                return;
             }
-        }
-    }
 
-    @Override
-    public boolean derelict$hasOutlineCuboid() {
-        return true;
+            final var posMatrix = entry.getPositionMatrix();
+            final var normalMatrix = entry.getNormalMatrix();
+            final var offsetScalar = wrappingVertexConsumer.getOffset();
+
+            for (final var quad : this.sides) {
+                final var normalVector = normalMatrix.transform(new Vector3f(quad.direction));
+                final var offset = derelict$OFFSETS.getOrDefault(quad.direction, derelict$NO_OFFSETS);
+                for (var i = 0; i < 4; ++i) {
+                    final var vertex = quad.vertices[i];
+                    final var vertexOffsets = offset[i];
+
+                    final var x = (vertex.pos.x() + vertexOffsets[0] * offsetScalar) / 16.0f;
+                    final var y = (vertex.pos.y() + vertexOffsets[1] * offsetScalar) / 16.0f;
+                    final var z = (vertex.pos.z() + vertexOffsets[2] * offsetScalar) / 16.0f;
+                    final var posVector = posMatrix.transform(new Vector4f(x, y, z, 1.0f));
+                    vertexConsumer.vertex(
+                        posVector.x(), posVector.y(), posVector.z(),
+                        red, green, blue, alpha,
+                        vertex.u * derelict$textureScaleHorizontal, vertex.v * derelict$textureScaleVertical,
+                        overlay, light,
+                        normalVector.x, normalVector.y, normalVector.z
+                    );
+                }
+            }
+            ci.cancel();
+        }
     }
 }

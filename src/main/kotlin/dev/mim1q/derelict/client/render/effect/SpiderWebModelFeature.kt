@@ -17,7 +17,11 @@ class SpiderWebModelFeature(
     override fun render(matrices: MatrixStack, vertexConsumers: VertexConsumerProvider, light: Int, entity: LivingEntity, limbAngle: Float, limbDistance: Float, tickDelta: Float, animationProgress: Float, headYaw: Float, headPitch: Float) {
         contextModel.render(
             matrices,
-            (vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(Derelict.id("textures/entity/effect/spider_web.png")))),
+            WrappingVertexConsumer(
+                vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(Derelict.id("textures/entity/effect/spider_web.png"))),
+                0.25f,
+                true
+            ),
             light,
             OverlayTexture.DEFAULT_UV,
             1f, 1f, 1f, 0.9f,
