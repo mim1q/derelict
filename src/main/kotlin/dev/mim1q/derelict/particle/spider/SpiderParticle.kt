@@ -27,6 +27,8 @@ class SpiderParticle(
         val matrices = MatrixStack()
     }
 
+
+
     init {
         maxAge = 40 + random.nextInt(40)
         alpha = 0.0F

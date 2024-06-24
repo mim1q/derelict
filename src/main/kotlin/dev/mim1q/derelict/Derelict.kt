@@ -24,6 +24,7 @@ object Derelict : ModInitializer {
         ModBlockEntities.init()
         ModParticles.init()
         ModEntities.init()
+        ModStatusEffects.init()
 
         ModBlocksAndItems.setupWaxableAndAgeable()
     }
