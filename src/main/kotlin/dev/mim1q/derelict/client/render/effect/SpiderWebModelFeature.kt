@@ -40,10 +40,10 @@ class SpiderWebModelFeature(
 
         matrices.entry {
             multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180f - lerp(entity.prevBodyYaw, entity.bodyYaw, tickDelta) + entity.id * 777))
-            if (entity.height in 0.7..3.0) repeat(3) {
+            if (entity.height >= 0.7 && entity.width <= 4.0) repeat(3) {
                 multiply(RotationAxis.POSITIVE_Y.rotationDegrees(120f))
                 matrices.entry {
-                    translate(-0.5, 0.6, -0.5 * (entity.width + 2))
+                    translate(-0.5, 0.6, -0.45 * (entity.width + 2))
                     blockRenderer.renderBlock(
                         cobweb, entity.blockPos, entity.world, matrices, vertexConsumers.getBuffer(RenderLayer.getCutout()), true,
                         entity.world.random
