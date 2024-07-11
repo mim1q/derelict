@@ -8,7 +8,7 @@ import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
 
 object ModStatusEffects {
-    val COBWEBBED = register("cobwebbed", DerelictStatusEffect(StatusEffectCategory.HARMFUL, 0x000000, 0))
+    val COBWEBBED = register("cobwebbed", DerelictStatusEffect(StatusEffectCategory.HARMFUL, 0x000000))
 
     fun init() {}
 

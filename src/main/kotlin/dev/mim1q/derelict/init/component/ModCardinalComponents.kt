@@ -1,7 +1,6 @@
 package dev.mim1q.derelict.init.component
 
 import dev.mim1q.derelict.Derelict
-import dev.mim1q.derelict.effect.DerelictStatusEffect
 import dev.onyxstudios.cca.api.v3.component.Component
 import dev.onyxstudios.cca.api.v3.component.ComponentKey
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistry
@@ -9,46 +8,59 @@ import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer
 import net.minecraft.entity.LivingEntity
+import net.minecraft.entity.effect.StatusEffect
 import net.minecraft.nbt.NbtCompound
+import net.minecraft.registry.Registries
+import net.minecraft.util.Identifier
 
 object ModCardinalComponents : EntityComponentInitializer {
-    val EFFECT_FLAGS: ComponentKey<EffectFlagsComponent> =
-        ComponentRegistry.getOrCreate(Derelict.id("effect_flags"), EffectFlagsComponent::class.java)
+    val EFFECTS_COMPONENT: ComponentKey<DerelictEffectsComponent> =
+        ComponentRegistry.getOrCreate(Derelict.id("effect_flags"), DerelictEffectsComponent::class.java)
 
     override fun registerEntityComponentFactories(registry: EntityComponentFactoryRegistry) {
-        registry.registerFor(LivingEntity::class.java, EFFECT_FLAGS, ::EffectFlagsComponent)
+        registry.registerFor(LivingEntity::class.java, EFFECTS_COMPONENT, ::DerelictEffectsComponent)
     }
 
-    class EffectFlagsComponent(private val provider: Any) : Component, AutoSyncedComponent {
-        private var flags: Long = 0L
+    class DerelictEffectsComponent(private val provider: Any) : Component, AutoSyncedComponent {
+        private val effects = mutableMapOf<Identifier, Int>()
 
         override fun readFromNbt(tag: NbtCompound) {
-            flags = tag.getLong("flags")
+            effects.clear()
+            tag.keys.forEach { key ->
+                effects[Identifier(key)] = tag.getInt(key)
+            }
         }
 
         override fun writeToNbt(tag: NbtCompound) {
-            tag.putLong("flags", flags)
-        }
-
-        fun setFlag(flag: Int, value: Boolean) {
-            flags = if (value) {
-                flags or (1L shl flag)
-            } else {
-                flags and (1L shl flag).inv()
+            effects.forEach { (key, value) ->
+                tag.putInt(key.toString(), value)
             }
-            EFFECT_FLAGS.sync(provider)
         }
 
-        fun getFlag(flag: Int): Boolean {
-            return flags and (1L shl flag) != 0L
+        fun addEffect(effect: StatusEffect, amplifier: Int) {
+            val id = Registries.STATUS_EFFECT.getId(effect) ?: return
+            effects[id] = amplifier
+            EFFECTS_COMPONENT.sync(provider)
+        }
+
+        fun removeEffect(effect: StatusEffect) {
+            val id = Registries.STATUS_EFFECT.getId(effect) ?: return
+            effects.remove(id)
+            EFFECTS_COMPONENT.sync(provider)
+        }
+
+        fun getEffectAmplifier(effect: StatusEffect): Int? {
+            val id = Registries.STATUS_EFFECT.getId(effect) ?: return null
+            return effects[id] ?: 0
         }
     }
-}
 
-fun LivingEntity.setStatusEffectFlag(effect: DerelictStatusEffect, value: Boolean) {
-    val flags = ModCardinalComponents.EFFECT_FLAGS[this]
-    flags.setFlag(effect.flagOffset, value)
-}
+    val LivingEntity.statusEffectComponent: DerelictEffectsComponent
+        get() = EFFECTS_COMPONENT.get(this)
 
-fun LivingEntity.hasDerelictStatusEffect(effect: DerelictStatusEffect): Boolean =
-    ModCardinalComponents.EFFECT_FLAGS.maybeGet(this).map { it.getFlag(effect.flagOffset) }.orElse(false)
+    fun LivingEntity.hasClientSyncedEffect(effect: StatusEffect): Boolean =
+        statusEffectComponent.getEffectAmplifier(effect) != null
+
+    fun LivingEntity.getClientSyncedEffectAmplifier(effect: StatusEffect): Int? =
+        statusEffectComponent.getEffectAmplifier(effect)
+}
