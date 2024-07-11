@@ -3,24 +3,44 @@ package dev.mim1q.derelict.client.render.effect
 import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.init.ModStatusEffects
-import dev.mim1q.derelict.init.component.hasDerelictStatusEffect
+import dev.mim1q.derelict.init.component.ModCardinalComponents.getClientSyncedEffectAmplifier
+import dev.mim1q.derelict.init.component.ModCardinalComponents.hasClientSyncedEffect
 import dev.mim1q.derelict.util.render.entry
+import dev.mim1q.gimm1q.client.render.overlay.ModelOverlayFeatureRenderer
+import dev.mim1q.gimm1q.client.render.overlay.ModelOverlayVertexConsumer
 import dev.mim1q.gimm1q.interpolation.Easing.lerp
 import net.minecraft.client.MinecraftClient
-import net.minecraft.client.render.OverlayTexture
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.render.entity.LivingEntityRenderer
-import net.minecraft.client.render.entity.feature.FeatureRenderer
 import net.minecraft.client.render.entity.model.EntityModel
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.entity.LivingEntity
 import net.minecraft.util.math.RotationAxis
 
+val SPIDER_WEB_TEXTURE_SPARSE = Derelict.id("textures/entity/effect/spider_web_sparse.png")
+val SPIDER_WEB_TEXTURE_MEDIUM = Derelict.id("textures/entity/effect/spider_web.png")
+val SPIDER_WEB_TEXTURE_DENSE = Derelict.id("textures/entity/effect/spider_web_dense.png")
+
 class SpiderWebModelFeature(
     context: LivingEntityRenderer<LivingEntity, EntityModel<LivingEntity>>,
-) : FeatureRenderer<LivingEntity, EntityModel<LivingEntity>>(context) {
-
+) : ModelOverlayFeatureRenderer<LivingEntity, EntityModel<LivingEntity>>(
+    context,
+    { it.hasClientSyncedEffect(ModStatusEffects.COBWEBBED) },
+    vertexConsumerPicker@{ entity, vertexConsumers ->
+        val texture = when (entity.getClientSyncedEffectAmplifier(ModStatusEffects.COBWEBBED)) {
+            2 -> SPIDER_WEB_TEXTURE_DENSE
+            1 -> SPIDER_WEB_TEXTURE_MEDIUM
+            else -> SPIDER_WEB_TEXTURE_SPARSE
+        }
+        return@vertexConsumerPicker ModelOverlayVertexConsumer
+            .of(vertexConsumers.getBuffer(RenderLayer.getEntityCutout(texture)))
+            .textureSize(64)
+            .offset(0.501f)
+            .skipPlanes()
+    },
+    true
+) {
     override fun render(
         matrices: MatrixStack,
         vertexConsumers: VertexConsumerProvider,
@@ -33,7 +53,9 @@ class SpiderWebModelFeature(
         headYaw: Float,
         headPitch: Float
     ) {
-        if (!entity.hasDerelictStatusEffect(ModStatusEffects.COBWEBBED)) return
+        super.render(matrices, vertexConsumers, light, entity, limbAngle, limbDistance, tickDelta, animationProgress, headYaw, headPitch)
+
+        if (!entity.hasClientSyncedEffect(ModStatusEffects.COBWEBBED)) return
 
         val blockRenderer = MinecraftClient.getInstance().blockRenderManager
         val cobweb = ModBlocksAndItems.CORNER_COBWEB.defaultState
@@ -51,17 +73,5 @@ class SpiderWebModelFeature(
                 }
             }
         }
-
-        contextModel.render(
-            matrices,
-            WrappingVertexConsumer(
-                vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(Derelict.id("textures/entity/effect/spider_web.png"))),
-                0.25f,
-                true
-            ),
-            light,
-            OverlayTexture.DEFAULT_UV,
-            1f, 1f, 1f, 0.9f,
-        )
     }
 }

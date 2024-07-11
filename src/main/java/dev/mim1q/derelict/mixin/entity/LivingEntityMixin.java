@@ -3,6 +3,7 @@ package dev.mim1q.derelict.mixin.entity;
 import dev.mim1q.derelict.config.DerelictConfigs;
 import dev.mim1q.derelict.init.ModEntities;
 import dev.mim1q.derelict.init.ModStatusEffects;
+import dev.mim1q.derelict.init.component.ModCardinalComponents;
 import dev.mim1q.derelict.tag.ModEntityTags;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -17,8 +18,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import static dev.mim1q.derelict.init.component.ModCardinalComponentsKt.hasDerelictStatusEffect;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
@@ -55,7 +54,7 @@ public abstract class LivingEntityMixin extends Entity {
         cancellable = true
     )
     private void derelict$cancelJump(CallbackInfo ci) {
-        if (hasDerelictStatusEffect((LivingEntity) (Object) this, ModStatusEffects.INSTANCE.getCOBWEBBED())) {
+        if (ModCardinalComponents.INSTANCE.hasClientSyncedEffect((LivingEntity) (Object) this, ModStatusEffects.INSTANCE.getCOBWEBBED())) {
             ci.cancel();
         }
     }
@@ -66,7 +65,7 @@ public abstract class LivingEntityMixin extends Entity {
         cancellable = true
     )
     private void derelict$cancelMovement(Vec3d movementInput, float slipperiness, CallbackInfoReturnable<Vec3d> cir) {
-        if (hasDerelictStatusEffect((LivingEntity) (Object) this, ModStatusEffects.INSTANCE.getCOBWEBBED())) {
+        if (ModCardinalComponents.INSTANCE.hasClientSyncedEffect((LivingEntity) (Object) this, ModStatusEffects.INSTANCE.getCOBWEBBED())) {
             cir.setReturnValue(movementInput.multiply(0.0, 1.0, 0.0));
         }
     }

@@ -51,7 +51,7 @@ object ModCardinalComponents : EntityComponentInitializer {
 
         fun getEffectAmplifier(effect: StatusEffect): Int? {
             val id = Registries.STATUS_EFFECT.getId(effect) ?: return null
-            return effects[id] ?: 0
+            return effects[id]
         }
     }
 

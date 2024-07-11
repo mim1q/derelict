@@ -19,7 +19,7 @@ object Versions {
     const val EMI = "1.1.2+1.20.1"
 
     // Gimm1q
-    const val GIMM1Q = "0.5.3"
+    const val GIMM1Q = "0.6.1+1.20.1"
 
     // Publishing
     const val CURSEGRADLE = "1.4.0"
