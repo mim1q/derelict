@@ -13,7 +13,7 @@ import net.minecraft.entity.damage.DamageSource
 import net.minecraft.entity.data.DataTracker
 import net.minecraft.entity.data.TrackedData
 import net.minecraft.entity.data.TrackedDataHandlerRegistry
-import net.minecraft.entity.mob.HostileEntity
+import net.minecraft.entity.mob.SpiderEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
@@ -26,7 +26,7 @@ import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 import java.util.*
 
-class SpiderlingEntity(entityType: EntityType<out HostileEntity>, world: World) : HostileEntity(entityType, world), Bucketable {
+class SpiderlingEntity(entityType: EntityType<SpiderlingEntity>, world: World) : SpiderEntity(entityType, world), Bucketable {
     companion object {
         val ANCHOR_POSITION: TrackedData<Optional<BlockPos>> = DataTracker.registerData(SpiderlingEntity::class.java, TrackedDataHandlerRegistry.OPTIONAL_BLOCK_POS)
         val SPAWNED_FROM_BUCKET: TrackedData<Boolean> = DataTracker.registerData(SpiderlingEntity::class.java, TrackedDataHandlerRegistry.BOOLEAN)
