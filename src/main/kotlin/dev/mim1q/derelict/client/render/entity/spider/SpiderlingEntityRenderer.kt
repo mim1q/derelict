@@ -1,4 +1,4 @@
-package dev.mim1q.derelict.client.render.entity
+package dev.mim1q.derelict.client.render.entity.spider
 
 import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.entity.SpiderlingEntity
@@ -77,7 +77,7 @@ class SpiderlingModel(
     private val root: ModelPart
 ) : EntityModel<SpiderlingEntity>(RenderLayer::getEntityCutout) {
 
-    private val main = root.getChild("main")
+    private val main = root.getChild("")
     private val rightLegs = main.getChild("rightLegs")
     private val leftLegs = main.getChild("leftLegs")
     private val neck = main.getChild("neck")
@@ -157,7 +157,7 @@ fun getSpiderlingTexturedModelData(): TexturedModelData {
     val modelData = ModelData()
     val modelPartData = modelData.root
     val main = modelPartData.addChild(
-        "main", ModelPartBuilder.create().uv(0, 0).cuboid(-2.5f, -2.0f, 1.0f, 5.0f, 4.0f, 5.0f, Dilation(0.0f))
+        "", ModelPartBuilder.create().uv(0, 0).cuboid(-2.5f, -2.0f, 1.0f, 5.0f, 4.0f, 5.0f, Dilation(0.0f))
             .uv(0, 18).cuboid(-1.5f, 0.0f, -2.0f, 3.0f, 2.0f, 3.0f, Dilation(0.0f)), ModelTransform.pivot(0.0f, 19.0f, 0.0f)
     )
 

@@ -40,7 +40,7 @@ class ArachneEntityModel<T>(root: ModelPart) : EntityModel<T>(RenderLayer::getEn
         private val limb: ModelPart = joint.getChild("${prefix}Limb$number")
         private val forelimb: ModelPart = limb.getChild("${prefix}Forelimb$number")
 
-        fun setAngles(
+        private fun setAngles(
             yawDegrees: Float, rollDegrees: Float, additionalRollDegrees: Float = 0F, delta: Float = 1F
         ) {
             joint.setPartialAnglesDegrees(yaw = yawDegrees * multiplier, delta = delta)

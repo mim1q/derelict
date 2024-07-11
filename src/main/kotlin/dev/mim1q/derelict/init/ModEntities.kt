@@ -3,6 +3,7 @@ package dev.mim1q.derelict.init
 import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.entity.SpiderlingEntity
 import dev.mim1q.derelict.entity.boss.ArachneEntity
+import dev.mim1q.derelict.entity.spider.CharmingSpiderEntity
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricDefaultAttributeRegistry
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
 import net.minecraft.entity.EntityDimensions
@@ -10,6 +11,7 @@ import net.minecraft.entity.EntityType
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.SpawnGroup
 import net.minecraft.entity.attribute.DefaultAttributeContainer
+import net.minecraft.entity.mob.SpiderEntity
 import net.minecraft.entity.mob.ZombieEntity
 import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
@@ -19,10 +21,13 @@ object ModEntities {
         dimensions(EntityDimensions.fixed(2.5F, 2.0F))
     }
 
-    val SPIDERLING =
-        register("spiderling", ::SpiderlingEntity, attributes = SpiderlingEntity.createSpiderlingAttributes()) {
-            dimensions(EntityDimensions.fixed(0.7F, 0.7F))
-        }
+    val SPIDERLING = register("spiderling", ::SpiderlingEntity, attributes = SpiderlingEntity.createSpiderlingAttributes()) {
+        dimensions(EntityDimensions.fixed(0.7F, 0.7F))
+    }
+
+    val CHARMING_SPIDER = register("charming_spider", ::CharmingSpiderEntity, attributes = SpiderEntity.createSpiderAttributes()) {
+        dimensions(EntityDimensions.fixed(0.8F, 0.8F))
+    }
 
     fun init() {}
 
