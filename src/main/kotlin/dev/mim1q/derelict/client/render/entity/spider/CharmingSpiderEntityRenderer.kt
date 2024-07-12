@@ -1,7 +1,6 @@
 package dev.mim1q.derelict.client.render.entity.spider
 
 import dev.mim1q.derelict.Derelict
-import dev.mim1q.derelict.client.render.entity.spider.SpiderRenderUtils.walkLegs
 import dev.mim1q.derelict.entity.spider.CharmingSpiderEntity
 import dev.mim1q.derelict.init.client.ModRender
 import dev.mim1q.derelict.util.extensions.radians
@@ -10,7 +9,7 @@ import net.minecraft.client.model.*
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.render.entity.EntityRendererFactory
-import net.minecraft.client.render.entity.LivingEntityRenderer
+import net.minecraft.client.render.entity.MobEntityRenderer
 import net.minecraft.client.render.entity.model.EntityModel
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.Identifier
@@ -19,7 +18,7 @@ import kotlin.math.sin
 
 class CharmingSpiderEntityRenderer(
     ctx: EntityRendererFactory.Context
-) : LivingEntityRenderer<CharmingSpiderEntity, CharmingSpiderEntityModel>(
+) : MobEntityRenderer<CharmingSpiderEntity, CharmingSpiderEntityModel>(
     ctx,
     CharmingSpiderEntityModel(ctx.getPart(ModRender.CHARMING_SPIDER_LAYER)),
     0.5f
@@ -71,7 +70,7 @@ class CharmingSpiderEntityModel(
         leftLegs.roll = (15f).radians()
         rightLegs.roll = (-15f).radians()
 
-        walkLegs(allLegs, animationProgress, limbDistance)
+        walkSpiderLegs(allLegs, animationProgress, limbDistance)
 
         allLegs[0].roll += (20f).radians()
         allLegs[4].roll -= (20f).radians()

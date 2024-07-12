@@ -10,7 +10,7 @@ object ArachneTexturedModelData {
                     addChild("sternumHair1_r1", ModelPartBuilder.create().uv(-8, 88).cuboid(-8F, -18.25F, -14F, 16F, 0F, 8F), ModelTransform.of(0F, 2.25F, 35.5F, 0.6109F, 0F, 0F))
                     addChild("sternumHair0_r1", ModelPartBuilder.create().uv(-8, 80).cuboid(-8F, -18.25F, -14F, 16F, 0F, 8F), ModelTransform.of(0F, 2.25F, 26.5F, 0.6109F, 0F, 0F))
                     addChild("abdomen", ModelPartBuilder.create().uv(0, 0).cuboid(-10F, -8.7547F, -0.6287F, 20F, 18F, 28F), ModelTransform.of(0F, -0.7453F, 22.8787F, -0.3491F, 0F, 0F)).apply {
-                        addChild("eggBase", ModelPartBuilder.create().uv(0, 101).cuboid(-7F, -2.4288F, -11.012F, 14F, 5F, 22F), ModelTransform.pivot(0F, -11.326F, 13.3833F))
+                        addChild("egg_base", ModelPartBuilder.create().uv(0, 101).cuboid(-7F, -2.4288F, -11.012F, 14F, 5F, 22F), ModelTransform.pivot(0F, -11.326F, 13.3833F))
                         addChild("eggs", ModelPartBuilder.create(), ModelTransform.pivot(0F, -2.826F, 22.3833F)).apply {
                             addChild("egg16", ModelPartBuilder.create().uv(0, 58).cuboid(-3F, -2.9288F, -3.012F, 6F, 6F, 6F), ModelTransform.pivot(0F, -12F, -5F))
                             addChild("egg15", ModelPartBuilder.create().uv(0, 58).cuboid(-3F, -2.9288F, -3.012F, 6F, 6F, 6F), ModelTransform.pivot(8F, -6F, 1F))
@@ -35,55 +35,55 @@ object ArachneTexturedModelData {
                 addChild("head", ModelPartBuilder.create().uv(56, 46).cuboid(-6F, -4.3905F, -11.8595F, 12F, 8F, 12F), ModelTransform.pivot(0F, -2.6095F, -23.1405F)).apply {
                     addChild("headHair1_r1", ModelPartBuilder.create().uv(0, 11).cuboid(-6F, -5F, 0F, 12F, 5F, 0F), ModelTransform.of(0F, -4.3905F, -4.8595F, -0.7854F, 0F, 0F))
                     addChild("headHair0_r1", ModelPartBuilder.create().uv(0, 16).cuboid(-6F, -3F, 0F, 12F, 3F, 0F), ModelTransform.of(0F, -4.3905F, -7.8595F, -0.7854F, 0F, 0F))
-                    addChild("rightFang", ModelPartBuilder.create().uv(14, 19).cuboid(-2F, 0F, -2F, 4F, 6F, 3F), ModelTransform.of(-3F, 0.6095F, -11.8595F, 0F, 0.4363F, 0F)).apply {
+                    addChild("right_fang", ModelPartBuilder.create().uv(14, 19).cuboid(-2F, 0F, -2F, 4F, 6F, 3F), ModelTransform.of(-3F, 0.6095F, -11.8595F, 0F, 0.4363F, 0F)).apply {
                         addChild("rightFangEnd_r1", ModelPartBuilder.create().uv(8, 43).cuboid(0F, -1.5F, -1.5F, 0F, 3F, 3F), ModelTransform.of(0F, 7.5F, -0.5F, 0F, 1.0472F, 0F))
                     }
-                    addChild("leftFang", ModelPartBuilder.create().uv(0, 19).cuboid(-2F, 0F, -2F, 4F, 6F, 3F), ModelTransform.of(3F, 0.6095F, -11.8595F, 0F, -0.4363F, 0F)).apply {
+                    addChild("left_fang", ModelPartBuilder.create().uv(0, 19).cuboid(-2F, 0F, -2F, 4F, 6F, 3F), ModelTransform.of(3F, 0.6095F, -11.8595F, 0F, -0.4363F, 0F)).apply {
                         addChild("leftFangEnd_r1", ModelPartBuilder.create().uv(11, 16).cuboid(0F, -1.5F, -1.5F, 0F, 3F, 3F), ModelTransform.of(0F, 7.5F, -0.5F, 0F, -1.0472F, 0F))
                     }
                 }
-                addChild("leftLimbJoint0", ModelPartBuilder.create(), ModelTransform.pivot(8F, -3F, -21F)).apply {
-                    addChild("leftLimb0", ModelPartBuilder.create().uv(68, 8).cuboid(-2F, -2F, -2F, 24F, 4F, 4F, Dilation(0.1F)).uv(56, 66).cuboid(-2F, -5F, 0F, 24F, 3F, 0F).uv(68, 18).cuboid(-2F, 2F, 0F, 24F, 1F, 0F).uv(0, 0).cuboid(15F, -2.5F, -2.5F, 7F, 6F, 5F, Dilation(0.25F)).uv(0, 46).cuboid(22F, -3.5F, 0F, 4F, 8F, 0F), ModelTransform.NONE).apply {
-                        addChild("leftForelimb0", ModelPartBuilder.create().uv(68, 0).cuboid(0F, -2F, -2F, 24F, 4F, 4F).uv(68, 16).cuboid(0F, -4F, -0.1F, 24F, 2F, 0F).uv(68, 19).cuboid(0F, 2F, 0F, 24F, 1F, 0F).uv(19, 0).cuboid(24F, -2F, 0F, 4F, 4F, 0F), ModelTransform.pivot(20F, 0F, 0F))
+                addChild("left_leg_joint0", ModelPartBuilder.create(), ModelTransform.pivot(8F, -3F, -21F)).apply {
+                    addChild("left_leg0", ModelPartBuilder.create().uv(68, 8).cuboid(-2F, -2F, -2F, 24F, 4F, 4F, Dilation(0.1F)).uv(56, 66).cuboid(-2F, -5F, 0F, 24F, 3F, 0F).uv(68, 18).cuboid(-2F, 2F, 0F, 24F, 1F, 0F).uv(0, 0).cuboid(15F, -2.5F, -2.5F, 7F, 6F, 5F, Dilation(0.25F)).uv(0, 46).cuboid(22F, -3.5F, 0F, 4F, 8F, 0F), ModelTransform.NONE).apply {
+                        addChild("left_leg_front0", ModelPartBuilder.create().uv(68, 0).cuboid(0F, -2F, -2F, 24F, 4F, 4F).uv(68, 16).cuboid(0F, -4F, -0.1F, 24F, 2F, 0F).uv(68, 19).cuboid(0F, 2F, 0F, 24F, 1F, 0F).uv(19, 0).cuboid(24F, -2F, 0F, 4F, 4F, 0F), ModelTransform.pivot(20F, 0F, 0F))
                     }
                 }
-                addChild("leftLimbJoint1", ModelPartBuilder.create(), ModelTransform.pivot(8F, -5F, -15F)).apply {
-                    addChild("leftLimb1", ModelPartBuilder.create().uv(68, 8).cuboid(-2F, -2F, -2F, 24F, 4F, 4F, Dilation(0.1F)).uv(56, 66).cuboid(-2F, -5F, 0F, 24F, 3F, 0F).uv(68, 18).cuboid(-2F, 2F, 0F, 24F, 1F, 0F).uv(0, 0).cuboid(15F, -2.5F, -2.5F, 7F, 6F, 5F, Dilation(0.25F)).uv(0, 46).cuboid(22F, -3.5F, 0F, 4F, 8F, 0F), ModelTransform.NONE).apply {
-                        addChild("leftForelimb1", ModelPartBuilder.create().uv(68, 0).cuboid(0F, -2F, -2F, 24F, 4F, 4F).uv(68, 16).cuboid(0F, -4F, -0.1F, 24F, 2F, 0F).uv(68, 19).cuboid(0F, 2F, 0F, 24F, 1F, 0F).uv(19, 0).cuboid(24F, -2F, 0F, 4F, 4F, 0F), ModelTransform.pivot(20F, 0F, 0F))
+                addChild("left_leg_joint1", ModelPartBuilder.create(), ModelTransform.pivot(8F, -5F, -15F)).apply {
+                    addChild("left_leg1", ModelPartBuilder.create().uv(68, 8).cuboid(-2F, -2F, -2F, 24F, 4F, 4F, Dilation(0.1F)).uv(56, 66).cuboid(-2F, -5F, 0F, 24F, 3F, 0F).uv(68, 18).cuboid(-2F, 2F, 0F, 24F, 1F, 0F).uv(0, 0).cuboid(15F, -2.5F, -2.5F, 7F, 6F, 5F, Dilation(0.25F)).uv(0, 46).cuboid(22F, -3.5F, 0F, 4F, 8F, 0F), ModelTransform.NONE).apply {
+                        addChild("left_leg_front1", ModelPartBuilder.create().uv(68, 0).cuboid(0F, -2F, -2F, 24F, 4F, 4F).uv(68, 16).cuboid(0F, -4F, -0.1F, 24F, 2F, 0F).uv(68, 19).cuboid(0F, 2F, 0F, 24F, 1F, 0F).uv(19, 0).cuboid(24F, -2F, 0F, 4F, 4F, 0F), ModelTransform.pivot(20F, 0F, 0F))
                     }
                 }
-                addChild("leftLimbJoint2", ModelPartBuilder.create(), ModelTransform.pivot(8F, -7F, -9F)).apply {
-                    addChild("leftLimb2", ModelPartBuilder.create().uv(68, 8).cuboid(-2F, -2F, -2F, 24F, 4F, 4F, Dilation(0.1F)).uv(56, 66).cuboid(-2F, -5F, 0F, 24F, 3F, 0F).uv(68, 18).cuboid(-2F, 2F, 0F, 24F, 1F, 0F).uv(0, 0).cuboid(15F, -2.5F, -2.5F, 7F, 6F, 5F, Dilation(0.25F)).uv(0, 46).cuboid(22F, -3.5F, -0.25F, 4F, 8F, 0F), ModelTransform.NONE).apply {
-                        addChild("leftForelimb2", ModelPartBuilder.create().uv(68, 0).cuboid(0F, -2F, -2F, 24F, 4F, 4F).uv(68, 16).cuboid(0F, -4F, -0.1F, 24F, 2F, 0F).uv(68, 19).cuboid(0F, 2F, 0F, 24F, 1F, 0F).uv(19, 0).cuboid(24F, -2F, 0F, 4F, 4F, 0F), ModelTransform.pivot(20F, 0F, 0F))
+                addChild("left_leg_joint2", ModelPartBuilder.create(), ModelTransform.pivot(8F, -7F, -9F)).apply {
+                    addChild("left_leg2", ModelPartBuilder.create().uv(68, 8).cuboid(-2F, -2F, -2F, 24F, 4F, 4F, Dilation(0.1F)).uv(56, 66).cuboid(-2F, -5F, 0F, 24F, 3F, 0F).uv(68, 18).cuboid(-2F, 2F, 0F, 24F, 1F, 0F).uv(0, 0).cuboid(15F, -2.5F, -2.5F, 7F, 6F, 5F, Dilation(0.25F)).uv(0, 46).cuboid(22F, -3.5F, -0.25F, 4F, 8F, 0F), ModelTransform.NONE).apply {
+                        addChild("left_leg_front2", ModelPartBuilder.create().uv(68, 0).cuboid(0F, -2F, -2F, 24F, 4F, 4F).uv(68, 16).cuboid(0F, -4F, -0.1F, 24F, 2F, 0F).uv(68, 19).cuboid(0F, 2F, 0F, 24F, 1F, 0F).uv(19, 0).cuboid(24F, -2F, 0F, 4F, 4F, 0F), ModelTransform.pivot(20F, 0F, 0F))
                     }
                 }
-                addChild("leftLimbJoint3", ModelPartBuilder.create(), ModelTransform.pivot(8F, -9F, -3F)).apply {
-                    addChild("leftLimb3", ModelPartBuilder.create().uv(68, 8).cuboid(-2F, -2F, -2F, 24F, 4F, 4F, Dilation(0.1F)).uv(56, 66).cuboid(-2F, -5F, 0F, 24F, 3F, 0F).uv(68, 18).cuboid(-2F, 2F, 0F, 24F, 1F, 0F).uv(0, 0).cuboid(15F, -2.5F, -2.5F, 7F, 6F, 5F, Dilation(0.25F)).uv(0, 46).cuboid(22F, -3.5F, 0F, 4F, 8F, 0F), ModelTransform.NONE).apply {
-                        addChild("leftForelimb3", ModelPartBuilder.create().uv(68, 0).cuboid(0F, -2F, -2F, 24F, 4F, 4F).uv(68, 16).cuboid(0F, -4F, -0.1F, 24F, 2F, 0F).uv(68, 19).cuboid(0F, 2F, 0F, 24F, 1F, 0F).uv(19, 0).cuboid(24F, -2F, 0F, 4F, 4F, 0F), ModelTransform.pivot(20F, 0F, 0F))
+                addChild("left_leg_joint3", ModelPartBuilder.create(), ModelTransform.pivot(8F, -9F, -3F)).apply {
+                    addChild("left_leg3", ModelPartBuilder.create().uv(68, 8).cuboid(-2F, -2F, -2F, 24F, 4F, 4F, Dilation(0.1F)).uv(56, 66).cuboid(-2F, -5F, 0F, 24F, 3F, 0F).uv(68, 18).cuboid(-2F, 2F, 0F, 24F, 1F, 0F).uv(0, 0).cuboid(15F, -2.5F, -2.5F, 7F, 6F, 5F, Dilation(0.25F)).uv(0, 46).cuboid(22F, -3.5F, 0F, 4F, 8F, 0F), ModelTransform.NONE).apply {
+                        addChild("left_leg_front3", ModelPartBuilder.create().uv(68, 0).cuboid(0F, -2F, -2F, 24F, 4F, 4F).uv(68, 16).cuboid(0F, -4F, -0.1F, 24F, 2F, 0F).uv(68, 19).cuboid(0F, 2F, 0F, 24F, 1F, 0F).uv(19, 0).cuboid(24F, -2F, 0F, 4F, 4F, 0F), ModelTransform.pivot(20F, 0F, 0F))
                     }
                 }
-                addChild("rightLimbJoint0", ModelPartBuilder.create(), ModelTransform.pivot(-8F, -3F, -21F)).apply {
-                    addChild("rightLimb0", ModelPartBuilder.create().uv(68, 8).mirrored().cuboid(-22F, -2F, -2F, 24F, 4F, 4F, Dilation(0.1F)).uv(56, 66).mirrored().cuboid(-22F, -5F, 0F, 24F, 3F, 0F).uv(68, 18).mirrored().cuboid(-22F, 2F, 0F, 24F, 1F, 0F).uv(0, 0).mirrored().cuboid(-22F, -2.5F, -2.5F, 7F, 6F, 5F, Dilation(0.25F)).uv(0, 46).mirrored().cuboid(-26F, -3.5F, 0F, 4F, 8F, 0F), ModelTransform.NONE).apply {
-                        addChild("rightForelimb0", ModelPartBuilder.create().uv(68, 0).mirrored().cuboid(-24F, -2F, -2F, 24F, 4F, 4F).uv(68, 16).mirrored().cuboid(-24F, -4F, -0.1F, 24F, 2F, 0F).uv(68, 19).mirrored().cuboid(-24F, 2F, 0F, 24F, 1F, 0F).uv(19, 0).mirrored().cuboid(-28F, -2F, 0F, 4F, 4F, 0F), ModelTransform.pivot(-20F, 0F, 0F))
+                addChild("right_leg_joint0", ModelPartBuilder.create(), ModelTransform.pivot(-8F, -3F, -21F)).apply {
+                    addChild("right_leg0", ModelPartBuilder.create().uv(68, 8).mirrored().cuboid(-22F, -2F, -2F, 24F, 4F, 4F, Dilation(0.1F)).uv(56, 66).mirrored().cuboid(-22F, -5F, 0F, 24F, 3F, 0F).uv(68, 18).mirrored().cuboid(-22F, 2F, 0F, 24F, 1F, 0F).uv(0, 0).mirrored().cuboid(-22F, -2.5F, -2.5F, 7F, 6F, 5F, Dilation(0.25F)).uv(0, 46).mirrored().cuboid(-26F, -3.5F, 0F, 4F, 8F, 0F), ModelTransform.NONE).apply {
+                        addChild("right_leg_front0", ModelPartBuilder.create().uv(68, 0).mirrored().cuboid(-24F, -2F, -2F, 24F, 4F, 4F).uv(68, 16).mirrored().cuboid(-24F, -4F, -0.1F, 24F, 2F, 0F).uv(68, 19).mirrored().cuboid(-24F, 2F, 0F, 24F, 1F, 0F).uv(19, 0).mirrored().cuboid(-28F, -2F, 0F, 4F, 4F, 0F), ModelTransform.pivot(-20F, 0F, 0F))
                     }
                 }
-                addChild("rightLimbJoint1", ModelPartBuilder.create(), ModelTransform.pivot(-8F, -5F, -15F)).apply {
-                    addChild("rightLimb1", ModelPartBuilder.create().uv(68, 8).mirrored().cuboid(-22F, -2F, -2F, 24F, 4F, 4F, Dilation(0.1F)).uv(56, 66).mirrored().cuboid(-22F, -5F, 0F, 24F, 3F, 0F).uv(68, 18).mirrored().cuboid(-22F, 2F, 0F, 24F, 1F, 0F).uv(0, 0).mirrored().cuboid(-22F, -2.5F, -2.5F, 7F, 6F, 5F, Dilation(0.25F)).uv(0, 46).mirrored().cuboid(-26F, -3.5F, 0F, 4F, 8F, 0F), ModelTransform.NONE).apply {
-                        addChild("rightForelimb1", ModelPartBuilder.create().uv(68, 0).mirrored().cuboid(-24F, -2F, -2F, 24F, 4F, 4F).uv(68, 16).mirrored().cuboid(-24F, -4F, -0.1F, 24F, 2F, 0F).uv(68, 19).mirrored().cuboid(-24F, 2F, 0F, 24F, 1F, 0F).uv(19, 0).mirrored().cuboid(-28F, -2F, 0F, 4F, 4F, 0F), ModelTransform.pivot(-20F, 0F, 0F))
+                addChild("right_leg_joint1", ModelPartBuilder.create(), ModelTransform.pivot(-8F, -5F, -15F)).apply {
+                    addChild("right_leg1", ModelPartBuilder.create().uv(68, 8).mirrored().cuboid(-22F, -2F, -2F, 24F, 4F, 4F, Dilation(0.1F)).uv(56, 66).mirrored().cuboid(-22F, -5F, 0F, 24F, 3F, 0F).uv(68, 18).mirrored().cuboid(-22F, 2F, 0F, 24F, 1F, 0F).uv(0, 0).mirrored().cuboid(-22F, -2.5F, -2.5F, 7F, 6F, 5F, Dilation(0.25F)).uv(0, 46).mirrored().cuboid(-26F, -3.5F, 0F, 4F, 8F, 0F), ModelTransform.NONE).apply {
+                        addChild("right_leg_front1", ModelPartBuilder.create().uv(68, 0).mirrored().cuboid(-24F, -2F, -2F, 24F, 4F, 4F).uv(68, 16).mirrored().cuboid(-24F, -4F, -0.1F, 24F, 2F, 0F).uv(68, 19).mirrored().cuboid(-24F, 2F, 0F, 24F, 1F, 0F).uv(19, 0).mirrored().cuboid(-28F, -2F, 0F, 4F, 4F, 0F), ModelTransform.pivot(-20F, 0F, 0F))
                     }
                 }
-                addChild("rightLimbJoint2", ModelPartBuilder.create(), ModelTransform.pivot(-8F, -7F, -9F)).apply {
-                    addChild("rightLimb2", ModelPartBuilder.create().uv(68, 8).mirrored().cuboid(-22F, -2F, -2F, 24F, 4F, 4F, Dilation(0.1F)).uv(56, 66).mirrored().cuboid(-22F, -5F, 0F, 24F, 3F, 0F).uv(68, 18).mirrored().cuboid(-22F, 2F, 0F, 24F, 1F, 0F).uv(0, 0).mirrored().cuboid(-22F, -2.5F, -2.5F, 7F, 6F, 5F, Dilation(0.25F)).uv(0, 46).mirrored().cuboid(-26F, -3.5F, -0.25F, 4F, 8F, 0F), ModelTransform.NONE).apply {
-                        addChild("rightForelimb2", ModelPartBuilder.create().uv(68, 0).mirrored().cuboid(-24F, -2F, -2F, 24F, 4F, 4F).uv(68, 16).mirrored().cuboid(-24F, -4F, -0.1F, 24F, 2F, 0F).uv(68, 19).mirrored().cuboid(-24F, 2F, 0F, 24F, 1F, 0F).uv(19, 0).mirrored().cuboid(-28F, -2F, 0F, 4F, 4F, 0F), ModelTransform.pivot(-20F, 0F, 0F))
+                addChild("right_leg_joint2", ModelPartBuilder.create(), ModelTransform.pivot(-8F, -7F, -9F)).apply {
+                    addChild("right_leg2", ModelPartBuilder.create().uv(68, 8).mirrored().cuboid(-22F, -2F, -2F, 24F, 4F, 4F, Dilation(0.1F)).uv(56, 66).mirrored().cuboid(-22F, -5F, 0F, 24F, 3F, 0F).uv(68, 18).mirrored().cuboid(-22F, 2F, 0F, 24F, 1F, 0F).uv(0, 0).mirrored().cuboid(-22F, -2.5F, -2.5F, 7F, 6F, 5F, Dilation(0.25F)).uv(0, 46).mirrored().cuboid(-26F, -3.5F, -0.25F, 4F, 8F, 0F), ModelTransform.NONE).apply {
+                        addChild("right_leg_front2", ModelPartBuilder.create().uv(68, 0).mirrored().cuboid(-24F, -2F, -2F, 24F, 4F, 4F).uv(68, 16).mirrored().cuboid(-24F, -4F, -0.1F, 24F, 2F, 0F).uv(68, 19).mirrored().cuboid(-24F, 2F, 0F, 24F, 1F, 0F).uv(19, 0).mirrored().cuboid(-28F, -2F, 0F, 4F, 4F, 0F), ModelTransform.pivot(-20F, 0F, 0F))
                     }
                 }
-                addChild("rightLimbJoint3", ModelPartBuilder.create(), ModelTransform.pivot(-8F, -9F, -3F)).apply {
-                    addChild("rightLimb3", ModelPartBuilder.create().uv(68, 8).mirrored().cuboid(-22F, -2F, -2F, 24F, 4F, 4F, Dilation(0.1F)).uv(56, 66).mirrored().cuboid(-22F, -5F, 0F, 24F, 3F, 0F).uv(68, 18).mirrored().cuboid(-22F, 2F, 0F, 24F, 1F, 0F).uv(0, 0).mirrored().cuboid(-22F, -2.5F, -2.5F, 7F, 6F, 5F, Dilation(0.25F)).uv(0, 46).mirrored().cuboid(-26F, -3.5F, 0F, 4F, 8F, 0F), ModelTransform.NONE).apply {
-                        addChild("rightForelimb3", ModelPartBuilder.create().uv(68, 0).mirrored().cuboid(-24F, -2F, -2F, 24F, 4F, 4F).uv(68, 16).mirrored().cuboid(-24F, -4F, -0.1F, 24F, 2F, 0F).uv(68, 19).mirrored().cuboid(-24F, 2F, 0F, 24F, 1F, 0F).uv(19, 0).mirrored().cuboid(-28F, -2F, 0F, 4F, 4F, 0F), ModelTransform.pivot(-20F, 0F, 0F))
+                addChild("right_leg_joint3", ModelPartBuilder.create(), ModelTransform.pivot(-8F, -9F, -3F)).apply {
+                    addChild("right_leg3", ModelPartBuilder.create().uv(68, 8).mirrored().cuboid(-22F, -2F, -2F, 24F, 4F, 4F, Dilation(0.1F)).uv(56, 66).mirrored().cuboid(-22F, -5F, 0F, 24F, 3F, 0F).uv(68, 18).mirrored().cuboid(-22F, 2F, 0F, 24F, 1F, 0F).uv(0, 0).mirrored().cuboid(-22F, -2.5F, -2.5F, 7F, 6F, 5F, Dilation(0.25F)).uv(0, 46).mirrored().cuboid(-26F, -3.5F, 0F, 4F, 8F, 0F), ModelTransform.NONE).apply {
+                        addChild("right_leg_front3", ModelPartBuilder.create().uv(68, 0).mirrored().cuboid(-24F, -2F, -2F, 24F, 4F, 4F).uv(68, 16).mirrored().cuboid(-24F, -4F, -0.1F, 24F, 2F, 0F).uv(68, 19).mirrored().cuboid(-24F, 2F, 0F, 24F, 1F, 0F).uv(19, 0).mirrored().cuboid(-28F, -2F, 0F, 4F, 4F, 0F), ModelTransform.pivot(-20F, 0F, 0F))
                     }
                 }
             }
         }
-        return TexturedModelData.of(it, 128, 128)
+        TexturedModelData.of(it, 128, 128)
     }
 }

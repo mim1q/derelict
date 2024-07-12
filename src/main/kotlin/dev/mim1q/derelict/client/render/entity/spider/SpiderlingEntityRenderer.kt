@@ -1,7 +1,6 @@
 package dev.mim1q.derelict.client.render.entity.spider
 
 import dev.mim1q.derelict.Derelict
-import dev.mim1q.derelict.client.render.entity.spider.SpiderRenderUtils.walkLegs
 import dev.mim1q.derelict.entity.SpiderlingEntity
 import dev.mim1q.derelict.init.client.ModRender
 import dev.mim1q.derelict.util.extensions.drawBillboard
@@ -123,7 +122,7 @@ class SpiderlingModel(
         rightLegs.roll = (-25f).radians()
         val progress = limbAngle * 1.0f
 
-        walkLegs(legs, progress, limbDistance)
+        walkSpiderLegs(legs, progress, limbDistance)
 
         neck.yaw = 0f
         head.yaw = 0f

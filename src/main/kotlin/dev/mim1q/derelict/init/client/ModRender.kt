@@ -3,10 +3,7 @@ package dev.mim1q.derelict.init.client
 import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.client.render.entity.boss.arachne.ArachneEntityRenderer
 import dev.mim1q.derelict.client.render.entity.boss.arachne.ArachneTexturedModelData
-import dev.mim1q.derelict.client.render.entity.spider.CharmingSpiderEntityModel
-import dev.mim1q.derelict.client.render.entity.spider.CharmingSpiderEntityRenderer
-import dev.mim1q.derelict.client.render.entity.spider.SpiderlingEntityRenderer
-import dev.mim1q.derelict.client.render.entity.spider.getSpiderlingTexturedModelData
+import dev.mim1q.derelict.client.render.entity.spider.*
 import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.init.ModEntities
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap
@@ -19,6 +16,7 @@ import net.minecraft.client.render.entity.model.EntityModelLayer
 object ModRender {
     val SPIDERLING_LAYER = registerLayer(::getSpiderlingTexturedModelData, "spiderling")
     val CHARMING_SPIDER_LAYER = registerLayer(CharmingSpiderEntityModel::createTexturedModelData, "charming_spider")
+    val WEB_CASTER_LAYER = registerLayer(WebCasterEntityModel::createTexturedModelData, "web_caster")
 
     val ARACHNE_LAYER = registerLayer(ArachneTexturedModelData::create, "arachne")
 
@@ -50,6 +48,7 @@ object ModRender {
         EntityRendererRegistry.register(ModEntities.ARACHNE, ::ArachneEntityRenderer)
         EntityRendererRegistry.register(ModEntities.SPIDERLING, ::SpiderlingEntityRenderer)
         EntityRendererRegistry.register(ModEntities.CHARMING_SPIDER, ::CharmingSpiderEntityRenderer)
+        EntityRendererRegistry.register(ModEntities.WEB_CASTER, ::WebCasterEntityRenderer)
     }
 
     private fun registerLayer(provider: TexturedModelDataProvider, path: String, name: String = "main") =

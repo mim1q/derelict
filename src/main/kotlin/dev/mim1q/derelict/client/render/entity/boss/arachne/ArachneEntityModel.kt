@@ -1,9 +1,9 @@
 package dev.mim1q.derelict.client.render.entity.boss.arachne
 
+import dev.mim1q.derelict.client.render.entity.spider.BigSpiderLimb
+import dev.mim1q.derelict.client.render.entity.spider.bigSpiderWalkAnimation
 import dev.mim1q.derelict.entity.boss.BigSpider
-import dev.mim1q.derelict.util.Easing.smoothStep
 import dev.mim1q.derelict.util.extensions.radians
-import dev.mim1q.derelict.util.extensions.setPartialAngles
 import dev.mim1q.derelict.util.extensions.setPartialAnglesDegrees
 import net.minecraft.client.model.ModelPart
 import net.minecraft.client.render.RenderLayer
@@ -11,13 +11,17 @@ import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.render.entity.model.EntityModel
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.entity.LivingEntity
-import net.minecraft.util.math.MathHelper
-import kotlin.math.acos
 import kotlin.math.sin
 
 class ArachneEntityModel<T>(root: ModelPart) : EntityModel<T>(RenderLayer::getEntityCutout)
     where T : LivingEntity,
           T : BigSpider {
+
+    companion object {
+        const val LIMB_LENGTH = 22 / 16F
+        const val FORELIMB_LENGTH = 30 / 16F
+    }
+
     private val body = root.getChild("body")
     private val sternum = body.getChild("sternum")
     private val abdomen = sternum.getChild("abdomen")
@@ -26,62 +30,20 @@ class ArachneEntityModel<T>(root: ModelPart) : EntityModel<T>(RenderLayer::getEn
 
     private var additionalBodyHeight = 0.0F
 
-    class BigSpiderLimbParts(
-        private val parent: ArachneEntityModel<*>,
-        private val defaultYaw: Float,
-        private val defaultRoll: Float,
-        private val height: Float,
-        number: Int,
-        right: Boolean
-    ) {
-        private val prefix = if (right) "right" else "left"
-        private val multiplier = if (right) -1 else 1
-        private val joint: ModelPart = parent.body.getChild("${prefix}LimbJoint$number")
-        private val limb: ModelPart = joint.getChild("${prefix}Limb$number")
-        private val forelimb: ModelPart = limb.getChild("${prefix}Forelimb$number")
-
-        private fun setAngles(
-            yawDegrees: Float, rollDegrees: Float, additionalRollDegrees: Float = 0F, delta: Float = 1F
-        ) {
-            joint.setPartialAnglesDegrees(yaw = yawDegrees * multiplier, delta = delta)
-            limb.setPartialAnglesDegrees(
-                roll = (-rollDegrees - additionalRollDegrees * delta) * multiplier,
-                delta = delta
-            )
-            val jointToGround = (parent.additionalBodyHeight / 16F) + height + LIMB_LENGTH * sin(rollDegrees.radians())
-            val forelimbAngle = acos(MathHelper.clamp(jointToGround / FORELIMB_LENGTH, -1.0F, 1.0F))
-            forelimb.setPartialAngles(
-                roll = (MathHelper.HALF_PI + rollDegrees.radians() - forelimbAngle) * multiplier,
-                delta = delta
-            )
-        }
-
-        fun setAnglesFromDefaults(
-            yawDegrees: Float = 0F, rollDegrees: Float = 0F, additionalRollDegrees: Float = 0F, delta: Float = 1F
-        ) = setAngles(
-            defaultYaw + yawDegrees, defaultRoll + rollDegrees, additionalRollDegrees, delta
-        )
-
-        fun resetAngles() = setAngles(defaultYaw, defaultRoll)
-
-        companion object {
-            const val LIMB_LENGTH = 22 / 16F
-            const val FORELIMB_LENGTH = 30 / 16F
-        }
-    }
-
+    //@formatter:off
     private val leftLegs = arrayOf(
-        BigSpiderLimbParts(this, 75F, 15F, 13 / 16F, 0, false),
-        BigSpiderLimbParts(this, 30F, 25F, 15 / 16F, 1, false),
-        BigSpiderLimbParts(this, -15F, 20F, 17 / 16F, 2, false),
-        BigSpiderLimbParts(this, -50F, 5F, 19 / 16F, 3, false),
+        BigSpiderLimb(body,  75F, 15F, { (additionalBodyHeight + 13) / 16F }, LIMB_LENGTH, FORELIMB_LENGTH, 0, false),
+        BigSpiderLimb(body,  30F, 25F, { (additionalBodyHeight + 15) / 16F }, LIMB_LENGTH, FORELIMB_LENGTH, 1, false),
+        BigSpiderLimb(body, -15F, 20F, { (additionalBodyHeight + 17) / 16F }, LIMB_LENGTH, FORELIMB_LENGTH, 2, false),
+        BigSpiderLimb(body, -50F, 5F,  { (additionalBodyHeight + 19) / 16F }, LIMB_LENGTH, FORELIMB_LENGTH, 3, false),
     )
     private val rightLegs = arrayOf(
-        BigSpiderLimbParts(this, 75F, 15F, 13 / 16F, 0, true),
-        BigSpiderLimbParts(this, 30F, 25F, 15 / 16F, 1, true),
-        BigSpiderLimbParts(this, -15F, 20F, 17 / 16F, 2, true),
-        BigSpiderLimbParts(this, -50F, 5F, 19 / 16F, 3, true),
+        BigSpiderLimb(body,  75F, 15F, { (additionalBodyHeight + 13) / 16F }, LIMB_LENGTH, FORELIMB_LENGTH, 0, true),
+        BigSpiderLimb(body,  30F, 25F, { (additionalBodyHeight + 15) / 16F }, LIMB_LENGTH, FORELIMB_LENGTH, 1, true),
+        BigSpiderLimb(body, -15F, 20F, { (additionalBodyHeight + 17) / 16F }, LIMB_LENGTH, FORELIMB_LENGTH, 2, true),
+        BigSpiderLimb(body, -50F, 5F,  { (additionalBodyHeight + 19) / 16F }, LIMB_LENGTH, FORELIMB_LENGTH, 3, true),
     )
+    //@formatter:on
 
     override fun render(
         matrices: MatrixStack,
@@ -117,7 +79,7 @@ class ArachneEntityModel<T>(root: ModelPart) : EntityModel<T>(RenderLayer::getEn
 
         idleAnimation(animationProgress * 0.1F, 1F - speedDelta)
         rotationAnimation(yawProgress, yawDelta)
-        walkAnimation(speedProgress, speedDelta)
+        bigSpiderWalkAnimation(body, abdomen, leftLegs, rightLegs, speedProgress, speedDelta)
 
         eggs.forEachIndexed { index, egg ->
             val speed = 7F + sin(index * 100F) * 3F
@@ -143,36 +105,7 @@ class ArachneEntityModel<T>(root: ModelPart) : EntityModel<T>(RenderLayer::getEn
         rightLegs.forEach { it.setAnglesFromDefaults(rollDegrees = additionalRoll, delta = delta) }
     }
 
-    private fun walkAnimation(progress: Float, delta: Float) {
-        additionalBodyHeight = sin(progress) * 2F * delta
-        body.pivotY -= additionalBodyHeight
-        body.setPartialAnglesDegrees(
-            yaw = sin(progress),
-            delta = delta
-        )
-        abdomen.setPartialAnglesDegrees(
-            yaw = sin(progress + 60F.radians()) * 5F,
-            pitch = 5F + sin(progress * 2F + 45F.radians()) * 5F,
-            delta = delta
-        )
-        leftLegs.forEachIndexed { index, leg -> walkLeg(leg, progress, delta, index, false) }
-        rightLegs.forEachIndexed { index, leg -> walkLeg(leg, progress, delta, index, true) }
-    }
-
-    private fun walkLeg(leg: BigSpiderLimbParts, progress: Float, delta: Float, index: Int, right: Boolean) {
-        val multiplier = legMultiplier(right, index)
-        val offset = index * 15F.radians() + if (right) 5F.radians() else 0F
-        val yaw = sin(progress + offset) * 20F
-        val roll = multiplier * sin(progress - 100F.radians() + offset).let {
-            if (index == 0) it * 15F + multiplier * 15F else it * 5F + multiplier * 5F
-        }
-        val additionalRoll = smoothStep(multiplier * sin(progress + 90F.radians() + offset) + 0.25F, 0F, 1.25F) * 20F
-        leg.setAnglesFromDefaults(yaw * multiplier, roll, additionalRoll, delta = delta)
-    }
-
     private fun rotationAnimation(progress: Float, delta: Float) {
-        walkAnimation(progress, delta)
+        bigSpiderWalkAnimation(body, abdomen, leftLegs, rightLegs, progress, delta)
     }
-
-    private fun legMultiplier(right: Boolean, index: Int) = if (right xor (index % 2 == 0)) -1F else 1F
 }

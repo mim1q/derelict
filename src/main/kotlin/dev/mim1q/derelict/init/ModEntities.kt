@@ -4,6 +4,7 @@ import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.entity.SpiderlingEntity
 import dev.mim1q.derelict.entity.boss.ArachneEntity
 import dev.mim1q.derelict.entity.spider.CharmingSpiderEntity
+import dev.mim1q.derelict.entity.spider.WebCasterEntity
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricDefaultAttributeRegistry
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
 import net.minecraft.entity.EntityDimensions
@@ -27,6 +28,10 @@ object ModEntities {
 
     val CHARMING_SPIDER = register("charming_spider", ::CharmingSpiderEntity, attributes = SpiderEntity.createSpiderAttributes()) {
         dimensions(EntityDimensions.fixed(0.8F, 0.8F))
+    }
+
+    val WEB_CASTER = register("web_caster", ::WebCasterEntity, attributes = SpiderEntity.createSpiderAttributes()) {
+        dimensions(EntityDimensions.fixed(1.8F, 1.2F))
     }
 
     fun init() {}
