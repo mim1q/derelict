@@ -1,8 +1,11 @@
 package dev.mim1q.derelict.client.render.entity.spider
 
 import dev.mim1q.derelict.Derelict
+import dev.mim1q.derelict.client.render.entity.spider.SpiderRenderUtils.walkLegs
 import dev.mim1q.derelict.entity.spider.CharmingSpiderEntity
 import dev.mim1q.derelict.init.client.ModRender
+import dev.mim1q.derelict.util.extensions.radians
+import dev.mim1q.derelict.util.extensions.setPartialAnglesDegrees
 import net.minecraft.client.model.*
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumer
@@ -11,6 +14,7 @@ import net.minecraft.client.render.entity.LivingEntityRenderer
 import net.minecraft.client.render.entity.model.EntityModel
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.Identifier
+import kotlin.math.sin
 
 
 class CharmingSpiderEntityRenderer(
@@ -28,8 +32,20 @@ class CharmingSpiderEntityRenderer(
 }
 
 class CharmingSpiderEntityModel(
-    private val root: ModelPart
+    part: ModelPart
 ) : EntityModel<CharmingSpiderEntity>(RenderLayer::getEntityCutout) {
+    private val root: ModelPart = part.getChild("root")
+    private val leftLegs: ModelPart = root.getChild("left_legs")
+    private val rightLegs: ModelPart = root.getChild("right_legs")
+    private val torso: ModelPart = root.getChild("torso")
+    private val tail: ModelPart = torso.getChild("tail")
+    private val head: ModelPart = torso.getChild("head")
+
+    private val allLegs: Array<ModelPart> =
+        Array(8) { i ->
+            val child = if (i < 4) "left_leg" else "right_leg"
+            root.getChild("${child}s").getChild("$child${i % 4}")
+        }
 
     override fun render(
         matrices: MatrixStack,
@@ -50,7 +66,35 @@ class CharmingSpiderEntityModel(
         headYaw: Float,
         headPitch: Float
     ) {
+        root.traverse().forEach(ModelPart::resetTransform)
 
+        leftLegs.roll = (15f).radians()
+        rightLegs.roll = (-15f).radians()
+
+        walkLegs(allLegs, animationProgress, limbDistance)
+
+        allLegs[0].roll += (20f).radians()
+        allLegs[4].roll -= (20f).radians()
+
+        val tailWiggle = entity.tailDanceAnimation.update(animationProgress)
+        val bodyWiggle = entity.bodyDanceAnimation.update(animationProgress)
+
+        tail.roll += 180f.radians() * tailWiggle
+        tail.pitch -= 60f.radians() * tailWiggle
+        tail.yaw += tailWiggle * sin(animationProgress * 0.5f) * 30f.radians()
+
+        allLegs[1].setPartialAnglesDegrees(0f, -65f + bodyWiggle * 15f, 15f, tailWiggle)
+        allLegs[5].setPartialAnglesDegrees(0f, 65f + bodyWiggle * 15f, -15f, tailWiggle)
+
+        torso.pivotX += bodyWiggle * 0.5f
+        torso.yaw = bodyWiggle * 5f.radians()
+
+        for (i in 0..7) {
+            allLegs[i].yaw += bodyWiggle * 5f.radians()
+        }
+
+        head.yaw = headYaw.radians()
+        head.pitch = headPitch.radians()
     }
 
     companion object {

@@ -1,6 +1,7 @@
 package dev.mim1q.derelict.client.render.entity.spider
 
 import dev.mim1q.derelict.Derelict
+import dev.mim1q.derelict.client.render.entity.spider.SpiderRenderUtils.walkLegs
 import dev.mim1q.derelict.entity.SpiderlingEntity
 import dev.mim1q.derelict.init.client.ModRender
 import dev.mim1q.derelict.util.extensions.drawBillboard
@@ -18,7 +19,8 @@ import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.RotationAxis
 import org.joml.Vector2f
-import kotlin.math.*
+import kotlin.math.atan2
+import kotlin.math.sqrt
 
 
 class SpiderlingEntityRenderer(context: EntityRendererFactory.Context) :
@@ -121,15 +123,7 @@ class SpiderlingModel(
         rightLegs.roll = (-25f).radians()
         val progress = limbAngle * 1.0f
 
-        walkLeg(0, 60f, progress, 0f, 0.4f * limbDistance)
-        walkLeg(1, 25f, progress, 90f, 0.4f * limbDistance)
-        walkLeg(2, -15f, progress, 15f, 0.5f * limbDistance)
-        walkLeg(3, -35f, progress, 105f, 0.6f * limbDistance)
-
-        walkLeg(4, -60f, progress, 10f, 0.4f * limbDistance)
-        walkLeg(5, -25f, progress, 100f, 0.4f * limbDistance)
-        walkLeg(6, 15f, progress, 25f, 0.5f * limbDistance)
-        walkLeg(7, 35f, progress, 115f, 0.6f * limbDistance)
+        walkLegs(legs, progress, limbDistance)
 
         neck.yaw = 0f
         head.yaw = 0f
@@ -143,13 +137,6 @@ class SpiderlingModel(
         }
 
         head.yaw = headYaw.radians()
-    }
-
-    private fun walkLeg(index: Int, defaultAngle: Float, progress: Float, offset: Float, multiplier: Float) {
-        val leg = legs[index]
-        leg.yaw = defaultAngle.radians() + sin((progress + offset.radians())) * multiplier
-        leg.roll = max(0f, cos((progress + (offset - 35f).radians())) * multiplier)
-        leg.roll *= if (index < 4) -1 else 1
     }
 }
 

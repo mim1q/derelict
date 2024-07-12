@@ -1,11 +1,54 @@
 package dev.mim1q.derelict.entity.spider
 
+import dev.mim1q.gimm1q.interpolation.AnimatedProperty
+import dev.mim1q.gimm1q.interpolation.Easing
+import net.minecraft.block.Blocks
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.mob.SpiderEntity
+import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
 class CharmingSpiderEntity(
     entityType: EntityType<out SpiderEntity>,
     world: World
 ) : SpiderEntity(entityType, world) {
+
+    private var songSource: BlockPos? = null
+    private var isSongPlaying: Boolean = false
+
+    val tailDanceAnimation = AnimatedProperty(0f)
+    val bodyDanceAnimation = AnimatedProperty(0f, Easing::easeOutElastic)
+
+    override fun initDataTracker() {
+        super.initDataTracker()
+    }
+
+    override fun tick() {
+        super.tick()
+
+
+        if (this.songSource == null || !songSource!!.isWithinDistance(this.pos, 3.46) || !world.getBlockState(this.songSource).isOf(Blocks.JUKEBOX)) {
+            this.isSongPlaying = false
+            this.songSource = null
+        }
+
+        if (world.isClient) {
+            if (isSongPlaying) {
+                tailDanceAnimation.transitionTo(1f, 10f)
+
+                when (age % 60) {
+                    0 -> bodyDanceAnimation.transitionTo(1f, 30f)
+                    30 -> bodyDanceAnimation.transitionTo(-1f, 30f)
+                }
+            } else {
+                tailDanceAnimation.transitionTo(0f, 10f)
+                bodyDanceAnimation.transitionTo(0f, 10f)
+            }
+        }
+    }
+
+    override fun setNearbySongPlaying(songPosition: BlockPos, playing: Boolean) {
+        this.songSource = songPosition
+        this.isSongPlaying = playing
+    }
 }
