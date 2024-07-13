@@ -53,7 +53,7 @@ fun bigSpiderWalkAnimation(
 }
 
 class BigSpiderLimb(
-    private val body: ModelPart,
+    body: ModelPart,
     private val defaultYaw: Float,
     private val defaultRoll: Float,
     private val height: () -> Float,

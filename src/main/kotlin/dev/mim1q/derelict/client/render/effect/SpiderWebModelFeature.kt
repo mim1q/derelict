@@ -36,7 +36,7 @@ class SpiderWebModelFeature(
         return@vertexConsumerPicker ModelOverlayVertexConsumer
             .of(vertexConsumers.getBuffer(RenderLayer.getEntityCutout(texture)))
             .textureSize(64)
-            .offset(0.501f)
+            .offset(1.101f)
             .skipPlanes()
     },
     true

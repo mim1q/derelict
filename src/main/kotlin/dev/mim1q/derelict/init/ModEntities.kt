@@ -31,7 +31,7 @@ object ModEntities {
     }
 
     val WEB_CASTER = register("web_caster", ::WebCasterEntity, attributes = SpiderEntity.createSpiderAttributes()) {
-        dimensions(EntityDimensions.fixed(1.8F, 1.2F))
+        dimensions(EntityDimensions.fixed(2.3F, 1.1F))
     }
 
     fun init() {}

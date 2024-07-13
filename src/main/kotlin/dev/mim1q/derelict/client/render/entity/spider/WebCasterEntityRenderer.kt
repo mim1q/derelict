@@ -4,7 +4,9 @@ import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.entity.spider.WebCasterEntity
 import dev.mim1q.derelict.init.client.ModRender
 import dev.mim1q.derelict.util.extensions.radians
+import dev.mim1q.derelict.util.extensions.setPartialAnglesDegrees
 import net.minecraft.client.model.*
+import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.render.entity.EntityRendererFactory
 import net.minecraft.client.render.entity.MobEntityRenderer
@@ -26,7 +28,7 @@ class WebCasterEntityRenderer(
     }
 }
 
-class WebCasterEntityModel(part: ModelPart) : EntityModel<WebCasterEntity>() {
+class WebCasterEntityModel(part: ModelPart) : EntityModel<WebCasterEntity>(RenderLayer::getEntityCutout) {
 
     private val root = part.getChild("root")
     private val web = root.getChild("web")
@@ -80,7 +82,35 @@ class WebCasterEntityModel(part: ModelPart) : EntityModel<WebCasterEntity>() {
         head.yaw = headYaw.radians()
         head.pitch = headPitch.radians()
 
-        web.xScale = 0f
+        val webHold = entity.webHeldAnimation.update(animationProgress)
+
+        web.xScale = webHold
+        web.yScale = webHold
+
+        leftLegs[0].joint.setPartialAnglesDegrees(0f, 0f, 75f, webHold)
+        leftLegs[0].limb.setPartialAnglesDegrees(0f, -40f, 0f, webHold)
+        leftLegs[0].forelimb.setPartialAnglesDegrees(0f, 40f, 0f, webHold)
+
+        rightLegs[0].joint.setPartialAnglesDegrees(0f, 0f, -75f, webHold)
+        rightLegs[0].limb.setPartialAnglesDegrees(0f, 40f, 0f, webHold)
+        rightLegs[0].forelimb.setPartialAnglesDegrees(0f, -40f, 0f, webHold)
+
+        leftLegs[1].joint.setPartialAnglesDegrees(0f, 0f, 76f, webHold)
+        leftLegs[1].limb.setPartialAnglesDegrees(0f, 15f, 0f, webHold)
+        leftLegs[1].forelimb.setPartialAnglesDegrees(0f, -16f, 0f, webHold)
+
+        rightLegs[1].joint.setPartialAnglesDegrees(0f, 0f, -76f, webHold)
+        rightLegs[1].limb.setPartialAnglesDegrees(0f, -15f, 0f, webHold)
+        rightLegs[1].forelimb.setPartialAnglesDegrees(0f, 16f, 0f, webHold)
+
+        leftLegs[2].joint.yaw += 90f.radians() * webHold
+        rightLegs[2].joint.yaw -= 90f.radians() * webHold
+
+        leftLegs[3].joint.yaw += 30f.radians() * webHold
+        rightLegs[3].joint.yaw -= 30f.radians() * webHold
+
+        web.pivotZ -= 20f * webHold
+        web.pitch -= 10f.radians() * webHold
     }
 
     private fun idleAnimation(legs: Array<BigSpiderLimb>, animationProgress: Float, delta: Float) {

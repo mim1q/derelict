@@ -25,7 +25,7 @@ object ModStatusEffects {
             entity.addStatusEffect(
                 StatusEffectInstance(
                     this,
-                    if (entity.isPlayer) 200 else 40,
+                    if (entity.isPlayer) 60 else 40,
                     amplifier - 1,
                     false,
                     false,

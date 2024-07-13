@@ -1,11 +1,15 @@
 package dev.mim1q.derelict
 
+import com.mojang.blaze3d.systems.RenderSystem
 import dev.mim1q.derelict.client.render.effect.SpiderWebModelFeature
 import dev.mim1q.derelict.config.DerelictClientConfig
 import dev.mim1q.derelict.config.DerelictConfigs
 import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.init.ModParticles
+import dev.mim1q.derelict.init.ModStatusEffects
 import dev.mim1q.derelict.init.client.ModRender
+import dev.mim1q.derelict.init.component.ModCardinalComponents.getClientSyncedEffectAmplifier
+import dev.mim1q.derelict.init.component.ModCardinalComponents.hasClientSyncedEffect
 import dev.mim1q.derelict.interfaces.AbstractBlockAccessor
 import dev.mim1q.derelict.item.CrosshairTipItem
 import dev.mim1q.derelict.util.BlockMarkerUtils
@@ -19,6 +23,7 @@ import net.minecraft.client.render.entity.model.EntityModel
 import net.minecraft.entity.LivingEntity
 import net.minecraft.item.Items
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.MathHelper
 import kotlin.math.sin
 
 object DerelictClient : ClientModInitializer {
@@ -50,6 +55,34 @@ object DerelictClient : ClientModInitializer {
                 }
             }
         }
+
+        val HUD_WEB_TEXTURES = arrayOf(
+            Derelict.id("textures/gui/effect/spider_web_gui_sparse.png"),
+            Derelict.id("textures/gui/effect/spider_web_gui.png"),
+            Derelict.id("textures/gui/effect/spider_web_gui_dense.png")
+        )
+
+        HudRenderCallback.EVENT.register { context, tickDelta ->
+            val player = MinecraftClient.getInstance().player ?: return@register
+
+            if (player.hasClientSyncedEffect(ModStatusEffects.COBWEBBED)) {
+                val level = MathHelper.clamp(player.getClientSyncedEffectAmplifier(ModStatusEffects.COBWEBBED) ?: 0, 0, 2)
+
+                val width = MinecraftClient.getInstance().window.scaledWidth
+                val windowHeight = MinecraftClient.getInstance().window.scaledHeight
+                val height = (width / 16) * 9
+
+                RenderSystem.enableBlend()
+                context.drawTexture(
+                    HUD_WEB_TEXTURES[level],
+                    0, -(height - windowHeight) / 2,
+                    0f, 0f,
+                    width, height,
+                    width, height
+                )
+            }
+        }
+
 
         HighlightDrawerCallback.EVENT.register { drawer, ctx ->
             val range = CLIENT_CONFIG.waxableAndAgeableHightlightRange()

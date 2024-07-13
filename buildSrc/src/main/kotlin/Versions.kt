@@ -10,7 +10,7 @@ object Versions {
     // Library dependencies
     const val FABRIC_LANUGAGE_KOTLIN = "1.11.0+kotlin.2.0.0"
     const val KOTLIN = "2.0.0"
-    const val OWO_LIB = "0.11.2-pre.14+1.20"
+    const val OWO_LIB = "0.11.2+1.20"
     const val JANKSON = "1.2.1"
     const val CARDINAL_COMPONENTS = "5.2.2"
 

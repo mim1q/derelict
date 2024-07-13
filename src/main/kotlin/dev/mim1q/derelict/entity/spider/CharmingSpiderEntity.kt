@@ -17,7 +17,7 @@ class CharmingSpiderEntity(
     private var isSongPlaying: Boolean = false
 
     val tailDanceAnimation = AnimatedProperty(0f)
-    val bodyDanceAnimation = AnimatedProperty(0f, Easing::easeOutElastic)
+    val bodyDanceAnimation = AnimatedProperty(0f, Easing::easeOutBack)
 
     override fun initDataTracker() {
         super.initDataTracker()
@@ -36,9 +36,9 @@ class CharmingSpiderEntity(
             if (isSongPlaying) {
                 tailDanceAnimation.transitionTo(1f, 10f)
 
-                when (age % 60) {
-                    0 -> bodyDanceAnimation.transitionTo(1f, 30f)
-                    30 -> bodyDanceAnimation.transitionTo(-1f, 30f)
+                when (age % 20) {
+                    0 -> bodyDanceAnimation.transitionTo(1f, 10f)
+                    10 -> bodyDanceAnimation.transitionTo(-1f, 10f)
                 }
             } else {
                 tailDanceAnimation.transitionTo(0f, 10f)
