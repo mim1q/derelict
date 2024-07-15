@@ -2,17 +2,19 @@ package dev.mim1q.derelict.entity.spider
 
 import dev.mim1q.derelict.entity.boss.BigSpider
 import dev.mim1q.derelict.entity.boss.BigSpiderAnimationProperties
+import dev.mim1q.derelict.init.ModStatusEffects
 import dev.mim1q.gimm1q.interpolation.AnimatedProperty
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.ai.goal.*
 import net.minecraft.entity.data.DataTracker
 import net.minecraft.entity.data.TrackedData
 import net.minecraft.entity.data.TrackedDataHandlerRegistry
-import net.minecraft.entity.mob.HostileEntity
+import net.minecraft.entity.effect.StatusEffectInstance
+import net.minecraft.entity.mob.SpiderEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.world.World
 
-class WebCasterEntity(entityType: EntityType<out HostileEntity>, world: World) : HostileEntity(entityType, world), BigSpider {
+class WebCasterEntity(entityType: EntityType<WebCasterEntity>, world: World) : SpiderEntity(entityType, world), BigSpider {
     companion object {
         val WEB_HELD: TrackedData<Boolean> = DataTracker.registerData(WebCasterEntity::class.java, TrackedDataHandlerRegistry.BOOLEAN)
         val WEB_CASTING: TrackedData<Boolean> = DataTracker.registerData(WebCasterEntity::class.java, TrackedDataHandlerRegistry.BOOLEAN)
@@ -27,8 +29,6 @@ class WebCasterEntity(entityType: EntityType<out HostileEntity>, world: World) :
     }
 
     override fun initGoals() {
-        super.initGoals()
-
         goalSelector.add(0, SwimGoal(this))
         goalSelector.add(1, MeleeAttackGoal(this, 1.2, true))
         goalSelector.add(2, LookAtEntityGoal(this, PlayerEntity::class.java, 16.0f))
@@ -79,16 +79,16 @@ class WebCasterEntity(entityType: EntityType<out HostileEntity>, world: World) :
 
                     val checkPos = pos.add(rotationVector.multiply(2.0))
                     if ((target?.squaredDistanceTo(checkPos) ?: 100.0) < 4.0 && webHeldTimer < -40) {
-//                        target?.addStatusEffect(
-//                            StatusEffectInstance(
-//                                ModStatusEffects.COBWEBBED,
-//                                60,
-//                                2,
-//                                true,
-//                                false,
-//                                true
-//                            )
-//                        )
+                        target?.addStatusEffect(
+                            StatusEffectInstance(
+                                ModStatusEffects.COBWEBBED,
+                                60,
+                                2,
+                                true,
+                                false,
+                                true
+                            )
+                        )
                         webCooldown = 200 + random.nextInt(200)
                         webHeldTimer = 60
                         dataTracker[WEB_HELD] = false

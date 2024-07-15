@@ -13,6 +13,7 @@ import net.minecraft.client.render.entity.MobEntityRenderer
 import net.minecraft.client.render.entity.model.EntityModel
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.Identifier
+import kotlin.math.min
 
 class WebCasterEntityRenderer(
     ctx: EntityRendererFactory.Context
@@ -77,7 +78,7 @@ class WebCasterEntityModel(part: ModelPart) : EntityModel<WebCasterEntity>(Rende
         idleAnimation(leftLegs, animationProgress, 1f - limbDistance)
         idleAnimation(rightLegs, animationProgress, 1f - limbDistance)
 
-        bigSpiderWalkAnimation(torso, back, leftLegs, rightLegs, limbAngle, limbDistance)
+        bigSpiderWalkAnimation(torso, back, leftLegs, rightLegs, limbAngle * 0.5f, min(limbDistance, 0.75f))
 
         head.yaw = headYaw.radians()
         head.pitch = headPitch.radians()

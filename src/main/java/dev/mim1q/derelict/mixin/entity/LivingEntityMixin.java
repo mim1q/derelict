@@ -1,5 +1,7 @@
 package dev.mim1q.derelict.mixin.entity;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import dev.mim1q.derelict.config.DerelictConfigs;
 import dev.mim1q.derelict.init.ModEntities;
 import dev.mim1q.derelict.init.ModStatusEffects;
@@ -17,7 +19,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import static java.lang.Math.min;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
@@ -48,25 +51,18 @@ public abstract class LivingEntityMixin extends Entity {
         }
     }
 
-    @Inject(
-        method = "jump",
-        at = @At("HEAD"),
-        cancellable = true
-    )
-    private void derelict$cancelJump(CallbackInfo ci) {
-        if (ModCardinalComponents.INSTANCE.hasClientSyncedEffect((LivingEntity) (Object) this, ModStatusEffects.INSTANCE.getCOBWEBBED())) {
-            ci.cancel();
-        }
-    }
-
-    @Inject(
+    @WrapOperation(
         method = "applyMovementInput",
-        at = @At("HEAD"),
-        cancellable = true
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/entity/LivingEntity;updateVelocity(FLnet/minecraft/util/math/Vec3d;)V"
+        )
     )
-    private void derelict$cancelMovement(Vec3d movementInput, float slipperiness, CallbackInfoReturnable<Vec3d> cir) {
+    private void derelict$cancelMovement(LivingEntity instance, float v, Vec3d movementInput, Operation<Void> original) {
         if (ModCardinalComponents.INSTANCE.hasClientSyncedEffect((LivingEntity) (Object) this, ModStatusEffects.INSTANCE.getCOBWEBBED())) {
-            cir.setReturnValue(movementInput.multiply(0.0, 1.0, 0.0));
+            original.call(instance, v, new Vec3d(0.0, min(0.0, movementInput.y), 0.0));
+            return;
         }
+        original.call(instance, v, movementInput);
     }
 }
