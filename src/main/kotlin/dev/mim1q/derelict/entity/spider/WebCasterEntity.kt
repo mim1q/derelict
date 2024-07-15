@@ -4,7 +4,10 @@ import dev.mim1q.derelict.entity.boss.BigSpider
 import dev.mim1q.derelict.entity.boss.BigSpiderAnimationProperties
 import dev.mim1q.derelict.init.ModStatusEffects
 import dev.mim1q.gimm1q.interpolation.AnimatedProperty
+import dev.mim1q.gimm1q.interpolation.Easing
+import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityType
+import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.ai.goal.*
 import net.minecraft.entity.data.DataTracker
 import net.minecraft.entity.data.TrackedData
@@ -13,11 +16,11 @@ import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.mob.SpiderEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.world.World
+import kotlin.math.pow
 
 class WebCasterEntity(entityType: EntityType<WebCasterEntity>, world: World) : SpiderEntity(entityType, world), BigSpider {
     companion object {
         val WEB_HELD: TrackedData<Boolean> = DataTracker.registerData(WebCasterEntity::class.java, TrackedDataHandlerRegistry.BOOLEAN)
-        val WEB_CASTING: TrackedData<Boolean> = DataTracker.registerData(WebCasterEntity::class.java, TrackedDataHandlerRegistry.BOOLEAN)
     }
 
     override val bigSpiderAnimationProperties = BigSpiderAnimationProperties(this)
@@ -25,7 +28,6 @@ class WebCasterEntity(entityType: EntityType<WebCasterEntity>, world: World) : S
     override fun initDataTracker() {
         super.initDataTracker()
         dataTracker.startTracking(WEB_HELD, false)
-        dataTracker.startTracking(WEB_CASTING, false)
     }
 
     override fun initGoals() {
@@ -44,57 +46,67 @@ class WebCasterEntity(entityType: EntityType<WebCasterEntity>, world: World) : S
     private var webHeldTimer = 0
 
     val webHeldAnimation = AnimatedProperty(0f)
-    val webSpinAnimation = AnimatedProperty(0f)
 
 
     override fun tick() {
         super.tick()
 
         if (world.isClient) {
-            if (dataTracker[WEB_HELD]) {
-                webHeldAnimation.transitionTo(1f, 5f)
-            } else {
-                webHeldAnimation.transitionTo(0f, 5f)
-            }
-
-            if (dataTracker[WEB_CASTING]) {
-                webSpinAnimation.transitionTo(1f, 20f)
-            } else {
-                webSpinAnimation.transitionTo(0f, 20f)
-            }
+            handleAnimations()
         } else {
-            webCooldown--
-            if (dataTracker[WEB_HELD]) {
-                webHeldTimer--
-            }
+            tickWebLogic()
+        }
+    }
+
+    private fun handleAnimations() {
+        if (dataTracker[WEB_HELD]) {
+            webHeldAnimation.transitionTo(1f, 5f, Easing::easeOutBack)
+        } else {
+            webHeldAnimation.transitionTo(0f, 10f, Easing::easeInBack)
+        }
+    }
+
+    private fun tickWebLogic() {
+        webCooldown--
+        if (dataTracker[WEB_HELD]) {
+            webHeldTimer--
 
             if (target == null) {
                 targetTimer = 60 + random.nextInt(60)
                 dataTracker[WEB_HELD] = false
-            } else if (webCooldown <= 0) {
-                targetTimer--
-
-                if (targetTimer < 0) {
-                    dataTracker[WEB_HELD] = true
-
-                    val checkPos = pos.add(rotationVector.multiply(2.0))
-                    if ((target?.squaredDistanceTo(checkPos) ?: 100.0) < 4.0 && webHeldTimer < -40) {
-                        target?.addStatusEffect(
-                            StatusEffectInstance(
-                                ModStatusEffects.COBWEBBED,
-                                60,
-                                2,
-                                true,
-                                false,
-                                true
-                            )
-                        )
-                        webCooldown = 200 + random.nextInt(200)
-                        webHeldTimer = 60
-                        dataTracker[WEB_HELD] = false
-                    }
-                }
+                return
             }
         }
+
+        if (webCooldown <= 0 && target != null) {
+            targetTimer--
+            if (targetTimer >= 0) return
+            dataTracker[WEB_HELD] = true
+        }
     }
+
+    override fun tryAttack(target: Entity): Boolean {
+        if (target is LivingEntity && webHeldTimer <= 0) {
+            target.addStatusEffect(
+                StatusEffectInstance(
+                    ModStatusEffects.COBWEBBED,
+                    60,
+                    2,
+                    true,
+                    false,
+                    true
+                )
+            )
+
+            webCooldown = 200 + random.nextInt(200)
+            webHeldTimer = 100
+            dataTracker[WEB_HELD] = false
+
+            return false
+        }
+
+        return super.tryAttack(target)
+    }
+
+    override fun squaredAttackRange(target: LivingEntity): Double = (width + 1.0).pow(2) + target.width
 }
