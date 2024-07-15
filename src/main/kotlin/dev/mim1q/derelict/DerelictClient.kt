@@ -68,14 +68,17 @@ object DerelictClient : ClientModInitializer {
             if (player.hasClientSyncedEffect(ModStatusEffects.COBWEBBED)) {
                 val level = MathHelper.clamp(player.getClientSyncedEffectAmplifier(ModStatusEffects.COBWEBBED) ?: 0, 0, 2)
 
-                val width = MinecraftClient.getInstance().window.scaledWidth
+                val windowWidth = MinecraftClient.getInstance().window.scaledWidth
                 val windowHeight = MinecraftClient.getInstance().window.scaledHeight
-                val height = (width / 16) * 9
+                val isHorizontal = (windowWidth.toFloat() / windowHeight) > (16f / 9f)
+
+                val width = if (isHorizontal) windowWidth else (windowHeight * 16) / 9
+                val height = if (isHorizontal) (windowWidth * 9) / 16 else windowHeight
 
                 RenderSystem.enableBlend()
                 context.drawTexture(
                     HUD_WEB_TEXTURES[level],
-                    0, -(height - windowHeight) / 2,
+                    (windowWidth - width) / 2, (windowHeight - height) / 2,
                     0f, 0f,
                     width, height,
                     width, height
