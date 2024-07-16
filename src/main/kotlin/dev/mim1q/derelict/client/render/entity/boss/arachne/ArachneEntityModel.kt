@@ -79,7 +79,7 @@ class ArachneEntityModel<T>(root: ModelPart) : EntityModel<T>(RenderLayer::getEn
 
         idleAnimation(animationProgress * 0.1F, 1F - speedDelta)
         rotationAnimation(yawProgress, yawDelta)
-        bigSpiderWalkAnimation(body, abdomen, leftLegs, rightLegs, speedProgress, speedDelta)
+        bigSpiderWalkAnimation(body, abdomen, leftLegs, rightLegs, speedProgress, speedDelta) { if (it == 0) 2f else 1f }
 
         eggs.forEachIndexed { index, egg ->
             val speed = 7F + sin(index * 100F) * 3F

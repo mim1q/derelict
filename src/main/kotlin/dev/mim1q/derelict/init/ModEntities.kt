@@ -4,6 +4,7 @@ import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.entity.SpiderlingEntity
 import dev.mim1q.derelict.entity.boss.ArachneEntity
 import dev.mim1q.derelict.entity.spider.CharmingSpiderEntity
+import dev.mim1q.derelict.entity.spider.DaddyLongLegsEntity
 import dev.mim1q.derelict.entity.spider.WebCasterEntity
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricDefaultAttributeRegistry
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
@@ -32,6 +33,10 @@ object ModEntities {
 
     val WEB_CASTER = register("web_caster", ::WebCasterEntity, attributes = SpiderEntity.createSpiderAttributes()) {
         dimensions(EntityDimensions.fixed(2.3F, 1.1F))
+    }
+
+    val DADDY_LONG_LEGS = register("daddy_long_legs", ::DaddyLongLegsEntity, attributes = SpiderEntity.createSpiderAttributes()) {
+        dimensions(EntityDimensions.fixed(0.6F, 1.8F))
     }
 
     fun init() {}

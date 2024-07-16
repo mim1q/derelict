@@ -56,13 +56,13 @@ object DerelictClient : ClientModInitializer {
             }
         }
 
-        val HUD_WEB_TEXTURES = arrayOf(
+        val hudWebTextures = arrayOf(
             Derelict.id("textures/gui/effect/spider_web_gui_sparse.png"),
             Derelict.id("textures/gui/effect/spider_web_gui.png"),
             Derelict.id("textures/gui/effect/spider_web_gui_dense.png")
         )
 
-        HudRenderCallback.EVENT.register { context, tickDelta ->
+        HudRenderCallback.EVENT.register { context, _ ->
             val player = MinecraftClient.getInstance().player ?: return@register
 
             if (player.hasClientSyncedEffect(ModStatusEffects.COBWEBBED)) {
@@ -77,7 +77,7 @@ object DerelictClient : ClientModInitializer {
 
                 RenderSystem.enableBlend()
                 context.drawTexture(
-                    HUD_WEB_TEXTURES[level],
+                    hudWebTextures[level],
                     (windowWidth - width) / 2, (windowHeight - height) / 2,
                     0f, 0f,
                     width, height,
@@ -114,7 +114,7 @@ object DerelictClient : ClientModInitializer {
             }
         }
 
-        LivingEntityFeatureRendererRegistrationCallback.EVENT.register { entityType, entityRenderer, registrationHelper, context ->
+        LivingEntityFeatureRendererRegistrationCallback.EVENT.register { _, entityRenderer, registrationHelper, _ ->
             if (entityRenderer is LivingEntityRenderer) {
                 @Suppress("UNCHECKED_CAST")
                 registrationHelper.register(SpiderWebModelFeature(entityRenderer as LivingEntityRenderer<LivingEntity, EntityModel<LivingEntity>>))
