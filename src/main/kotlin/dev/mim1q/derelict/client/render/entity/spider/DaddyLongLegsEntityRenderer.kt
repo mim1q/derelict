@@ -10,6 +10,7 @@ import net.minecraft.client.render.entity.MobEntityRenderer
 import net.minecraft.client.render.entity.model.EntityModel
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.Identifier
+import kotlin.math.sin
 
 class DaddyLongLegsEntityRenderer(
     context: EntityRendererFactory.Context,
@@ -48,10 +49,13 @@ class DaddyLongLegsEntityModel(part: ModelPart) : EntityModel<DaddyLongLegsEntit
         )
         //@formatter:on
 
+        val danceAnimation = entity.danceAnimation.update(animationProgress)
+        body.pivotY += danceAnimation * sin(animationProgress) * 4.0f
+
         idleAnimation(leftLegs, animationProgress, 1f - limbDistance)
         idleAnimation(rightLegs, animationProgress, 1f - limbDistance)
 
-        bigSpiderWalkAnimation(body, null, leftLegs, rightLegs, animationProgress * 0.3f, 1f) { if (it == 0) 0.5f else 0.2f }
+        bigSpiderWalkAnimation(body, null, leftLegs, rightLegs, limbAngle, limbDistance) { if (it == 0) 0.5f else 0.2f }
     }
 
     private fun idleAnimation(legs: Array<BigSpiderLimb>, animationProgress: Float, delta: Float) {

@@ -15,6 +15,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.mob.SpiderEntity
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.sound.SoundEvents
 import net.minecraft.world.World
 import kotlin.math.pow
 
@@ -42,8 +43,8 @@ class WebCasterEntity(entityType: EntityType<WebCasterEntity>, world: World) : S
     }
 
     private var targetTimer = 100
-    private var webCooldown = 0
-    private var webHeldTimer = 0
+    private var webCooldown = 100
+    private var webHeldTimer = 40
 
     val webHeldAnimation = AnimatedProperty(0f)
 
@@ -60,9 +61,9 @@ class WebCasterEntity(entityType: EntityType<WebCasterEntity>, world: World) : S
 
     private fun handleAnimations() {
         if (dataTracker[WEB_HELD]) {
-            webHeldAnimation.transitionTo(1f, 5f, Easing::easeOutBack)
+            webHeldAnimation.transitionTo(1f, 15f, Easing::easeOutBack)
         } else {
-            webHeldAnimation.transitionTo(0f, 10f, Easing::easeInBack)
+            webHeldAnimation.transitionTo(0f, 5f, Easing::easeOutCubic)
         }
     }
 
@@ -81,12 +82,28 @@ class WebCasterEntity(entityType: EntityType<WebCasterEntity>, world: World) : S
         if (webCooldown <= 0 && target != null) {
             targetTimer--
             if (targetTimer >= 0) return
-            dataTracker[WEB_HELD] = true
+            if (!dataTracker[WEB_HELD]) {
+
+                dataTracker[WEB_HELD] = true
+                playSound(
+                    SoundEvents.BLOCK_WOOL_PLACE,
+                    1.0f,
+                    soundPitch
+                )
+                playSound(
+                    SoundEvents.ENTITY_SPIDER_AMBIENT,
+                    1.0f,
+                    soundPitch
+                )
+            }
         }
     }
 
     override fun tryAttack(target: Entity): Boolean {
-        if (target is LivingEntity && webHeldTimer <= 0) {
+        val webHeld = dataTracker[WEB_HELD]
+        if (webHeld && webHeldTimer > 0) return false
+
+        if (webHeld && target is LivingEntity) {
             target.addStatusEffect(
                 StatusEffectInstance(
                     ModStatusEffects.COBWEBBED,
@@ -99,14 +116,22 @@ class WebCasterEntity(entityType: EntityType<WebCasterEntity>, world: World) : S
             )
 
             webCooldown = 200 + random.nextInt(200)
-            webHeldTimer = 100
+            webHeldTimer = 40
             dataTracker[WEB_HELD] = false
+
+            playSound(
+                SoundEvents.BLOCK_WOOL_PLACE,
+                1.0f,
+                soundPitch
+            )
 
             return false
         }
 
         return super.tryAttack(target)
     }
+
+    override fun getSoundPitch(): Float = 0.6f + random.nextFloat() * 0.25f
 
     override fun squaredAttackRange(target: LivingEntity): Double = (width + 1.0).pow(2) + target.width
 }
