@@ -10,7 +10,6 @@ import net.minecraft.client.render.entity.MobEntityRenderer
 import net.minecraft.client.render.entity.model.EntityModel
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.Identifier
-import kotlin.math.sin
 
 class DaddyLongLegsEntityRenderer(
     context: EntityRendererFactory.Context,
@@ -33,42 +32,9 @@ class DaddyLongLegsEntityModel(part: ModelPart) : EntityModel<DaddyLongLegsEntit
     override fun setAngles(entity: DaddyLongLegsEntity, limbAngle: Float, limbDistance: Float, animationProgress: Float, headYaw: Float, headPitch: Float) {
         root.traverse().forEach(ModelPart::resetTransform)
         root.pivotY += 2f
-
-        //@formatter:off
-        val leftLegs = arrayOf(
-            BigSpiderLimb(root,  40f, -70f, { (-body.pivotY + 4f) / 16f }, LIMB_LENGTH, FORELIMB_LENGTH, 0, false),
-            BigSpiderLimb(root,  15f, -75f, { (-body.pivotY + 4f) / 16f }, LIMB_LENGTH, FORELIMB_LENGTH, 1, false),
-            BigSpiderLimb(root, -15f, -75f, { (-body.pivotY + 4f) / 16f }, LIMB_LENGTH, FORELIMB_LENGTH, 2, false),
-            BigSpiderLimb(root, -40f, -70f, { (-body.pivotY + 4f) / 16f }, LIMB_LENGTH, FORELIMB_LENGTH, 3, false),
-        )
-        val rightLegs = arrayOf(
-            BigSpiderLimb(root,  40f, -70f, { (-body.pivotY + 4f) / 16f }, LIMB_LENGTH, FORELIMB_LENGTH, 0, true),
-            BigSpiderLimb(root,  15f, -75f, { (-body.pivotY + 4f) / 16f }, LIMB_LENGTH, FORELIMB_LENGTH, 1, true),
-            BigSpiderLimb(root, -15f, -75f, { (-body.pivotY + 4f) / 16f }, LIMB_LENGTH, FORELIMB_LENGTH, 2, true),
-            BigSpiderLimb(root, -40f, -70f, { (-body.pivotY + 4f) / 16f }, LIMB_LENGTH, FORELIMB_LENGTH, 3, true),
-        )
-        //@formatter:on
-
-        val danceAnimation = entity.danceAnimation.update(animationProgress)
-        body.pivotY += danceAnimation * sin(animationProgress) * 4.0f
-
-        idleAnimation(leftLegs, animationProgress, 1f - limbDistance)
-        idleAnimation(rightLegs, animationProgress, 1f - limbDistance)
-
-        bigSpiderWalkAnimation(body, null, leftLegs, rightLegs, limbAngle, limbDistance) { if (it == 0) 0.5f else 0.2f }
-    }
-
-    private fun idleAnimation(legs: Array<BigSpiderLimb>, animationProgress: Float, delta: Float) {
-        legs[0].setAnglesFromDefaults()
-        legs[1].setAnglesFromDefaults()
-        legs[2].setAnglesFromDefaults()
-        legs[3].setAnglesFromDefaults()
     }
 
     companion object {
-        const val LIMB_LENGTH = 24 / 16f
-        const val FORELIMB_LENGTH = 24 / 16f
-
         fun createTexturedModelData(): TexturedModelData = ModelData().let {
             it.root.apply {
                 addChild("root", ModelPartBuilder.create(), ModelTransform.pivot(0F, 21F, 0F)).apply {

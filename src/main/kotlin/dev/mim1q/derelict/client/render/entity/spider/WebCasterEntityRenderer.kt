@@ -3,8 +3,6 @@ package dev.mim1q.derelict.client.render.entity.spider
 import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.entity.spider.WebCasterEntity
 import dev.mim1q.derelict.init.client.ModRender
-import dev.mim1q.derelict.util.extensions.radians
-import dev.mim1q.derelict.util.extensions.setPartialAnglesDegrees
 import net.minecraft.client.model.*
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumer
@@ -13,7 +11,6 @@ import net.minecraft.client.render.entity.MobEntityRenderer
 import net.minecraft.client.render.entity.model.EntityModel
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.Identifier
-import kotlin.math.min
 
 class WebCasterEntityRenderer(
     ctx: EntityRendererFactory.Context
@@ -37,21 +34,6 @@ class WebCasterEntityModel(part: ModelPart) : EntityModel<WebCasterEntity>(Rende
     private val head = torso.getChild("head")
     private val back = torso.getChild("back")
 
-    //@formatter:off
-    private val leftLegs = arrayOf(
-        BigSpiderLimb(torso,  75F, 15F, { 9 / 16F }, LIMB_LENGTH, FORELIMB_LENGTH, 0, false),
-        BigSpiderLimb(torso,  30F, 25F, { 9 / 16F }, LIMB_LENGTH, FORELIMB_LENGTH, 1, false),
-        BigSpiderLimb(torso, -15F, 20F, { 9 / 16F }, LIMB_LENGTH, FORELIMB_LENGTH, 2, false),
-        BigSpiderLimb(torso, -50F, 5F,  { 9 / 16F }, LIMB_LENGTH, FORELIMB_LENGTH, 3, false),
-    )
-    private val rightLegs = arrayOf(
-        BigSpiderLimb(torso,  75F, 15F, { 9 / 16F }, LIMB_LENGTH, FORELIMB_LENGTH, 0, true),
-        BigSpiderLimb(torso,  30F, 25F, { 9 / 16F }, LIMB_LENGTH, FORELIMB_LENGTH, 1, true),
-        BigSpiderLimb(torso, -15F, 20F, { 9 / 16F }, LIMB_LENGTH, FORELIMB_LENGTH, 2, true),
-        BigSpiderLimb(torso, -50F, 5F,  { 9 / 16F }, LIMB_LENGTH, FORELIMB_LENGTH, 3, true),
-    )
-    //@formatter:on
-
     override fun render(
         matrices: MatrixStack,
         vertices: VertexConsumer,
@@ -74,57 +56,10 @@ class WebCasterEntityModel(part: ModelPart) : EntityModel<WebCasterEntity>(Rende
         headPitch: Float
     ) {
         root.traverse().forEach(ModelPart::resetTransform)
-
-        idleAnimation(leftLegs, animationProgress, 1f - limbDistance)
-        idleAnimation(rightLegs, animationProgress, 1f - limbDistance)
-
-        bigSpiderWalkAnimation(torso, back, leftLegs, rightLegs, limbAngle * 0.5f, min(limbDistance, 0.75f))
-
-        head.yaw = headYaw.radians()
-        head.pitch = headPitch.radians()
-
-        val webHold = entity.webHeldAnimation.update(animationProgress)
-
-        web.xScale = webHold
-        web.yScale = webHold
-
-        leftLegs[0].joint.setPartialAnglesDegrees(0f, 0f, 75f, webHold)
-        leftLegs[0].limb.setPartialAnglesDegrees(0f, -40f, 0f, webHold)
-        leftLegs[0].forelimb.setPartialAnglesDegrees(0f, 40f, 0f, webHold)
-
-        rightLegs[0].joint.setPartialAnglesDegrees(0f, 0f, -75f, webHold)
-        rightLegs[0].limb.setPartialAnglesDegrees(0f, 40f, 0f, webHold)
-        rightLegs[0].forelimb.setPartialAnglesDegrees(0f, -40f, 0f, webHold)
-
-        leftLegs[1].joint.setPartialAnglesDegrees(0f, 0f, 76f, webHold)
-        leftLegs[1].limb.setPartialAnglesDegrees(0f, 15f, 0f, webHold)
-        leftLegs[1].forelimb.setPartialAnglesDegrees(0f, -16f, 0f, webHold)
-
-        rightLegs[1].joint.setPartialAnglesDegrees(0f, 0f, -76f, webHold)
-        rightLegs[1].limb.setPartialAnglesDegrees(0f, -15f, 0f, webHold)
-        rightLegs[1].forelimb.setPartialAnglesDegrees(0f, 16f, 0f, webHold)
-
-        leftLegs[2].joint.yaw += 90f.radians() * webHold
-        rightLegs[2].joint.yaw -= 90f.radians() * webHold
-
-        leftLegs[3].joint.yaw += 30f.radians() * webHold
-        rightLegs[3].joint.yaw -= 30f.radians() * webHold
-
-        web.pivotZ -= 20f * webHold
-        web.pitch -= 10f.radians() * webHold
     }
 
-    private fun idleAnimation(legs: Array<BigSpiderLimb>, animationProgress: Float, delta: Float) {
-        legs[0].setAnglesFromDefaults()
-        legs[1].setAnglesFromDefaults(yawDegrees = 25f)
-        legs[2].setAnglesFromDefaults(yawDegrees = -45f)
-        legs[3].setAnglesFromDefaults(yawDegrees = -25f, rollDegrees = 15f)
-    }
 
     companion object {
-        const val LIMB_LENGTH = 24 / 16F
-        const val FORELIMB_LENGTH = 28 / 16F
-
         fun createTexturedModelData(): TexturedModelData = ModelData().let {
             it.root.apply {
                 addChild("root", ModelPartBuilder.create(), ModelTransform.pivot(0F, 24F, 0F)).apply {
