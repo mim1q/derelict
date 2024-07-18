@@ -1,6 +1,7 @@
 package dev.mim1q.derelict.entity.spider.legs
 
 import dev.mim1q.derelict.util.extensions.getLocallyOffsetPos
+import dev.mim1q.derelict.util.lerpAngleRadians
 import dev.mim1q.gimm1q.interpolation.Easing
 import net.minecraft.entity.Entity
 import net.minecraft.util.math.Vec3d
@@ -25,11 +26,11 @@ class SpiderLegIKSolver(
     fun solve(
         target: Vec3d
     ) {
-        lastYaw = yaw
         lastUpperRoll = upperRoll
         lastLowerRoll = lowerRoll
+        lastYaw = yaw
 
-        yaw = atan2(target.z.toFloat(), target.x.toFloat())
+        yaw = lerpAngleRadians(yaw, atan2(target.z.toFloat(), target.x.toFloat()), 0.5f)
 
         val lowerRollCosine = ((target.lengthSquared().toFloat() - upperLength * upperLength - lowerLength * lowerLength) / (2f * upperLength * lowerLength)).coerceIn(-1f, 1f)
         val newLowerRoll = -acos(lowerRollCosine)
@@ -61,7 +62,7 @@ class SpiderLegIKSolver(
         target: Vec3d
     ) = solve(target.subtract(entity.getLocallyOffsetPos(offset)))
 
-    fun getYaw(tickDelta: Float) = Easing.lerp(lastYaw, yaw, tickDelta)
+    fun getYaw(tickDelta: Float) = lerpAngleRadians(lastYaw, yaw, tickDelta)
     fun getUpperRoll(tickDelta: Float) = Easing.lerp(lastUpperRoll, upperRoll, tickDelta)
     fun getLowerRoll(tickDelta: Float) = Easing.lerp(lastLowerRoll, lowerRoll, tickDelta)
 }

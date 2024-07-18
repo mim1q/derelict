@@ -10,6 +10,8 @@ import net.minecraft.entity.attribute.EntityAttributes
 import net.minecraft.entity.mob.HostileEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.particle.ParticleTypes
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Direction
 import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
@@ -18,7 +20,10 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
     override val bigSpiderAnimationProperties = BigSpiderAnimationProperties(this)
 
     val firstLegIk = SpiderLegIKSolver(22 / 16f, 30 / 16f)
+    var prevLegTargetPos: Vec3d = pos
     var firstLegTargetPos = pos
+    var firstLegNextTargetPos: Vec3d? = pos
+    var legTargetTicks = 0
 
     init {
         stepHeight = 2F
@@ -61,13 +66,47 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
                 0.0
             )
 
+            val shouldMove = age % 20 == 0
 
-            val legYaw = MathHelper.wrapDegrees(firstLegIk.getYaw(1f).degrees() - bodyYaw)
-            if (this.pos.distanceTo(firstLegTargetPos) > 3.0 || legYaw < 270 && legYaw > 90) {
-                firstLegTargetPos = getLocallyOffsetPos(Vec3d(2.0, 0.0, 1.0))
+            if (firstLegNextTargetPos == null && shouldMove) {
+                prevLegTargetPos = firstLegTargetPos
+                firstLegNextTargetPos = findLegPosition(getLocallyOffsetPos(Vec3d(2.0, 0.0, 3.0)))
             }
+
+            if (firstLegNextTargetPos != null) {
+
+                if (firstLegTargetPos.squaredDistanceTo(firstLegNextTargetPos) > 0.1) {
+                    firstLegTargetPos = prevLegTargetPos.lerp(firstLegNextTargetPos, legTargetTicks / 10.0).add(
+                        0.0,
+                        0.05 * legTargetTicks * (10 - legTargetTicks),
+                        0.0
+                    )
+                }
+
+                legTargetTicks++
+                if (legTargetTicks > 10) {
+                    firstLegNextTargetPos = null
+                }
+            } else {
+                legTargetTicks = 0
+            }
+
             firstLegIk.convertToLocalAndSolve(this, offset, firstLegTargetPos)
         }
+    }
+
+    private fun findLegPosition(base: Vec3d): Vec3d {
+        for (i in 1 downTo -2) {
+            val pos = BlockPos.ofFloored(base).up(i)
+            val block = world.getBlockState(pos)
+            val shape = block.getOutlineShape(world, pos)
+            println(block.block)
+
+            if (!shape.isEmpty) {
+                return Vec3d(base.x, pos.y + shape.getMax(Direction.Axis.Y), base.z)
+            }
+        }
+        return base
     }
 
     override fun createBodyControl() = ArachneBodyControl(this)
