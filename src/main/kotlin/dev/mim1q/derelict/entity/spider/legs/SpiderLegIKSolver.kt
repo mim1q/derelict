@@ -24,7 +24,8 @@ class SpiderLegIKSolver(
     private var lastLowerRoll = 0f
 
     fun solve(
-        target: Vec3d
+        target: Vec3d,
+        negativeLowerRoll: Boolean
     ) {
         lastUpperRoll = upperRoll
         lastLowerRoll = lowerRoll
@@ -33,7 +34,9 @@ class SpiderLegIKSolver(
         yaw = lerpAngleRadians(yaw, atan2(target.z.toFloat(), target.x.toFloat()), 0.5f)
 
         val lowerRollCosine = ((target.lengthSquared().toFloat() - upperLength * upperLength - lowerLength * lowerLength) / (2f * upperLength * lowerLength)).coerceIn(-1f, 1f)
-        val newLowerRoll = -acos(lowerRollCosine)
+        var newLowerRoll = acos(lowerRollCosine)
+        if (negativeLowerRoll) newLowerRoll = -newLowerRoll
+
         lowerRoll = newLowerRoll
         val lowerRollSine = sin(newLowerRoll)
 
@@ -59,8 +62,22 @@ class SpiderLegIKSolver(
     fun convertToLocalAndSolve(
         entity: Entity,
         offset: Vec3d,
-        target: Vec3d
-    ) = solve(target.subtract(entity.getLocallyOffsetPos(offset)))
+        target: Vec3d,
+        negativeLowerRoll: Boolean,
+        maxLength: Double = Double.MAX_VALUE
+    ) {
+        val localTarget = target.subtract(entity.getLocallyOffsetPos(offset))
+
+        if (localTarget.horizontalLengthSquared() > maxLength * maxLength) {
+            val length = localTarget.horizontalLength()
+            val normalizedX = localTarget.x / length
+            val normalizedZ = localTarget.z / length
+            solve(Vec3d(normalizedX * maxLength, localTarget.y, normalizedZ * maxLength), negativeLowerRoll)
+            return
+        }
+
+        solve(localTarget, negativeLowerRoll)
+    }
 
     fun getYaw(tickDelta: Float) = lerpAngleRadians(lastYaw, yaw, tickDelta)
     fun getUpperRoll(tickDelta: Float) = Easing.lerp(lastUpperRoll, upperRoll, tickDelta)

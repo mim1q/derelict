@@ -25,7 +25,7 @@ class ArachneEntityModel<T : ArachneEntity>(root: ModelPart) : EntityModel<T>(Re
     private val head = body.getChild("head")
 
 
-    val leg0 = SpiderLegParts.create(body, 0, false)
+    val legs = SpiderLegParts.createArray(body)
 
     override fun render(
         matrices: MatrixStack,
@@ -69,8 +69,9 @@ class ArachneEntityModel<T : ArachneEntity>(root: ModelPart) : EntityModel<T>(Re
             egg.xScale = scale; egg.yScale = scale; egg.zScale = scale
         }
 
-        val leg = SpiderLegParts.create(body, 0, false)
-        leg.applyIk(entity.firstLegIk, Easing.lerp(entity.prevBodyYaw, entity.bodyYaw, tickDelta), tickDelta)
+        legs.forEachIndexed { index, it ->
+            it.applyIk(entity.legController.getIk(index), Easing.lerp(entity.prevBodyYaw, entity.bodyYaw, tickDelta), tickDelta)
+        }
     }
 
     private fun resetRotations() {
