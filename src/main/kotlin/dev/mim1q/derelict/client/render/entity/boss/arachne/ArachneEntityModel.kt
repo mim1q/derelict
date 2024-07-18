@@ -1,19 +1,17 @@
 package dev.mim1q.derelict.client.render.entity.boss.arachne
 
-import dev.mim1q.derelict.entity.boss.BigSpider
+import dev.mim1q.derelict.entity.boss.ArachneEntity
+import dev.mim1q.derelict.entity.spider.legs.SpiderLegParts
 import dev.mim1q.derelict.util.extensions.radians
-import dev.mim1q.derelict.util.extensions.setPartialAnglesDegrees
+import dev.mim1q.gimm1q.interpolation.Easing
 import net.minecraft.client.model.ModelPart
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.render.entity.model.EntityModel
 import net.minecraft.client.util.math.MatrixStack
-import net.minecraft.entity.LivingEntity
 import kotlin.math.sin
 
-class ArachneEntityModel<T>(root: ModelPart) : EntityModel<T>(RenderLayer::getEntityCutout)
-    where T : LivingEntity,
-          T : BigSpider {
+class ArachneEntityModel<T : ArachneEntity>(root: ModelPart) : EntityModel<T>(RenderLayer::getEntityCutout) {
 
     companion object {
         const val LIMB_LENGTH = 22 / 16F
@@ -25,6 +23,9 @@ class ArachneEntityModel<T>(root: ModelPart) : EntityModel<T>(RenderLayer::getEn
     private val abdomen = sternum.getChild("abdomen")
     private val eggs = IntRange(0, 16).map { abdomen.getChild("eggs").getChild("egg$it") }
     private val head = body.getChild("head")
+
+
+    val leg0 = SpiderLegParts.create(body, 0, false)
 
     override fun render(
         matrices: MatrixStack,
@@ -67,6 +68,9 @@ class ArachneEntityModel<T>(root: ModelPart) : EntityModel<T>(RenderLayer::getEn
             val scale = 1F + sin((animationProgress + index * speed) * 0.25F) * 0.1F
             egg.xScale = scale; egg.yScale = scale; egg.zScale = scale
         }
+
+        val leg = SpiderLegParts.create(body, 0, false)
+        leg.applyIk(entity.firstLegIk, Easing.lerp(entity.prevBodyYaw, entity.bodyYaw, tickDelta), tickDelta)
     }
 
     private fun resetRotations() {
