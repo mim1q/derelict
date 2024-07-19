@@ -1,7 +1,5 @@
 package dev.mim1q.derelict.entity.spider
 
-import dev.mim1q.derelict.entity.boss.BigSpider
-import dev.mim1q.derelict.entity.boss.BigSpiderAnimationProperties
 import dev.mim1q.derelict.init.ModStatusEffects
 import dev.mim1q.gimm1q.interpolation.AnimatedProperty
 import dev.mim1q.gimm1q.interpolation.Easing
@@ -19,12 +17,10 @@ import net.minecraft.sound.SoundEvents
 import net.minecraft.world.World
 import kotlin.math.pow
 
-class WebCasterEntity(entityType: EntityType<WebCasterEntity>, world: World) : SpiderEntity(entityType, world), BigSpider {
+class WebCasterEntity(entityType: EntityType<WebCasterEntity>, world: World) : SpiderEntity(entityType, world) {
     companion object {
         val WEB_HELD: TrackedData<Boolean> = DataTracker.registerData(WebCasterEntity::class.java, TrackedDataHandlerRegistry.BOOLEAN)
     }
-
-    override val bigSpiderAnimationProperties = BigSpiderAnimationProperties(this)
 
     override fun initDataTracker() {
         super.initDataTracker()
@@ -47,7 +43,6 @@ class WebCasterEntity(entityType: EntityType<WebCasterEntity>, world: World) : S
     private var webHeldTimer = 40
 
     val webHeldAnimation = AnimatedProperty(0f)
-
 
     override fun tick() {
         super.tick()

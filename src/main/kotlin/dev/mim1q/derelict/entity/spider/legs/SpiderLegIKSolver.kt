@@ -31,7 +31,7 @@ class SpiderLegIKSolver(
         lastLowerRoll = lowerRoll
         lastYaw = yaw
 
-        yaw = lerpAngleRadians(yaw, atan2(target.z.toFloat(), target.x.toFloat()), 0.5f)
+        yaw = lerpAngleRadians(yaw, atan2(target.z.toFloat(), target.x.toFloat()), 0.2f)
 
         val lowerRollCosine = ((target.lengthSquared().toFloat() - upperLength * upperLength - lowerLength * lowerLength) / (2f * upperLength * lowerLength)).coerceIn(-1f, 1f)
         var newLowerRoll = acos(lowerRollCosine)

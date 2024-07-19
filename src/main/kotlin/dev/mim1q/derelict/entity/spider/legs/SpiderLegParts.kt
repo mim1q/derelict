@@ -1,8 +1,9 @@
 package dev.mim1q.derelict.entity.spider.legs
 
 import dev.mim1q.derelict.util.extensions.radians
+import dev.mim1q.derelict.util.wrapRadians
 import net.minecraft.client.model.ModelPart
-import net.minecraft.util.math.MathHelper
+import net.minecraft.util.math.MathHelper.PI
 
 class SpiderLegParts(
     val joint: ModelPart,
@@ -12,11 +13,11 @@ class SpiderLegParts(
 ) {
     fun applyIk(ik: SpiderLegIKSolver, yaw: Float, deltaTime: Float) {
         if (right) {
-            joint.yaw = ik.getYaw(deltaTime) - yaw.radians() + MathHelper.PI
+            joint.yaw = wrapRadians(ik.getYaw(deltaTime) - yaw.radians() + PI).coerceIn((-80f).radians(), 80f.radians())
             upper.roll = ik.getUpperRoll(deltaTime)
             lower.roll = ik.getLowerRoll(deltaTime)
         } else {
-            joint.yaw = ik.getYaw(deltaTime) - yaw.radians()
+            joint.yaw = wrapRadians(ik.getYaw(deltaTime) - yaw.radians()).coerceIn((-80f).radians(), 80f.radians())
             upper.roll = -ik.getUpperRoll(deltaTime)
             lower.roll = -ik.getLowerRoll(deltaTime)
         }

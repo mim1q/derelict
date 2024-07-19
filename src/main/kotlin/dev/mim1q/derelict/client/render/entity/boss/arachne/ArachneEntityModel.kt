@@ -11,7 +11,7 @@ import net.minecraft.client.render.entity.model.EntityModel
 import net.minecraft.client.util.math.MatrixStack
 import kotlin.math.sin
 
-class ArachneEntityModel<T : ArachneEntity>(root: ModelPart) : EntityModel<T>(RenderLayer::getEntityCutout) {
+class ArachneEntityModel(root: ModelPart) : EntityModel<ArachneEntity>(RenderLayer::getEntityCutout) {
 
     companion object {
         const val LIMB_LENGTH = 22 / 16F
@@ -41,7 +41,7 @@ class ArachneEntityModel<T : ArachneEntity>(root: ModelPart) : EntityModel<T>(Re
     }
 
     override fun setAngles(
-        entity: T,
+        entity: ArachneEntity,
         limbAngle: Float,
         limbDistance: Float,
         animationProgress: Float,
@@ -51,17 +51,8 @@ class ArachneEntityModel<T : ArachneEntity>(root: ModelPart) : EntityModel<T>(Re
         head.setAngles(headPitch.radians(), headYaw.radians(), 0F)
     }
 
-    override fun animateModel(entity: T, limbAngle: Float, limbDistance: Float, tickDelta: Float) {
-        resetRotations()
+    override fun animateModel(entity: ArachneEntity, limbAngle: Float, limbDistance: Float, tickDelta: Float) {
         val animationProgress = entity.age + tickDelta
-
-        val speedProgress = entity.getSpeedChangeProgress(tickDelta) * 2F
-        val speedDelta = entity.getSpeedChangeDelta(tickDelta)
-        val yawProgress = entity.getYawChangeProgress(tickDelta)
-        val yawDelta = entity.getYawChangeDelta(tickDelta)
-
-        idleAnimation(animationProgress * 0.1F, 1F - speedDelta)
-        rotationAnimation(yawProgress, yawDelta)
 
         eggs.forEachIndexed { index, egg ->
             val speed = 7F + sin(index * 100F) * 3F
@@ -72,14 +63,5 @@ class ArachneEntityModel<T : ArachneEntity>(root: ModelPart) : EntityModel<T>(Re
         legs.forEachIndexed { index, it ->
             it.applyIk(entity.legController.getIk(index), Easing.lerp(entity.prevBodyYaw, entity.bodyYaw, tickDelta), tickDelta)
         }
-    }
-
-    private fun resetRotations() {
-    }
-
-    private fun idleAnimation(animationProgress: Float, delta: Float) {
-    }
-
-    private fun rotationAnimation(progress: Float, delta: Float) {
     }
 }
