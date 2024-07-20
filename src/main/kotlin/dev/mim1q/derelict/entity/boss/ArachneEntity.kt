@@ -17,15 +17,17 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         this,
         24 / 16f,
         28 / 16f,
-        Vec3d(0.6, 0.9, 1.0) to Vec3d(1.5, 0.0, 3.2),
-        Vec3d(0.6, 1.0, 0.65) to Vec3d(2.5, 0.0, 1.5),
-        Vec3d(0.6, 1.1, 0.3) to Vec3d(2.0, 0.0, 0.5),
-        Vec3d(0.6, 1.2, 0.0) to Vec3d(1.5, 0.0, -1.0),
+        //@formatter:off
+        { Vec3d( 0.6, 0.9, 1.0 ) } to { Vec3d( 1.5, 0.0,  3.5) },
+        { Vec3d( 0.6, 1.0, 0.65) } to { Vec3d( 2.5, 0.0,  1.5) },
+        { Vec3d( 0.6, 1.1, 0.3 ) } to { Vec3d( 2.0, 0.0,  0.5) },
+        { Vec3d( 0.6, 1.2, 0.0 ) } to { Vec3d( 1.5, 0.0, -1.0) },
 
-        Vec3d(-0.6, 0.9, 1.0) to Vec3d(-1.5, 0.0, 3.2),
-        Vec3d(-0.6, 1.0, 0.65) to Vec3d(-2.5, 0.0, 1.5),
-        Vec3d(-0.6, 1.1, 0.3) to Vec3d(-2.0, 0.0, -0.5),
-        Vec3d(-0.6, 1.2, 0.0) to Vec3d(-1.5, 0.0, -1.0),
+        { Vec3d(-0.6, 0.9, 1.0 ) } to { Vec3d(-1.5, 0.0,  3.5) },
+        { Vec3d(-0.6, 1.0, 0.65) } to { Vec3d(-2.5, 0.0,  1.5) },
+        { Vec3d(-0.6, 1.1, 0.3 ) } to { Vec3d(-2.0, 0.0, -0.5) },
+        { Vec3d(-0.6, 1.2, 0.0 ) } to { Vec3d(-1.5, 0.0, -1.0) },
+        //@formatter:on
     )
 
     override fun initGoals() {
@@ -44,9 +46,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         super.tick()
     }
 
-    override fun setBodyYaw(bodyYaw: Float) {
-        super.setBodyYaw(wrapDegrees(this.bodyYaw, bodyYaw, 10f))
-    }
+    override fun setBodyYaw(bodyYaw: Float) = super.setBodyYaw(wrapDegrees(this.bodyYaw, bodyYaw, 10f))
 
     override fun createBodyControl() = ArachneBodyControl(this)
 

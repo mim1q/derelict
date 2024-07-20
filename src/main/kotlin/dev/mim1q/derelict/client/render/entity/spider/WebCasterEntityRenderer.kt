@@ -4,6 +4,8 @@ import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.entity.spider.WebCasterEntity
 import dev.mim1q.derelict.entity.spider.legs.SpiderLegParts
 import dev.mim1q.derelict.init.client.ModRender
+import dev.mim1q.derelict.util.extensions.radians
+import dev.mim1q.derelict.util.extensions.setPartialAnglesDegrees
 import dev.mim1q.gimm1q.interpolation.Easing
 import net.minecraft.client.model.*
 import net.minecraft.client.render.RenderLayer
@@ -36,7 +38,7 @@ class WebCasterEntityModel(part: ModelPart) : EntityModel<WebCasterEntity>(Rende
     private val head = torso.getChild("head")
     private val back = torso.getChild("back")
 
-    val legs = SpiderLegParts.createArray(torso)
+    private val legs = SpiderLegParts.createArray(torso)
 
     override fun render(
         matrices: MatrixStack,
@@ -59,7 +61,32 @@ class WebCasterEntityModel(part: ModelPart) : EntityModel<WebCasterEntity>(Rende
         headYaw: Float,
         headPitch: Float
     ) {
-        web.visible = false
+        head.yaw = headYaw.radians()
+        head.pitch = headPitch.radians()
+
+        val webHold = entity.webHeldAnimation.update(animationProgress)
+
+        web.xScale = webHold
+        web.yScale = webHold
+
+        legs[0].joint.setPartialAnglesDegrees(0f, 0f, 75f, webHold)
+        legs[0].upper.setPartialAnglesDegrees(0f, -40f, 0f, webHold)
+        legs[0].lower.setPartialAnglesDegrees(0f, 40f, 0f, webHold)
+
+        legs[4].joint.setPartialAnglesDegrees(0f, 0f, -75f, webHold)
+        legs[4].upper.setPartialAnglesDegrees(0f, 40f, 0f, webHold)
+        legs[4].lower.setPartialAnglesDegrees(0f, -40f, 0f, webHold)
+
+        legs[1].joint.setPartialAnglesDegrees(0f, 0f, 76f, webHold)
+        legs[1].upper.setPartialAnglesDegrees(0f, 15f, 0f, webHold)
+        legs[1].lower.setPartialAnglesDegrees(0f, -16f, 0f, webHold)
+
+        legs[5].joint.setPartialAnglesDegrees(0f, 0f, -76f, webHold)
+        legs[5].upper.setPartialAnglesDegrees(0f, -15f, 0f, webHold)
+        legs[5].lower.setPartialAnglesDegrees(0f, 16f, 0f, webHold)
+
+        web.pivotZ -= 20f * webHold
+        web.pitch -= 10f.radians() * webHold
     }
 
     override fun animateModel(entity: WebCasterEntity, limbAngle: Float, limbDistance: Float, tickDelta: Float) {

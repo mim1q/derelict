@@ -16,7 +16,7 @@ class SpiderLegController(
     private val entity: LivingEntity,
     private val upperLimbLength: Float,
     private val lowerLimbLength: Float,
-    vararg offsetsAndTargets: Pair<Vec3d, Vec3d>
+    vararg offsetsAndTargets: Pair<() -> Vec3d, () -> Vec3d>
 ) {
     init {
         assert(offsetsAndTargets.size == 8)
@@ -57,8 +57,8 @@ class SpiderLegController(
     fun getIk(index: Int) = legs[index].ikSolver
 
     private inner class SingleLegController(
-        val offset: Vec3d,
-        val target: Vec3d,
+        val offset: () -> Vec3d,
+        val target: () -> Vec3d,
         val right: Boolean,
     ) {
         val ikSolver = SpiderLegIKSolver(upperLimbLength, lowerLimbLength)
@@ -69,16 +69,20 @@ class SpiderLegController(
 
         var targetChangeTicks: Int = 0
 
-        val closerTarget = target.horizontalLength().let { length ->
-            Vec3d((target.x / length) * (length - 0.5), target.y, (target.z / length) * (length - 0.5))
-        }
+        val closerTarget: Vec3d
+            get() {
+                val calculatedTarget = target()
+                return calculatedTarget.horizontalLength().let { length ->
+                    Vec3d((calculatedTarget.x / length) * (length - 0.5), calculatedTarget.y, (calculatedTarget.z / length) * (length - 0.5))
+                }
+            }
 
         fun step(shouldMove: Boolean) {
             if (shouldMove && nextTargetPos == null) {
                 prevTargetPos = currentTargetPos
                 val velocity = Vec3d((entity.x - entity.prevX) * 10.0, 0.0, (entity.z - entity.prevZ) * 10.0)
                 val posY = findLegY(entity.getLocallyOffsetPos(closerTarget).add(velocity))
-                nextTargetPos = entity.getLocallyOffsetPos(target).add(velocity).withAxis(Direction.Axis.Y, posY)
+                nextTargetPos = entity.getLocallyOffsetPos(target()).add(velocity).withAxis(Direction.Axis.Y, posY)
             }
 
             val transitionTime = 5.0
@@ -100,7 +104,7 @@ class SpiderLegController(
                 targetChangeTicks = 0
             }
 
-            ikSolver.convertToLocalAndSolve(entity, offset, currentTargetPos, true, 5.0)
+            ikSolver.convertToLocalAndSolve(entity, offset(), currentTargetPos, true, 5.0)
         }
 
         private fun findLegY(base: Vec3d): Double {
