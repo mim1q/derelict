@@ -1,5 +1,6 @@
 package dev.mim1q.derelict.entity.spider.legs
 
+import dev.mim1q.derelict.util.TWO_PI
 import dev.mim1q.derelict.util.extensions.getLocallyOffsetPos
 import dev.mim1q.derelict.util.extensions.radians
 import dev.mim1q.derelict.util.wrapRadians
@@ -9,6 +10,7 @@ import net.minecraft.util.math.Direction
 import net.minecraft.util.math.MathHelper.HALF_PI
 import net.minecraft.util.math.MathHelper.PI
 import net.minecraft.util.math.Vec3d
+import kotlin.math.sin
 
 class SpiderLegController(
     private val entity: LivingEntity,
@@ -33,7 +35,7 @@ class SpiderLegController(
             val legUpperRoll = leg.ikSolver.getUpperRoll(1f)
             val shouldMoveAnyway = ((legYaw) !in -HALF_PI..HALF_PI) || legUpperRoll < 10f.radians() || entity.hurtTime == entity.maxHurtTime - 5
 
-            leg.step(isTimeToMove || (leg.targetChangeTicks == 0 && shouldMoveAnyway))
+            leg.step(isTimeToMove || (shouldMoveAnyway && leg.targetChangeTicks == 0))
 
             // FOR DEBUGGING PURPOSES
 
@@ -67,19 +69,25 @@ class SpiderLegController(
 
         var targetChangeTicks: Int = 0
 
+        val closerTarget = target.horizontalLength().let { length ->
+            Vec3d((target.x / length) * (length - 0.5), target.y, (target.z / length) * (length - 0.5))
+        }
+
         fun step(shouldMove: Boolean) {
             if (shouldMove && nextTargetPos == null) {
                 prevTargetPos = currentTargetPos
-                nextTargetPos = findLegPosition(entity.getLocallyOffsetPos(target).add(entity.velocity.multiply(5.0)))
+                val velocity = Vec3d((entity.x - entity.prevX) * 10.0, 0.0, (entity.z - entity.prevZ) * 10.0)
+                val posY = findLegY(entity.getLocallyOffsetPos(closerTarget).add(velocity))
+                nextTargetPos = entity.getLocallyOffsetPos(target).add(velocity).withAxis(Direction.Axis.Y, posY)
             }
 
-            val transitionTime = 6.0
+            val transitionTime = 5.0
 
             if (nextTargetPos != null) {
-                if (currentTargetPos.squaredDistanceTo(nextTargetPos) > 0.5) {
+                if (currentTargetPos.squaredDistanceTo(nextTargetPos) > 0.1) {
                     currentTargetPos = prevTargetPos.lerp(nextTargetPos, targetChangeTicks / transitionTime).add(
                         0.0,
-                        0.1 * targetChangeTicks * (transitionTime - targetChangeTicks),
+                        0.5 * (sin((targetChangeTicks - (transitionTime / 4.0)) * TWO_PI / transitionTime) + 1.0),
                         0.0
                     )
                 }
@@ -95,16 +103,16 @@ class SpiderLegController(
             ikSolver.convertToLocalAndSolve(entity, offset, currentTargetPos, true, 5.0)
         }
 
-        private fun findLegPosition(base: Vec3d): Vec3d {
-            for (i in 1 downTo -1) {
+        private fun findLegY(base: Vec3d): Double {
+            for (i in 1 downTo -3) {
                 val pos = BlockPos.ofFloored(base).up(i)
                 val block = entity.world.getBlockState(pos)
                 val shape = block.getCollisionShape(entity.world, pos)
                 if (!shape.isEmpty) {
-                    return Vec3d(base.x, pos.y + shape.getMax(Direction.Axis.Y) - 0.1, base.z)
+                    return pos.y + shape.getMax(Direction.Axis.Y)
                 }
             }
-            return base.subtract(0.0, 1.0, 0.0)
+            return base.y
         }
     }
 }

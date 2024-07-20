@@ -16,16 +16,16 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
     val legController = SpiderLegController(
         this,
         24 / 16f,
-        24 / 16f,
-        Vec3d(0.6, 0.9, 1.0) to Vec3d(1.5, 0.0, 3.5),
-        Vec3d(0.6, 1.1, 0.65) to Vec3d(2.5, 0.0, 1.5),
-        Vec3d(0.6, 1.3, 0.3) to Vec3d(2.0, 0.0, 0.5),
-        Vec3d(0.6, 1.5, 0.0) to Vec3d(1.5, 0.0, -1.0),
+        28 / 16f,
+        Vec3d(0.6, 0.9, 1.0) to Vec3d(1.5, 0.0, 3.2),
+        Vec3d(0.6, 1.0, 0.65) to Vec3d(2.5, 0.0, 1.5),
+        Vec3d(0.6, 1.1, 0.3) to Vec3d(2.0, 0.0, 0.5),
+        Vec3d(0.6, 1.2, 0.0) to Vec3d(1.5, 0.0, -1.0),
 
-        Vec3d(-0.6, 0.9, 1.0) to Vec3d(-1.5, 0.0, 3.5),
-        Vec3d(-0.6, 1.1, 0.65) to Vec3d(-2.5, 0.0, 1.5),
-        Vec3d(-0.6, 1.3, 0.3) to Vec3d(-2.0, 0.0, -0.5),
-        Vec3d(-0.6, 1.5, 0.0) to Vec3d(-1.5, 0.0, -1.0),
+        Vec3d(-0.6, 0.9, 1.0) to Vec3d(-1.5, 0.0, 3.2),
+        Vec3d(-0.6, 1.0, 0.65) to Vec3d(-2.5, 0.0, 1.5),
+        Vec3d(-0.6, 1.1, 0.3) to Vec3d(-2.0, 0.0, -0.5),
+        Vec3d(-0.6, 1.2, 0.0) to Vec3d(-1.5, 0.0, -1.0),
     )
 
     override fun initGoals() {

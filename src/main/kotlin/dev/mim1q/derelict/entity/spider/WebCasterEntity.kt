@@ -1,5 +1,6 @@
 package dev.mim1q.derelict.entity.spider
 
+import dev.mim1q.derelict.entity.spider.legs.SpiderLegController
 import dev.mim1q.derelict.init.ModStatusEffects
 import dev.mim1q.gimm1q.interpolation.AnimatedProperty
 import dev.mim1q.gimm1q.interpolation.Easing
@@ -11,16 +12,32 @@ import net.minecraft.entity.data.DataTracker
 import net.minecraft.entity.data.TrackedData
 import net.minecraft.entity.data.TrackedDataHandlerRegistry
 import net.minecraft.entity.effect.StatusEffectInstance
-import net.minecraft.entity.mob.SpiderEntity
+import net.minecraft.entity.mob.HostileEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.sound.SoundEvents
+import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 import kotlin.math.pow
 
-class WebCasterEntity(entityType: EntityType<WebCasterEntity>, world: World) : SpiderEntity(entityType, world) {
+class WebCasterEntity(entityType: EntityType<WebCasterEntity>, world: World) : HostileEntity(entityType, world) {
     companion object {
         val WEB_HELD: TrackedData<Boolean> = DataTracker.registerData(WebCasterEntity::class.java, TrackedDataHandlerRegistry.BOOLEAN)
     }
+
+    val legController = SpiderLegController(
+        this,
+        24 / 16f,
+        28 / 16f,
+        Vec3d(5 / 16.0, 0.6, 7 / 16.0) to Vec3d(1.5, 0.0, 2.0),
+        Vec3d(5 / 16.0, 0.6, 5 / 16.0) to Vec3d(2.0, 0.0, 1.5),
+        Vec3d(5 / 16.0, 0.6, 3 / 16.0) to Vec3d(2.0, 0.0, -1.0),
+        Vec3d(5 / 16.0, 0.6, 1 / 16.0) to Vec3d(1.5, 0.0, -1.5),
+
+        Vec3d(-5 / 16.0, 0.6, 7 / 16.0) to Vec3d(-1.5, 0.0, 2.0),
+        Vec3d(-5 / 16.0, 0.6, 5 / 16.0) to Vec3d(-2.0, 0.0, 1.5),
+        Vec3d(-5 / 16.0, 0.6, 3 / 16.0) to Vec3d(-2.0, 0.0, -1.0),
+        Vec3d(-5 / 16.0, 0.6, 1 / 16.0) to Vec3d(-1.5, 0.0, -1.5),
+    )
 
     override fun initDataTracker() {
         super.initDataTracker()
@@ -45,6 +62,10 @@ class WebCasterEntity(entityType: EntityType<WebCasterEntity>, world: World) : S
     val webHeldAnimation = AnimatedProperty(0f)
 
     override fun tick() {
+        if (world.isClient) {
+            legController.tick()
+        }
+
         super.tick()
 
         if (world.isClient) {

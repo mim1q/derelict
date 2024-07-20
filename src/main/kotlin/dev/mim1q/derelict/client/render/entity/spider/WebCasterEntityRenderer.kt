@@ -2,7 +2,9 @@ package dev.mim1q.derelict.client.render.entity.spider
 
 import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.entity.spider.WebCasterEntity
+import dev.mim1q.derelict.entity.spider.legs.SpiderLegParts
 import dev.mim1q.derelict.init.client.ModRender
+import dev.mim1q.gimm1q.interpolation.Easing
 import net.minecraft.client.model.*
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumer
@@ -34,6 +36,8 @@ class WebCasterEntityModel(part: ModelPart) : EntityModel<WebCasterEntity>(Rende
     private val head = torso.getChild("head")
     private val back = torso.getChild("back")
 
+    val legs = SpiderLegParts.createArray(torso)
+
     override fun render(
         matrices: MatrixStack,
         vertices: VertexConsumer,
@@ -55,9 +59,17 @@ class WebCasterEntityModel(part: ModelPart) : EntityModel<WebCasterEntity>(Rende
         headYaw: Float,
         headPitch: Float
     ) {
-        root.traverse().forEach(ModelPart::resetTransform)
+        web.visible = false
     }
 
+    override fun animateModel(entity: WebCasterEntity, limbAngle: Float, limbDistance: Float, tickDelta: Float) {
+        super.animateModel(entity, limbAngle, limbDistance, tickDelta)
+
+        root.traverse().forEach(ModelPart::resetTransform)
+        legs.forEachIndexed { index, it ->
+            it.applyIk(entity.legController.getIk(index), Easing.lerp(entity.prevBodyYaw, entity.bodyYaw, tickDelta), tickDelta)
+        }
+    }
 
     companion object {
         fun createTexturedModelData(): TexturedModelData = ModelData().let {
