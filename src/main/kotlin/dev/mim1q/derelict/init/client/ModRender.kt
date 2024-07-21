@@ -18,6 +18,7 @@ object ModRender {
     val CHARMING_SPIDER_LAYER = registerLayer(CharmingSpiderEntityModel::createTexturedModelData, "charming_spider")
     val WEB_CASTER_LAYER = registerLayer(WebCasterEntityModel::createTexturedModelData, "web_caster")
     val DADDY_LONG_LEGS_LAYER = registerLayer(DaddyLongLegsEntityModel::createTexturedModelData, "daddy_long_legs")
+//    val DADDY_LONG_LEGS_SOCK_LAYER = registerLayer(DaddyLongLegsSockRenderFeature::createTexturedModelData, "daddy_long_legs", "sock")
 
     val ARACHNE_LAYER = registerLayer(ArachneTexturedModelData::create, "arachne")
 

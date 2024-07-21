@@ -64,11 +64,10 @@ class DaddyLongLegsEntity(
 
             if (isSongPlaying) {
                 danceAnimation.transitionTo(1f, 20f)
-                danceOffsetVector = Vec3d(cos(age * 0.3), sin(age * 0.3), 0.0).multiply(danceAnimation.value.toDouble())
             } else {
                 danceAnimation.transitionTo(0f, 20f)
-                danceOffsetVector = Vec3d.ZERO
             }
+            danceOffsetVector = Vec3d(cos(age * 0.5), sin(age * 0.5) - 1.0, 0.0).multiply(danceAnimation.value.toDouble())
         }
     }
 
