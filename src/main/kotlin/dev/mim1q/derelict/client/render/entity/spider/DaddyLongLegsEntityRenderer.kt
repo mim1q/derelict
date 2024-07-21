@@ -29,6 +29,10 @@ class DaddyLongLegsEntityRenderer(
 
     override fun render(mobEntity: DaddyLongLegsEntity, f: Float, g: Float, matrixStack: MatrixStack, vertexConsumerProvider: VertexConsumerProvider, i: Int) {
         super.render(mobEntity, f, g, matrixStack, vertexConsumerProvider, i)
+
+        val sockColor = mobEntity.sockColor
+        if (sockColor == null || mobEntity.isDead) return
+
         matrixStack.entry {
             scale(-1f, -1f, 1f)
             translate(0.0, -1.501, 0.0)
@@ -36,7 +40,7 @@ class DaddyLongLegsEntityRenderer(
 
             getModel().render(
                 matrixStack,
-                vertexConsumerProvider.getBuffer(RenderLayer.getEntityCutoutNoCull(SOCK_TEXTURES[DyeColor.PINK])),
+                vertexConsumerProvider.getBuffer(RenderLayer.getEntityCutoutNoCull(SOCK_TEXTURES[sockColor])),
                 i, OverlayTexture.DEFAULT_UV,
                 1f, 1f, 1f, 1f
             )
@@ -45,7 +49,7 @@ class DaddyLongLegsEntityRenderer(
 
     companion object {
         val TEXTURE = Derelict.id("textures/entity/spider/daddy_long_legs.png")
-        val SOCK_TEXTURES = DyeColor.entries.associateWith { Derelict.id("textures/entity/spider/sock/${it.getName()}.png") }
+        val SOCK_TEXTURES = DyeColor.entries.associateWith { Derelict.id("textures/entity/spider/sock/${it.getName()}_sock.png") }
     }
 }
 
@@ -53,7 +57,6 @@ class DaddyLongLegsEntityModel(part: ModelPart) : EntityModel<DaddyLongLegsEntit
     val root = part.getChild("root")
     private val body = root.getChild("body")
     val legs = SpiderLegParts.createArray(root)
-    val socks = legs.mapIndexed { index, it -> it.lower.getChild("${if (index >= 4) "right" else "left"}_sock${index % 4}") }
 
     override fun render(matrices: MatrixStack, vertices: VertexConsumer, light: Int, overlay: Int, red: Float, green: Float, blue: Float, alpha: Float) {
         root.render(matrices, vertices, light, overlay, red, green, blue, alpha)

@@ -65,14 +65,14 @@ class SpiderLegController(
             get() {
                 val calculatedTarget = target()
                 return calculatedTarget.horizontalLength().let { length ->
-                    Vec3d((calculatedTarget.x / length) * (length - 0.1), calculatedTarget.y, (calculatedTarget.z / length) * (length - 0.1))
+                    Vec3d((calculatedTarget.x / length) * (length - 0.2), calculatedTarget.y, (calculatedTarget.z / length) * (length - 0.1))
                 }
             }
 
         fun step(shouldMove: Boolean) {
             if (shouldMove) {
                 prevTargetPos = currentTargetPos
-                val velocity = Vec3d(entity.x - entity.prevX, 0.0, entity.z - entity.prevZ).normalize()
+                val velocity = Vec3d(entity.x - entity.prevX, entity.y - entity.prevY, entity.z - entity.prevZ).normalize()
                 val posY = findLegY(entity.getLocallyOffsetPos(closerTarget).add(velocity))
                 nextTargetPos = entity.getLocallyOffsetPos(target()).add(velocity).withAxis(Direction.Axis.Y, posY)
             }

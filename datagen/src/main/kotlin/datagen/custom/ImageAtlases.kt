@@ -35,4 +35,20 @@ object ImageAtlases {
             }
         }
     }
+
+    fun getColorsAtlas(atlasDirectory: Path, generatedDirectory: Path, name: String, folder: String, size: Int) = ImageAtlas.create(
+        atlasDirectory.resolve("${name}_atlas.png").toFile(),
+        generatedDirectory.resolve("assets/derelict/textures").toFile(),
+        spriteWidth = size,
+        spriteHeight = size,
+    ) {
+        listOf(
+            "white", "light_gray", "gray", "black",
+            "brown", "red", "orange", "yellow",
+            "lime", "green", "cyan", "light_blue",
+            "blue", "purple", "magenta", "pink"
+        ).forEach {
+            sprite("${folder}/${it}_$name")
+        }
+    }
 }
