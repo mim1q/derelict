@@ -1,12 +1,7 @@
 package dev.mim1q.derelict.client.render.entity.spider
 
-import dev.mim1q.derelict.util.Easing.smoothStep
 import dev.mim1q.derelict.util.extensions.radians
-import dev.mim1q.derelict.util.extensions.setPartialAngles
-import dev.mim1q.derelict.util.extensions.setPartialAnglesDegrees
 import net.minecraft.client.model.ModelPart
-import net.minecraft.util.math.MathHelper
-import kotlin.math.acos
 import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.sin
@@ -28,82 +23,4 @@ private fun walkSpiderLeg(legs: Array<ModelPart>, index: Int, defaultAngle: Floa
     leg.yaw = defaultAngle.radians() + sin((progress + offset.radians())) * multiplier
     leg.roll = max(0f, cos((progress + (offset - 35f).radians())) * multiplier)
     leg.roll *= if (index < 4) -1 else 1
-}
-
-fun bigSpiderWalkAnimation(
-    body: ModelPart,
-    abdomen: ModelPart?,
-    leftLegs: Array<BigSpiderLimb>,
-    rightLegs: Array<BigSpiderLimb>,
-    progress: Float,
-    delta: Float,
-    rollMultiplier: (Int) -> Float = { _ -> 1F }
-) {
-    val bodyOffset = -sin(progress) * 2F * delta
-    body.pivotY += bodyOffset
-    body.setPartialAnglesDegrees(
-        yaw = sin(progress),
-        delta = delta
-    )
-    abdomen?.setPartialAnglesDegrees(
-        yaw = sin(progress + 60F.radians()) * 5F,
-        pitch = 5F + sin(progress * 2F + 45F.radians()) * 5F,
-        delta = delta
-    )
-    leftLegs.forEach { leg -> leg.walkLeg(progress, delta, rollMultiplier) }
-    rightLegs.forEach { leg -> leg.walkLeg(progress, delta, rollMultiplier) }
-}
-
-class BigSpiderLimb(
-    body: ModelPart,
-    private val defaultYaw: Float,
-    private val defaultRoll: Float,
-    private val height: () -> Float,
-    private val limbLength: Float,
-    private val forelimbLength: Float,
-    private val index: Int,
-    private val right: Boolean
-) {
-    private val prefix = if (right) "right" else "left"
-    private val multiplier = if (right) -1 else 1
-    val joint: ModelPart = body.getChild("${prefix}_leg_joint$index")
-    val limb: ModelPart = joint.getChild("${prefix}_leg$index")
-    val forelimb: ModelPart = limb.getChild("${prefix}_leg_front$index")
-
-    private fun setAngles(
-        yawDegrees: Float, rollDegrees: Float, additionalRollDegrees: Float = 0F, delta: Float = 1F
-    ) {
-        joint.setPartialAnglesDegrees(yaw = yawDegrees * multiplier, delta = delta)
-        limb.setPartialAnglesDegrees(
-            roll = (-rollDegrees - additionalRollDegrees * delta) * multiplier,
-            delta = delta
-        )
-        val jointToGround = height() + limbLength * sin(rollDegrees.radians())
-        val forelimbAngle = acos(MathHelper.clamp(jointToGround / forelimbLength, -1.0F, 1.0F))
-        forelimb.setPartialAngles(
-            roll = (MathHelper.HALF_PI + rollDegrees.radians() - forelimbAngle) * multiplier,
-            delta = delta
-        )
-    }
-
-    fun setAnglesFromDefaults(
-        yawDegrees: Float = 0F, rollDegrees: Float = 0F, additionalRollDegrees: Float = 0F, delta: Float = 1F
-    ) = setAngles(
-        defaultYaw + yawDegrees, defaultRoll + rollDegrees, additionalRollDegrees, delta
-    )
-
-    fun resetAngles() = setAngles(defaultYaw, defaultRoll)
-
-    fun walkLeg(progress: Float, delta: Float, rollMultiplier: (Int) -> Float = { _ -> 1F }) {
-        val multiplier = legMultiplier(right, index)
-        val offset = index * 15F.radians() + if (right) 5F.radians() else 0F
-        val yaw = sin(progress + offset) * 20F
-        val rollMultiplierValue = rollMultiplier(index)
-
-        val roll = (multiplier * sin(progress - 100F.radians() + offset) + 1f) * rollMultiplierValue * 5F
-        val additionalRoll = smoothStep(multiplier * sin(progress + 90F.radians() + offset) + 0.25F, 0F, 1.25F) * 20F * rollMultiplierValue
-        setAnglesFromDefaults(yaw * multiplier, roll, additionalRoll, delta = delta)
-    }
-
-    private fun legMultiplier(right: Boolean, index: Int) = if (right xor (index % 2 == 0)) -1F else 1F
 }

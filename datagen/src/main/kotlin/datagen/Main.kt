@@ -192,4 +192,5 @@ fun main(args: Array<String>) {
     }
 
     ImageAtlases.getMetalAtlas(resourcePath.resolve("atlas"), generatedPath, "noctisteel").save()
+    ImageAtlases.getColorsAtlas(resourcePath.resolve("atlas"), generatedPath, "sock", "entity/spider/sock", 64).save()
 }

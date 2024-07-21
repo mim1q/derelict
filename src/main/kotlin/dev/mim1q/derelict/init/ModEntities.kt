@@ -36,7 +36,7 @@ object ModEntities {
     }
 
     val DADDY_LONG_LEGS = register("daddy_long_legs", ::DaddyLongLegsEntity, attributes = SpiderEntity.createSpiderAttributes()) {
-        dimensions(EntityDimensions.fixed(0.6F, 1.8F))
+        dimensions(EntityDimensions.fixed(0.9F, 3.6F))
     }
 
     fun init() {}
