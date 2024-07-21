@@ -103,6 +103,9 @@ class DaddyLongLegsEntity(
         }
 
         if (WOOL_TO_COLOR.any { it.key == stack.item }) {
+            val newColor = WOOL_TO_COLOR[stack.item]
+            if (newColor == sockColor) return ActionResult.PASS
+
             if (!world.isClient) {
                 playSound(SoundEvents.BLOCK_WOOL_PLACE, 1f, 1f)
                 stack.decrement(1)

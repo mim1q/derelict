@@ -67,13 +67,12 @@ class CharmingSpiderEntityModel(
     ) {
         root.traverse().forEach(ModelPart::resetTransform)
 
-        leftLegs.roll = (15f).radians()
-        rightLegs.roll = (-15f).radians()
+        root.pivotY -= 2f
+
+        leftLegs.roll = (20f).radians()
+        rightLegs.roll = (-20f).radians()
 
         walkSpiderLegs(allLegs, animationProgress, limbDistance)
-
-        allLegs[0].roll += (20f).radians()
-        allLegs[4].roll -= (20f).radians()
 
         val tailWiggle = entity.tailDanceAnimation.update(animationProgress)
         val bodyWiggle = entity.bodyDanceAnimation.update(animationProgress)
