@@ -41,7 +41,7 @@ object ModEntities {
     }
 
     val JUMPING_SPIDER = register("jumping_spider", ::JumpingSpiderEntity, attributes = SpiderEntity.createSpiderAttributes()) {
-        dimensions(EntityDimensions.fixed(1.8f, 0.9f))
+        dimensions(EntityDimensions.fixed(1.6f, 0.9f))
     }
 
     fun init() {}

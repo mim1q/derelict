@@ -4,6 +4,7 @@ import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.entity.spider.JumpingSpiderEntity
 import dev.mim1q.derelict.init.client.ModRender
 import dev.mim1q.derelict.util.extensions.radians
+import dev.mim1q.derelict.util.extensions.setPartialAnglesDegrees
 import net.minecraft.client.model.*
 import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.render.entity.EntityRendererFactory
@@ -11,6 +12,7 @@ import net.minecraft.client.render.entity.MobEntityRenderer
 import net.minecraft.client.render.entity.model.EntityModel
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.Identifier
+import net.minecraft.util.math.MathHelper
 
 class JumpingSpiderEntityRenderer(
     context: EntityRendererFactory.Context
@@ -64,6 +66,19 @@ class JumpingSpiderEntityModel(bone: ModelPart) : EntityModel<JumpingSpiderEntit
         rightLegs.roll = (-25f).radians()
 
         walkSpiderLegs(allLegs, animationProgress, limbDistance)
+
+        val jumpCharge = entity.jumpChargeAnimation.update(animationProgress)
+
+        if (jumpCharge > MathHelper.EPSILON) {
+            allLegs.forEachIndexed { index, it ->
+                val multiplier = if (index < 4) 1 else -1
+                val i = index % 4
+                it.setPartialAnglesDegrees(0f, (5f - i * 5f) * multiplier, (60f - (10f * i)) * multiplier, jumpCharge)
+            }
+
+            root.pivotY += 4f * jumpCharge
+            root.pivotZ += 8f * jumpCharge
+        }
     }
 
     companion object {

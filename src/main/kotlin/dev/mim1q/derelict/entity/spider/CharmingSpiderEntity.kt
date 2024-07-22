@@ -26,7 +26,6 @@ class CharmingSpiderEntity(
     override fun tick() {
         super.tick()
 
-
         if (this.songSource == null || !songSource!!.isWithinDistance(this.pos, 3.46) || !world.getBlockState(this.songSource).isOf(Blocks.JUKEBOX)) {
             this.isSongPlaying = false
             this.songSource = null
