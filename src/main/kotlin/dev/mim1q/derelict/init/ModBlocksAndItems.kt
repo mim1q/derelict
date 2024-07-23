@@ -167,7 +167,7 @@ object ModBlocksAndItems {
     val CHARMING_SPIDER_SPAWN_EGG = registerSpawnEgg(ModEntities.CHARMING_SPIDER)
     val DADDY_LONG_LEGS_SPAWN_EGG = registerSpawnEgg(ModEntities.DADDY_LONG_LEGS)
     val JUMPING_SPIDER_SPAWN_EGG = registerSpawnEgg(ModEntities.JUMPING_SPIDER)
-//    val SPINY_SPIDER_SPAWN_EGG = registerSpawnEgg(ModEntities.SPINY_SPIDER)
+    val SPINY_SPIDER_SPAWN_EGG = registerSpawnEgg(ModEntities.SPINY_SPIDER)
 
     // endregion
 

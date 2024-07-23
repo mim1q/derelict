@@ -19,6 +19,7 @@ object ModRender {
     val WEB_CASTER_LAYER = registerLayer(WebCasterEntityModel::createTexturedModelData, "web_caster")
     val DADDY_LONG_LEGS_LAYER = registerLayer(DaddyLongLegsEntityModel::createTexturedModelData, "daddy_long_legs")
     val JUMPING_SPIDER_LAYER = registerLayer(JumpingSpiderEntityModel::createTexturedModelData, "jumping_spider")
+    val SPINY_SPIDER_LAYER = registerLayer(SpinySpiderEntityModel::createTexturedModelData, "spiny_spider")
 
     val ARACHNE_LAYER = registerLayer(ArachneTexturedModelData::create, "arachne")
 
@@ -53,6 +54,7 @@ object ModRender {
         EntityRendererRegistry.register(ModEntities.WEB_CASTER, ::WebCasterEntityRenderer)
         EntityRendererRegistry.register(ModEntities.DADDY_LONG_LEGS, ::DaddyLongLegsEntityRenderer)
         EntityRendererRegistry.register(ModEntities.JUMPING_SPIDER, ::JumpingSpiderEntityRenderer)
+        EntityRendererRegistry.register(ModEntities.SPINY_SPIDER, ::SpinySpiderEntityRenderer)
     }
 
     private fun registerLayer(provider: TexturedModelDataProvider, path: String, name: String = "main") =
