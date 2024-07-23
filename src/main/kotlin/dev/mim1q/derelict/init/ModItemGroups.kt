@@ -21,10 +21,11 @@ object ModItemGroups {
                 Text.translatable("itemGroup.derelict.derelict.tab.general"),
                 supplyCategories(
                     ItemCategory.GENERAL,
+                    ItemCategory.SPAWN_EGGS,
                     ItemCategory.METAL_BLOCKS,
                     ItemCategory.METAL_DECORATION,
                     ItemCategory.WAXED_METAL_BLOCKS,
-                    ItemCategory.WAXED_METAL_DECORATION
+                    ItemCategory.WAXED_METAL_DECORATION,
                 ),
                 TAB_TEXTURE,
                 true

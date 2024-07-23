@@ -9,21 +9,24 @@ import net.minecraft.util.math.MathHelper.lerpAngleDegrees
 import net.minecraft.util.math.Vec3d
 import kotlin.math.atan2
 
-class ArachneBodyControl(private val entity: MobEntity) : BodyControl(entity) {
+class ArachneBodyControl(
+    private val entity: MobEntity,
+    private val factor: Float = 0.1f
+) : BodyControl(entity) {
     override fun tick() {
         val movementVector = Vec3d(entity.x - entity.prevX, 0.0, entity.z - entity.prevZ)
         var targetBodyYaw = atan2(movementVector.z, movementVector.x).toFloat().degrees() - 90F
 
         val difference = degreesDifference(entity.bodyYaw, targetBodyYaw)
         if (difference > 40) {
-            targetBodyYaw = lerpAngleDegrees(0.1f, targetBodyYaw, entity.bodyYaw)
+            targetBodyYaw = lerpAngleDegrees(factor, targetBodyYaw, entity.bodyYaw)
         }
 
         if (movementVector.horizontalLengthSquared() > 0.0001) {
-            entity.setBodyYaw(lerpAngleDegrees(0.05F, entity.bodyYaw, targetBodyYaw))
+            entity.setBodyYaw(lerpAngleDegrees(factor, entity.bodyYaw, targetBodyYaw))
             entity.headYaw = clampAngle(entity.headYaw, entity.bodyYaw, entity.maxHeadRotation.toFloat())
         } else {
-            entity.setBodyYaw(lerpAngleDegrees(0.05F, entity.bodyYaw, entity.headYaw))
+            entity.setBodyYaw(lerpAngleDegrees(factor, entity.bodyYaw, entity.headYaw))
         }
     }
 }

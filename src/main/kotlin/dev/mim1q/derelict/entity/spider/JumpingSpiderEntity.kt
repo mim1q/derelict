@@ -1,11 +1,13 @@
 package dev.mim1q.derelict.entity.spider
 
+import dev.mim1q.derelict.entity.spider.control.ArachneBodyControl
 import dev.mim1q.derelict.util.extensions.degrees
 import dev.mim1q.gimm1q.interpolation.AnimatedProperty
 import dev.mim1q.gimm1q.interpolation.Easing
 import net.minecraft.block.BlockState
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.LivingEntity
+import net.minecraft.entity.ai.control.BodyControl
 import net.minecraft.entity.ai.goal.Goal
 import net.minecraft.entity.ai.goal.PounceAtTargetGoal
 import net.minecraft.entity.data.DataTracker
@@ -15,13 +17,13 @@ import net.minecraft.entity.mob.SpiderEntity
 import net.minecraft.sound.SoundEvents
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.MathHelper
+import net.minecraft.util.math.MathHelper.clamp
 import net.minecraft.util.math.MathHelper.lerpAngleDegrees
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 import java.util.*
 import kotlin.math.atan2
 import kotlin.math.max
-import kotlin.math.min
 
 class JumpingSpiderEntity(
     entityType: EntityType<out JumpingSpiderEntity>,
@@ -69,8 +71,8 @@ class JumpingSpiderEntity(
         val trackedTarget = world.getEntityById(dataTracker[TARGET_ID])
 
         if (isChargingJump && trackedTarget != null) {
-            setPos(MathHelper.lerp(0.01, prevX, x), min(y, prevY), MathHelper.lerp(0.01, prevZ, z))
-            bodyYaw = lerpAngleDegrees(0.5f, prevBodyYaw, atan2(trackedTarget.z - z, trackedTarget.x - x).degrees().toFloat() - 90f)
+            setPos(MathHelper.lerp(0.01, prevX, x), y, MathHelper.lerp(0.01, prevZ, z))
+            bodyYaw = lerpAngleDegrees(0.2f, prevBodyYaw, atan2(trackedTarget.z - z, trackedTarget.x - x).degrees().toFloat() - 90f)
         }
     }
 
@@ -78,6 +80,8 @@ class JumpingSpiderEntity(
         super.setTarget(target)
         dataTracker[TARGET_ID] = target?.id ?: -1
     }
+
+    override fun createBodyControl(): BodyControl = ArachneBodyControl(this, 0.7f)
 
     companion object {
         val JUMP_CHARGING: TrackedData<Boolean> = DataTracker.registerData(JumpingSpiderEntity::class.java, TrackedDataHandlerRegistry.BOOLEAN)
@@ -95,11 +99,6 @@ class JumpingSpiderEntity(
 
         override fun tick() {
             ++ticks
-            val currentTarget = target
-            if (currentTarget != null) {
-                lookControl.lookAt(currentTarget, 360f, 360f)
-            }
-            navigation.stop()
         }
 
         override fun stop() {
@@ -107,14 +106,14 @@ class JumpingSpiderEntity(
             if (currentTarget != null) {
                 playSound(SoundEvents.ENTITY_PHANTOM_FLAP, 1.0f, 1.4f)
                 velocity = currentTarget.eyePos.subtract(eyePos)
-                    .let { Vec3d(it.x, min(0.2, it.y), it.z) }.normalize().multiply(2.0).add(0.0, 0.2, 0.0)
+                    .let { Vec3d(it.x, clamp(it.y, 0.0, 0.2), it.z) }.normalize().multiply(2.0).add(0.0, 0.2, 0.0)
 
                 velocityModified = true
                 velocityDirty = true
             }
 
             dataTracker[JUMP_CHARGING] = false
-            jumpAttackCooldown = 40 + random.nextInt(40)
+            jumpAttackCooldown = 40 + random.nextInt(100)
         }
 
         override fun start() {

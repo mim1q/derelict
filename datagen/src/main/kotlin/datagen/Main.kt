@@ -130,13 +130,16 @@ fun main(args: Array<String>) {
         listOf("spiderling_in_a_bucket").forEach {
             add(it, ParentedModel.item("minecraft:item/generated").texture("layer0", "derelict:item/$it"))
         }
+        Constants.SPAWN_EGGS.forEach {
+            add(CommonModelPresets.generatedItemModel("derelict:${it}_spawn_egg"))
+        }
+
         // Custom Tags
         TagManager.add("derelict:blocks/cobwebs", "minecraft:cobweb")
         TagManager.add("blocks/leaves", "derelict:burned_leaves", "derelict:smoldering_leaves")
         TagManager.add("blocks/mineable/hoe", "derelict:burned_leaves", "derelict:smoldering_leaves", "derelict:flickering_shroomlight", "derelict:extinguished_shroomlight")
         TagManager.add("blocks/mineable/axe", "#derelict:cover_boards")
-        TagManager.add(
-            "blocks/mineable/pickaxe",
+        TagManager.add("blocks/mineable/pickaxe",
             "derelict:extinguished_lantern", "derelict:extinguished_sea_lantern"
         )
         TagManager.copy("blocks/leaves", "items/leaves")
@@ -193,4 +196,5 @@ fun main(args: Array<String>) {
 
     ImageAtlases.getMetalAtlas(resourcePath.resolve("atlas"), generatedPath, "noctisteel").save()
     ImageAtlases.getColorsAtlas(resourcePath.resolve("atlas"), generatedPath, "sock", "entity/spider/sock", 64).save()
+    ImageAtlases.getEggsAtlas(resourcePath.resolve("atlas"), generatedPath).save()
 }

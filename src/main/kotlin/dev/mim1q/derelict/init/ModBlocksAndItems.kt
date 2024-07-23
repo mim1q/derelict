@@ -20,7 +20,9 @@ import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.fabricmc.fabric.mixin.`object`.builder.AbstractBlockSettingsAccessor
 import net.minecraft.block.*
 import net.minecraft.block.AbstractBlock.Offsetter
+import net.minecraft.entity.EntityType
 import net.minecraft.entity.SpawnReason
+import net.minecraft.entity.mob.MobEntity
 import net.minecraft.item.*
 import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
@@ -158,6 +160,17 @@ object ModBlocksAndItems {
 
     val WILDFIRE = registerItem("wildfire", Wildfire(defaultItemSettings().maxCount(1)), null)
 
+
+    // region SPAWN EGGS
+
+    val WEB_CASTER_SPAWN_EGG = registerSpawnEgg(ModEntities.WEB_CASTER)
+    val CHARMING_SPIDER_SPAWN_EGG = registerSpawnEgg(ModEntities.CHARMING_SPIDER)
+    val DADDY_LONG_LEGS_SPAWN_EGG = registerSpawnEgg(ModEntities.DADDY_LONG_LEGS)
+    val JUMPING_SPIDER_SPAWN_EGG = registerSpawnEgg(ModEntities.JUMPING_SPIDER)
+//    val SPINY_SPIDER_SPAWN_EGG = registerSpawnEgg(ModEntities.SPINY_SPIDER)
+
+    // endregion
+
     fun init() {}
 
     fun setupWaxableAndAgeable() {
@@ -198,12 +211,20 @@ object ModBlocksAndItems {
 
     private fun defaultItemSettings() = FabricItemSettings()
 
+    private fun registerSpawnEgg(entity: EntityType<out MobEntity>) =
+        registerItem(
+            Registries.ENTITY_TYPE.getId(entity).path + "_spawn_egg",
+            SpawnEggItem(entity, 0xFFFFFF, 0xFFFFFF, defaultItemSettings()),
+            ItemCategory.SPAWN_EGGS
+        )
+
     enum class ItemCategory {
         GENERAL,
         METAL_BLOCKS,
         METAL_DECORATION,
         WAXED_METAL_BLOCKS,
-        WAXED_METAL_DECORATION;
+        WAXED_METAL_DECORATION,
+        SPAWN_EGGS;
 
         val items: MutableList<Item> = mutableListOf()
         fun add(item: Item) = items.add(item)

@@ -1,5 +1,6 @@
 package datagen.custom
 
+import datagen.Constants
 import tada.lib.image.ImageAtlas
 import java.nio.file.Path
 
@@ -49,6 +50,17 @@ object ImageAtlases {
             "blue", "purple", "magenta", "pink"
         ).forEach {
             sprite("${folder}/${it}_$name")
+        }
+    }
+
+    fun getEggsAtlas(atlasDirectory: Path, generatedDirectory: Path) = ImageAtlas.create(
+        atlasDirectory.resolve("eggs_atlas.png").toFile(),
+        generatedDirectory.resolve("assets/derelict/textures").toFile(),
+        spriteWidth = 16,
+        spriteHeight = 16
+    ) {
+        Constants.SPAWN_EGGS.forEach {
+            sprite("item/${it}_spawn_egg")
         }
     }
 }

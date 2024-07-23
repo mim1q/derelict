@@ -32,6 +32,7 @@ class JumpingSpiderEntityModel(bone: ModelPart) : EntityModel<JumpingSpiderEntit
     private val root = bone.getChild("root")
     private val leftLegs: ModelPart = root.getChild("left_legs")
     private val rightLegs: ModelPart = root.getChild("right_legs")
+    private val head = root.getChild("head")
 
     private val allLegs: Array<ModelPart> =
         Array(8) { i ->
@@ -79,6 +80,9 @@ class JumpingSpiderEntityModel(bone: ModelPart) : EntityModel<JumpingSpiderEntit
             root.pivotY += 4f * jumpCharge
             root.pivotZ += 8f * jumpCharge
         }
+
+        head.pitch = headPitch.radians()
+        head.yaw = headYaw.radians()
     }
 
     companion object {
