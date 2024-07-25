@@ -53,6 +53,8 @@ object ModCardinalComponents : EntityComponentInitializer {
             val id = Registries.STATUS_EFFECT.getId(effect) ?: return null
             return effects[id]
         }
+
+        fun removeAll() = effects.clear()
     }
 
     val LivingEntity.statusEffectComponent: DerelictEffectsComponent
@@ -63,4 +65,12 @@ object ModCardinalComponents : EntityComponentInitializer {
 
     fun LivingEntity.getClientSyncedEffectAmplifier(effect: StatusEffect): Int? =
         statusEffectComponent.getEffectAmplifier(effect)
+
+    fun LivingEntity.updateClientSyncedEffects() {
+        statusEffectComponent.removeAll()
+
+        this.activeStatusEffects.forEach {
+            statusEffectComponent.addEffect(it.key, it.value.amplifier)
+        }
+    }
 }
