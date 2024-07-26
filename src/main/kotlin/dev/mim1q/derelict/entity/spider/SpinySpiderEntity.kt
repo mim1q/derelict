@@ -6,15 +6,20 @@ import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.LivingEntity
+import net.minecraft.entity.ai.goal.ActiveTargetGoal
 import net.minecraft.entity.ai.goal.PounceAtTargetGoal
+import net.minecraft.entity.ai.goal.RevengeGoal
 import net.minecraft.entity.data.DataTracker
 import net.minecraft.entity.data.TrackedData
 import net.minecraft.entity.data.TrackedDataHandlerRegistry
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.mob.SpiderEntity
+import net.minecraft.entity.passive.IronGolemEntity
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.particle.ItemStackParticleEffect
 import net.minecraft.particle.ParticleTypes
 import net.minecraft.server.world.ServerWorld
+import net.minecraft.sound.SoundEvents
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.world.BlockView
@@ -36,6 +41,13 @@ class SpinySpiderEntity(
         clearGoals {
             it is PounceAtTargetGoal
         }
+
+        targetSelector.clear { true }
+
+        targetSelector.add(1, RevengeGoal(this, *arrayOfNulls(0)))
+        targetSelector.add(2, ActiveTargetGoal(this, PlayerEntity::class.java, true))
+        targetSelector.add(3, ActiveTargetGoal(this, IronGolemEntity::class.java, true))
+
     }
 
     override fun initDataTracker() {
@@ -58,6 +70,11 @@ class SpinySpiderEntity(
         if (!world.isClient) {
             if (fuseSpeed == -1 && world.getClosestPlayer(this, 2.0) != null) {
                 dataTracker[FUSE_SPEED] = 1
+                playSound(
+                    SoundEvents.ENTITY_TNT_PRIMED,
+                    1.0f,
+                    1.0f
+                )
             } else if (fuseSpeed == 1 && world.getClosestPlayer(this, 4.0) == null) {
                 dataTracker[FUSE_SPEED] = -1
             }

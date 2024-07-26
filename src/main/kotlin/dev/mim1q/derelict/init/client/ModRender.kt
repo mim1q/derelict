@@ -3,6 +3,7 @@ package dev.mim1q.derelict.init.client
 import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.client.render.entity.boss.arachne.ArachneEntityRenderer
 import dev.mim1q.derelict.client.render.entity.boss.arachne.ArachneTexturedModelData
+import dev.mim1q.derelict.client.render.entity.nonliving.HangingCocoonEntityRenderer
 import dev.mim1q.derelict.client.render.entity.spider.*
 import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.init.ModEntities
@@ -14,6 +15,8 @@ import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.entity.model.EntityModelLayer
 
 object ModRender {
+    val ARACHNE_LAYER = registerLayer(ArachneTexturedModelData::create, "arachne")
+
     val SPIDERLING_LAYER = registerLayer(::getSpiderlingTexturedModelData, "spiderling")
     val CHARMING_SPIDER_LAYER = registerLayer(CharmingSpiderEntityModel::createTexturedModelData, "charming_spider")
     val WEB_CASTER_LAYER = registerLayer(WebCasterEntityModel::createTexturedModelData, "web_caster")
@@ -21,7 +24,7 @@ object ModRender {
     val JUMPING_SPIDER_LAYER = registerLayer(JumpingSpiderEntityModel::createTexturedModelData, "jumping_spider")
     val SPINY_SPIDER_LAYER = registerLayer(SpinySpiderEntityModel::createTexturedModelData, "spiny_spider")
 
-    val ARACHNE_LAYER = registerLayer(ArachneTexturedModelData::create, "arachne")
+    val HANGING_COCOON_LAYER = registerLayer(HangingCocoonEntityRenderer::createTexturedModelData, "hanging_cocoon")
 
     fun init() {
         BlockRenderLayerMap.INSTANCE.putBlocks(
@@ -55,6 +58,7 @@ object ModRender {
         EntityRendererRegistry.register(ModEntities.DADDY_LONG_LEGS, ::DaddyLongLegsEntityRenderer)
         EntityRendererRegistry.register(ModEntities.JUMPING_SPIDER, ::JumpingSpiderEntityRenderer)
         EntityRendererRegistry.register(ModEntities.SPINY_SPIDER, ::SpinySpiderEntityRenderer)
+        EntityRendererRegistry.register(ModEntities.HANGING_COCOON, ::HangingCocoonEntityRenderer)
     }
 
     private fun registerLayer(provider: TexturedModelDataProvider, path: String, name: String = "main") =
