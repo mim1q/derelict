@@ -17,8 +17,12 @@
     "aging_staff;waxing_staff": "%",
     "spiderling_in_a_bucket": "Spiderling in a Bucket",
   },
+  // Entities
   "entity.derelict": {
-    "spiderling": "%"
+    "spiderling;web_caster;charming_spider;daddy_long_legs;jumping_spider;spiny_spider": "%",
+  },
+  "item.derelict.$_spawn_egg": {
+    "web_caster;charming_spider;daddy_long_legs;jumping_spider;spiny_spider": "%"
   },
   "item.derelict.aging_staff": "Aging Staff",
   "item.derelict.waxing_staff": "Waxing Staff",
