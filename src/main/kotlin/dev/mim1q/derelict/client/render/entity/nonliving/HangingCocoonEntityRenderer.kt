@@ -5,7 +5,10 @@ import dev.mim1q.derelict.entity.nonliving.HangingCocoonEntity
 import dev.mim1q.derelict.entity.nonliving.HangingCocoonEntity.Companion.BROKEN
 import dev.mim1q.derelict.init.client.ModRender
 import dev.mim1q.derelict.util.render.entry
-import net.minecraft.client.model.*
+import net.minecraft.client.model.ModelData
+import net.minecraft.client.model.ModelPartBuilder
+import net.minecraft.client.model.ModelTransform
+import net.minecraft.client.model.TexturedModelData
 import net.minecraft.client.render.OverlayTexture
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumerProvider
@@ -45,7 +48,7 @@ class HangingCocoonEntityRenderer(ctx: EntityRendererFactory.Context) : EntityRe
 
             modelPart.render(
                 matrices,
-                vertexConsumers.getBuffer(RenderLayer.getEntityCutoutNoCull(getTexture(entity))),
+                vertexConsumers.getBuffer(RenderLayer.getEntityCutout(getTexture(entity))),
                 light,
                 OverlayTexture.DEFAULT_UV
             )
@@ -61,9 +64,9 @@ class HangingCocoonEntityRenderer(ctx: EntityRendererFactory.Context) : EntityRe
 
         fun createTexturedModelData(): TexturedModelData = ModelData().let {
             it.root.apply {
-                addChild("root", ModelPartBuilder.create().uv(4, 2).cuboid(-5F, 4F, -5F, 10F, 28F, 10F), ModelTransform.pivot(0F, 8F, 0F)).apply {
-                    addChild("cube_r1", ModelPartBuilder.create().uv(48, 12).cuboid(-1F, 2F, 0F, 1F, 6F, 0F).uv(36, 0).cuboid(-7F, 7F, 0F, 14F, 6F, 0F, Dilation(0.01f)), ModelTransform.of(0F, -9F, 0F, 0F, -1.1345F, 0F))
-                    addChild("cube_r2", ModelPartBuilder.create().uv(36, 6).cuboid(-7F, 2F, 0F, 14F, 6F, 0F, Dilation(0.01f)), ModelTransform.of(0F, -4F, 0F, 0F, 0.48F, 0F))
+                addChild("root", ModelPartBuilder.create().uv(0, -10).cuboid(-5F, 4F, -5F, 0F, 28F, 10F).uv(20, -10).cuboid(5F, 4F, -5F, 0F, 28F, 10F).uv(20, 28).cuboid(-5F, 4F, 5F, 10F, 28F, 0F).uv(30, 18).cuboid(-5F, 4F, -5F, 10F, 0F, 10F).uv(30, 28).cuboid(-5F, 32F, -5F, 10F, 0F, 10F).uv(0, 28).cuboid(-5F, 4F, -5F, 10F, 28F, 0F), ModelTransform.pivot(0F, 8F, 0F)).apply {
+                    addChild("cube_r1", ModelPartBuilder.create().uv(48, 12).cuboid(-1F, 2F, 0F, 1F, 6F, 0F).uv(40, 0).cuboid(-5F, 7F, 0F, 10F, 6F, 0F), ModelTransform.of(0F, -9F, 0F, 0F, -1.1345F, 0F))
+                    addChild("cube_r2", ModelPartBuilder.create().uv(40, 6).cuboid(-5F, 2F, 0F, 10F, 6F, 0F), ModelTransform.of(0F, -4F, 0F, 0F, 0.48F, 0F))
                 }
             }
             TexturedModelData.of(it, 64, 64)
