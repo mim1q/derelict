@@ -27,7 +27,7 @@ class SpiderLegController(
             val offset = if ((index % 2 == 0) xor (index >= 4)) 8 else 0
             val isTimeToMove = entity.age % 16 == (offset + (index % 2) * 2)
 
-            leg.step(isTimeToMove)
+            leg.step(isTimeToMove || entity.age == 1)
 
             // FOR DEBUGGING PURPOSES
 
