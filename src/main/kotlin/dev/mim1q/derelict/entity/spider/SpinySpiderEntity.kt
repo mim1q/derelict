@@ -9,6 +9,7 @@ import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.ai.goal.ActiveTargetGoal
 import net.minecraft.entity.ai.goal.PounceAtTargetGoal
 import net.minecraft.entity.ai.goal.RevengeGoal
+import net.minecraft.entity.damage.DamageSource
 import net.minecraft.entity.data.DataTracker
 import net.minecraft.entity.data.TrackedData
 import net.minecraft.entity.data.TrackedDataHandlerRegistry
@@ -22,6 +23,7 @@ import net.minecraft.server.world.ServerWorld
 import net.minecraft.sound.SoundEvents
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
+import net.minecraft.util.math.MathHelper
 import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import net.minecraft.world.explosion.Explosion
@@ -85,6 +87,11 @@ class SpinySpiderEntity(
         }
     }
 
+    override fun damage(source: DamageSource, amount: Float): Boolean {
+        source.attacker?.damage(world.damageSources.thorns(this), MathHelper.clamp(amount * 0.2f, 1.0f, 5.0f))
+        return super.damage(source, amount)
+    }
+
     private fun explode() {
         dead = true
         discard()
@@ -92,10 +99,16 @@ class SpinySpiderEntity(
             this,
             null,
             object : ExplosionBehavior() {
-                override fun canDestroyBlock(explosion: Explosion, world: BlockView, pos: BlockPos, state: BlockState, power: Float): Boolean = false
+                override fun canDestroyBlock(
+                    explosion: Explosion,
+                    world: BlockView,
+                    pos: BlockPos,
+                    state: BlockState,
+                    power: Float
+                ): Boolean = false
             },
             pos.add(0.0, 0.5, 0.0),
-            0.5f,
+            1.5f,
             false,
             World.ExplosionSourceType.MOB
         )
@@ -133,6 +146,7 @@ class SpinySpiderEntity(
     fun getFuse(tickDelta: Float) = Easing.lerp(prevFuse, fuse, tickDelta) / (MAX_FUSE_TIME - 2f)
 
     companion object {
-        private val FUSE_SPEED: TrackedData<Int> = DataTracker.registerData(SpinySpiderEntity::class.java, TrackedDataHandlerRegistry.INTEGER)
+        private val FUSE_SPEED: TrackedData<Int> =
+            DataTracker.registerData(SpinySpiderEntity::class.java, TrackedDataHandlerRegistry.INTEGER)
     }
 }
