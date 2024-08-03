@@ -1,0 +1,70 @@
+{
+  "temperature": 0.8,
+  "downfall": 0.4,
+  "has_precipitation": false,
+  "effects": {
+    "sky_color": 7907327,
+    "fog_color": 12638463,
+    "water_color": 4159204,
+    "water_fog_color": 329011,
+    "additions_sound": {
+      "sound": "derelict:ambient.spider_caves",
+      "tick_chance": 0.01
+    }
+  },
+  "spawners": {
+    "monster": [
+      {
+        "type": "minecraft:spider",
+        "weight": 120,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "minecraft:cave_spider",
+        "weight": 50,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "derelict:charming_spider",
+        "weight": 20,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "derelict:spiny_spider",
+        "weight": 80,
+        "minCount": 2,
+        "maxCount": 3
+      },
+      {
+        "type": "derelict:spiderling",
+        "weight": 60,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "derelict:web_caster",
+        "weight": 40,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "derelict:jumping_spider",
+        "weight": 90,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ]
+  },
+  "spawn_costs": {},
+  "carvers": {
+    "air": [
+      "minecraft:cave",
+      "minecraft:cave_extra_underground",
+      "minecraft:canyon"
+    ]
+  },
+  "features": []
+}

@@ -26,11 +26,12 @@ version = ModData.version
 repositories {
     mavenCentral()
     maven("https://maven.wispforest.io")
-    maven("https://maven.shedaniel.me/")
-    maven("https://maven.terraformersmc.com/")
+    maven("https://maven.shedaniel.me")
+    maven("https://maven.terraformersmc.com")
+    maven("https://api.modrinth.com/maven")
     maven {
         name = "Mim1q's Maven"
-        url = uri("https://maven.mim1q.dev/")
+        url = uri("https://maven.mim1q.dev")
     }
     maven {
         name = "Ladysnake Maven"
@@ -59,10 +60,13 @@ dependencies {
     modCompileOnly("dev.emi:emi-fabric:${Versions.EMI}:api")
     modLocalRuntime("dev.emi:emi-fabric:${Versions.EMI}")
     // Gimm1q for common Mim1q's mods code
-    modImplementation(include("dev.mim1q:gimm1q:${Versions.GIMM1Q}")!!)
+    include(modImplementation("dev.mim1q:gimm1q:${Versions.GIMM1Q}")!!)
     // Cardinal Components API for synced entity data
     include(modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${Versions.CARDINAL_COMPONENTS}")!!)
     include(modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${Versions.CARDINAL_COMPONENTS}")!!)
+    // Biolith for biome generation
+    include(modImplementation("maven.modrinth:biolith:${Versions.BIOLITH}")!!)
+    include(modImplementation("com.terraformersmc.terraform-api:terraform-surfaces-api-v1:10.0.0")!!)
 }
 
 tasks {

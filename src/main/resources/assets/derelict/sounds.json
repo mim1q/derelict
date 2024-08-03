@@ -1,0 +1,12 @@
+{
+  "ambient.spider_caves": {
+    "sounds": [
+      "derelict:ambient/spider_caves/ambient0",
+      "derelict:ambient/spider_caves/ambient1",
+      "derelict:ambient/spider_caves/ambient2",
+      "minecraft:block/pointed_dripstone/drip_water1",
+      "minecraft:block/pointed_dripstone/drip_water2",
+      "minecraft:block/pointed_dripstone/drip_water3"
+    ]
+  }
+}
