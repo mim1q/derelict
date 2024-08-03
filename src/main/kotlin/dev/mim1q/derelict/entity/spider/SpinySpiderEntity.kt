@@ -88,7 +88,9 @@ class SpinySpiderEntity(
     }
 
     override fun damage(source: DamageSource, amount: Float): Boolean {
-        source.attacker?.damage(world.damageSources.thorns(this), MathHelper.clamp(amount * 0.2f, 1.0f, 5.0f))
+        if (source.attacker?.isPlayer == true) {
+            source.attacker!!.damage(world.damageSources.thorns(this), MathHelper.clamp(amount * 0.2f, 1.0f, 5.0f))
+        }
         return super.damage(source, amount)
     }
 
