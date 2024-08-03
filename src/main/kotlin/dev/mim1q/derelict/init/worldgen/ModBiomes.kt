@@ -3,10 +3,10 @@ package dev.mim1q.derelict.init.worldgen
 import com.terraformersmc.biolith.api.biome.BiomePlacement
 import com.terraformersmc.biolith.api.surface.SurfaceGeneration
 import dev.mim1q.derelict.Derelict
+import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.init.ModEntities
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase
-import net.minecraft.block.Blocks
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.SpawnGroup
 import net.minecraft.registry.RegistryKey
@@ -26,10 +26,18 @@ object ModBiomes {
         BiomePlacement.addOverworld(
             SPIDER_CAVES,
             noiseParameters(
-                continentalness = -0.1f..1.0f,
-                depth = 0.6f..1.8f,
-                weirdness = 0.8f..0.82f,
+                depth = 1.4f..1.8f,
+                weirdness = 0.74f..0.75f,
                 offset = 0.2f
+            )
+        )
+        BiomePlacement.addOverworld(
+            SPIDER_CAVES,
+            noiseParameters(
+                continentalness = -0.1f..1.0f,
+                depth = 0.1f..0.6f,
+                weirdness = 0.86f..0.875f,
+                offset = 0.3f
             )
         )
 
@@ -37,7 +45,7 @@ object ModBiomes {
             Derelict.id("rules/overworld/spider_caves"),
             condition(
                 MaterialRules.biome(SPIDER_CAVES),
-                block(Blocks.COBBLESTONE.defaultState)
+                block(ModBlocksAndItems.ARACHNITE.block.defaultState)
             )
         )
 

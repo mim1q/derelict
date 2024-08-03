@@ -8,10 +8,7 @@ import dev.mim1q.derelict.block.cobweb.FancyCobwebWithSpiderNestBlock
 import dev.mim1q.derelict.block.cobweb.FancyCornerCobwebBlock
 import dev.mim1q.derelict.block.flickering.*
 import dev.mim1q.derelict.entity.SpiderlingEntity
-import dev.mim1q.derelict.featureset.CoverBoardsSet
-import dev.mim1q.derelict.featureset.GrassSet
-import dev.mim1q.derelict.featureset.MetalSet
-import dev.mim1q.derelict.featureset.WoodSet
+import dev.mim1q.derelict.featureset.*
 import dev.mim1q.derelict.interfaces.AbstractBlockAccessor
 import dev.mim1q.derelict.item.StaffItem
 import dev.mim1q.derelict.item.weapon.Wildfire
@@ -134,6 +131,8 @@ object ModBlocksAndItems {
         defaultItemSettings(),
         FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).strength(2.0f, 1200f).nonOpaque()
     ).register()
+
+    val ARACHNITE = StoneSet(Derelict.id("arachnite")).register()
 
     val BLOCK_AGING_MAP = mapOf(
         Blocks.REDSTONE_LAMP to FLICKERING_REDSTONE_LAMP,

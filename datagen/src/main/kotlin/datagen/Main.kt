@@ -122,6 +122,8 @@ fun main(args: Array<String>) {
 
         // Metal
         add(CustomMetalPresets.threeOxidationMetalSet("derelict:noctisteel"))
+        // Stone
+        add(CustomStonePresets.variedStoneSet(30, 5, 5, 5, 5, 5, 1, 1, 1, 2, 2, 2, 30, 5, 5, 5, 5, 5, 1, 1, 1, 2, 2, 2))
         // Handheld items
         listOf("aging_staff", "waxing_staff").forEach {
             add(it, ParentedModel.item("minecraft:item/handheld").texture("layer0", "derelict:item/$it"))
@@ -177,6 +179,7 @@ fun main(args: Array<String>) {
             "minecraft:cave_spider",
         )
     }
+    generator.printInfo()
     generator.generate()
     FileCopyManager.copyFiles()
 
@@ -197,4 +200,5 @@ fun main(args: Array<String>) {
     ImageAtlases.getMetalAtlas(resourcePath.resolve("atlas"), generatedPath, "noctisteel").save()
     ImageAtlases.getColorsAtlas(resourcePath.resolve("atlas"), generatedPath, "sock", "entity/spider/sock", 64).save()
     ImageAtlases.getEggsAtlas(resourcePath.resolve("atlas"), generatedPath).save()
+    ImageAtlases.getStoneAtlas(resourcePath.resolve("atlas"), generatedPath, "arachnite", 24).save()
 }

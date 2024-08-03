@@ -37,21 +37,22 @@ object ImageAtlases {
         }
     }
 
-    fun getColorsAtlas(atlasDirectory: Path, generatedDirectory: Path, name: String, folder: String, size: Int) = ImageAtlas.create(
-        atlasDirectory.resolve("${name}_atlas.png").toFile(),
-        generatedDirectory.resolve("assets/derelict/textures").toFile(),
-        spriteWidth = size,
-        spriteHeight = size,
-    ) {
-        listOf(
-            "white", "light_gray", "gray", "black",
-            "brown", "red", "orange", "yellow",
-            "lime", "green", "cyan", "light_blue",
-            "blue", "purple", "magenta", "pink"
-        ).forEach {
-            sprite("${folder}/${it}_$name")
+    fun getColorsAtlas(atlasDirectory: Path, generatedDirectory: Path, name: String, folder: String, size: Int) =
+        ImageAtlas.create(
+            atlasDirectory.resolve("${name}_atlas.png").toFile(),
+            generatedDirectory.resolve("assets/derelict/textures").toFile(),
+            spriteWidth = size,
+            spriteHeight = size,
+        ) {
+            listOf(
+                "white", "light_gray", "gray", "black",
+                "brown", "red", "orange", "yellow",
+                "lime", "green", "cyan", "light_blue",
+                "blue", "purple", "magenta", "pink"
+            ).forEach {
+                sprite("${folder}/${it}_$name")
+            }
         }
-    }
 
     fun getEggsAtlas(atlasDirectory: Path, generatedDirectory: Path) = ImageAtlas.create(
         atlasDirectory.resolve("eggs_atlas.png").toFile(),
@@ -61,6 +62,17 @@ object ImageAtlases {
     ) {
         Constants.SPAWN_EGGS.forEach {
             sprite("item/${it}_spawn_egg")
+        }
+    }
+
+    fun getStoneAtlas(atlasDirectory: Path, generatedDirectory: Path, name: String, count: Int) = ImageAtlas.create(
+        atlasDirectory.resolve("$name.png").toFile(),
+        generatedDirectory.resolve("assets/derelict/textures").toFile(),
+        spriteWidth = 16,
+        spriteHeight = 16
+    ) {
+        for (i in 0..<count) {
+            sprite("block/${name}/${name}_$i")
         }
     }
 }
