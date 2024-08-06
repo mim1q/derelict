@@ -5,6 +5,7 @@ import dev.mim1q.derelict.config.DerelictConfigs
 import dev.mim1q.derelict.init.*
 import dev.mim1q.derelict.init.component.ModCardinalComponents.updateClientSyncedEffects
 import dev.mim1q.derelict.init.worldgen.ModBiomes
+import dev.mim1q.derelict.init.worldgen.ModFeatures
 import io.wispforest.owo.itemgroup.OwoItemGroup
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents
@@ -24,16 +25,24 @@ object Derelict : ModInitializer {
 
         CONFIG.save()
 
+        // General content
         ModBlocksAndItems.init()
         ModBlockEntities.init()
-        ModParticles.init()
         ModEntities.init()
         ModStatusEffects.init()
-        ModBiomes.init()
+
+        // Effects
+        ModParticles.init()
         ModSounds.init()
 
+        // Worldgen
+        ModBiomes.init()
+        ModFeatures.init()
+
+        // Post init setup
         ModBlocksAndItems.setupWaxableAndAgeable()
 
+        // Events
         setupEventListeners()
     }
 

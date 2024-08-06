@@ -66,5 +66,19 @@
       "minecraft:canyon"
     ]
   },
-  "features": []
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "derelict:spider_silk_pillar"
+    ],
+    [],
+    [],
+    []
+  ]
 }
