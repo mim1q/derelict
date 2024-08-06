@@ -35,7 +35,7 @@ object ModBiomes {
             SPIDER_CAVES,
             noiseParameters(
                 continentalness = -0.1f..1.0f,
-                depth = 0.1f..0.6f,
+                depth = 0.1f..0.8f,
                 weirdness = 0.86f..0.875f,
                 offset = 0.3f
             )

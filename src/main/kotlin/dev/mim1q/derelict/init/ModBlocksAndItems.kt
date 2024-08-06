@@ -134,6 +134,8 @@ object ModBlocksAndItems {
 
     val ARACHNITE = StoneSet(Derelict.id("arachnite")).register()
 
+    val SPIDER_SILK = register("spider_silk", CobwebBlock(AbstractBlock.Settings.copy(Blocks.COBWEB).noCollision()))
+
     val BLOCK_AGING_MAP = mapOf(
         Blocks.REDSTONE_LAMP to FLICKERING_REDSTONE_LAMP,
         Blocks.SEA_LANTERN to FLICKERING_SEA_LANTERN,

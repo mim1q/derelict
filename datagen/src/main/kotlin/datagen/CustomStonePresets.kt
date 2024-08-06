@@ -67,7 +67,7 @@ object CustomStonePresets {
 
         add(baseSet)
 
-        TagManager.add("minecraft:block/base_stone_overworld", "derelict:arachnite")
+        TagManager.add("minecraft:blocks/base_stone_overworld", "derelict:arachnite")
     }
 
     private fun JsonElement.replaceIfHasChildNamed(childName: String, block: (JsonElement) -> JsonElement) {

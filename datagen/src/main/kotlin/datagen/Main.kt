@@ -69,6 +69,8 @@ fun main(args: Array<String>) {
         )
         add(CommonModelPresets.cubeAllBlock("derelict:extinguished_sea_lantern"))
         add(CommonDropPresets.simpleDrop("derelict:extinguished_sea_lantern"))
+        add(CommonModelPresets.cubeAllBlock("derelict:spider_silk"))
+        add(CommonDropPresets.silkTouchOrShearsOnlyDrop("derelict:spider_silk"))
         add(
             CustomPresets.flickeringCubeAll(
                 "derelict:flickering_redstone_lamp", 8, 20, "minecraft:block/redstone_lamp_on",
