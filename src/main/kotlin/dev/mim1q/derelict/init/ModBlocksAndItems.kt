@@ -6,6 +6,7 @@ import dev.mim1q.derelict.block.SmolderingLeavesBlock
 import dev.mim1q.derelict.block.cobweb.FancyCobwebBlock
 import dev.mim1q.derelict.block.cobweb.FancyCobwebWithSpiderNestBlock
 import dev.mim1q.derelict.block.cobweb.FancyCornerCobwebBlock
+import dev.mim1q.derelict.block.cobweb.SpiderSilkBlock
 import dev.mim1q.derelict.block.flickering.*
 import dev.mim1q.derelict.entity.SpiderlingEntity
 import dev.mim1q.derelict.featureset.*
@@ -95,6 +96,7 @@ object ModBlocksAndItems {
     val FANCY_COBWEB_WITH_SPIDER_NEST = register("fancy_cobweb_with_spider_nest", FancyCobwebWithSpiderNestBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
     val CORNER_COBWEB = register("corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
     val FANCY_CORNER_COBWEB = register("fancy_corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
+    val SPIDER_SILK = register("spider_silk", SpiderSilkBlock(AbstractBlock.Settings.copy(Blocks.WHITE_WOOL).noCollision().strength(0.2f)))
 
     val SPIDERLING_IN_A_BUCKET = registerItem("spiderling_in_a_bucket", object : Item(defaultItemSettings().maxCount(1)) {
         override fun useOnBlock(context: ItemUsageContext): ActionResult {
@@ -133,8 +135,6 @@ object ModBlocksAndItems {
     ).register()
 
     val ARACHNITE = StoneSet(Derelict.id("arachnite")).register()
-
-    val SPIDER_SILK = register("spider_silk", CobwebBlock(AbstractBlock.Settings.copy(Blocks.COBWEB).noCollision()))
 
     val BLOCK_AGING_MAP = mapOf(
         Blocks.REDSTONE_LAMP to FLICKERING_REDSTONE_LAMP,

@@ -14,14 +14,17 @@ import dev.mim1q.derelict.interfaces.AbstractBlockAccessor
 import dev.mim1q.derelict.item.CrosshairTipItem
 import dev.mim1q.derelict.util.BlockMarkerUtils
 import dev.mim1q.gimm1q.client.highlight.HighlightDrawerCallback
+import dev.mim1q.gimm1q.interpolation.Easing
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback
 import net.minecraft.client.MinecraftClient
+import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.render.entity.LivingEntityRenderer
 import net.minecraft.client.render.entity.model.EntityModel
 import net.minecraft.entity.LivingEntity
 import net.minecraft.item.Items
+import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.MathHelper
 import kotlin.math.sin
@@ -62,28 +65,40 @@ object DerelictClient : ClientModInitializer {
             Derelict.id("textures/gui/effect/spider_web_gui_dense.png")
         )
 
+        fun DrawContext.drawFullScreenTexture(texture: Identifier, ratio: Float) {
+            val windowWidth = MinecraftClient.getInstance().window.scaledWidth
+            val windowHeight = MinecraftClient.getInstance().window.scaledHeight
+            val isHorizontal = (windowWidth.toFloat() / windowHeight) > ratio
+
+            val width = if (isHorizontal) windowWidth else (windowHeight * ratio).toInt()
+            val height = if (isHorizontal) (windowWidth / ratio).toInt() else windowHeight
+
+            RenderSystem.enableBlend()
+            drawTexture(
+                texture,
+                (windowWidth - width) / 2, (windowHeight - height) / 2,
+                0f, 0f,
+                width, height,
+                width, height
+            )
+        }
+
         HudRenderCallback.EVENT.register { context, _ ->
             val player = MinecraftClient.getInstance().player ?: return@register
+            val camera = MinecraftClient.getInstance().gameRenderer.camera
+            val world = player.world
+
+            val light = Easing.lerp(world.getBrightness(camera.blockPos) + 1 / 16f, 1f, 0.2f)
+            val lastShaderColor = RenderSystem.getShaderColor()
+
+//            RenderSystem.setShaderColor(light, light, light, 1f)
 
             if (player.hasClientSyncedEffect(ModStatusEffects.COBWEBBED)) {
                 val level = MathHelper.clamp(player.getClientSyncedEffectAmplifier(ModStatusEffects.COBWEBBED) ?: 0, 0, 2)
-
-                val windowWidth = MinecraftClient.getInstance().window.scaledWidth
-                val windowHeight = MinecraftClient.getInstance().window.scaledHeight
-                val isHorizontal = (windowWidth.toFloat() / windowHeight) > (16f / 9f)
-
-                val width = if (isHorizontal) windowWidth else (windowHeight * 16) / 9
-                val height = if (isHorizontal) (windowWidth * 9) / 16 else windowHeight
-
-                RenderSystem.enableBlend()
-                context.drawTexture(
-                    hudWebTextures[level],
-                    (windowWidth - width) / 2, (windowHeight - height) / 2,
-                    0f, 0f,
-                    width, height,
-                    width, height
-                )
+                context.drawFullScreenTexture(hudWebTextures[level], 16 / 9f)
             }
+
+            RenderSystem.setShaderColor(lastShaderColor[0], lastShaderColor[1], lastShaderColor[2], lastShaderColor[3])
         }
 
 
