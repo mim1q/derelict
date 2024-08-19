@@ -28,8 +28,10 @@ import java.util.*
 
 class SpiderlingEntity(entityType: EntityType<SpiderlingEntity>, world: World) : SpiderEntity(entityType, world), Bucketable {
     companion object {
-        val ANCHOR_POSITION: TrackedData<Optional<BlockPos>> = DataTracker.registerData(SpiderlingEntity::class.java, TrackedDataHandlerRegistry.OPTIONAL_BLOCK_POS)
-        val SPAWNED_FROM_BUCKET: TrackedData<Boolean> = DataTracker.registerData(SpiderlingEntity::class.java, TrackedDataHandlerRegistry.BOOLEAN)
+        val ANCHOR_POSITION: TrackedData<Optional<BlockPos>> =
+            DataTracker.registerData(SpiderlingEntity::class.java, TrackedDataHandlerRegistry.OPTIONAL_BLOCK_POS)
+        val SPAWNED_FROM_BUCKET: TrackedData<Boolean> =
+            DataTracker.registerData(SpiderlingEntity::class.java, TrackedDataHandlerRegistry.BOOLEAN)
 
         fun createSpiderlingAttributes(): DefaultAttributeContainer.Builder {
             return createHostileAttributes()
@@ -134,6 +136,5 @@ class SpiderlingEntity(entityType: EntityType<SpiderlingEntity>, world: World) :
     override fun interactMob(player: PlayerEntity, hand: Hand): ActionResult {
         return Bucketable.tryBucket(player, hand, this).orElse(super.interactMob(player, hand))
     }
-
 }
 
