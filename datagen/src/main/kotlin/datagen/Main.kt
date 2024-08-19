@@ -58,6 +58,7 @@ fun main(args: Array<String>) {
         }
         add(CustomPresets.fancyCobweb("derelict:fancy_cobweb"))
         add(CustomPresets.fancyCobweb("derelict:fancy_cobweb_with_spider_nest"))
+        add(CustomPresets.eachWallBlock("derelict:wall_cobweb"))
         add(CustomPresets.fancyCornerCobweb("derelict:fancy_corner_cobweb"))
         add(CustomPresets.fancyCornerCobweb("derelict:corner_cobweb"))
         // Flickering Lights

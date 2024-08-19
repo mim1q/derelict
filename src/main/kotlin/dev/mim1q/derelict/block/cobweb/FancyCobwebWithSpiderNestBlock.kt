@@ -31,7 +31,7 @@ class FancyCobwebWithSpiderNestBlock(settings: Settings) : FancyCobwebBlock(sett
     }
 
     private fun getDirections(state: BlockState) =
-        Direction.entries.filter { state[getDirectionProperty(it)] }.toList()
+        Direction.entries.filter { state[getProperty(it)] }.toList()
 
     override fun randomDisplayTick(state: BlockState, world: World, pos: BlockPos, random: Random) {
         spawnParticle(state, world, pos, random, 0.5F, 0.03)
