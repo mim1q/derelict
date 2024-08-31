@@ -49,6 +49,7 @@ object ModRender {
             ModBlocksAndItems.FANCY_CORNER_COBWEB,
             ModBlocksAndItems.CORNER_COBWEB,
             *ModBlocksAndItems.NOCTISTEEL.getCutoutBlocks(),
+            ModBlocksAndItems.WALL_COBWEB,
             ModBlocksAndItems.SPIDER_SILK
         )
 

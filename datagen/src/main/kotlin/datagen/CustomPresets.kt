@@ -520,11 +520,22 @@ object CustomPresets {
     }
 
     fun fancyCobweb(id: String) = Preset {
-        val (_, name) = Id(id)
-        fun topModel(rotation: Rotation) = BlockStateModel("derelict:block/fancy_cobweb/top", yRot = rotation)
-        fun sideModel(rotation: Rotation) = BlockStateModel("derelict:block/fancy_cobweb/side", yRot = rotation)
-        fun bottomModel(rotation: Rotation) = BlockStateModel("derelict:block/fancy_cobweb/bottom", yRot = rotation)
-        fun fullModel() = BlockStateModel("derelict:block/fancy_cobweb/full")
+        val (ns, name) = Id(id)
+
+        if (id != "derelict:fancy_cobweb") {
+            listOf(
+                "bottom", "corner_horizontal", "corner_rotated_bottom", "corner_rotated_top", "corner_straight_bottom",
+                "corner_straight_top", "full", "side", "top"
+            ).forEach {
+                add("${name}/$it", ParentedModel.block("derelict:block/fancy_cobweb/$it")
+                    .texture("0", "$ns:block/$name"))
+            }
+        }
+
+        fun topModel(rotation: Rotation) = BlockStateModel("$ns:block/$name/top", yRot = rotation)
+        fun sideModel(rotation: Rotation) = BlockStateModel("$ns:block/$name/side", yRot = rotation)
+        fun bottomModel(rotation: Rotation) = BlockStateModel("$ns:block/$name/bottom", yRot = rotation)
+        fun fullModel() = BlockStateModel("$ns:block/$name/full")
         add(CommonDropPresets.silkTouchOrShearsOnlyDrop(id))
         add(name, BlockState.createMultipart {
             applyWhenAll(topModel(NONE), "up=true", "north=true")
