@@ -1,8 +1,5 @@
 {
-  "feature": {
-    "type": "derelict:spider_silk_pillar",
-    "config": {}
-  },
+  "feature": "derelict:spider_silk_pillar",
   "placement": [
     {
       "type": "minecraft:count",
