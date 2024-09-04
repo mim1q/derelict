@@ -2,7 +2,10 @@ package dev.mim1q.derelict.world.feature
 
 import dev.mim1q.derelict.block.cobweb.FancyCornerCobwebBlock
 import dev.mim1q.derelict.init.ModBlocksAndItems
+import dev.mim1q.derelict.init.ModBlocksAndItems.CORNER_COBWEB
+import net.minecraft.block.Block
 import net.minecraft.block.BlockState
+import net.minecraft.block.ShapeContext
 import net.minecraft.block.SideShapeType
 import net.minecraft.util.Util
 import net.minecraft.util.math.BlockPos
@@ -10,11 +13,13 @@ import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3i
 import net.minecraft.util.math.random.Random
 import net.minecraft.world.StructureWorldAccess
+import net.minecraft.world.WorldAccess
 import net.minecraft.world.gen.chunk.ChunkGenerator
 import net.minecraft.world.gen.feature.DefaultFeatureConfig
 import net.minecraft.world.gen.feature.Feature
 import net.minecraft.world.gen.feature.util.FeatureContext
-import java.util.*
+import kotlin.math.min
+import kotlin.math.round
 
 private const val MIN_PILLAR_HEIGHT = 10
 private const val MAX_PILLAR_HEIGHT = 64
@@ -54,114 +59,186 @@ class SpiderSilkPillar : Feature<DefaultFeatureConfig>(DefaultFeatureConfig.CODE
         if (!found) return false
 
         val topOrigin = topPos.toImmutable()
+        val randomDir = POSSIBLE_DIRECTIONS.random()
+        val randomSlope = random.nextDouble() * 0.3
 
-        do {
-            topPos.setY(topPos.y - 1)
-            val height = topOrigin.y - topPos.y
-            val belowTopPos = topPos.down()
-            if (
-                world.getBlockState(topPos).isAir
-                && world.getBlockState(belowTopPos).isSideSolid(world, belowTopPos, Direction.UP, SideShapeType.FULL)
-            ) {
-                if (height < MIN_PILLAR_HEIGHT) return false
-                return generate(FeatureContext(Optional.empty(), world, chunkGenerator, random, topOrigin, config))
-            }
-        } while (height < MAX_PILLAR_HEIGHT)
-
-        return false
+        return SilkPlacer().generate(
+            world, random,
+            { it, i ->
+                it.set(
+                    topOrigin.x + round(i * randomSlope * randomDir.first.x).toInt(),
+                    topOrigin.y - i,
+                    topOrigin.z + round(i * randomSlope * randomDir.first.z).toInt(),
+                )
+            },
+            randomDir.second
+        )
     }
 
     override fun generate(context: FeatureContext<DefaultFeatureConfig>): Boolean {
-        var pos = context.origin
-        while (context.world.getBlockState(pos).isAir) {
-            setBlockState(context.world, pos, ModBlocksAndItems.SPIDER_SILK.defaultState)
-            pos = pos.down()
+        return true
+    }
+}
+
+private class SilkPlacer {
+    val positionStack = Array<BlockPos.Mutable>(64) { BlockPos.ORIGIN.mutableCopy() }
+
+    fun generate(
+        world: WorldAccess,
+        random: Random,
+        positionSetter: (BlockPos.Mutable, Int) -> Unit,
+        rotation: Int
+    ): Boolean {
+        val height = setPositionsAndValidate(world, positionSetter) ?: return false
+
+        var lastX = positionStack[0].x
+        var lastZ = positionStack[0].z
+
+        for (i in 0..<height) {
+            val pos = positionStack[i]
+            placeIfPossible(world, pos, ModBlocksAndItems.SPIDER_SILK.defaultState)
+            if (pos.x != lastX || pos.z != lastZ) {
+                placeIfPossible(
+                    world, pos.up(), CORNER_COBWEB.defaultState
+                        .with(FancyCornerCobwebBlock.ROTATION, (rotation + 4) % 8)
+                        .with(FancyCornerCobwebBlock.TYPE, FancyCornerCobwebBlock.Type.BOTTOM)
+                )
+                placeIfPossible(
+                    world, BlockPos(lastX, pos.y, lastZ), CORNER_COBWEB.defaultState
+                        .with(FancyCornerCobwebBlock.ROTATION, rotation)
+                        .with(FancyCornerCobwebBlock.TYPE, FancyCornerCobwebBlock.Type.TOP)
+                )
+                lastX = pos.x
+                lastZ = pos.z
+            }
         }
 
-        var noTopConnection = true
-        var noBottomConnection = true
+        var chance = 0.8
 
-        Util.copyShuffled(POSSIBLE_DIRECTIONS, context.random).forEach { direction ->
-            if (context.random.nextFloat() < 0.2f || noTopConnection) {
-                if (tryGenerateConnection(context.world, context.origin.down(5), direction.first, direction.second, 8, true))
-                    noTopConnection = false
-            }
-            if (context.random.nextFloat() < 0.2f || noBottomConnection) {
-                if (tryGenerateConnection(context.world, pos.up(5), direction.first, direction.second, 8, false))
-                    noBottomConnection = false
+        Util.copyShuffled(POSSIBLE_DIRECTIONS, random).forEach {
+            for (i in 3..min(8, height - 1)) {
+                if (random.nextDouble() < chance && tryGenerateConnection(world, positionStack[i], true, it)) {
+                    chance -= 0.2
+                    break
+                }
             }
         }
 
+        chance = 0.8
+
+        Util.copyShuffled(POSSIBLE_DIRECTIONS, random).forEach {
+            for (i in 3..min(8, height - 1)) {
+                if (random.nextDouble() < chance && tryGenerateConnection(world, positionStack[height - i], false, it)) {
+                    chance -= 0.2
+                    break
+                }
+            }
+        }
 
         return true
     }
 
-    private fun tryGenerateConnection(
-        world: StructureWorldAccess,
-        origin: BlockPos,
-        sideOffset: Vec3i,
-        rotation: Int,
-        tries: Int,
-        up: Boolean
+    fun tryGenerateConnection(
+        world: WorldAccess,
+        pos: BlockPos,
+        up: Boolean,
+        dir: Pair<Vec3i, Int>
     ): Boolean {
-        val testPos = origin.mutableCopy()
-        repeat(tries) {
-            val pos = testPos.add(sideOffset.multiply(4))
-            val otherPos = if (up) pos.up() else pos.down()
+        val sideOffset = dir.first
+        val offset = if (up) Vec3i(sideOffset.x * 4, 4, sideOffset.z * 4) else Vec3i(sideOffset.x * 4, -4, sideOffset.z * 4)
+        val checkPos = pos.add(offset)
 
-            if (world.getBlockState(pos).isAir
-                && world.getBlockState(otherPos)
-                    .isSideSolid(world, otherPos, if (up) Direction.DOWN else Direction.UP, SideShapeType.FULL)
+        if (up) {
+            if (
+                world.getBlockState(checkPos).isReplaceable
+                && world.getBlockState(checkPos.up()).isSideSolidFullSquare(world, checkPos, Direction.DOWN)
             ) {
-                generateConnection(world, pos.mutableCopy(), sideOffset, rotation, up)
+                generateConnection(world, checkPos.mutableCopy(), sideOffset, dir.second, true)
                 return true
             }
-            testPos.move(0, if (up) 1 else -1, 0)
+        } else {
+            if (
+                world.getBlockState(checkPos).isReplaceable
+                && world.getBlockState(checkPos.down()).isSideSolidFullSquare(world, checkPos, Direction.UP)
+            ) {
+                generateConnection(world, checkPos.mutableCopy(), sideOffset, dir.second, false)
+                return true
+            }
         }
+
         return false
     }
 
+    fun setPositionsAndValidate(world: WorldAccess, positionSetter: (BlockPos.Mutable, Int) -> Unit): Int? {
+        for (i in 0..<MAX_PILLAR_HEIGHT) {
+            positionSetter(positionStack[i], i)
+            val currentPos = positionStack[i]
+            if (
+                world.getBlockState(currentPos).isReplaceable
+                && world.getBlockState(currentPos.down()).isSideSolidFullSquare(world, currentPos, Direction.DOWN)
+            ) {
+                return if (i >= MIN_PILLAR_HEIGHT) {
+                    i + 1
+                } else null
+            }
+        }
+        return null
+    }
+
     private fun generateConnection(
-        world: StructureWorldAccess,
+        world: WorldAccess,
         mutableOrigin: BlockPos.Mutable,
         sideOffset: Vec3i,
         rotation: Int,
         up: Boolean
     ) {
         val mainBlock = ModBlocksAndItems.SPIDER_SILK.defaultState
-        val cornerBlock0 = ModBlocksAndItems.CORNER_COBWEB.defaultState
+        val cornerBlock0 = CORNER_COBWEB.defaultState
             .with(FancyCornerCobwebBlock.ROTATION, rotation)
-            .with(FancyCornerCobwebBlock.TYPE, if (up) FancyCornerCobwebBlock.Type.BOTTOM else FancyCornerCobwebBlock.Type.TOP)
-        val cornerBlock1 = ModBlocksAndItems.CORNER_COBWEB.defaultState
+            .with(
+                FancyCornerCobwebBlock.TYPE,
+                if (up) FancyCornerCobwebBlock.Type.BOTTOM else FancyCornerCobwebBlock.Type.TOP
+            )
+        val cornerBlock1 = CORNER_COBWEB.defaultState
             .with(FancyCornerCobwebBlock.ROTATION, (rotation + 4) % 8)
-            .with(FancyCornerCobwebBlock.TYPE, if (up) FancyCornerCobwebBlock.Type.TOP else FancyCornerCobwebBlock.Type.BOTTOM)
+            .with(
+                FancyCornerCobwebBlock.TYPE,
+                if (up) FancyCornerCobwebBlock.Type.TOP else FancyCornerCobwebBlock.Type.BOTTOM
+            )
         val negativeOffset = sideOffset.multiply(-1)
         val verticalOffset = Vec3i(0, if (up) -1 else 1, 0)
 
-        val predicate: (BlockState) -> Boolean = { it.isAir }
-
-        setBlockStateIf(world, mutableOrigin, cornerBlock1, predicate)
+        placeIfPossible(world, mutableOrigin, cornerBlock1)
         mutableOrigin.move(negativeOffset)
-        setBlockStateIf(world, mutableOrigin, mainBlock, predicate)
+        placeIfPossible(world, mutableOrigin, mainBlock)
         mutableOrigin.move(negativeOffset)
-        setBlockStateIf(world, mutableOrigin, cornerBlock0, predicate)
+        placeIfPossible(world, mutableOrigin, cornerBlock0)
         mutableOrigin.move(sideOffset)
         mutableOrigin.move(verticalOffset)
 
-        setBlockStateIf(world, mutableOrigin, cornerBlock1, predicate)
+        placeIfPossible(world, mutableOrigin, cornerBlock1)
         mutableOrigin.move(negativeOffset)
-        setBlockStateIf(world, mutableOrigin, mainBlock, predicate)
+        placeIfPossible(world, mutableOrigin, mainBlock)
         mutableOrigin.move(negativeOffset)
-        setBlockStateIf(world, mutableOrigin, cornerBlock0, predicate)
+        placeIfPossible(world, mutableOrigin, cornerBlock0)
         mutableOrigin.move(sideOffset)
         mutableOrigin.move(verticalOffset)
 
-        setBlockStateIf(world, mutableOrigin, cornerBlock1, predicate)
+        placeIfPossible(world, mutableOrigin, cornerBlock1)
         mutableOrigin.move(negativeOffset)
-        setBlockStateIf(world, mutableOrigin, mainBlock, predicate)
+        placeIfPossible(world, mutableOrigin, mainBlock)
         mutableOrigin.move(verticalOffset)
-        setBlockStateIf(world, mutableOrigin, mainBlock, predicate)
+        placeIfPossible(world, mutableOrigin, mainBlock)
         mutableOrigin.move(verticalOffset)
-        setBlockStateIf(world, mutableOrigin, cornerBlock1, predicate)
+        placeIfPossible(world, mutableOrigin, cornerBlock1)
+    }
+
+    fun placeIfPossible(world: WorldAccess, pos: BlockPos, state: BlockState): Boolean {
+        if (world.canPlace(state, pos, ShapeContext.absent())) {
+            world.setBlockState(pos, state, Block.NOTIFY_LISTENERS)
+            return true
+        }
+
+        return false
     }
 }

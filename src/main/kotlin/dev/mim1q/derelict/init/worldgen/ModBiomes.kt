@@ -26,8 +26,8 @@ object ModBiomes {
         BiomePlacement.addOverworld(
             SPIDER_CAVES,
             noiseParameters(
-                depth = 1.3f..2.0f,
-                weirdness = 0.72f..0.74f,
+                depth = 1.2f..2.0f,
+                weirdness = 0.72f..0.77f,
                 offset = 0.2f
             )
         )
@@ -35,7 +35,7 @@ object ModBiomes {
             SPIDER_CAVES,
             noiseParameters(
                 continentalness = -0.1f..1.0f,
-                depth = 0.1f..1.0f,
+                depth = 0.0f..1.2f,
                 weirdness = 0.86f..1.0f,
                 offset = 0.3f
             )

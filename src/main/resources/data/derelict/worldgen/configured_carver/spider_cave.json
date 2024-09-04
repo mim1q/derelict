@@ -11,14 +11,14 @@
     "horizontal_radius_multiplier": {
       "type": "minecraft:uniform",
       "value": {
-        "max_exclusive": 1.4,
-        "min_inclusive": 0.7
+        "max_exclusive": 1.6,
+        "min_inclusive": 0.9
       }
     },
     "lava_level": {
       "above_bottom": 0
     },
-    "probability": 0.9,
+    "probability": 1,
     "replaceable": "#minecraft:overworld_carver_replaceables",
     "vertical_radius_multiplier": {
       "type": "minecraft:uniform",
