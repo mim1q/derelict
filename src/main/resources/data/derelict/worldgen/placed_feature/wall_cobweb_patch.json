@@ -1,0 +1,52 @@
+{
+  "feature": {
+    "type": "minecraft:multiface_growth",
+    "config": {
+      "block": "derelict:wall_cobweb",
+      "search_range": 20,
+      "chance_of_spreading": 0.8,
+      "can_place_on_floor": true,
+      "can_place_on_ceiling": true,
+      "can_place_on_wall": true,
+      "can_be_placed_on": [
+        "derelict:arachnite",
+        "derelict:spider_silk"
+      ]
+    }
+  },
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": {
+        "type": "minecraft:uniform",
+        "value": {
+          "min_inclusive": 184,
+          "max_inclusive": 255
+        }
+      }
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "min_inclusive": {
+          "above_bottom": 0
+        },
+        "max_inclusive": {
+          "absolute": 256
+        }
+      }
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:surface_relative_threshold_filter",
+      "heightmap": "OCEAN_FLOOR_WG",
+      "max_inclusive": -13
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

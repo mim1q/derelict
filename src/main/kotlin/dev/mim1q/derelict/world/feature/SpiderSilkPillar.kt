@@ -5,7 +5,6 @@ import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.init.ModBlocksAndItems.CORNER_COBWEB
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
-import net.minecraft.block.ShapeContext
 import net.minecraft.block.SideShapeType
 import net.minecraft.util.Util
 import net.minecraft.util.math.BlockPos
@@ -96,15 +95,15 @@ private class SilkPlacer {
 
         for (i in 0..<height) {
             val pos = positionStack[i]
-            placeIfPossible(world, pos, ModBlocksAndItems.SPIDER_SILK.defaultState)
+            world.placeIfPossible(pos, ModBlocksAndItems.SPIDER_SILK.defaultState)
             if (pos.x != lastX || pos.z != lastZ) {
-                placeIfPossible(
-                    world, pos.up(), CORNER_COBWEB.defaultState
+                world.placeIfPossible(
+                    pos.up(), CORNER_COBWEB.defaultState
                         .with(FancyCornerCobwebBlock.ROTATION, (rotation + 4) % 8)
                         .with(FancyCornerCobwebBlock.TYPE, FancyCornerCobwebBlock.Type.BOTTOM)
                 )
-                placeIfPossible(
-                    world, BlockPos(lastX, pos.y, lastZ), CORNER_COBWEB.defaultState
+                world.placeIfPossible(
+                    BlockPos(lastX, pos.y, lastZ), CORNER_COBWEB.defaultState
                         .with(FancyCornerCobwebBlock.ROTATION, rotation)
                         .with(FancyCornerCobwebBlock.TYPE, FancyCornerCobwebBlock.Type.TOP)
                 )
@@ -208,37 +207,37 @@ private class SilkPlacer {
         val negativeOffset = sideOffset.multiply(-1)
         val verticalOffset = Vec3i(0, if (up) -1 else 1, 0)
 
-        placeIfPossible(world, mutableOrigin, cornerBlock1)
+        world.placeIfPossible(mutableOrigin, cornerBlock1)
         mutableOrigin.move(negativeOffset)
-        placeIfPossible(world, mutableOrigin, mainBlock)
+        world.placeIfPossible(mutableOrigin, mainBlock)
         mutableOrigin.move(negativeOffset)
-        placeIfPossible(world, mutableOrigin, cornerBlock0)
+        world.placeIfPossible(mutableOrigin, cornerBlock0)
         mutableOrigin.move(sideOffset)
         mutableOrigin.move(verticalOffset)
 
-        placeIfPossible(world, mutableOrigin, cornerBlock1)
+        world.placeIfPossible(mutableOrigin, cornerBlock1)
         mutableOrigin.move(negativeOffset)
-        placeIfPossible(world, mutableOrigin, mainBlock)
+        world.placeIfPossible(mutableOrigin, mainBlock)
         mutableOrigin.move(negativeOffset)
-        placeIfPossible(world, mutableOrigin, cornerBlock0)
+        world.placeIfPossible(mutableOrigin, cornerBlock0)
         mutableOrigin.move(sideOffset)
         mutableOrigin.move(verticalOffset)
 
-        placeIfPossible(world, mutableOrigin, cornerBlock1)
+        world.placeIfPossible(mutableOrigin, cornerBlock1)
         mutableOrigin.move(negativeOffset)
-        placeIfPossible(world, mutableOrigin, mainBlock)
+        world.placeIfPossible(mutableOrigin, mainBlock)
         mutableOrigin.move(verticalOffset)
-        placeIfPossible(world, mutableOrigin, mainBlock)
+        world.placeIfPossible(mutableOrigin, mainBlock)
         mutableOrigin.move(verticalOffset)
-        placeIfPossible(world, mutableOrigin, cornerBlock1)
+        world.placeIfPossible(mutableOrigin, cornerBlock1)
+    }
+}
+
+fun WorldAccess.placeIfPossible(pos: BlockPos, state: BlockState): Boolean {
+    if (this.getBlockState(pos).isAir || this.getBlockState(pos).isOf(state.block)) {
+        this.setBlockState(pos, state, Block.NOTIFY_LISTENERS)
+        return true
     }
 
-    fun placeIfPossible(world: WorldAccess, pos: BlockPos, state: BlockState): Boolean {
-        if (world.canPlace(state, pos, ShapeContext.absent())) {
-            world.setBlockState(pos, state, Block.NOTIFY_LISTENERS)
-            return true
-        }
-
-        return false
-    }
+    return false
 }
