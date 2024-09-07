@@ -1,8 +1,12 @@
 package dev.mim1q.derelict.world.feature
 
-import dev.mim1q.derelict.block.cobweb.FancyCornerCobwebBlock
+import dev.mim1q.derelict.block.cobweb.FancyCornerCobwebBlock.Companion.ROTATION
+import dev.mim1q.derelict.block.cobweb.FancyCornerCobwebBlock.Companion.TYPE
+import dev.mim1q.derelict.block.cobweb.FancyCornerCobwebBlock.Type.BOTTOM
+import dev.mim1q.derelict.block.cobweb.FancyCornerCobwebBlock.Type.TOP
 import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.init.ModBlocksAndItems.CORNER_COBWEB
+import dev.mim1q.derelict.init.ModBlocksAndItems.FANCY_CORNER_COBWEB
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.SideShapeType
@@ -98,14 +102,14 @@ private class SilkPlacer {
             world.placeIfPossible(pos, ModBlocksAndItems.SPIDER_SILK.defaultState)
             if (pos.x != lastX || pos.z != lastZ) {
                 world.placeIfPossible(
-                    pos.up(), CORNER_COBWEB.defaultState
-                        .with(FancyCornerCobwebBlock.ROTATION, (rotation + 4) % 8)
-                        .with(FancyCornerCobwebBlock.TYPE, FancyCornerCobwebBlock.Type.BOTTOM)
+                    pos.up(), getRandomCornerWeb(random)
+                        .with(ROTATION, (rotation + 4) % 8)
+                        .with(TYPE, BOTTOM)
                 )
                 world.placeIfPossible(
-                    BlockPos(lastX, pos.y, lastZ), CORNER_COBWEB.defaultState
-                        .with(FancyCornerCobwebBlock.ROTATION, rotation)
-                        .with(FancyCornerCobwebBlock.TYPE, FancyCornerCobwebBlock.Type.TOP)
+                    BlockPos(lastX, pos.y, lastZ), getRandomCornerWeb(random)
+                        .with(ROTATION, rotation)
+                        .with(TYPE, TOP)
                 )
                 lastX = pos.x
                 lastZ = pos.z
@@ -116,7 +120,10 @@ private class SilkPlacer {
 
         Util.copyShuffled(POSSIBLE_DIRECTIONS, random).forEach {
             for (i in 3..min(8, height - 1)) {
-                if (random.nextDouble() < chance && tryGenerateConnection(world, positionStack[i], true, it)) {
+                if (
+                    random.nextDouble() < chance
+                    && tryGenerateConnection(world, random, positionStack[i], true, it)
+                ) {
                     chance -= 0.2
                     break
                 }
@@ -127,7 +134,10 @@ private class SilkPlacer {
 
         Util.copyShuffled(POSSIBLE_DIRECTIONS, random).forEach {
             for (i in 3..min(8, height - 1)) {
-                if (random.nextDouble() < chance && tryGenerateConnection(world, positionStack[height - i], false, it)) {
+                if (
+                    random.nextDouble() < chance
+                    && tryGenerateConnection(world, random, positionStack[height - i], false, it)
+                ) {
                     chance -= 0.2
                     break
                 }
@@ -139,6 +149,7 @@ private class SilkPlacer {
 
     fun tryGenerateConnection(
         world: WorldAccess,
+        random: Random,
         pos: BlockPos,
         up: Boolean,
         dir: Pair<Vec3i, Int>
@@ -152,7 +163,7 @@ private class SilkPlacer {
                 world.getBlockState(checkPos).isReplaceable
                 && world.getBlockState(checkPos.up()).isSideSolidFullSquare(world, checkPos, Direction.DOWN)
             ) {
-                generateConnection(world, checkPos.mutableCopy(), sideOffset, dir.second, true)
+                generateConnection(world, random, checkPos.mutableCopy(), sideOffset, dir.second, true)
                 return true
             }
         } else {
@@ -160,7 +171,7 @@ private class SilkPlacer {
                 world.getBlockState(checkPos).isReplaceable
                 && world.getBlockState(checkPos.down()).isSideSolidFullSquare(world, checkPos, Direction.UP)
             ) {
-                generateConnection(world, checkPos.mutableCopy(), sideOffset, dir.second, false)
+                generateConnection(world, random, checkPos.mutableCopy(), sideOffset, dir.second, false)
                 return true
             }
         }
@@ -186,50 +197,45 @@ private class SilkPlacer {
 
     private fun generateConnection(
         world: WorldAccess,
+        random: Random,
         mutableOrigin: BlockPos.Mutable,
         sideOffset: Vec3i,
         rotation: Int,
         up: Boolean
     ) {
         val mainBlock = ModBlocksAndItems.SPIDER_SILK.defaultState
-        val cornerBlock0 = CORNER_COBWEB.defaultState
-            .with(FancyCornerCobwebBlock.ROTATION, rotation)
-            .with(
-                FancyCornerCobwebBlock.TYPE,
-                if (up) FancyCornerCobwebBlock.Type.BOTTOM else FancyCornerCobwebBlock.Type.TOP
-            )
-        val cornerBlock1 = CORNER_COBWEB.defaultState
-            .with(FancyCornerCobwebBlock.ROTATION, (rotation + 4) % 8)
-            .with(
-                FancyCornerCobwebBlock.TYPE,
-                if (up) FancyCornerCobwebBlock.Type.TOP else FancyCornerCobwebBlock.Type.BOTTOM
-            )
+        val cornerBlock0 = {
+            getRandomCornerWeb(random).with(ROTATION, rotation).with(TYPE, if (up) BOTTOM else TOP)
+        }
+        val cornerBlock1 = {
+            getRandomCornerWeb(random).with(ROTATION, (rotation + 4) % 8).with(TYPE, if (up) TOP else BOTTOM)
+        }
         val negativeOffset = sideOffset.multiply(-1)
         val verticalOffset = Vec3i(0, if (up) -1 else 1, 0)
 
-        world.placeIfPossible(mutableOrigin, cornerBlock1)
+        world.placeIfPossible(mutableOrigin, cornerBlock1())
         mutableOrigin.move(negativeOffset)
         world.placeIfPossible(mutableOrigin, mainBlock)
         mutableOrigin.move(negativeOffset)
-        world.placeIfPossible(mutableOrigin, cornerBlock0)
+        world.placeIfPossible(mutableOrigin, cornerBlock0())
         mutableOrigin.move(sideOffset)
         mutableOrigin.move(verticalOffset)
 
-        world.placeIfPossible(mutableOrigin, cornerBlock1)
+        world.placeIfPossible(mutableOrigin, cornerBlock1())
         mutableOrigin.move(negativeOffset)
         world.placeIfPossible(mutableOrigin, mainBlock)
         mutableOrigin.move(negativeOffset)
-        world.placeIfPossible(mutableOrigin, cornerBlock0)
+        world.placeIfPossible(mutableOrigin, cornerBlock0())
         mutableOrigin.move(sideOffset)
         mutableOrigin.move(verticalOffset)
 
-        world.placeIfPossible(mutableOrigin, cornerBlock1)
+        world.placeIfPossible(mutableOrigin, cornerBlock1())
         mutableOrigin.move(negativeOffset)
         world.placeIfPossible(mutableOrigin, mainBlock)
         mutableOrigin.move(verticalOffset)
         world.placeIfPossible(mutableOrigin, mainBlock)
         mutableOrigin.move(verticalOffset)
-        world.placeIfPossible(mutableOrigin, cornerBlock1)
+        world.placeIfPossible(mutableOrigin, cornerBlock1())
     }
 }
 
@@ -241,3 +247,6 @@ fun WorldAccess.placeIfPossible(pos: BlockPos, state: BlockState): Boolean {
 
     return false
 }
+
+fun getRandomCornerWeb(random: Random): BlockState =
+    if (random.nextDouble() < 0.02) FANCY_CORNER_COBWEB.defaultState else CORNER_COBWEB.defaultState

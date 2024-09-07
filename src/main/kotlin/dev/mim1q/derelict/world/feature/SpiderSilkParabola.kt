@@ -5,7 +5,6 @@ import dev.mim1q.derelict.block.cobweb.FancyCornerCobwebBlock.Companion.TYPE
 import dev.mim1q.derelict.block.cobweb.FancyCornerCobwebBlock.Type.BOTTOM
 import dev.mim1q.derelict.block.cobweb.FancyCornerCobwebBlock.Type.TOP
 import dev.mim1q.derelict.init.ModBlocksAndItems
-import dev.mim1q.derelict.init.ModBlocksAndItems.CORNER_COBWEB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3i
@@ -69,14 +68,15 @@ class SpiderSilkParabola : Feature<DefaultFeatureConfig>(DefaultFeatureConfig.CO
         var lastPos = positions.first()
         val rot = direction.second
         val counterRot = (direction.second + 4) % 8
+        val random = context.random
         for (position in positions) {
             world.placeIfPossible(position, ModBlocksAndItems.SPIDER_SILK.defaultState)
             if (position.y < lastPos.y) {
-                world.placeIfPossible(lastPos.down(), CORNER_COBWEB.defaultState.with(ROTATION, rot).with(TYPE, TOP))
-                world.placeIfPossible(position.up(), CORNER_COBWEB.defaultState.with(ROTATION, counterRot).with(TYPE, BOTTOM))
+                world.placeIfPossible(lastPos.down(), getRandomCornerWeb(random).with(ROTATION, rot).with(TYPE, TOP))
+                world.placeIfPossible(position.up(), getRandomCornerWeb(random).with(ROTATION, counterRot).with(TYPE, BOTTOM))
             } else if (position.y > lastPos.y) {
-                world.placeIfPossible(position.down(), CORNER_COBWEB.defaultState.with(ROTATION, counterRot).with(TYPE, TOP))
-                world.placeIfPossible(lastPos.up(), CORNER_COBWEB.defaultState.with(ROTATION, rot).with(TYPE, BOTTOM))
+                world.placeIfPossible(position.down(), getRandomCornerWeb(random).with(ROTATION, counterRot).with(TYPE, TOP))
+                world.placeIfPossible(lastPos.up(), getRandomCornerWeb(random).with(ROTATION, rot).with(TYPE, BOTTOM))
             }
 
             lastPos = position

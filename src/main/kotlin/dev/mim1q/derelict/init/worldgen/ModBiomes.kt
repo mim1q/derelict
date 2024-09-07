@@ -36,8 +36,8 @@ object ModBiomes {
             noiseParameters(
                 continentalness = -0.1f..1.0f,
                 depth = 0.0f..1.2f,
-                weirdness = 0.86f..1.0f,
-                offset = 0.3f
+                weirdness = 0.84f..1.0f,
+                offset = 0.2f
             )
         )
 
