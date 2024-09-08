@@ -25,6 +25,7 @@ import net.minecraft.item.*
 import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
 import net.minecraft.server.world.ServerWorld
+import net.minecraft.sound.BlockSoundGroup
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
 import net.minecraft.util.ActionResult
@@ -144,7 +145,8 @@ object ModBlocksAndItems {
         FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).strength(2.0f, 1200f).nonOpaque()
     ).register()
 
-    val ARACHNITE = StoneSet(Derelict.id("arachnite")).register()
+    val ARACHNITE =
+        StoneSet(Derelict.id("arachnite"), FabricBlockSettings.copyOf(Blocks.STONE).sounds(BlockSoundGroup.MUD)).register()
 
     val BLOCK_AGING_MAP = mapOf(
         Blocks.REDSTONE_LAMP to FLICKERING_REDSTONE_LAMP,
