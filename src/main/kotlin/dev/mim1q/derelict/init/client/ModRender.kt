@@ -50,7 +50,8 @@ object ModRender {
             ModBlocksAndItems.CORNER_COBWEB,
             *ModBlocksAndItems.NOCTISTEEL.getCutoutBlocks(),
             ModBlocksAndItems.WALL_COBWEB,
-            ModBlocksAndItems.SPIDER_SILK
+            ModBlocksAndItems.SPIDER_SILK,
+            ModBlocksAndItems.SPIDER_SILK_STRAND
         )
 
         EntityRendererRegistry.register(ModEntities.ARACHNE, ::ArachneEntityRenderer)

@@ -11,6 +11,7 @@ import tada.lib.lang.LanguageHelper
 import tada.lib.presets.blocksets.BlockSets
 import tada.lib.presets.common.CommonDropPresets
 import tada.lib.presets.common.CommonModelPresets
+import tada.lib.resources.blockstate.BlockState
 import tada.lib.resources.model.ParentedModel
 import tada.lib.tags.TagManager
 import java.nio.file.Path
@@ -56,11 +57,22 @@ fun main(args: Array<String>) {
         listOf("dried", "burned").forEach {
             add(CustomPresets.grassSet("derelict:$it"))
         }
+        // Cobwebs
         add(CustomPresets.fancyCobweb("derelict:fancy_cobweb"))
         add(CustomPresets.fancyCobweb("derelict:fancy_cobweb_with_spider_nest"))
         add(CustomPresets.eachWallBlock("derelict:wall_cobweb"))
         add(CustomPresets.fancyCornerCobweb("derelict:fancy_corner_cobweb"))
         add(CustomPresets.fancyCornerCobweb("derelict:corner_cobweb"))
+        arrayOf("spider_silk_strand", "spider_silk_strand_top", "spider_silk_strand_bottom").forEach {
+            add(it, ParentedModel.block("block/cross").texture("cross", "derelict:block/$it"))
+        }
+        add("spider_silk_strand", BlockState.create {
+            variant("type=top", "derelict:block/spider_silk_strand_top")
+            variant("type=middle", "derelict:block/spider_silk_strand")
+            variant("type=bottom", "derelict:block/spider_silk_strand_bottom")
+        })
+        add("spider_silk_strand", ParentedModel.item("item/generated").texture("layer0", "derelict:block/spider_silk_strand_top"))
+
         // Flickering Lights
         add(
             CustomPresets.flickeringCubeAll(

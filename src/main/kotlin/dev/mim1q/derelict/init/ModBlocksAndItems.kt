@@ -3,10 +3,7 @@ package dev.mim1q.derelict.init
 import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.block.EmbersBlock
 import dev.mim1q.derelict.block.SmolderingLeavesBlock
-import dev.mim1q.derelict.block.cobweb.FancyCobwebBlock
-import dev.mim1q.derelict.block.cobweb.FancyCobwebWithSpiderNestBlock
-import dev.mim1q.derelict.block.cobweb.FancyCornerCobwebBlock
-import dev.mim1q.derelict.block.cobweb.SpiderSilkBlock
+import dev.mim1q.derelict.block.cobweb.*
 import dev.mim1q.derelict.block.flickering.*
 import dev.mim1q.derelict.entity.SpiderlingEntity
 import dev.mim1q.derelict.featureset.*
@@ -101,6 +98,7 @@ object ModBlocksAndItems {
         override fun getGrower(): LichenGrower = LichenGrower(this)
     })
     val SPIDER_SILK = register("spider_silk", SpiderSilkBlock(AbstractBlock.Settings.copy(Blocks.WHITE_WOOL).noCollision().strength(0.2f)))
+    val SPIDER_SILK_STRAND = register("spider_silk_strand", SpiderSilkStrandBlock(FabricBlockSettings.copyOf(Blocks.WHITE_WOOL).noCollision().breakInstantly()))
 
     val SPIDERLING_IN_A_BUCKET = registerItem("spiderling_in_a_bucket", object : Item(defaultItemSettings().maxCount(1)) {
         override fun useOnBlock(context: ItemUsageContext): ActionResult {
