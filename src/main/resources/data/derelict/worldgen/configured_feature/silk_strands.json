@@ -1,0 +1,40 @@
+{
+  "type": "minecraft:block_column",
+  "config": {
+    "direction": "down",
+    "allowed_placement": {
+      "type": "minecraft:matching_blocks",
+      "blocks": "minecraft:air"
+    },
+    "prioritize_tip": false,
+    "layers": [
+      {
+        "height": 1,
+        "provider": {
+          "type": "minecraft:simple_state_provider",
+          "state": {
+            "Name": "derelict:spider_silk_strand",
+            "Properties": {
+              "type": "top"
+            }
+          }
+        }
+      },
+      {
+        "height": {
+          "type": "minecraft:biased_to_bottom",
+          "value": {
+            "min_inclusive": 1,
+            "max_inclusive": 14
+          }
+        },
+        "provider": {
+          "type": "minecraft:simple_state_provider",
+          "state": {
+            "Name": "derelict:spider_silk_strand"
+          }
+        }
+      }
+    ]
+  }
+}

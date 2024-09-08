@@ -73,6 +73,9 @@ fun main(args: Array<String>) {
         })
         add("spider_silk_strand", ParentedModel.item("item/generated").texture("layer0", "derelict:block/spider_silk_strand_top"))
 
+        add(CommonModelPresets.cubeAllBlock("derelict:spider_egg_block"))
+        add(CommonDropPresets.silkTouchDrop("derelict:spider_egg_block"))
+
         // Flickering Lights
         add(
             CustomPresets.flickeringCubeAll(

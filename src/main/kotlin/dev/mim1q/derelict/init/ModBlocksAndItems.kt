@@ -100,6 +100,17 @@ object ModBlocksAndItems {
     val SPIDER_SILK = register("spider_silk", SpiderSilkBlock(AbstractBlock.Settings.copy(Blocks.WHITE_WOOL).noCollision().strength(0.2f)))
     val SPIDER_SILK_STRAND = register("spider_silk_strand", SpiderSilkStrandBlock(FabricBlockSettings.copyOf(Blocks.WHITE_WOOL).noCollision().breakInstantly()))
 
+    val SPIDER_EGG_BLOCK = register("spider_egg_block", Block(FabricBlockSettings.copyOf(Blocks.MUD)))
+
+    val ARACHNITE =
+        StoneSet(Derelict.id("arachnite"), FabricBlockSettings.copyOf(Blocks.STONE).sounds(BlockSoundGroup.MUD)).register()
+
+    val NOCTISTEEL = MetalSet.ThreeLevelOxidizable(
+        Derelict.id("noctisteel"),
+        defaultItemSettings(),
+        FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).strength(2.0f, 1200f).nonOpaque()
+    ).register()
+
     val SPIDERLING_IN_A_BUCKET = registerItem("spiderling_in_a_bucket", object : Item(defaultItemSettings().maxCount(1)) {
         override fun useOnBlock(context: ItemUsageContext): ActionResult {
             if (context.world.isClient) return ActionResult.SUCCESS
@@ -136,15 +147,6 @@ object ModBlocksAndItems {
             return ActionResult.SUCCESS
         }
     })
-
-    val NOCTISTEEL = MetalSet.ThreeLevelOxidizable(
-        Derelict.id("noctisteel"),
-        defaultItemSettings(),
-        FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).strength(2.0f, 1200f).nonOpaque()
-    ).register()
-
-    val ARACHNITE =
-        StoneSet(Derelict.id("arachnite"), FabricBlockSettings.copyOf(Blocks.STONE).sounds(BlockSoundGroup.MUD)).register()
 
     val BLOCK_AGING_MAP = mapOf(
         Blocks.REDSTONE_LAMP to FLICKERING_REDSTONE_LAMP,
