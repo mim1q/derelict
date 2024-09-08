@@ -3,7 +3,6 @@ package dev.mim1q.derelict.init
 import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.entity.SpiderlingEntity
 import dev.mim1q.derelict.entity.boss.ArachneEntity
-import dev.mim1q.derelict.entity.nonliving.HangingCocoonEntity
 import dev.mim1q.derelict.entity.spider.*
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricDefaultAttributeRegistry
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder

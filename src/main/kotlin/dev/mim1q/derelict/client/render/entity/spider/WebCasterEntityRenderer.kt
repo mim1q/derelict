@@ -1,7 +1,6 @@
 package dev.mim1q.derelict.client.render.entity.spider
 
 import dev.mim1q.derelict.Derelict
-import dev.mim1q.derelict.client.render.entity.spider.CharmingSpiderEntityRenderer.Companion
 import dev.mim1q.derelict.entity.spider.WebCasterEntity
 import dev.mim1q.derelict.entity.spider.legs.SpiderLegParts
 import dev.mim1q.derelict.init.client.ModRender
