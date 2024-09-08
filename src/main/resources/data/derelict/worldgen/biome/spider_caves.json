@@ -112,13 +112,13 @@
       "minecraft:disk_gravel"
     ],
     [
-      "derelict:spider_silk_pillar",
-      "derelict:spider_silk_parabola",
-      "derelict:fancy_cobweb_patch",
-      "derelict:wall_cobweb_patch",
-      "derelict:spider_caves_glow_lichen",
-      "derelict:silk_strands",
-      "derelict:silk_strands_cocoon"
+      "derelict:spider_caves/spider_silk_pillar",
+      "derelict:spider_caves/spider_silk_parabola",
+      "derelict:spider_caves/fancy_cobweb_patch",
+      "derelict:spider_caves/wall_cobweb_patch",
+      "derelict:spider_caves/spider_caves_glow_lichen",
+      "derelict:spider_caves/silk_strands",
+      "derelict:spider_caves/silk_strands_cocoon"
     ],
     [],
     [],

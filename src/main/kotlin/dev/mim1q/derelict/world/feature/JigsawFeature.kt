@@ -21,8 +21,7 @@ class JigsawFeature :
     override fun generate(context: FeatureContext<JigsawFeatureConfig>): Boolean {
         val world = context.world
         val registryManager = world.registryManager
-        val noiseConfig =
-            if (world.chunkManager is ServerChunkManager) (world.chunkManager as ServerChunkManager).noiseConfig else null
+        val noiseConfig = (world.chunkManager as? ServerChunkManager)?.noiseConfig
         val poolRegistry = registryManager.get(RegistryKeys.TEMPLATE_POOL)
         val optPoolEntry = poolRegistry.getEntry(RegistryKey.of(RegistryKeys.TEMPLATE_POOL, context.config.templatePool))
         if (optPoolEntry.isEmpty) return false

@@ -1,9 +1,9 @@
 {
-  "feature": "derelict:silk_strands_cocoon",
+  "feature": "derelict:spider_caves/silk_strands",
   "placement": [
     {
       "type": "minecraft:count",
-      "count": 60
+      "count": 188
     },
     {
       "type": "minecraft:in_square"

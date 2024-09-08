@@ -1,5 +1,6 @@
 package dev.mim1q.derelict.world.feature
 
+import dev.mim1q.derelict.block.cobweb.FancyCobwebBlock
 import dev.mim1q.derelict.block.cobweb.FancyCornerCobwebBlock.Companion.ROTATION
 import dev.mim1q.derelict.block.cobweb.FancyCornerCobwebBlock.Companion.TYPE
 import dev.mim1q.derelict.block.cobweb.FancyCornerCobwebBlock.Type.BOTTOM
@@ -240,7 +241,9 @@ private class SilkPlacer {
 }
 
 fun WorldAccess.placeIfPossible(pos: BlockPos, state: BlockState): Boolean {
-    if (this.getBlockState(pos).isAir || this.getBlockState(pos).isOf(state.block)) {
+    val currentState = this.getBlockState(pos)
+    val block = state.block
+    if (currentState.isAir || block == ModBlocksAndItems.SPIDER_SILK || block is FancyCobwebBlock) {
         this.setBlockState(pos, state, Block.NOTIFY_LISTENERS)
         return true
     }
