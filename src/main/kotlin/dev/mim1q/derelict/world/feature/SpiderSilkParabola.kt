@@ -42,9 +42,13 @@ class SpiderSilkParabola : Feature<DefaultFeatureConfig>(DefaultFeatureConfig.CO
             pos.move(0, 1, 0)
         }
 
-        val heights = arrayOf(
-            -2, -2, -1, -1, 0, 1, 1, 1, 2, 2, 3
+        val heightArrays = arrayOf(
+            arrayOf(-2, -2, -1, -1, 0, 1, 1, 1, 2, 2, 4),
+            arrayOf(-2, -2, -1, 0, 0, 1, 1, 2, 2, 3),
+            arrayOf(-2, -2, -1, -1, -1, 0, 0, 1, 1, 1, 1, 2, 2, 3)
         )
+
+        val heights = heightArrays[context.random.nextInt(heightArrays.size)]
 
         val positions = arrayListOf<BlockPos>()
 
