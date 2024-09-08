@@ -2,6 +2,12 @@ package dev.mim1q.derelict.client.render.entity.spider
 
 import dev.mim1q.derelict.util.extensions.radians
 import net.minecraft.client.model.ModelPart
+import net.minecraft.client.render.RenderLayer
+import net.minecraft.client.render.entity.feature.EyesFeatureRenderer
+import net.minecraft.client.render.entity.feature.FeatureRendererContext
+import net.minecraft.client.render.entity.model.EntityModel
+import net.minecraft.entity.Entity
+import net.minecraft.util.Identifier
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.max
@@ -30,3 +36,9 @@ private fun walkSpiderLeg(legs: Array<ModelPart>, index: Int, defaultAngle: Floa
     leg.yaw -= defaultAngle.radians() * 0.3f
     leg.roll -= abs(defaultAngle.radians()) * legMultiplier * 0.3f
 }
+
+fun <T : Entity, M : EntityModel<T>> createEyesFeatureRenderer(ctx: FeatureRendererContext<T, M>, baseTexture: Identifier) =
+    object : EyesFeatureRenderer<T, M>(ctx) {
+        val texture = Identifier(baseTexture.namespace, baseTexture.path.replace(".png", "_eyes.png"))
+        override fun getEyesTexture(): RenderLayer = RenderLayer.getEyes(texture)
+    }

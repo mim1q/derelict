@@ -23,6 +23,10 @@ class CharmingSpiderEntityRenderer(
     CharmingSpiderEntityModel(ctx.getPart(ModRender.CHARMING_SPIDER_LAYER)),
     0.5f
 ) {
+    init {
+        addFeature(createEyesFeatureRenderer(this, TEXTURE))
+    }
+
     override fun getTexture(entity: CharmingSpiderEntity): Identifier = TEXTURE
 
     companion object {

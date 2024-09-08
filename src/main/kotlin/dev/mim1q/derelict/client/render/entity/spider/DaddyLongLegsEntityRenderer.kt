@@ -25,6 +25,10 @@ import kotlin.math.sin
 class DaddyLongLegsEntityRenderer(
     context: EntityRendererFactory.Context,
 ) : MobEntityRenderer<DaddyLongLegsEntity, DaddyLongLegsEntityModel>(context, DaddyLongLegsEntityModel(context.getPart(ModRender.DADDY_LONG_LEGS_LAYER)), 0.5f) {
+    init {
+        addFeature(createEyesFeatureRenderer(this, TEXTURE))
+    }
+
     override fun getTexture(entity: DaddyLongLegsEntity): Identifier = TEXTURE
 
     override fun render(mobEntity: DaddyLongLegsEntity, f: Float, g: Float, matrixStack: MatrixStack, vertexConsumerProvider: VertexConsumerProvider, i: Int) {

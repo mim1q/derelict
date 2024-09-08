@@ -1,6 +1,7 @@
 package dev.mim1q.derelict.client.render.entity.spider
 
 import dev.mim1q.derelict.Derelict
+import dev.mim1q.derelict.client.render.entity.spider.CharmingSpiderEntityRenderer.Companion
 import dev.mim1q.derelict.entity.spider.SpinySpiderEntity
 import dev.mim1q.derelict.init.client.ModRender
 import dev.mim1q.derelict.util.extensions.radians
@@ -21,6 +22,10 @@ class SpinySpiderEntityRenderer(
     SpinySpiderEntityModel(context.getPart(ModRender.SPINY_SPIDER_LAYER)),
     0.5f
 ) {
+    init {
+        addFeature(createEyesFeatureRenderer(this, TEXTURE))
+    }
+
     override fun getTexture(entity: SpinySpiderEntity): Identifier = TEXTURE
 
     override fun scale(entity: SpinySpiderEntity, matrixStack: MatrixStack, f: Float) {

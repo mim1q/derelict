@@ -26,8 +26,13 @@ class SpiderlingEntityRenderer(context: EntityRendererFactory.Context) :
     MobEntityRenderer<SpiderlingEntity, SpiderlingModel>(
         context, SpiderlingModel(context.getPart(ModRender.SPIDERLING_LAYER)), 0.3f
     ) {
+
+    init {
+        addFeature(createEyesFeatureRenderer(this, TEXTURE))
+    }
+
     companion object {
-        val TEXTURE = Derelict.id("textures/entity/spiderling.png")
+        val TEXTURE = Derelict.id("textures/entity/spider/spiderling.png")
     }
 
     override fun getTexture(entity: SpiderlingEntity) = TEXTURE

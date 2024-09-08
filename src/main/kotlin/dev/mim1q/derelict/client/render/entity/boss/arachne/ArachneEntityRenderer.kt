@@ -1,6 +1,7 @@
 package dev.mim1q.derelict.client.render.entity.boss.arachne
 
 import dev.mim1q.derelict.Derelict
+import dev.mim1q.derelict.client.render.entity.spider.createEyesFeatureRenderer
 import dev.mim1q.derelict.entity.boss.ArachneEntity
 import dev.mim1q.derelict.init.client.ModRender
 import net.minecraft.client.render.entity.EntityRendererFactory
@@ -12,6 +13,10 @@ class ArachneEntityRenderer(ctx: EntityRendererFactory.Context) :
         ArachneEntityModel(ctx.getPart(ModRender.ARACHNE_LAYER)),
         1.5F
     ) {
+    init {
+        addFeature(createEyesFeatureRenderer(this, TEXTURE))
+    }
+
     override fun getTexture(entity: ArachneEntity) = TEXTURE
 
     companion object {
