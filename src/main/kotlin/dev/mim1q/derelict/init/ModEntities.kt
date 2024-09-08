@@ -58,8 +58,6 @@ object ModEntities {
         SpiderEntity.createSpiderAttributes()
     ) { dimensions(EntityDimensions.fixed(0.8f, 0.8f)) }
 
-    val HANGING_COCOON = register("hanging_cocoon", ::HangingCocoonEntity) { dimensions(EntityDimensions.fixed(0.75f, 1.75f)) }
-
     fun init() {}
 
     val SPAWN_ON_GROUND = setOf(

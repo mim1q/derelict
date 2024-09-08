@@ -60,7 +60,6 @@ object ModRender {
         EntityRendererRegistry.register(ModEntities.DADDY_LONG_LEGS, ::DaddyLongLegsEntityRenderer)
         EntityRendererRegistry.register(ModEntities.JUMPING_SPIDER, ::JumpingSpiderEntityRenderer)
         EntityRendererRegistry.register(ModEntities.SPINY_SPIDER, ::SpinySpiderEntityRenderer)
-        EntityRendererRegistry.register(ModEntities.HANGING_COCOON, ::HangingCocoonEntityRenderer)
     }
 
     private fun registerLayer(provider: TexturedModelDataProvider, path: String, name: String = "main") =
