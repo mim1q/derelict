@@ -102,6 +102,8 @@ object ModBlocksAndItems {
 
     val SPIDER_EGG_BLOCK = register("spider_egg_block", Block(FabricBlockSettings.copyOf(Blocks.MUD)))
 
+    val SPIDER_MOLT = register("spider_molt", SpiderMoltBlock(FabricBlockSettings.copyOf(Blocks.MUD).nonOpaque()))
+
     val ARACHNITE =
         StoneSet(Derelict.id("arachnite"), FabricBlockSettings.copyOf(Blocks.STONE).sounds(BlockSoundGroup.MUD)).register()
 

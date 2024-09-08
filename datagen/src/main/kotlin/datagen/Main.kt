@@ -12,6 +12,8 @@ import tada.lib.presets.blocksets.BlockSets
 import tada.lib.presets.common.CommonDropPresets
 import tada.lib.presets.common.CommonModelPresets
 import tada.lib.resources.blockstate.BlockState
+import tada.lib.resources.blockstate.BlockStateModel
+import tada.lib.resources.blockstate.BlockStateModel.Rotation.*
 import tada.lib.resources.model.ParentedModel
 import tada.lib.tags.TagManager
 import java.nio.file.Path
@@ -75,6 +77,14 @@ fun main(args: Array<String>) {
 
         add(CommonModelPresets.cubeAllBlock("derelict:spider_egg_block"))
         add(CommonDropPresets.silkTouchDrop("derelict:spider_egg_block"))
+        add("spider_molt", BlockState.create {
+            variant("facing=north", BlockStateModel("derelict:block/spider_molt"))
+            variant("facing=east", BlockStateModel("derelict:block/spider_molt", yRot = CW_90))
+            variant("facing=south", BlockStateModel("derelict:block/spider_molt", yRot = CW_180))
+            variant("facing=west", BlockStateModel("derelict:block/spider_molt", yRot = CW_270))
+        })
+        add(CommonModelPresets.itemBlockModel("derelict:spider_molt"))
+        add(CommonDropPresets.silkTouchDrop("derelict:spider_molt"))
 
         // Flickering Lights
         add(
