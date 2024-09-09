@@ -1,0 +1,21 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"1": "derelict:block/spider_egg",
+		"particle": "derelict:block/spider_egg"
+	},
+	"elements": [
+		{
+			"from": [-2, 0, -2],
+			"to": [2, 4, 2],
+			"faces": {
+				"north": {"uv": [7, 10, 11, 14], "texture": "#1"},
+				"east": {"uv": [7, 10, 11, 14], "texture": "#1"},
+				"south": {"uv": [7, 10, 11, 14], "texture": "#1"},
+				"west": {"uv": [7, 10, 11, 14], "texture": "#1"},
+				"up": {"uv": [7, 10, 11, 14], "texture": "#1"},
+				"down": {"uv": [7, 10, 11, 14], "texture": "#1"}
+			}
+		}
+	]
+}

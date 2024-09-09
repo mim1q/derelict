@@ -1,10 +1,13 @@
 package dev.mim1q.derelict.init.client
 
+import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry
 import dev.mim1q.derelict.Derelict
+import dev.mim1q.derelict.client.render.block.SpiderEggClusterRenderer
 import dev.mim1q.derelict.client.render.entity.boss.arachne.ArachneEntityRenderer
 import dev.mim1q.derelict.client.render.entity.boss.arachne.ArachneTexturedModelData
 import dev.mim1q.derelict.client.render.entity.nonliving.HangingCocoonEntityRenderer
 import dev.mim1q.derelict.client.render.entity.spider.*
+import dev.mim1q.derelict.init.ModBlockEntities
 import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.init.ModEntities
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap
@@ -53,6 +56,8 @@ object ModRender {
             ModBlocksAndItems.SPIDER_SILK,
             ModBlocksAndItems.SPIDER_SILK_STRAND
         )
+
+        BlockEntityRendererRegistry.register(ModBlockEntities.SPIDER_EGG_BLOCK_ENTITY, ::SpiderEggClusterRenderer)
 
         EntityRendererRegistry.register(ModEntities.ARACHNE, ::ArachneEntityRenderer)
         EntityRendererRegistry.register(ModEntities.SPIDERLING, ::SpiderlingEntityRenderer)

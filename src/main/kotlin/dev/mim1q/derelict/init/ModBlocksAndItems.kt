@@ -7,6 +7,9 @@ import dev.mim1q.derelict.block.cobweb.*
 import dev.mim1q.derelict.block.flickering.*
 import dev.mim1q.derelict.entity.SpiderlingEntity
 import dev.mim1q.derelict.featureset.*
+import dev.mim1q.derelict.init.ModEntities.JUMPING_SPIDER
+import dev.mim1q.derelict.init.ModEntities.SPIDERLING
+import dev.mim1q.derelict.init.ModEntities.WEB_CASTER
 import dev.mim1q.derelict.interfaces.AbstractBlockAccessor
 import dev.mim1q.derelict.item.StaffItem
 import dev.mim1q.derelict.item.weapon.Wildfire
@@ -16,6 +19,8 @@ import net.fabricmc.fabric.mixin.`object`.builder.AbstractBlockSettingsAccessor
 import net.minecraft.block.*
 import net.minecraft.block.AbstractBlock.Offsetter
 import net.minecraft.entity.EntityType
+import net.minecraft.entity.EntityType.CAVE_SPIDER
+import net.minecraft.entity.EntityType.SPIDER
 import net.minecraft.entity.SpawnReason
 import net.minecraft.entity.mob.MobEntity
 import net.minecraft.item.*
@@ -101,6 +106,13 @@ object ModBlocksAndItems {
     val SPIDER_SILK_STRAND = register("spider_silk_strand", SpiderSilkStrandBlock(FabricBlockSettings.copyOf(Blocks.WHITE_WOOL).noCollision().breakInstantly()))
 
     val SPIDER_EGG_BLOCK = register("spider_egg_block", Block(FabricBlockSettings.copyOf(Blocks.MUD)))
+    val SPIDER_EGG = register("spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(Blocks.MUD).nonOpaque(), true))
+    val SPIDER_EGG_CLUSTER = register("spider_egg_cluster", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG)))
+    val SPIDERLING_SPIDER_EGG = registerBlock("spiderling_spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG), false, SPIDERLING, SPIDERLING, SPIDERLING))
+    val SPIDER_SPIDER_EGG = registerBlock("spider_spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG), true, SPIDER))
+    val CAVE_SPIDER_SPIDER_EGG = registerBlock("cave_spider_spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG), true, CAVE_SPIDER))
+    val WEB_CASTER_SPIDER_EGG = registerBlock("web_caster_spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG), true, WEB_CASTER))
+    val JUMPING_SPIDER_SPIDER_EGG = registerBlock("jumping_spider_spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG), true, JUMPING_SPIDER))
 
     val SPIDER_MOLT = register("spider_molt", SpiderMoltBlock(FabricBlockSettings.copyOf(Blocks.MUD).nonOpaque()))
 

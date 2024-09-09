@@ -1,6 +1,7 @@
 package dev.mim1q.derelict
 
 import com.mojang.blaze3d.systems.RenderSystem
+import dev.mim1q.derelict.client.render.block.SpiderEggClusterRenderer
 import dev.mim1q.derelict.client.render.effect.SpiderWebModelFeature
 import dev.mim1q.derelict.config.DerelictClientConfig
 import dev.mim1q.derelict.config.DerelictConfigs
@@ -16,6 +17,7 @@ import dev.mim1q.derelict.util.BlockMarkerUtils
 import dev.mim1q.gimm1q.client.highlight.HighlightDrawerCallback
 import dev.mim1q.gimm1q.interpolation.Easing
 import net.fabricmc.api.ClientModInitializer
+import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback
 import net.minecraft.client.MinecraftClient
@@ -134,7 +136,10 @@ object DerelictClient : ClientModInitializer {
                 @Suppress("UNCHECKED_CAST")
                 registrationHelper.register(SpiderWebModelFeature(entityRenderer as LivingEntityRenderer<LivingEntity, EntityModel<LivingEntity>>))
             }
+        }
 
+        ModelLoadingPlugin.register { ctx ->
+            ctx.addModels(*SpiderEggClusterRenderer.MODEL_IDS)
         }
     }
 }
