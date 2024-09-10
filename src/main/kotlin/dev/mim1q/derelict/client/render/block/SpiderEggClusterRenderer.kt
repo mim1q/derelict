@@ -42,8 +42,11 @@ class SpiderEggClusterRenderer(ctx: BlockEntityRendererFactory.Context) : BlockE
             matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees((entity.pos.hashCode() % 4) * 90f))
             matrices.translate(-0.5, 0.0, -0.5)
             val random = entity.world?.random ?: return
-            val time = (entity.world?.time ?: return) + tickDelta + entity.pos.hashCode()
+            val addedTime = (entity.pos.hashCode() % 100) * 777
+            val time = (entity.world?.time ?: return) + tickDelta + addedTime
             if (block.big) {
+                val offset = entity.cachedState.getModelOffset(entity.world, entity.pos)
+                matrices.translate(offset.x, offset.y, offset.z)
                 renderBig(time, random, matrices, vertexConsumers, light)
             } else {
                 renderCluster(time, random, matrices, vertexConsumers, light)
@@ -51,18 +54,18 @@ class SpiderEggClusterRenderer(ctx: BlockEntityRendererFactory.Context) : BlockE
         }
     }
 
-    fun renderBig(time: Float, random: Random, matrices: MatrixStack, consumers: VertexConsumerProvider, light: Int) {
+    private fun renderBig(time: Float, random: Random, matrices: MatrixStack, consumers: VertexConsumerProvider, light: Int) {
         renderEgg(random, matrices, consumers, light, 0.5f, 0f, 0.5f, 4, time)
     }
 
-    fun renderCluster(time: Float, random: Random, matrices: MatrixStack, consumers: VertexConsumerProvider, light: Int) {
+    private fun renderCluster(time: Float, random: Random, matrices: MatrixStack, consumers: VertexConsumerProvider, light: Int) {
         renderEgg(random, matrices, consumers, light, 0.9f, 0f, 0.5f, 0, time)
         renderEgg(random, matrices, consumers, light, 0.1f, 0f, 0.1f, 1, time + 10)
         renderEgg(random, matrices, consumers, light, 0.5f, 0f, 0.8f, 2, time + 20)
         renderEgg(random, matrices, consumers, light, 0.7f, 0f, 0.3f, 3, time + 30)
     }
 
-    fun renderEgg(
+    private fun renderEgg(
         random: Random,
         matrices: MatrixStack,
         consumers: VertexConsumerProvider,

@@ -77,6 +77,18 @@ fun main(args: Array<String>) {
 
         add(CommonModelPresets.cubeAllBlock("derelict:spider_egg_block"))
         add(CommonDropPresets.silkTouchDrop("derelict:spider_egg_block"))
+
+        listOf(
+            "spider_egg", "spider_egg_cluster", "spider_spider_egg", "cave_spider_spider_egg", "jumping_spider_spider_egg",
+            "web_caster_spider_egg"
+        ).forEach {
+            add(it, BlockState.createSingle("derelict:block/spider_egg_block"))
+        }
+        add(CommonModelPresets.generatedItemModel("derelict:spider_egg"))
+        add(CommonDropPresets.silkTouchDrop("derelict:spider_egg"))
+        add(CommonModelPresets.generatedItemModel("derelict:spider_egg_cluster"))
+        add(CommonDropPresets.silkTouchDrop("derelict:spider_egg_cluster"))
+
         add("spider_molt", BlockState.create {
             variant("facing=north", BlockStateModel("derelict:block/spider_molt"))
             variant("facing=east", BlockStateModel("derelict:block/spider_molt", yRot = CW_90))

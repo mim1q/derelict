@@ -106,7 +106,7 @@ object ModBlocksAndItems {
     val SPIDER_SILK_STRAND = register("spider_silk_strand", SpiderSilkStrandBlock(FabricBlockSettings.copyOf(Blocks.WHITE_WOOL).noCollision().breakInstantly()))
 
     val SPIDER_EGG_BLOCK = register("spider_egg_block", Block(FabricBlockSettings.copyOf(Blocks.MUD)))
-    val SPIDER_EGG = register("spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(Blocks.MUD).nonOpaque(), true))
+    val SPIDER_EGG = register("spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(Blocks.MUD).nonOpaque().noCollision().luminance { 1 }.offset(AbstractBlock.OffsetType.XZ), true))
     val SPIDER_EGG_CLUSTER = register("spider_egg_cluster", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG)))
     val SPIDERLING_SPIDER_EGG = registerBlock("spiderling_spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG), false, SPIDERLING, SPIDERLING, SPIDERLING))
     val SPIDER_SPIDER_EGG = registerBlock("spider_spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG), true, SPIDER))
