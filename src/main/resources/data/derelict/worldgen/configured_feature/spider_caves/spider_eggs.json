@@ -1,0 +1,7 @@
+{
+  "type": "derelict:jigsaw_feature",
+  "config": {
+    "template_pool": "derelict:spider_caves/spider_eggs",
+    "start": "decoration"
+  }
+}

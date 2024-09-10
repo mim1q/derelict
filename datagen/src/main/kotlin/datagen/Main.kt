@@ -175,6 +175,8 @@ fun main(args: Array<String>) {
         Constants.SPAWN_EGGS.forEach {
             add(CommonModelPresets.generatedItemModel("derelict:${it}_spawn_egg"))
         }
+        // Template pools
+        spiderCavesTemplatePools()
 
         // Custom Tags
         TagManager.add("derelict:blocks/cobwebs", "minecraft:cobweb")

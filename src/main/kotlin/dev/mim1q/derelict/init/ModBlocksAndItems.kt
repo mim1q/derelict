@@ -7,8 +7,11 @@ import dev.mim1q.derelict.block.cobweb.*
 import dev.mim1q.derelict.block.flickering.*
 import dev.mim1q.derelict.entity.SpiderlingEntity
 import dev.mim1q.derelict.featureset.*
+import dev.mim1q.derelict.init.ModEntities.CHARMING_SPIDER
+import dev.mim1q.derelict.init.ModEntities.DADDY_LONG_LEGS
 import dev.mim1q.derelict.init.ModEntities.JUMPING_SPIDER
 import dev.mim1q.derelict.init.ModEntities.SPIDERLING
+import dev.mim1q.derelict.init.ModEntities.SPINY_SPIDER
 import dev.mim1q.derelict.init.ModEntities.WEB_CASTER
 import dev.mim1q.derelict.interfaces.AbstractBlockAccessor
 import dev.mim1q.derelict.item.StaffItem
@@ -129,7 +132,7 @@ object ModBlocksAndItems {
         override fun useOnBlock(context: ItemUsageContext): ActionResult {
             if (context.world.isClient) return ActionResult.SUCCESS
 
-            val entity = ModEntities.SPIDERLING.spawnFromItemStack(
+            val entity = SPIDERLING.spawnFromItemStack(
                 context.world as ServerWorld,
                 context.stack, context.player,
                 context.blockPos.add(context.side.vector),
@@ -190,11 +193,11 @@ object ModBlocksAndItems {
 
     // region SPAWN EGGS
 
-    val WEB_CASTER_SPAWN_EGG = registerSpawnEgg(ModEntities.WEB_CASTER)
-    val CHARMING_SPIDER_SPAWN_EGG = registerSpawnEgg(ModEntities.CHARMING_SPIDER)
-    val DADDY_LONG_LEGS_SPAWN_EGG = registerSpawnEgg(ModEntities.DADDY_LONG_LEGS)
-    val JUMPING_SPIDER_SPAWN_EGG = registerSpawnEgg(ModEntities.JUMPING_SPIDER)
-    val SPINY_SPIDER_SPAWN_EGG = registerSpawnEgg(ModEntities.SPINY_SPIDER)
+    val WEB_CASTER_SPAWN_EGG = registerSpawnEgg(WEB_CASTER)
+    val CHARMING_SPIDER_SPAWN_EGG = registerSpawnEgg(CHARMING_SPIDER)
+    val DADDY_LONG_LEGS_SPAWN_EGG = registerSpawnEgg(DADDY_LONG_LEGS)
+    val JUMPING_SPIDER_SPAWN_EGG = registerSpawnEgg(JUMPING_SPIDER)
+    val SPINY_SPIDER_SPAWN_EGG = registerSpawnEgg(SPINY_SPIDER)
 
     // endregion
 

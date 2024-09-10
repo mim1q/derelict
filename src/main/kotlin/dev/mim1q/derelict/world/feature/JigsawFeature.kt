@@ -15,6 +15,7 @@ import net.minecraft.world.gen.feature.FeatureConfig
 import net.minecraft.world.gen.feature.util.FeatureContext
 import net.minecraft.world.gen.structure.Structure
 import java.util.*
+import kotlin.jvm.optionals.getOrNull
 
 class JigsawFeature :
     Feature<JigsawFeature.JigsawFeatureConfig>(JigsawFeatureConfig.CODEC) {
@@ -40,13 +41,13 @@ class JigsawFeature :
                 world,
             ) { true },
             optPoolEntry.get(),
-            Optional.empty(),
+            Optional.of(context.config.start),
             8,
             pos,
-            false,
+            true,
             Optional.empty(),
-            16
-        ).isPresent
+            80
+        ).getOrNull()?.generate() != null
     }
 
     private fun getOffset(start: Vec3i): Vec3i {
