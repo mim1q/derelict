@@ -28,7 +28,7 @@ fun ResourceGenerator.spiderCavesTemplatePools() {
 
     add("spider_caves/spider_eggs", TemplatePool.create("derelict:spider_caves/spider_eggs") {
         eggWeights.forEach {
-            single(it.second, "derelict:spider_caves/spider_eggs/${it.first}")
+            single(it.second, "derelict:spider_caves/spider_eggs/${it.first}", "derelict:spider_eggs")
         }
     })
 }

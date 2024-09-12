@@ -112,6 +112,7 @@
       "minecraft:disk_gravel"
     ],
     [
+      "derelict:spider_caves/spider_eggs",
       "derelict:spider_caves/spider_silk_pillar",
       "derelict:spider_caves/spider_silk_parabola",
       "derelict:spider_caves/fancy_cobweb_patch",
