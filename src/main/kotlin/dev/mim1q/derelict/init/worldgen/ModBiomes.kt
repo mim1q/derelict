@@ -11,6 +11,7 @@ import net.minecraft.entity.EntityType
 import net.minecraft.entity.SpawnGroup
 import net.minecraft.registry.RegistryKey
 import net.minecraft.registry.RegistryKeys
+import net.minecraft.world.biome.Biome
 import net.minecraft.world.biome.SpawnSettings
 import net.minecraft.world.biome.source.util.MultiNoiseUtil
 import net.minecraft.world.biome.source.util.MultiNoiseUtil.NoiseHypercube
@@ -20,24 +21,24 @@ import net.minecraft.world.gen.surfacebuilder.MaterialRules.block
 import net.minecraft.world.gen.surfacebuilder.MaterialRules.condition
 
 object ModBiomes {
-    val SPIDER_CAVES = biomeKey("spider_caves")
+    private val SPIDER_CAVES = biomeKey("spider_caves")
 
     fun init() {
         BiomePlacement.addOverworld(
             SPIDER_CAVES,
             noiseParameters(
-                depth = 1.2f..2.0f,
-                weirdness = 0.72f..0.77f,
-                offset = 0.2f
+                depth = 1.2f..3.0f,
+                weirdness = 0.72f..0.78f,
+                offset = 0.15f
             )
         )
         BiomePlacement.addOverworld(
             SPIDER_CAVES,
             noiseParameters(
-                continentalness = -0.1f..1.0f,
-                depth = 0.0f..1.2f,
+                continentalness = 0.0f..1.0f,
+                depth = 0.0f..1.3f,
                 weirdness = 0.84f..1.0f,
-                offset = 0.2f
+                offset = 0.15f
             )
         )
 
@@ -85,5 +86,5 @@ object ModBiomes {
         MultiNoiseUtil.toLong(offset)
     )
 
-    private fun biomeKey(name: String) = RegistryKey.of(RegistryKeys.BIOME, Derelict.id(name))
+    private fun biomeKey(name: String): RegistryKey<Biome> = RegistryKey.of(RegistryKeys.BIOME, Derelict.id(name))
 }

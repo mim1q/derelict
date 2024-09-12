@@ -40,7 +40,9 @@ class NbtFeature :
                     if (context.world.getBlockState(mutPos).isAir) {
                         mutPos.move(0, -1, 0)
                     } else {
-                        if (context.world.getBlockState(mutPos).isSideSolidFullSquare(context.world, mutPos, Direction.UP)) {
+                        val state = context.world.getBlockState(mutPos)
+                        @Suppress("DEPRECATION")
+                        if (state.isSolid && state.isSideSolidFullSquare(context.world, mutPos, Direction.UP)) {
                             return@getOrPut i - 1
                         }
                     }

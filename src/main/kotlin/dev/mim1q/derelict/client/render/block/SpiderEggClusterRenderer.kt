@@ -76,7 +76,7 @@ class SpiderEggClusterRenderer(ctx: BlockEntityRendererFactory.Context) : BlockE
     ) {
         matrices.push()
         matrices.translate(x, y, z)
-        val scale = 0.9f + 0.1f * sin(time * 0.1f)
+        val scale = 0.9f + 0.15f * sin(time * 0.15f)
         matrices.scale(scale, scale, scale)
         models[index].render(random, light, matrices, consumers.getBuffer(RenderLayer.getSolid()))
         matrices.pop()
