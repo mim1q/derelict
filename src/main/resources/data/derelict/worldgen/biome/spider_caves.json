@@ -7,15 +7,21 @@
     "fog_color": 12638463,
     "water_color": 4159204,
     "water_fog_color": 329011,
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2
+    },
     "additions_sound": {
       "sound": "derelict:ambient.spider_caves",
       "tick_chance": 0.01
     },
-    "mood_sound": {
-      "block_search_extent": 8,
-      "offset": 2.0,
-      "sound": "minecraft:ambient.cave",
-      "tick_delay": 6000
+    "particle": {
+      "options": {
+        "type": "derelict:spider_emitter"
+      },
+      "probability": 0.002
     }
   },
   "spawners": {

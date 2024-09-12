@@ -19,12 +19,13 @@ class NbtFeature :
         val manager = context.world.toServerWorld().structureTemplateManager
         val chosenTemplateId = context.config.structures.pickWeightedRandom(context.random)
         val template = manager.getTemplate(chosenTemplateId).getOrNull() ?: return false
+        val rotation = BlockRotation.random(context.random)
 
         val blocks = StructureTemplate.process(
             context.world,
             context.origin,
             context.origin,
-            StructurePlacementData().setRotation(BlockRotation.random(context.random)),
+            StructurePlacementData().setRotation(rotation),
             arrayListOf<StructureTemplate.StructureBlockInfo>().apply {
                 template.blockInfoLists.forEach { addAll(it.all) }
             }
@@ -39,16 +40,18 @@ class NbtFeature :
                     if (context.world.getBlockState(mutPos).isAir) {
                         mutPos.move(0, -1, 0)
                     } else {
-                        val downPos = mutPos.down()
-                        if (context.world.getBlockState(downPos).isSideSolidFullSquare(context.world, downPos, Direction.UP)) {
+                        if (context.world.getBlockState(mutPos).isSideSolidFullSquare(context.world, mutPos, Direction.UP)) {
                             return@getOrPut i - 1
                         }
                     }
                 }
                 return@getOrPut null
             }
+
+            if (yDecline == null) return@forEach
+
             context.world.placeIfPossible(
-                it.pos.down(yDecline ?: return@forEach), it.state
+                it.pos.down(yDecline), it.state.rotate(rotation)
             )
         }
 

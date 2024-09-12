@@ -27,8 +27,6 @@ class SpiderParticle(
         val matrices = MatrixStack()
     }
 
-
-
     init {
         maxAge = 40 + random.nextInt(40)
         alpha = 0.0F
@@ -53,7 +51,7 @@ class SpiderParticle(
 
             val light = getBrightness(0f)
             translate(x - camera.pos.x, y - camera.pos.y, z - camera.pos.z)
-            val scale = scale / 8f
+            val scale = getSize(tickDelta) / 8f
             scale(scale, scale, scale)
             rotateMatrices(matrices, direction, MathHelper.lerp(tickDelta, prevAngle, angle))
             translate(0.0, 0.0, -0.01)
@@ -155,13 +153,22 @@ class SpiderParticle(
 
         super.tick()
 
-        if (age <= 2) {
-            alpha = (age / 2.0F)
+        if (age <= 4) {
+            alpha = (age / 4.0F)
         }
         val remaining = maxAge - age
         if (remaining <= 5) {
             alpha = (remaining / 5.0F)
         }
+    }
+
+    override fun getSize(tickDelta: Float): Float {
+        val multiplier = when {
+            age <= 4 -> (age + tickDelta) / 4.0F
+            maxAge - age - tickDelta <= 5 -> (maxAge - age - tickDelta) / 5.0F
+            else -> 1f
+        }
+        return scale * multiplier
     }
 
     override fun setVelocity(x: Double, y: Double, z: Double) {

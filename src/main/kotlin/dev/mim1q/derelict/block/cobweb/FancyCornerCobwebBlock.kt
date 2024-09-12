@@ -6,6 +6,8 @@ import net.minecraft.item.ItemPlacementContext
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.EnumProperty
 import net.minecraft.state.property.IntProperty
+import net.minecraft.util.BlockMirror
+import net.minecraft.util.BlockRotation
 import net.minecraft.util.StringIdentifiable
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.MathHelper
@@ -30,6 +32,16 @@ class FancyCornerCobwebBlock(settings: Settings) : Block(settings) {
     private fun getRotation(ctx: ItemPlacementContext, offset: Float = 22.5F): Int {
         val yaw = MathHelper.floorMod(ctx.player?.headYaw?.plus(offset) ?: 0.0F, 360.0F)
         return (yaw / 45F).toInt() % 8
+    }
+
+    @Suppress("OVERRIDE_DEPRECATION")
+    override fun mirror(state: BlockState, mirror: BlockMirror): BlockState {
+        return state.with(ROTATION, (state[ROTATION] + 4) % 8)
+    }
+
+    @Suppress("OVERRIDE_DEPRECATION")
+    override fun rotate(state: BlockState, rotation: BlockRotation): BlockState {
+        return state.with(ROTATION, (state[ROTATION] + rotation.ordinal * 2) % 8)
     }
 
     companion object {
