@@ -2,8 +2,8 @@ package dev.mim1q.derelict.init.worldgen
 
 import com.mojang.serialization.Codec
 import dev.mim1q.derelict.Derelict
-import dev.mim1q.derelict.world.feature.JigsawFeature
 import dev.mim1q.derelict.world.feature.LocalGravityProcessor
+import dev.mim1q.derelict.world.feature.NbtFeature
 import dev.mim1q.derelict.world.feature.SpiderSilkParabola
 import dev.mim1q.derelict.world.feature.SpiderSilkPillar
 import net.minecraft.registry.Registries
@@ -19,7 +19,7 @@ object ModFeatures {
     fun init() {
         register("spider_silk_pillar", SpiderSilkPillar())
         register("spider_silk_parabola", SpiderSilkParabola())
-        register("jigsaw_feature", JigsawFeature())
+        register("nbt_feature", NbtFeature())
     }
 
     private fun <C : FeatureConfig, F : Feature<C>> register(name: String, feature: F): F {

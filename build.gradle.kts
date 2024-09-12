@@ -98,6 +98,10 @@ sourceSets {
     }
 }
 
+loom {
+    accessWidenerPath.set(file("src/main/resources/derelict.accesswidener"))
+}
+
 // Publishing
 val secretsFile = rootProject.file("publishing.properties")
 val secrets = Secrets(secretsFile)

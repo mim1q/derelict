@@ -6,6 +6,7 @@
   "version": "${version}",
   "environment": "*",
   "icon": "assets/derelict/icon.png",
+  "accessWidener": "derelict.accesswidener",
   "entrypoints": {
     "main":                [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.Derelict" }],
     "client":              [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.DerelictClient" }],

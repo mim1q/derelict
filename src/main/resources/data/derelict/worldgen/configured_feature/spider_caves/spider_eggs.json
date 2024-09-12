@@ -1,7 +1,26 @@
 {
-  "type": "derelict:jigsaw_feature",
+  "type": "derelict:nbt_feature",
   "config": {
-    "template_pool": "derelict:spider_caves/spider_eggs",
-    "start": "decoration"
+    "structures": {
+      "derelict:spider_caves/spider_eggs/field_0": 1,
+      "derelict:spider_caves/spider_eggs/field_1": 1,
+      "derelict:spider_caves/spider_eggs/field_2": 1,
+      "derelict:spider_caves/spider_eggs/field_3": 1,
+      "derelict:spider_caves/spider_eggs/field_4": 1,
+      "derelict:spider_caves/spider_eggs/field_5": 1,
+      "derelict:spider_caves/spider_eggs/field_6": 1,
+      "derelict:spider_caves/spider_eggs/field_7": 1,
+      "derelict:spider_caves/spider_eggs/small_pile_0": 1,
+      "derelict:spider_caves/spider_eggs/small_pile_1": 1,
+      "derelict:spider_caves/spider_eggs/small_pile_2": 1,
+      "derelict:spider_caves/spider_eggs/small_pile_3": 1,
+      "derelict:spider_caves/spider_eggs/medium_pile_0": 1,
+      "derelict:spider_caves/spider_eggs/medium_pile_1": 1,
+      "derelict:spider_caves/spider_eggs/medium_pile_2": 1,
+      "derelict:spider_caves/spider_eggs/medium_pile_3": 1,
+      "derelict:spider_caves/spider_eggs/large_pile_0": 1,
+      "derelict:spider_caves/spider_eggs/large_pile_1": 1,
+      "derelict:spider_caves/spider_eggs/large_pile_2": 1
+    }
   }
 }

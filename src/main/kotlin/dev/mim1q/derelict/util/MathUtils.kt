@@ -1,6 +1,7 @@
 package dev.mim1q.derelict.util
 
 import net.minecraft.util.math.MathHelper
+import net.minecraft.util.math.random.Random
 import java.lang.Math.min
 import kotlin.math.abs
 
@@ -26,4 +27,21 @@ fun wrapDegrees(from: Float, to: Float, max: Float): Float {
     else if (g > 360.0f) g -= 360.0f
 
     return g
+}
+
+fun <T> Map<T, Int>.pickWeightedRandom(random: Random): T {
+    var totalWeight = 0
+    val keys = this.keys
+    for (key in keys) {
+        totalWeight += this[key]!!
+    }
+    val randomWeight = random.nextInt(totalWeight)
+    var currentWeight = 0
+    for (key in keys) {
+        currentWeight += this[key]!!
+        if (currentWeight >= randomWeight) {
+            return key
+        }
+    }
+    return keys.first()
 }
