@@ -98,8 +98,8 @@ object ModBlocksAndItems {
     val FLICKERING_END_ROD = register("flickering_end_rod", FlickeringEndRodBlock(FabricBlockSettings.copyOf(Blocks.END_ROD)))
     val EXTINGUISHED_END_ROD = register("extinguished_end_rod", ExtinguishedEndRodBlock(FabricBlockSettings.copyOf(Blocks.END_ROD).luminance { 0 }))
 
-    val FANCY_COBWEB = register("fancy_cobweb", FancyCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
-    val FANCY_COBWEB_WITH_SPIDER_NEST = register("fancy_cobweb_with_spider_nest", FancyCobwebWithSpiderNestBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
+    val FANCY_COBWEB = register("fancy_cobweb", FancyCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB).offset(AbstractBlock.OffsetType.XYZ).dynamicBounds()))
+    val FANCY_COBWEB_WITH_SPIDER_NEST = register("fancy_cobweb_with_spider_nest", FancyCobwebWithSpiderNestBlock(FabricBlockSettings.copyOf(FANCY_COBWEB)))
     val CORNER_COBWEB = register("corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
     val FANCY_CORNER_COBWEB = register("fancy_corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
     val WALL_COBWEB = register("wall_cobweb", object : MultifaceGrowthBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)) {
@@ -111,7 +111,8 @@ object ModBlocksAndItems {
     val SPIDER_EGG_BLOCK = register("spider_egg_block", Block(FabricBlockSettings.copyOf(Blocks.MUD)))
     val SPIDER_EGG = register("spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(Blocks.MUD).nonOpaque().noCollision().luminance { 1 }.offset(AbstractBlock.OffsetType.XZ), true))
     val SPIDER_EGG_CLUSTER = register("spider_egg_cluster", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG)))
-    val SPIDERLING_SPIDER_EGG = registerBlock("spiderling_spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG), false, SPIDERLING, SPIDERLING, SPIDERLING))
+    val FAKE_SPIDER_EGG = registerBlock("fake_spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG), false, null, { 0 }, true))
+    val SPIDERLING_SPIDER_EGG = registerBlock("spiderling_spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG), false, SPIDERLING, { it.nextInt(3) + 1}))
     val SPIDER_SPIDER_EGG = registerBlock("spider_spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG), true, SPIDER))
     val CAVE_SPIDER_SPIDER_EGG = registerBlock("cave_spider_spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG), true, CAVE_SPIDER))
     val WEB_CASTER_SPIDER_EGG = registerBlock("web_caster_spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG), true, WEB_CASTER))

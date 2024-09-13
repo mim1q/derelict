@@ -1,6 +1,7 @@
 package datagen
 
 import tada.lib.generator.ResourceGenerator
+import tada.lib.presets.common.TemplatePoolPresets
 import tada.lib.resources.templatepool.TemplatePool
 
 fun ResourceGenerator.spiderCavesTemplatePools() {
@@ -31,4 +32,6 @@ fun ResourceGenerator.spiderCavesTemplatePools() {
             single(it.second, "derelict:spider_caves/spider_eggs/${it.first}", "derelict:spider_eggs")
         }
     })
+
+    add(TemplatePoolPresets.single("derelict:spider_caves/boss_arena"))
 }

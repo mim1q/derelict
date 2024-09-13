@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "derelict:spider_caves/boss_arena",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 487634113,
+    "spacing": 20,
+    "separation": 4
+  }
+}

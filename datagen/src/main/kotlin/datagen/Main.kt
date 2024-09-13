@@ -80,7 +80,7 @@ fun main(args: Array<String>) {
 
         listOf(
             "spider_egg", "spider_egg_cluster", "spider_spider_egg", "cave_spider_spider_egg", "jumping_spider_spider_egg",
-            "web_caster_spider_egg"
+            "web_caster_spider_egg", "fake_spider_egg", "spiderling_spider_egg"
         ).forEach {
             add(it, BlockState.createSingle("derelict:block/spider_egg_block"))
         }
@@ -179,7 +179,7 @@ fun main(args: Array<String>) {
         spiderCavesTemplatePools()
 
         // Custom Tags
-        TagManager.add("derelict:blocks/cobwebs", "minecraft:cobweb")
+        TagManager.add("derelict:blocks/cobwebs", "minecraft:cobweb", "derelict:spider_silk")
         TagManager.add("blocks/leaves", "derelict:burned_leaves", "derelict:smoldering_leaves")
         TagManager.add("blocks/mineable/hoe", "derelict:burned_leaves", "derelict:smoldering_leaves", "derelict:flickering_shroomlight", "derelict:extinguished_shroomlight")
         TagManager.add("blocks/mineable/axe", "#derelict:cover_boards")

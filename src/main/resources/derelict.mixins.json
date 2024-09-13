@@ -4,6 +4,7 @@
   "package": "dev.mim1q.derelict.mixin",
   "mixins": [
     "block.AbstractBlockMixin",
+    "block.BlockMixin",
     "block.entity.BlockEntityTypeMixin",
     "entity.BucketableMixin",
     "entity.LivingEntityMixin",

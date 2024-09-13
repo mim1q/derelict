@@ -15,7 +15,7 @@ object ModBlockEntities {
         ModBlocksAndItems.SPIDER_EGG, ModBlocksAndItems.SPIDER_EGG_CLUSTER,
         ModBlocksAndItems.SPIDERLING_SPIDER_EGG, ModBlocksAndItems.SPIDER_SPIDER_EGG,
         ModBlocksAndItems.CAVE_SPIDER_SPIDER_EGG, ModBlocksAndItems.JUMPING_SPIDER_SPIDER_EGG,
-        ModBlocksAndItems.WEB_CASTER_SPIDER_EGG
+        ModBlocksAndItems.WEB_CASTER_SPIDER_EGG, ModBlocksAndItems.FAKE_SPIDER_EGG
     )
 
     fun init() {}

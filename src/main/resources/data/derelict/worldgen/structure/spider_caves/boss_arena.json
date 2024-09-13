@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:jigsaw",
+  "biomes": "derelict:spider_caves",
+  "step": "underground_structures",
+  "spawn_overrides": {},
+  "terrain_adaptation": "bury",
+  "start_pool": "derelict:spider_caves/boss_arena",
+  "size": 1,
+  "start_height": {
+    "type": "minecraft:biased_to_bottom",
+    "min_inclusive": {
+      "absolute": -30
+    },
+    "max_inclusive": {
+      "absolute": 30
+    }
+  },
+  "start_jigsaw_name": "derelict:boss_arena",
+  "max_distance_from_center": 80,
+  "use_expansion_hack": false
+}

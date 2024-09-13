@@ -25,7 +25,7 @@ import net.minecraft.world.gen.feature.util.FeatureContext
 import kotlin.math.min
 import kotlin.math.round
 
-private const val MIN_PILLAR_HEIGHT = 10
+private const val MIN_PILLAR_HEIGHT = 12
 private const val MAX_PILLAR_HEIGHT = 64
 private const val SEARCH_RANGE = 32
 

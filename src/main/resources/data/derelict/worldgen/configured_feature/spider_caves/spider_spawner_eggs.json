@@ -1,0 +1,46 @@
+{
+  "type": "minecraft:simple_block",
+  "config": {
+    "to_place": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "weight": 20,
+          "data": {
+            "Name": "derelict:fake_spider_egg"
+          }
+        },
+        {
+          "weight": 5,
+          "data": {
+            "Name": "derelict:spiderling_spider_egg"
+          }
+        },
+        {
+          "weight": 2,
+          "data": {
+            "Name": "derelict:spider_spider_egg"
+          }
+        },
+        {
+          "weight": 2,
+          "data": {
+            "Name": "derelict:cave_spider_spider_egg"
+          }
+        },
+        {
+          "weight": 2,
+          "data": {
+            "Name": "derelict:jumping_spider_spider_egg"
+          }
+        },
+        {
+          "weight": 1,
+          "data": {
+            "Name": "derelict:web_caster_spider_egg"
+          }
+        }
+      ]
+    }
+  }
+}

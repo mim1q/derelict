@@ -35,14 +35,13 @@ class FancyCornerCobwebBlock(settings: Settings) : Block(settings) {
     }
 
     @Suppress("OVERRIDE_DEPRECATION")
-    override fun mirror(state: BlockState, mirror: BlockMirror): BlockState {
-        return state.with(ROTATION, (state[ROTATION] + 4) % 8)
-    }
+    override fun mirror(state: BlockState, mirror: BlockMirror): BlockState =
+        state.with(ROTATION, (state[ROTATION] + mirror.ordinal * 4) % 8)
 
     @Suppress("OVERRIDE_DEPRECATION")
-    override fun rotate(state: BlockState, rotation: BlockRotation): BlockState {
-        return state.with(ROTATION, (state[ROTATION] + rotation.ordinal * 2) % 8)
-    }
+    override fun rotate(state: BlockState, rotation: BlockRotation): BlockState =
+        state.with(ROTATION, (state[ROTATION] + rotation.ordinal * 2) % 8)
+
 
     companion object {
         val ROTATION: IntProperty = IntProperty.of("rotation", 0, 7)

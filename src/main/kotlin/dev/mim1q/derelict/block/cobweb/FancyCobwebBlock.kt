@@ -82,12 +82,16 @@ open class FancyCobwebBlock(
 
     override fun getGrower(): LichenGrower = LichenGrower(this)
 
-    companion object {
-        private const val DISABLED_TOOLTIP_KEY = "block.derelict.fancy_cobweb.disabled_tooltip"
-    }
+    override fun getMaxHorizontalModelOffset(): Float = 1 / 16f
+
+    override fun getVerticalModelOffsetMultiplier(): Float = 1 / 16f
 
     @Suppress("OVERRIDE_DEPRECATION")
     override fun onEntityCollision(state: BlockState, world: World, pos: BlockPos, entity: Entity) {
         entity.slowMovement(state, Vec3d(0.75, 0.5, 0.75))
+    }
+
+    companion object {
+        private const val DISABLED_TOOLTIP_KEY = "block.derelict.fancy_cobweb.disabled_tooltip"
     }
 }
