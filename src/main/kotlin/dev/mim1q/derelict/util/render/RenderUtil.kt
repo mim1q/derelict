@@ -15,7 +15,7 @@ inline fun MatrixStack.entry(setup: MatrixStack.() -> Unit) {
 }
 
 fun BakedModel.render(
-    random: Random?,
+    random: Random,
     light: Int,
     matrices: MatrixStack,
     buffer: VertexConsumer

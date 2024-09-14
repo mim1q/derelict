@@ -139,7 +139,10 @@ object DerelictClient : ClientModInitializer {
         }
 
         ModelLoadingPlugin.register { ctx ->
-            ctx.addModels(*SpiderEggClusterRenderer.MODEL_IDS)
+            ctx.addModels(
+                *SpiderEggClusterRenderer.MODEL_IDS,
+                Derelict.id("block/special/arachne_egg")
+            )
         }
     }
 }
