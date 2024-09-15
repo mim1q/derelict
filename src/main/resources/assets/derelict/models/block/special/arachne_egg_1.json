@@ -1,0 +1,8 @@
+{
+	"parent": "derelict:block/special/arachne_egg",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "derelict:block/special/arachne_egg_1",
+		"particle": "derelict:block/special/arachne_egg_1"
+	}
+}

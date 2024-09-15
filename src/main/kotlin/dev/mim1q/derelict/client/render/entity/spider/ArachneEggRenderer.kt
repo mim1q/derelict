@@ -27,7 +27,8 @@ class ArachneEggRenderer(ctx: EntityRendererFactory.Context) : EntityRenderer<Ar
     ) {
         super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light)
         val world = entity.world
-        val model = blockRenderManager.models.modelManager.getModel(UNBROKEN_MODEL_ID) ?: return
+        val model =
+            blockRenderManager.models.modelManager.getModel(MODEL_IDS.getOrElse(entity.stage) { MODEL_IDS[0] }) ?: return
 
         val time = (world.time + tickDelta) * 0.15f
 
@@ -36,7 +37,7 @@ class ArachneEggRenderer(ctx: EntityRendererFactory.Context) : EntityRenderer<Ar
             val xzScale = 0.9f + 0.05f * sin(time)
             val yScale = 0.9f + 0.07f * sin(time - 1f)
             scale(xzScale, yScale, xzScale)
-            translate(-1.0, 1.0, -1.0)
+            translate(-0.5 - 0.5 / xzScale, 1.01, -0.5 - 0.5 / xzScale)
             model.render(
                 world.random,
                 light,
@@ -47,6 +48,11 @@ class ArachneEggRenderer(ctx: EntityRendererFactory.Context) : EntityRenderer<Ar
     }
 
     companion object {
-        val UNBROKEN_MODEL_ID = Derelict.id("block/special/arachne_egg")
+        val MODEL_IDS = arrayOf(
+            Derelict.id("block/special/arachne_egg"),
+            Derelict.id("block/special/arachne_egg_1"),
+            Derelict.id("block/special/arachne_egg_2"),
+            Derelict.id("block/special/arachne_egg_broken")
+        )
     }
 }

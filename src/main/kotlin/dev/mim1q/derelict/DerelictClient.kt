@@ -3,6 +3,7 @@ package dev.mim1q.derelict
 import com.mojang.blaze3d.systems.RenderSystem
 import dev.mim1q.derelict.client.render.block.SpiderEggClusterRenderer
 import dev.mim1q.derelict.client.render.effect.SpiderWebModelFeature
+import dev.mim1q.derelict.client.render.entity.spider.ArachneEggRenderer
 import dev.mim1q.derelict.config.DerelictClientConfig
 import dev.mim1q.derelict.config.DerelictConfigs
 import dev.mim1q.derelict.init.ModBlocksAndItems
@@ -141,7 +142,7 @@ object DerelictClient : ClientModInitializer {
         ModelLoadingPlugin.register { ctx ->
             ctx.addModels(
                 *SpiderEggClusterRenderer.MODEL_IDS,
-                Derelict.id("block/special/arachne_egg")
+                *ArachneEggRenderer.MODEL_IDS
             )
         }
     }
