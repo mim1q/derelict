@@ -1,7 +1,9 @@
 package dev.mim1q.derelict.entity.spider
 
 import dev.mim1q.derelict.entity.spider.legs.SpiderLegController
+import dev.mim1q.derelict.tag.ModBlockTags
 import dev.mim1q.gimm1q.interpolation.AnimatedProperty
+import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.ai.goal.LookAroundGoal
@@ -133,6 +135,9 @@ class DaddyLongLegsEntity(
 
         if (nbt.contains("SockColor")) dataTracker.set(SOCK_COLOR, nbt.getInt("SockColor"))
     }
+
+    override fun slowMovement(state: BlockState, multiplier: Vec3d) =
+        if (!state.isIn(ModBlockTags.COBWEBS)) super.slowMovement(state, multiplier) else Unit
 
     companion object {
         private val WOOL_TO_COLOR = mapOf(

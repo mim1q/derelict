@@ -3,6 +3,7 @@ package dev.mim1q.derelict.client.render.entity.boss.arachne
 import dev.mim1q.derelict.entity.boss.ArachneEntity
 import dev.mim1q.derelict.entity.spider.legs.SpiderLegParts
 import dev.mim1q.derelict.util.extensions.radians
+import dev.mim1q.derelict.util.extensions.setPartialAnglesDegrees
 import dev.mim1q.gimm1q.interpolation.Easing
 import net.minecraft.client.model.ModelPart
 import net.minecraft.client.render.RenderLayer
@@ -49,10 +50,27 @@ class ArachneEntityModel(root: ModelPart) : EntityModel<ArachneEntity>(RenderLay
         headPitch: Float
     ) {
         head.setAngles(headPitch.radians(), headYaw.radians(), 0F)
+
+        val screaming = entity.legsRaisedAnimation.update(animationProgress)
+        val shaking = entity.shakingAnimation.update(animationProgress)
+
+        legs[0].upper.setPartialAnglesDegrees(0f, -70f, 0f, screaming)
+        legs[0].lower.setPartialAnglesDegrees(0f, 50f, 0f, screaming)
+        legs[0].joint.setPartialAnglesDegrees(0f, 0f, 60f, screaming)
+
+        legs[4].upper.setPartialAnglesDegrees(0f, 70f, 0f, screaming)
+        legs[4].lower.setPartialAnglesDegrees(0f, -50f, 0f, screaming)
+        legs[4].joint.setPartialAnglesDegrees(0f, 0f, -60f, screaming)
+
+        body.yaw += sin(x = animationProgress * 3f) * 1f.radians() * shaking
+        abdomen.yaw += sin(animationProgress * 3f - 1f) * 5f.radians() * shaking
     }
 
     override fun animateModel(entity: ArachneEntity, limbAngle: Float, limbDistance: Float, tickDelta: Float) {
         val animationProgress = entity.age + tickDelta
+
+        body.resetTransform()
+        abdomen.resetTransform()
 
         eggs.forEachIndexed { index, egg ->
             val speed = 7F + sin(index * 100F) * 3F

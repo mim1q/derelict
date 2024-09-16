@@ -24,8 +24,8 @@ class SpiderLegController(
 
     fun tick() {
         legs.forEachIndexed { index, leg ->
-            val offset = if ((index % 2 == 0) xor (index >= 4)) 8 else 0
-            val isTimeToMove = entity.age % 16 == (offset + (index % 2) * 2)
+            val offset = if ((index % 2 == 0) xor (index >= 4)) 6 else 0
+            val isTimeToMove = entity.age % 12 == (offset + (index % 2) * 2)
 
             leg.step(isTimeToMove || entity.age == 1)
 

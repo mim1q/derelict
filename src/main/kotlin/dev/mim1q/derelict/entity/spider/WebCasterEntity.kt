@@ -3,9 +3,11 @@ package dev.mim1q.derelict.entity.spider
 import dev.mim1q.derelict.entity.spider.control.ArachneBodyControl
 import dev.mim1q.derelict.entity.spider.legs.SpiderLegController
 import dev.mim1q.derelict.init.ModStatusEffects
+import dev.mim1q.derelict.tag.ModBlockTags
 import dev.mim1q.derelict.util.wrapDegrees
 import dev.mim1q.gimm1q.interpolation.AnimatedProperty
 import dev.mim1q.gimm1q.interpolation.Easing
+import net.minecraft.block.BlockState
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.LivingEntity
@@ -154,10 +156,9 @@ class WebCasterEntity(entityType: EntityType<WebCasterEntity>, world: World) : H
     }
 
     override fun getSoundPitch(): Float = 0.6f + random.nextFloat() * 0.25f
-
     override fun squaredAttackRange(target: LivingEntity): Double = (width + 1.0).pow(2) + target.width
-
     override fun setBodyYaw(bodyYaw: Float) = super.setBodyYaw(wrapDegrees(this.bodyYaw, bodyYaw, 10f))
-
     override fun createBodyControl() = ArachneBodyControl(this)
+    override fun slowMovement(state: BlockState, multiplier: Vec3d) =
+        if (!state.isIn(ModBlockTags.COBWEBS)) super.slowMovement(state, multiplier) else Unit
 }

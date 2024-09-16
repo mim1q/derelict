@@ -30,7 +30,7 @@ class ArachneEggRenderer(ctx: EntityRendererFactory.Context) : EntityRenderer<Ar
         val model =
             blockRenderManager.models.modelManager.getModel(MODEL_IDS.getOrElse(entity.stage) { MODEL_IDS[0] }) ?: return
 
-        val time = (world.time + tickDelta) * 0.15f
+        val time = entity.getAnimationTime(tickDelta) * 0.15f
 
         matrices.entry {
             translate(0.5, 0.0, 0.5)

@@ -9,6 +9,7 @@
     "entity.BucketableMixin",
     "entity.LivingEntityMixin",
     "entity.SpawnHelperMixin",
+    "entity.SpiderEntityMixin",
     "item.SwordAndShearsSuitableBlocksMixin"
   ],
   "client": [
