@@ -64,6 +64,7 @@ class ArachneEntityModel(root: ModelPart) : EntityModel<ArachneEntity>(RenderLay
 
         body.yaw += sin(x = animationProgress * 3f) * 1f.radians() * shaking
         abdomen.yaw += sin(animationProgress * 3f - 1f) * 5f.radians() * shaking
+        head.yaw += sin(animationProgress * 5f - 1f) * 2f.radians() * shaking
     }
 
     override fun animateModel(entity: ArachneEntity, limbAngle: Float, limbDistance: Float, tickDelta: Float) {

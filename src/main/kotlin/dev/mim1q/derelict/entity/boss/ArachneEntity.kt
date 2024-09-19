@@ -5,6 +5,7 @@ import dev.mim1q.derelict.entity.spider.legs.SpiderLegController
 import dev.mim1q.derelict.tag.ModBlockTags
 import dev.mim1q.derelict.util.wrapDegrees
 import dev.mim1q.gimm1q.interpolation.AnimatedProperty
+import dev.mim1q.gimm1q.interpolation.AnimatedProperty.EasingFunction
 import dev.mim1q.gimm1q.interpolation.Easing
 import dev.mim1q.gimm1q.screenshake.ScreenShakeUtils
 import net.minecraft.block.BlockState
@@ -26,43 +27,51 @@ import net.minecraft.world.World
 class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : HostileEntity(entityType, world) {
     val legController = SpiderLegController(
         this,
-        24 / 16f,
-        28 / 16f,
+        { getScale() * 24 / 16f },
+        { getScale() * 28 / 16f },
         //@formatter:off
-        { Vec3d( 0.6, 0.9, 1.0 ) } to { Vec3d( 1.5, 0.0,  3.5) },
-        { Vec3d( 0.6, 1.0, 0.65) } to { Vec3d( 2.5, 0.0,  1.5) },
-        { Vec3d( 0.6, 1.1, 0.3 ) } to { Vec3d( 2.0, 0.0,  0.5) },
-        { Vec3d( 0.6, 1.2, 0.0 ) } to { Vec3d( 1.5, 0.0, -1.0) },
+        { ikVec( 0.6, 0.9, 1.0 ) } to { ikVec( 1.5, 0.0,  3.5) },
+        { ikVec( 0.6, 1.0, 0.65) } to { ikVec( 2.5, 0.0,  1.5) },
+        { ikVec( 0.6, 1.1, 0.3 ) } to { ikVec( 2.0, 0.0,  0.5) },
+        { ikVec( 0.6, 1.2, 0.0 ) } to { ikVec( 1.5, 0.0, -1.0) },
 
-        { Vec3d(-0.6, 0.9, 1.0 ) } to { Vec3d(-1.5, 0.0,  3.5) },
-        { Vec3d(-0.6, 1.0, 0.65) } to { Vec3d(-2.5, 0.0,  1.5) },
-        { Vec3d(-0.6, 1.1, 0.3 ) } to { Vec3d(-2.0, 0.0, -0.5) },
-        { Vec3d(-0.6, 1.2, 0.0 ) } to { Vec3d(-1.5, 0.0, -1.0) },
+        { ikVec(-0.6, 0.9, 1.0 ) } to { ikVec(-1.5, 0.0,  3.5) },
+        { ikVec(-0.6, 1.0, 0.65) } to { ikVec(-2.5, 0.0,  1.5) },
+        { ikVec(-0.6, 1.1, 0.3 ) } to { ikVec(-2.0, 0.0, -0.5) },
+        { ikVec(-0.6, 1.2, 0.0 ) } to { ikVec(-1.5, 0.0, -1.0) },
         //@formatter:on
     )
 
     val legsRaisedAnimation = AnimatedProperty(0f, Easing::easeOutBack)
     val shakingAnimation = AnimatedProperty(0f, Easing::easeInOutCubic)
 
-
     private var screamingTicks = 0
     private var wasScreaming = false
+    private var goalsSetup = false
 
     override fun initGoals() {
+        if (age < 40 || goalsSetup) return
+
+        goalsSetup = true
+
         goalSelector.add(3, LookAtEntityGoal(this, PlayerEntity::class.java, 24F))
         goalSelector.add(4, LookAroundGoal(this))
         goalSelector.add(2, WanderAroundGoal(this, 0.4))
         goalSelector.add(2, WanderAroundFarGoal(this, 0.4))
         goalSelector.add(0, MeleeAttackGoal(this, 0.6, true))
+
         targetSelector.add(0, ActiveTargetGoal(this, PlayerEntity::class.java, false))
     }
 
     override fun tick() {
         if (world.isClient) {
             legController.tick()
-
             handleAnimations()
         } else {
+            if (age == 45) {
+                initGoals()
+            }
+
             processScreaming()
         }
 
@@ -77,6 +86,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
             screamingTicks = 40
         }
         dataTracker.set(SCREAMING, screamingTicks > 0)
+        dataTracker.set(SHAKING, screamingTicks > 0)
 
         if (!wasScreaming && screamingTicks > 0) {
             ScreenShakeUtils.shakeAround(world as ServerWorld, pos, 1.2f, screamingTicks, 5.0, 30.0)
@@ -85,13 +95,8 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
     }
 
     private fun handleAnimations() {
-        if (dataTracker.get(SCREAMING)) {
-            legsRaisedAnimation.transitionTo(1f, 15f, Easing::easeOutBack)
-            shakingAnimation.transitionTo(1f, 5f, Easing::easeInOutCubic)
-        } else {
-            legsRaisedAnimation.transitionTo(0f, 40f, Easing::easeInOutCubic)
-            shakingAnimation.transitionTo(0f, 20f, Easing::easeInOutCubic)
-        }
+        legsRaisedAnimation.apply(SCREAMING, 15f, 40f, Easing::easeOutBack, Easing::easeInOutCubic)
+        shakingAnimation.apply(SHAKING, 5f, 20f)
     }
 
     override fun setBodyYaw(bodyYaw: Float) = super.setBodyYaw(wrapDegrees(this.bodyYaw, bodyYaw, 10f))
@@ -100,12 +105,39 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         super.initDataTracker()
 
         dataTracker.startTracking(SCREAMING, false)
+        dataTracker.startTracking(SHAKING, false)
     }
+
+    private fun AnimatedProperty.apply(
+        data: TrackedData<Boolean>,
+        durationOn: Float,
+        durationOff: Float,
+        easingOn: EasingFunction = EasingFunction(Easing::easeInOutCubic),
+        easingOff: EasingFunction = easingOn
+    ) {
+        if (dataTracker.get(data)) {
+            transitionTo(1f, durationOn, easingOn)
+        } else {
+            transitionTo(0f, durationOff, easingOff)
+        }
+    }
+
+    fun getScale() =
+        1.5f - (health / maxHealth) * 0.5f
+
+    private fun ikVec(x: Double, y: Double, z: Double): Vec3d {
+        val scale = getScale()
+        return Vec3d(x * scale, y * scale, z * scale)
+    }
+
     override fun slowMovement(state: BlockState, multiplier: Vec3d) =
         if (!state.isIn(ModBlockTags.COBWEBS)) super.slowMovement(state, multiplier) else Unit
 
     companion object {
         val SCREAMING: TrackedData<Boolean> =
+            DataTracker.registerData(ArachneEntity::class.java, TrackedDataHandlerRegistry.BOOLEAN)
+
+        val SHAKING: TrackedData<Boolean> =
             DataTracker.registerData(ArachneEntity::class.java, TrackedDataHandlerRegistry.BOOLEAN)
 
         fun createArachneAttributes(): DefaultAttributeContainer.Builder = createHostileAttributes()

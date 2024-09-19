@@ -6,6 +6,7 @@ import dev.mim1q.derelict.entity.boss.ArachneEntity
 import dev.mim1q.derelict.init.client.ModRender
 import net.minecraft.client.render.entity.EntityRendererFactory
 import net.minecraft.client.render.entity.MobEntityRenderer
+import net.minecraft.client.util.math.MatrixStack
 
 class ArachneEntityRenderer(ctx: EntityRendererFactory.Context) :
     MobEntityRenderer<ArachneEntity, ArachneEntityModel>(
@@ -15,6 +16,19 @@ class ArachneEntityRenderer(ctx: EntityRendererFactory.Context) :
     ) {
     init {
         addFeature(createEyesFeatureRenderer(this, TEXTURE))
+    }
+
+    override fun setupTransforms(
+        entity: ArachneEntity,
+        matrices: MatrixStack,
+        animationProgress: Float,
+        bodyYaw: Float,
+        tickDelta: Float
+    ) {
+        super.setupTransforms(entity, matrices, animationProgress, bodyYaw, tickDelta)
+
+        val scale = entity.getScale()
+        matrices.scale(scale, scale, scale)
     }
 
     override fun getTexture(entity: ArachneEntity) = TEXTURE

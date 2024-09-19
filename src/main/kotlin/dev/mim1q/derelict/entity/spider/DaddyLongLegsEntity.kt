@@ -43,8 +43,8 @@ class DaddyLongLegsEntity(
 
     val legController = SpiderLegController(
         this,
-        32 / 16f,
-        32 / 16f,
+        { 32 / 16f },
+        { 32 / 16f },
         //@formatter:off
         { danceOffsetVector.add( 0.25, 60 / 16.0,  3 / 32.0 ) } to { Vec3d( 0.5, 0.0,  0.5) },
         { danceOffsetVector.add( 0.25, 60 / 16.0,  1 / 32.0 ) } to { Vec3d( 0.8, 0.0,  0.1) },

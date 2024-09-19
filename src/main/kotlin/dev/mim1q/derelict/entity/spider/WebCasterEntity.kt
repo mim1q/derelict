@@ -31,8 +31,8 @@ class WebCasterEntity(entityType: EntityType<WebCasterEntity>, world: World) : H
 
     val legController = SpiderLegController(
         this,
-        24 / 16f,
-        28 / 16f,
+        { 24 / 16f },
+        { 28 / 16f },
         //@formatter:off
         { Vec3d( 5 / 16.0, 0.6, 7 / 16.0) } to { Vec3d( 1.5, 0.0,  2.0) },
         { Vec3d( 5 / 16.0, 0.6, 5 / 16.0) } to { Vec3d( 2.0, 0.0,  1.5) },

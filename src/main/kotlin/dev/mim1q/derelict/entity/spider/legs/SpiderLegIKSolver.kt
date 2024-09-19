@@ -10,8 +10,8 @@ import kotlin.math.atan2
 import kotlin.math.sin
 
 class SpiderLegIKSolver(
-    private val upperLength: Float,
-    private val lowerLength: Float
+    private val upperLengthGetter: () -> Float,
+    private val lowerLengthGetter: () -> Float
 ) {
     private var firstTick = true
 
@@ -27,6 +27,9 @@ class SpiderLegIKSolver(
         target: Vec3d,
         negativeLowerRoll: Boolean
     ) {
+        val upperLength = upperLengthGetter()
+        val lowerLength = lowerLengthGetter()
+
         lastUpperRoll = upperRoll
         lastLowerRoll = lowerRoll
         lastYaw = yaw

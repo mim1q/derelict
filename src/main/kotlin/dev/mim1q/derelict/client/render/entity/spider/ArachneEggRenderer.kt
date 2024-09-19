@@ -38,6 +38,8 @@ class ArachneEggRenderer(ctx: EntityRendererFactory.Context) : EntityRenderer<Ar
             val yScale = 0.9f + 0.07f * sin(time - 1f)
             scale(xzScale, yScale, xzScale)
             translate(-0.5 - 0.5 / xzScale, 1.01, -0.5 - 0.5 / xzScale)
+
+
             model.render(
                 world.random,
                 light,

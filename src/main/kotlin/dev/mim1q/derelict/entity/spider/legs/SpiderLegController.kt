@@ -10,8 +10,8 @@ import kotlin.math.sin
 
 class SpiderLegController(
     private val entity: LivingEntity,
-    private val upperLimbLength: Float,
-    private val lowerLimbLength: Float,
+    private val upperLimbLength: () -> Float,
+    private val lowerLimbLength: () -> Float,
     vararg offsetsAndTargets: Pair<() -> Vec3d, () -> Vec3d>
 ) {
     init {
@@ -65,7 +65,11 @@ class SpiderLegController(
             get() {
                 val calculatedTarget = target()
                 return calculatedTarget.horizontalLength().let { length ->
-                    Vec3d((calculatedTarget.x / length) * (length - 0.2), calculatedTarget.y, (calculatedTarget.z / length) * (length - 0.1))
+                    Vec3d(
+                        (calculatedTarget.x / length) * (length - 0.2),
+                        calculatedTarget.y,
+                        (calculatedTarget.z / length) * (length - 0.1)
+                    )
                 }
             }
 
