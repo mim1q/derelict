@@ -2,7 +2,9 @@ package dev.mim1q.derelict.entity.boss
 
 import dev.mim1q.derelict.entity.spider.control.ArachneBodyControl
 import dev.mim1q.derelict.entity.spider.legs.SpiderLegController
+import dev.mim1q.derelict.init.ModTrackedDataHandlers
 import dev.mim1q.derelict.tag.ModBlockTags
+import dev.mim1q.derelict.util.entity.tracked
 import dev.mim1q.derelict.util.wrapDegrees
 import dev.mim1q.gimm1q.interpolation.AnimatedProperty
 import dev.mim1q.gimm1q.interpolation.AnimatedProperty.EasingFunction
@@ -48,6 +50,9 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
     private var screamingTicks = 0
     private var wasScreaming = false
     private var goalsSetup = false
+
+    var currentAttack by tracked(CURRENT_ATTACK)
+        private set
 
     override fun initGoals() {
         if (age < 40 || goalsSetup) return
@@ -106,6 +111,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
 
         dataTracker.startTracking(SCREAMING, false)
         dataTracker.startTracking(SHAKING, false)
+        dataTracker.startTracking(CURRENT_ATTACK, ArachneAttackType.NONE)
     }
 
     private fun AnimatedProperty.apply(
@@ -133,6 +139,11 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
     override fun slowMovement(state: BlockState, multiplier: Vec3d) =
         if (!state.isIn(ModBlockTags.COBWEBS)) super.slowMovement(state, multiplier) else Unit
 
+    enum class ArachneAttackType {
+        NONE,
+        SMASH;
+    }
+
     companion object {
         val SCREAMING: TrackedData<Boolean> =
             DataTracker.registerData(ArachneEntity::class.java, TrackedDataHandlerRegistry.BOOLEAN)
@@ -140,9 +151,11 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         val SHAKING: TrackedData<Boolean> =
             DataTracker.registerData(ArachneEntity::class.java, TrackedDataHandlerRegistry.BOOLEAN)
 
+        val CURRENT_ATTACK: TrackedData<ArachneAttackType> =
+            DataTracker.registerData(ArachneEntity::class.java, ModTrackedDataHandlers.ARACHNE_ATTACK)
+
         fun createArachneAttributes(): DefaultAttributeContainer.Builder = createHostileAttributes()
             .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.6)
             .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0)
-
     }
 }

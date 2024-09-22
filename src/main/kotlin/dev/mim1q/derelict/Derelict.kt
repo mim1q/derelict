@@ -28,6 +28,7 @@ object Derelict : ModInitializer {
         // General content
         ModBlocksAndItems.init()
         ModBlockEntities.init()
+        ModTrackedDataHandlers.init()
         ModEntities.init()
         ModStatusEffects.init()
 
