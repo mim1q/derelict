@@ -2,9 +2,9 @@ package dev.mim1q.derelict.entity.boss
 
 import dev.mim1q.derelict.entity.spider.control.ArachneBodyControl
 import dev.mim1q.derelict.entity.spider.legs.SpiderLegController
-import dev.mim1q.derelict.init.ModTrackedDataHandlers
 import dev.mim1q.derelict.tag.ModBlockTags
-import dev.mim1q.derelict.util.entity.tracked
+import dev.mim1q.derelict.util.entity.trackedEnum
+import dev.mim1q.derelict.util.extensions.radians
 import dev.mim1q.derelict.util.wrapDegrees
 import dev.mim1q.gimm1q.interpolation.AnimatedProperty
 import dev.mim1q.gimm1q.interpolation.AnimatedProperty.EasingFunction
@@ -20,11 +20,14 @@ import net.minecraft.entity.data.TrackedData
 import net.minecraft.entity.data.TrackedDataHandlerRegistry
 import net.minecraft.entity.mob.HostileEntity
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.particle.ParticleTypes
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
+import kotlin.math.cos
+import kotlin.math.sin
 
 class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : HostileEntity(entityType, world) {
     val legController = SpiderLegController(
@@ -47,12 +50,18 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
     val legsRaisedAnimation = AnimatedProperty(0f, Easing::easeOutBack)
     val shakingAnimation = AnimatedProperty(0f, Easing::easeInOutCubic)
 
+    val leftLegStomp = AnimatedProperty(0f, Easing::easeInOutCubic)
+    val rightLegStomp = AnimatedProperty(0f, Easing::easeInOutCubic)
+
     private var screamingTicks = 0
     private var wasScreaming = false
     private var goalsSetup = false
 
-    var currentAttack by tracked(CURRENT_ATTACK)
+    var currentAttack by trackedEnum(CURRENT_ATTACK, ArachneAttackType.entries)
         private set
+    private var attackTicks = 0
+
+    private var stompCooldown = 0
 
     override fun initGoals() {
         if (age < 40 || goalsSetup) return
@@ -63,7 +72,9 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         goalSelector.add(4, LookAroundGoal(this))
         goalSelector.add(2, WanderAroundGoal(this, 0.4))
         goalSelector.add(2, WanderAroundFarGoal(this, 0.4))
-        goalSelector.add(0, MeleeAttackGoal(this, 0.6, true))
+//        goalSelector.add(0, MeleeAttackGoal(this, 0.6, true))
+
+        goalSelector.add(0, StompAttack())
 
         targetSelector.add(0, ActiveTargetGoal(this, PlayerEntity::class.java, false))
     }
@@ -78,8 +89,11 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
             }
 
             processScreaming()
+
+            stompCooldown--
         }
 
+        attackTicks++
         super.tick()
     }
 
@@ -100,8 +114,28 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
     }
 
     private fun handleAnimations() {
-        legsRaisedAnimation.apply(SCREAMING, 15f, 40f, Easing::easeOutBack, Easing::easeInOutCubic)
         shakingAnimation.apply(SHAKING, 5f, 20f)
+
+        if (currentAttack == ArachneAttackType.SMASH || dataTracker[SCREAMING]) {
+            legsRaisedAnimation.transitionTo(1f, 15f, Easing::easeOutBack)
+        } else {
+            legsRaisedAnimation.transitionTo(0f, 40f, Easing::easeInOutCubic)
+        }
+
+        if (currentAttack == ArachneAttackType.SMASH) {
+            if (attackTicks > 10) {
+                when (attackTicks % 20) {
+                    1 -> leftLegStomp.transitionTo(1f, 8f, Easing::easeOutBounce)
+                    9 -> leftLegStomp.transitionTo(0f, 20f, Easing::easeInOutCubic)
+
+                    11 -> rightLegStomp.transitionTo(1f, 8f, Easing::easeOutBounce)
+                    19 -> rightLegStomp.transitionTo(0f, 20f, Easing::easeInOutCubic)
+                }
+            }
+        } else {
+            leftLegStomp.transitionTo(0f, 10f, Easing::easeInOutCubic)
+            rightLegStomp.transitionTo(0f, 10f, Easing::easeInOutCubic)
+        }
     }
 
     override fun setBodyYaw(bodyYaw: Float) = super.setBodyYaw(wrapDegrees(this.bodyYaw, bodyYaw, 10f))
@@ -111,7 +145,14 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
 
         dataTracker.startTracking(SCREAMING, false)
         dataTracker.startTracking(SHAKING, false)
-        dataTracker.startTracking(CURRENT_ATTACK, ArachneAttackType.NONE)
+        dataTracker.startTracking(CURRENT_ATTACK, 0)
+    }
+
+    override fun onTrackedDataSet(data: TrackedData<*>) {
+        if (data == CURRENT_ATTACK) {
+            attackTicks = 0
+        }
+        super.onTrackedDataSet(data)
     }
 
     private fun AnimatedProperty.apply(
@@ -139,6 +180,41 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
     override fun slowMovement(state: BlockState, multiplier: Vec3d) =
         if (!state.isIn(ModBlockTags.COBWEBS)) super.slowMovement(state, multiplier) else Unit
 
+    inner class StompAttack : Goal() {
+        private var ticks = 0
+
+        override fun canStart(): Boolean = stompCooldown <= 0 && random.nextFloat() < 0.1f
+
+        override fun start() {
+            ticks = 0
+            currentAttack = ArachneAttackType.SMASH
+        }
+
+        override fun stop() {
+            ticks = 0
+            stompCooldown = 100
+            currentAttack = ArachneAttackType.NONE
+        }
+
+        override fun shouldContinue(): Boolean = ticks < 100
+        override fun tick() {
+            ticks++
+
+            val world = this@ArachneEntity.world as? ServerWorld ?: return
+
+            if (ticks > 10 && (ticks % 20 == 5 || ticks % 20 == 15)) {
+                ScreenShakeUtils.shakeAround(world, pos, 1f, 20, 4.0, 16.0)
+                val bodyYawRad = (bodyYaw + 90).radians()
+                val pos = pos.add(3.0 * cos(bodyYawRad), 0.0, 3.0 * sin(bodyYawRad))
+
+                world.spawnParticles(ParticleTypes.EXPLOSION, pos.x, pos.y + 0.5, pos.z, 2, 0.3, 0.3, 0.3, 0.0)
+                playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.7f, 0.3f + random.nextFloat() * 0.2f)
+            }
+        }
+
+        override fun shouldRunEveryTick(): Boolean = true
+    }
+
     enum class ArachneAttackType {
         NONE,
         SMASH;
@@ -151,8 +227,8 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         val SHAKING: TrackedData<Boolean> =
             DataTracker.registerData(ArachneEntity::class.java, TrackedDataHandlerRegistry.BOOLEAN)
 
-        val CURRENT_ATTACK: TrackedData<ArachneAttackType> =
-            DataTracker.registerData(ArachneEntity::class.java, ModTrackedDataHandlers.ARACHNE_ATTACK)
+        val CURRENT_ATTACK: TrackedData<Int> =
+            DataTracker.registerData(ArachneEntity::class.java, TrackedDataHandlerRegistry.INTEGER)
 
         fun createArachneAttributes(): DefaultAttributeContainer.Builder = createHostileAttributes()
             .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.6)

@@ -65,6 +65,14 @@ class ArachneEntityModel(root: ModelPart) : EntityModel<ArachneEntity>(RenderLay
         body.yaw += sin(x = animationProgress * 3f) * 1f.radians() * shaking
         abdomen.yaw += sin(animationProgress * 3f - 1f) * 5f.radians() * shaking
         head.yaw += sin(animationProgress * 5f - 1f) * 2f.radians() * shaking
+
+        val leftLegStomp = entity.leftLegStomp.update(animationProgress)
+        val rightLegStomp = entity.rightLegStomp.update(animationProgress)
+
+        legs[0].upper.roll += 70f.radians() * leftLegStomp
+        legs[0].joint.yaw += 20f.radians() * leftLegStomp
+        legs[4].upper.roll -= 70f.radians() * rightLegStomp
+        legs[4].joint.yaw -= 20f.radians() * rightLegStomp
     }
 
     override fun animateModel(entity: ArachneEntity, limbAngle: Float, limbDistance: Float, tickDelta: Float) {
