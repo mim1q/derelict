@@ -1,10 +1,14 @@
 package dev.mim1q.derelict.entity.boss
 
+import dev.mim1q.derelict.entity.goal.TickingGoal
 import dev.mim1q.derelict.entity.spider.control.ArachneBodyControl
 import dev.mim1q.derelict.entity.spider.legs.SpiderLegController
+import dev.mim1q.derelict.init.ModEntities
 import dev.mim1q.derelict.tag.ModBlockTags
+import dev.mim1q.derelict.tag.ModEntityTags
 import dev.mim1q.derelict.util.entity.trackedEnum
 import dev.mim1q.derelict.util.extensions.radians
+import dev.mim1q.derelict.util.pickWeightedRandom
 import dev.mim1q.derelict.util.wrapDegrees
 import dev.mim1q.gimm1q.interpolation.AnimatedProperty
 import dev.mim1q.gimm1q.interpolation.AnimatedProperty.EasingFunction
@@ -12,6 +16,7 @@ import dev.mim1q.gimm1q.interpolation.Easing
 import dev.mim1q.gimm1q.screenshake.ScreenShakeUtils
 import net.minecraft.block.BlockState
 import net.minecraft.entity.EntityType
+import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.ai.goal.*
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
@@ -24,12 +29,17 @@ import net.minecraft.particle.ParticleTypes
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
+import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 import kotlin.math.cos
 import kotlin.math.sin
 
 class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : HostileEntity(entityType, world) {
+    init {
+        ignoreCameraFrustum = true
+    }
+
     val legController = SpiderLegController(
         this,
         { getScale() * 24 / 16f },
@@ -56,27 +66,33 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
     private var screamingTicks = 0
     private var wasScreaming = false
     private var goalsSetup = false
+    private var lastStage = 0
 
-    var currentAttack by trackedEnum(CURRENT_ATTACK, ArachneAttackType.entries)
-        private set
+    private var currentAttack by trackedEnum(CURRENT_ATTACK, ArachneAttackType.entries)
     private var attackTicks = 0
 
-    private var stompCooldown = 0
+    private var stompCooldown = 100
+    private var spawnCooldown = 400
 
     override fun initGoals() {
         if (age < 40 || goalsSetup) return
 
         goalsSetup = true
 
+        goalSelector.clear { true }
+
         goalSelector.add(3, LookAtEntityGoal(this, PlayerEntity::class.java, 24F))
         goalSelector.add(4, LookAroundGoal(this))
         goalSelector.add(2, WanderAroundGoal(this, 0.4))
         goalSelector.add(2, WanderAroundFarGoal(this, 0.4))
-//        goalSelector.add(0, MeleeAttackGoal(this, 0.6, true))
+        goalSelector.add(1, MeleeAttackGoal(this, 0.6, true))
 
-        goalSelector.add(0, StompAttack())
+        goalSelector.add(0, createSmashAttack())
+        goalSelector.add(0, createSpawnAttack())
 
-        targetSelector.add(0, ActiveTargetGoal(this, PlayerEntity::class.java, false))
+        if (targetSelector.goals.isEmpty()) {
+            targetSelector.add(0, ActiveTargetGoal(this, PlayerEntity::class.java, false))
+        }
     }
 
     override fun tick() {
@@ -91,6 +107,18 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
             processScreaming()
 
             stompCooldown--
+            spawnCooldown--
+
+            if (lastStage != getStage()) {
+                (world as? ServerWorld)?.spawnParticles(
+                    ParticleTypes.EXPLOSION_EMITTER,
+                    pos.x, pos.y, pos.z,
+                    8, 2.0, 2.0, 2.0,
+                    0.0
+                )
+                playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1.0f, 0.8f)
+                lastStage = getStage()
+            }
         }
 
         attackTicks++
@@ -114,9 +142,13 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
     }
 
     private fun handleAnimations() {
-        shakingAnimation.apply(SHAKING, 5f, 20f)
+        if (shouldShake()) {
+            shakingAnimation.transitionTo(1f, 5f, Easing::easeInOutCubic)
+        } else {
+            shakingAnimation.transitionTo(0f, 20f, Easing::easeInOutCubic)
+        }
 
-        if (currentAttack == ArachneAttackType.SMASH || dataTracker[SCREAMING]) {
+        if (shouldRaiseLegs()) {
             legsRaisedAnimation.transitionTo(1f, 15f, Easing::easeOutBack)
         } else {
             legsRaisedAnimation.transitionTo(0f, 40f, Easing::easeInOutCubic)
@@ -136,6 +168,18 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
             leftLegStomp.transitionTo(0f, 10f, Easing::easeInOutCubic)
             rightLegStomp.transitionTo(0f, 10f, Easing::easeInOutCubic)
         }
+    }
+
+    private fun shouldShake() = when {
+        dataTracker[SHAKING] -> true
+        currentAttack == ArachneAttackType.SPAWN && attackTicks < 100 -> true
+        else -> false
+    }
+
+    private fun shouldRaiseLegs() = when {
+        dataTracker[SCREAMING] -> true
+        currentAttack == ArachneAttackType.SMASH -> true
+        else -> false
     }
 
     override fun setBodyYaw(bodyYaw: Float) = super.setBodyYaw(wrapDegrees(this.bodyYaw, bodyYaw, 10f))
@@ -169,8 +213,15 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         }
     }
 
+    private fun getStage() = when (health / maxHealth) {
+        in 0.0..0.25 -> 3
+        in 0.25..0.5 -> 2
+        in 0.5..0.75 -> 1
+        else -> 0
+    }
+
     fun getScale() =
-        1.5f - (health / maxHealth) * 0.5f
+        1.0f + 0.2f * getStage()
 
     private fun ikVec(x: Double, y: Double, z: Double): Vec3d {
         val scale = getScale()
@@ -180,44 +231,97 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
     override fun slowMovement(state: BlockState, multiplier: Vec3d) =
         if (!state.isIn(ModBlockTags.COBWEBS)) super.slowMovement(state, multiplier) else Unit
 
-    inner class StompAttack : Goal() {
-        private var ticks = 0
-
-        override fun canStart(): Boolean = stompCooldown <= 0 && random.nextFloat() < 0.1f
-
-        override fun start() {
-            ticks = 0
-            currentAttack = ArachneAttackType.SMASH
-        }
-
-        override fun stop() {
-            ticks = 0
-            stompCooldown = 100
-            currentAttack = ArachneAttackType.NONE
-        }
-
-        override fun shouldContinue(): Boolean = ticks < 100
-        override fun tick() {
-            ticks++
-
-            val world = this@ArachneEntity.world as? ServerWorld ?: return
+    private fun createSmashAttack() = createArachneAttack(
+        ArachneAttackType.SMASH,
+        100,
+        tick@{ ticks ->
+            val world = this@ArachneEntity.world as? ServerWorld ?: return@tick
 
             if (ticks > 10 && (ticks % 20 == 5 || ticks % 20 == 15)) {
                 ScreenShakeUtils.shakeAround(world, pos, 1f, 20, 4.0, 16.0)
                 val bodyYawRad = (bodyYaw + 90).radians()
-                val pos = pos.add(3.0 * cos(bodyYawRad), 0.0, 3.0 * sin(bodyYawRad))
+                val scale = getScale()
+                val pos = pos.add(3.0 * cos(bodyYawRad) * scale, 0.0, 3.0 * sin(bodyYawRad) * scale)
 
                 world.spawnParticles(ParticleTypes.EXPLOSION, pos.x, pos.y + 0.5, pos.z, 2, 0.3, 0.3, 0.3, 0.0)
                 playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.7f, 0.3f + random.nextFloat() * 0.2f)
-            }
-        }
 
-        override fun shouldRunEveryTick(): Boolean = true
+                world.getOtherEntities(this, Box.of(pos, 4.0, 2.0, 4.0)).forEach {
+                    if (it !is LivingEntity) return@forEach
+
+                    it.damage(
+                        damageSources.mobAttack(this),
+                        getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE).toFloat() * 2.0f
+                    )
+                    it.takeKnockback(0.1, x - it.x, z - it.z)
+                }
+            }
+        },
+        { this.stompCooldown <= 0 && random.nextFloat() < 0.02f },
+        { this.stompCooldown = 200 }
+    )
+
+    private fun createSpawnAttack() = createArachneAttack(
+        ArachneAttackType.SPAWN,
+        300,
+        tick@{ ticks ->
+            if (ticks <= 80 && ticks % 10 == 0) {
+                val entityType = mapOf(
+                    ModEntities.SPIDERLING to 80,
+                    EntityType.SPIDER to 6,
+                    ModEntities.JUMPING_SPIDER to 4,
+                    EntityType.CAVE_SPIDER to 2,
+                    ModEntities.SPINY_SPIDER to 2,
+                    ModEntities.WEB_CASTER to 1,
+                ).pickWeightedRandom(random) ?: return@tick
+
+                val world = this@ArachneEntity.world as? ServerWorld ?: return@tick
+                val entity = entityType.create(world) ?: return@tick
+
+                entity.setPosition(pos.x + random.nextDouble() - 0.5, pos.y + 0.75, pos.z + random.nextDouble() - 0.5)
+                if (target != null) {
+                    entity.target = target
+                }
+                world.spawnEntity(entity)
+            }
+        },
+        {
+            spawnCooldown <= 0 && random.nextFloat() < 0.02f && world.getOtherEntities(
+                this,
+                Box.of(pos, 20.0, 20.0, 20.0)
+            ) { it.type.isIn(ModEntityTags.SPAWNS_SPIDERLINGS_ON_DEATH) }.size <= 3
+        },
+        { spawnCooldown = 1200 }
+    )
+
+    private fun createArachneAttack(
+        type: ArachneAttackType,
+        duration: Int,
+        onTick: (Int) -> Unit,
+        startPredicate: () -> Boolean,
+        cooldownSetter: () -> Unit = { },
+    ) = object : TickingGoal(
+        duration,
+        onTick,
+        {
+            currentAttack = type
+            this@ArachneEntity.navigation.stop()
+        },
+        {
+            currentAttack = ArachneAttackType.NONE
+            cooldownSetter()
+        },
+        { currentAttack == ArachneAttackType.NONE && startPredicate() },
+    ) {
+        init {
+            controls.add(Control.MOVE)
+        }
     }
 
     enum class ArachneAttackType {
         NONE,
-        SMASH;
+        SMASH,
+        SPAWN;
     }
 
     companion object {
@@ -233,5 +337,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         fun createArachneAttributes(): DefaultAttributeContainer.Builder = createHostileAttributes()
             .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.6)
             .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0)
+            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 8.0)
+            .add(EntityAttributes.GENERIC_ATTACK_SPEED, 0.5)
     }
 }

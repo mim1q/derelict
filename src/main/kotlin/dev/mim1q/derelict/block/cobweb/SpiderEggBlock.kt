@@ -36,14 +36,14 @@ class SpiderEggBlock(
         fun tick(world: World, pos: BlockPos, state: BlockState) {
             if (
                 world.time % 10L == (pos.hashCode().toLong() % 10L)
-                && world.getClosestPlayer(pos.x + 0.5, pos.y.toDouble(), pos.z + 0.5, 4.0, true) != null
+                && world.getClosestPlayer(pos.x + 0.5, pos.y.toDouble(), pos.z + 0.5, 5.0, true) != null
             ) {
                 (state.block as? SpiderEggBlock)?.let { block ->
                     val random = world.random
                     if (block.entityType != null) {
                         repeat(block.count(random)) {
                             val entity = block.entityType.create(world) ?: return@let
-                            entity.setPos(pos.x + random.nextDouble(), pos.y.toDouble(), pos.z + random.nextDouble())
+                            entity.setPos(pos.x + 0.5, pos.y + 0.5, pos.z + 0.5)
                             world.spawnEntity(entity)
                         }
                     }

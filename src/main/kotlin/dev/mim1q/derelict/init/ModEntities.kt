@@ -24,7 +24,7 @@ object ModEntities {
     ) { dimensions(EntityDimensions.fixed(0.8f, 0.8f)) }
 
     val WEB_CASTER = register("web_caster", ::WebCasterEntity, SpiderEntity.createSpiderAttributes()
-    ) { dimensions(EntityDimensions.fixed(2.3f, 1.1f)) }
+    ) { dimensions(EntityDimensions.fixed(1.9f, 1.2f)) }
 
     val DADDY_LONG_LEGS = register("daddy_long_legs", ::DaddyLongLegsEntity, SpiderEntity.createSpiderAttributes()
     ) { dimensions(EntityDimensions.fixed(0.9f, 3.6f)) }

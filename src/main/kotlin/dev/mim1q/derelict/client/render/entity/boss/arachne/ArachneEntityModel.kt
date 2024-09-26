@@ -69,9 +69,9 @@ class ArachneEntityModel(root: ModelPart) : EntityModel<ArachneEntity>(RenderLay
         val leftLegStomp = entity.leftLegStomp.update(animationProgress)
         val rightLegStomp = entity.rightLegStomp.update(animationProgress)
 
-        legs[0].upper.roll += 70f.radians() * leftLegStomp
+        legs[0].upper.roll += 60f.radians() * leftLegStomp
         legs[0].joint.yaw += 20f.radians() * leftLegStomp
-        legs[4].upper.roll -= 70f.radians() * rightLegStomp
+        legs[4].upper.roll -= 60f.radians() * rightLegStomp
         legs[4].joint.yaw -= 20f.radians() * rightLegStomp
     }
 

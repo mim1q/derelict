@@ -5,7 +5,7 @@
       "type": "minecraft:weighted_state_provider",
       "entries": [
         {
-          "weight": 20,
+          "weight": 15,
           "data": {
             "Name": "derelict:fake_spider_egg"
           }
