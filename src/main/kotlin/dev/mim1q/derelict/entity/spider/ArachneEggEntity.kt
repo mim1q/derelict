@@ -110,6 +110,7 @@ class ArachneEggEntity(type: EntityType<*>, world: World) : Entity(type, world) 
                     playSound(SoundEvents.ENTITY_DRAGON_FIREBALL_EXPLODE, 1.0f, 1.0f)
                     playSound(SoundEvents.ENTITY_SPIDER_DEATH, 2.0f, 0.2f)
                     val boss = ArachneEntity(ModEntities.ARACHNE, world)
+                    boss.spawnPos = blockPos.south(4)
                     boss.setPosition(pos)
                     world.spawnEntity(boss)
                 }

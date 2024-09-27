@@ -1,5 +1,6 @@
 package dev.mim1q.derelict.entity.boss
 
+import dev.mim1q.derelict.entity.goal.ReturnGoal
 import dev.mim1q.derelict.entity.goal.TickingGoal
 import dev.mim1q.derelict.entity.spider.control.ArachneBodyControl
 import dev.mim1q.derelict.entity.spider.legs.SpiderLegController
@@ -11,27 +12,37 @@ import dev.mim1q.derelict.util.extensions.radians
 import dev.mim1q.derelict.util.pickWeightedRandom
 import dev.mim1q.derelict.util.wrapDegrees
 import dev.mim1q.gimm1q.interpolation.AnimatedProperty
-import dev.mim1q.gimm1q.interpolation.AnimatedProperty.EasingFunction
 import dev.mim1q.gimm1q.interpolation.Easing
 import dev.mim1q.gimm1q.screenshake.ScreenShakeUtils
 import net.minecraft.block.BlockState
-import net.minecraft.entity.EntityType
-import net.minecraft.entity.LivingEntity
-import net.minecraft.entity.ai.goal.*
+import net.minecraft.entity.*
+import net.minecraft.entity.ai.goal.ActiveTargetGoal
+import net.minecraft.entity.ai.goal.LookAroundGoal
+import net.minecraft.entity.ai.goal.LookAtEntityGoal
+import net.minecraft.entity.ai.goal.MeleeAttackGoal
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
+import net.minecraft.entity.boss.BossBar
+import net.minecraft.entity.boss.ServerBossBar
+import net.minecraft.entity.damage.DamageSource
 import net.minecraft.entity.data.DataTracker
 import net.minecraft.entity.data.TrackedData
 import net.minecraft.entity.data.TrackedDataHandlerRegistry
 import net.minecraft.entity.mob.HostileEntity
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.nbt.NbtCompound
 import net.minecraft.particle.ParticleTypes
+import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
+import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
+import net.minecraft.world.BlockView
 import net.minecraft.world.World
+import net.minecraft.world.explosion.Explosion
+import net.minecraft.world.explosion.ExplosionBehavior
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -39,6 +50,10 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
     init {
         ignoreCameraFrustum = true
     }
+
+    var spawnPos: BlockPos? = null
+
+    private val bossBar = ServerBossBar(name, BossBar.Color.RED, BossBar.Style.NOTCHED_12)
 
     val legController = SpiderLegController(
         this,
@@ -63,6 +78,8 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
     val leftLegStomp = AnimatedProperty(0f, Easing::easeInOutCubic)
     val rightLegStomp = AnimatedProperty(0f, Easing::easeInOutCubic)
 
+    val fangsAnimation = AnimatedProperty(0f, Easing::easeInOutCubic)
+
     private var screamingTicks = 0
     private var wasScreaming = false
     private var goalsSetup = false
@@ -72,7 +89,9 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
     private var attackTicks = 0
 
     private var stompCooldown = 100
-    private var spawnCooldown = 400
+    private var spawnCooldown = 600
+    private var rushCooldown = 400
+    private var shootCooldown = 80
 
     override fun initGoals() {
         if (age < 40 || goalsSetup) return
@@ -81,14 +100,15 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
 
         goalSelector.clear { true }
 
-        goalSelector.add(3, LookAtEntityGoal(this, PlayerEntity::class.java, 24F))
         goalSelector.add(4, LookAroundGoal(this))
-        goalSelector.add(2, WanderAroundGoal(this, 0.4))
-        goalSelector.add(2, WanderAroundFarGoal(this, 0.4))
-        goalSelector.add(1, MeleeAttackGoal(this, 0.6, true))
+        goalSelector.add(3, LookAtEntityGoal(this, PlayerEntity::class.java, 24F))
+        goalSelector.add(2, MeleeAttackGoal(this, 0.6, true))
 
-        goalSelector.add(0, createSmashAttack())
-        goalSelector.add(0, createSpawnAttack())
+        goalSelector.add(1, createSmashAttack())
+        goalSelector.add(1, createSpawnAttack())
+        goalSelector.add(1, createRushAttack())
+
+        goalSelector.add(0, ReturnGoal(this, { !arePlayersNearby() }, { spawnPos }))
 
         if (targetSelector.goals.isEmpty()) {
             targetSelector.add(0, ActiveTargetGoal(this, PlayerEntity::class.java, false))
@@ -105,9 +125,11 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
             }
 
             processScreaming()
+            bossBar.percent = health / maxHealth
 
             stompCooldown--
             spawnCooldown--
+            rushCooldown--
 
             if (lastStage != getStage()) {
                 (world as? ServerWorld)?.spawnParticles(
@@ -118,6 +140,12 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
                 )
                 playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1.0f, 0.8f)
                 lastStage = getStage()
+            }
+
+            if (!arePlayersNearby()) {
+                if (age % 10 == 0) {
+                    heal(0.5f)
+                }
             }
         }
 
@@ -155,7 +183,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         }
 
         if (currentAttack == ArachneAttackType.SMASH) {
-            if (attackTicks > 10) {
+            if (attackTicks > 70) {
                 when (attackTicks % 20) {
                     1 -> leftLegStomp.transitionTo(1f, 8f, Easing::easeOutBounce)
                     9 -> leftLegStomp.transitionTo(0f, 20f, Easing::easeInOutCubic)
@@ -199,20 +227,6 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         super.onTrackedDataSet(data)
     }
 
-    private fun AnimatedProperty.apply(
-        data: TrackedData<Boolean>,
-        durationOn: Float,
-        durationOff: Float,
-        easingOn: EasingFunction = EasingFunction(Easing::easeInOutCubic),
-        easingOff: EasingFunction = easingOn
-    ) {
-        if (dataTracker.get(data)) {
-            transitionTo(1f, durationOn, easingOn)
-        } else {
-            transitionTo(0f, durationOff, easingOff)
-        }
-    }
-
     private fun getStage() = when (health / maxHealth) {
         in 0.0..0.25 -> 3
         in 0.25..0.5 -> 2
@@ -221,23 +235,45 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
     }
 
     fun getScale() =
-        1.0f + 0.2f * getStage()
+        1.0f + 0.05f * getStage()
+
+    override fun getBoundingBox(pose: EntityPose): Box =
+        super.getBoundingBox(pose).let {
+            val scale = (getScale() - 1) * 0.5
+            it.expand(it.xLength * scale, it.yLength * scale, it.zLength * scale)
+        }
 
     private fun ikVec(x: Double, y: Double, z: Double): Vec3d {
         val scale = getScale()
         return Vec3d(x * scale, y * scale, z * scale)
     }
 
+    override fun onStartedTrackingBy(player: ServerPlayerEntity) {
+        super.onStartedTrackingBy(player)
+        bossBar.addPlayer(player)
+    }
+
+    override fun onStoppedTrackingBy(player: ServerPlayerEntity) {
+        super.onStoppedTrackingBy(player)
+        bossBar.removePlayer(player)
+    }
+
     override fun slowMovement(state: BlockState, multiplier: Vec3d) =
         if (!state.isIn(ModBlockTags.COBWEBS)) super.slowMovement(state, multiplier) else Unit
 
+    private fun setGlobalCooldown() {
+        spawnCooldown = spawnCooldown.coerceAtLeast(80)
+        stompCooldown = stompCooldown.coerceAtLeast(80)
+        rushCooldown = rushCooldown.coerceAtLeast(80)
+    }
+
     private fun createSmashAttack() = createArachneAttack(
         ArachneAttackType.SMASH,
-        100,
+        160,
         tick@{ ticks ->
             val world = this@ArachneEntity.world as? ServerWorld ?: return@tick
 
-            if (ticks > 10 && (ticks % 20 == 5 || ticks % 20 == 15)) {
+            if (ticks > 70 && (ticks % 20 == 5 || ticks % 20 == 15)) {
                 ScreenShakeUtils.shakeAround(world, pos, 1f, 20, 4.0, 16.0)
                 val bodyYawRad = (bodyYaw + 90).radians()
                 val scale = getScale()
@@ -246,12 +282,12 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
                 world.spawnParticles(ParticleTypes.EXPLOSION, pos.x, pos.y + 0.5, pos.z, 2, 0.3, 0.3, 0.3, 0.0)
                 playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.7f, 0.3f + random.nextFloat() * 0.2f)
 
-                world.getOtherEntities(this, Box.of(pos, 4.0, 2.0, 4.0)).forEach {
+                world.getOtherEntities(this, Box.of(pos, 5.0, 4.0, 5.0)).forEach {
                     if (it !is LivingEntity) return@forEach
 
                     it.damage(
                         damageSources.mobAttack(this),
-                        getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE).toFloat() * 2.0f
+                        getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE).toFloat() * 1.5f
                     )
                     it.takeKnockback(0.1, x - it.x, z - it.z)
                 }
@@ -286,7 +322,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
             }
         },
         {
-            spawnCooldown <= 0 && random.nextFloat() < 0.02f && world.getOtherEntities(
+            spawnCooldown <= 0 && random.nextFloat() < 0.01f && world.getOtherEntities(
                 this,
                 Box.of(pos, 20.0, 20.0, 20.0)
             ) { it.type.isIn(ModEntityTags.SPAWNS_SPIDERLINGS_ON_DEATH) }.size <= 3
@@ -294,12 +330,67 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         { spawnCooldown = 1200 }
     )
 
+    private fun createRushAttack() = createArachneAttack(
+        ArachneAttackType.RUSH,
+        50,
+        tick@{ ticks ->
+            (world as? ServerWorld)?.spawnParticles(
+                ParticleTypes.LARGE_SMOKE,
+                pos.x, pos.y + 0.5, pos.z,
+                3, 0.5, 0.2, 0.5, 0.01
+            )
+
+            if (ticks < 30) {
+                return@tick
+            }
+            if (ticks == 30) {
+                addVelocity(0.0, 0.5, 0.0)
+            }
+
+            val bodyYawRad = (bodyYaw + 90).radians()
+            move(MovementType.SELF, Vec3d(cos(bodyYawRad) * 0.7, 0.0, sin(bodyYawRad) * 0.7))
+        },
+        { rushCooldown <= 0 && random.nextFloat() < 0.01f },
+        {
+            world.createExplosion(
+                this,
+                null,
+                object : ExplosionBehavior() {
+                    override fun canDestroyBlock(
+                        explosion: Explosion,
+                        world: BlockView,
+                        pos: BlockPos,
+                        state: BlockState,
+                        power: Float
+                    ): Boolean = false
+                },
+                pos.add(0.0, 0.5, 0.0),
+                1.5f,
+                false,
+                World.ExplosionSourceType.MOB
+            )
+            rushCooldown = 200
+            setGlobalCooldown()
+        },
+        { ticks -> !(ticks > 40 && (prevX == x && prevZ == z)) }
+    )
+
+    private fun createShootAttack() = createArachneAttack(
+        ArachneAttackType.SHOOT,
+        40,
+        tick@{ ticks ->
+
+        },
+        { shootCooldown <= 0 && random.nextFloat() < 0.1f && (target != null && target!!.distanceTo(this) > 6.0) },
+    )
+
     private fun createArachneAttack(
         type: ArachneAttackType,
         duration: Int,
-        onTick: (Int) -> Unit,
+        onTick: (ticks: Int) -> Unit,
         startPredicate: () -> Boolean,
         cooldownSetter: () -> Unit = { },
+        shouldContinue: (ticks: Int) -> Boolean = { true },
     ) = object : TickingGoal(
         duration,
         onTick,
@@ -309,19 +400,71 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         },
         {
             currentAttack = ArachneAttackType.NONE
+            setGlobalCooldown()
             cooldownSetter()
         },
         { currentAttack == ArachneAttackType.NONE && startPredicate() },
+        shouldContinue
     ) {
         init {
             controls.add(Control.MOVE)
         }
     }
 
+    override fun tryAttack(target: Entity): Boolean {
+        val result = super.tryAttack(target)
+        if (result && target is PlayerEntity && random.nextFloat() < 0.1f) {
+            target.startRiding(this, true)
+        }
+
+        return result
+    }
+
+    override fun isInvulnerableTo(damageSource: DamageSource): Boolean
+        = dataTracker[SCREAMING] || !arePlayersNearby() || super.isInvulnerableTo(damageSource)
+
+    override fun updatePassengerPosition(passenger: Entity, positionUpdater: PositionUpdater) {
+        if (this.hasPassenger(passenger)) {
+            val y = this.y + 0.3 + passenger.heightOffset
+            val bodyYawRad = (bodyYaw + 90).radians()
+            val dx = cos(bodyYawRad) * 2.0 * getScale()
+            val dz = sin(bodyYawRad) * 2.0 * getScale()
+            positionUpdater.accept(passenger, this.x + dx, y, this.z + dz)
+        }
+    }
+
+    private fun arePlayersNearby(): Boolean {
+        val pos = Vec3d.ofBottomCenter(spawnPos ?: blockPos)
+
+        return world.getClosestPlayer(pos.x, pos.y, pos.z, 16.0, false) != null
+    }
+
+    override fun readCustomDataFromNbt(nbt: NbtCompound) {
+        super.readCustomDataFromNbt(nbt)
+
+        if (nbt.contains("spawn_pos")) spawnPos = BlockPos.fromLong(nbt.getLong("spawn_pos"))
+        if (nbt.contains("stomp_cooldown")) stompCooldown = nbt.getInt("stomp_cooldown")
+        if (nbt.contains("rush_cooldown")) rushCooldown = nbt.getInt("rush_cooldown")
+        if (nbt.contains("shoot_cooldown")) shootCooldown = nbt.getInt("shoot_cooldown")
+        if (nbt.contains("spawn_cooldown")) spawnCooldown = nbt.getInt("spawn_cooldown")
+    }
+
+    override fun writeCustomDataToNbt(nbt: NbtCompound) {
+        super.writeCustomDataToNbt(nbt)
+
+        if (spawnPos != null) nbt.putLong("spawn_pos", spawnPos!!.asLong())
+        nbt.putInt("stomp_cooldown", stompCooldown)
+        nbt.putInt("rush_cooldown", rushCooldown)
+        nbt.putInt("shoot_cooldown", shootCooldown)
+        nbt.putInt("spawn_cooldown", spawnCooldown)
+    }
+
     enum class ArachneAttackType {
         NONE,
         SMASH,
-        SPAWN;
+        SPAWN,
+        RUSH,
+        SHOOT;
     }
 
     companion object {
@@ -335,9 +478,10 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
             DataTracker.registerData(ArachneEntity::class.java, TrackedDataHandlerRegistry.INTEGER)
 
         fun createArachneAttributes(): DefaultAttributeContainer.Builder = createHostileAttributes()
-            .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.6)
+            .add(EntityAttributes.GENERIC_MAX_HEALTH, 200.0)
+            .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.45)
             .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0)
-            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 8.0)
+            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0)
             .add(EntityAttributes.GENERIC_ATTACK_SPEED, 0.5)
     }
 }

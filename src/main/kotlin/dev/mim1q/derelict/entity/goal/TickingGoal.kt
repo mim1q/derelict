@@ -4,10 +4,11 @@ import net.minecraft.entity.ai.goal.Goal
 
 open class TickingGoal(
     private val length: Int = 100,
-    private val onTick: (Int) -> Unit = {},
+    private val onTick: (ticks: Int) -> Unit = {},
     private val onStart: () -> Unit = {},
     private val onStop: () -> Unit = {},
-    private val startPredicate: () -> Boolean = { true }
+    private val startPredicate: () -> Boolean = { true },
+    private val shouldContinuePredicate: (ticks: Int) -> Boolean = { true }
 ) : Goal() {
     private var ticks = 0
 
@@ -23,7 +24,7 @@ open class TickingGoal(
         onStop()
     }
 
-    override fun shouldContinue(): Boolean = ticks < length
+    override fun shouldContinue(): Boolean = ticks < length && shouldContinuePredicate(ticks)
     override fun tick() {
         ticks++
         onTick(ticks)

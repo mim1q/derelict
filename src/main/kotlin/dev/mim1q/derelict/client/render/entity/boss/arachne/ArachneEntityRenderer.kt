@@ -33,6 +33,8 @@ class ArachneEntityRenderer(ctx: EntityRendererFactory.Context) :
 
     override fun getTexture(entity: ArachneEntity) = TEXTURE
 
+    override fun getLyingAngle(entity: ArachneEntity): Float = 0f
+
     companion object {
         val TEXTURE = Derelict.id("textures/entity/boss/arachne.png")
     }

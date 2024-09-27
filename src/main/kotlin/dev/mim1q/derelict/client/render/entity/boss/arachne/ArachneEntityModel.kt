@@ -24,7 +24,8 @@ class ArachneEntityModel(root: ModelPart) : EntityModel<ArachneEntity>(RenderLay
     private val abdomen = sternum.getChild("abdomen")
     private val eggs = IntRange(0, 16).map { abdomen.getChild("eggs").getChild("egg$it") }
     private val head = body.getChild("head")
-
+    private val leftFang = head.getChild("left_fang")
+    private val rightFang = head.getChild("right_fang")
 
     val legs = SpiderLegParts.createArray(body)
 
@@ -73,6 +74,12 @@ class ArachneEntityModel(root: ModelPart) : EntityModel<ArachneEntity>(RenderLay
         legs[0].joint.yaw += 20f.radians() * leftLegStomp
         legs[4].upper.roll -= 60f.radians() * rightLegStomp
         legs[4].joint.yaw -= 20f.radians() * rightLegStomp
+
+        val fangAnimation = entity.fangsAnimation.update(animationProgress)
+        leftFang.roll += fangAnimation * 20f.radians()
+        leftFang.pitch -= fangAnimation * 60f.radians()
+        rightFang.roll -= fangAnimation * 20f.radians()
+        rightFang.pitch -= fangAnimation * 60f.radians()
     }
 
     override fun animateModel(entity: ArachneEntity, limbAngle: Float, limbDistance: Float, tickDelta: Float) {
@@ -80,6 +87,8 @@ class ArachneEntityModel(root: ModelPart) : EntityModel<ArachneEntity>(RenderLay
 
         body.resetTransform()
         abdomen.resetTransform()
+        leftFang.resetTransform()
+        rightFang.resetTransform()
 
         eggs.forEachIndexed { index, egg ->
             val speed = 7F + sin(index * 100F) * 3F
