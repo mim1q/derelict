@@ -80,6 +80,7 @@ class ArachneEntityModel(root: ModelPart) : EntityModel<ArachneEntity>(RenderLay
         leftFang.pitch -= fangAnimation * 60f.radians()
         rightFang.roll -= fangAnimation * 20f.radians()
         rightFang.pitch -= fangAnimation * 60f.radians()
+        head.pitch -= fangAnimation * 15f.radians()
     }
 
     override fun animateModel(entity: ArachneEntity, limbAngle: Float, limbDistance: Float, tickDelta: Float) {

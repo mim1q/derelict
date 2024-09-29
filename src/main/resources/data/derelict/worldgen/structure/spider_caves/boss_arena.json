@@ -3,7 +3,6 @@
   "biomes": "derelict:spider_caves",
   "step": "underground_structures",
   "spawn_overrides": {},
-  "terrain_adaptation": "bury",
   "start_pool": "derelict:spider_caves/boss_arena",
   "size": 1,
   "start_height": {

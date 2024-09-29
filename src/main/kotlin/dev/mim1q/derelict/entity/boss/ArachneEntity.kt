@@ -30,6 +30,7 @@ import net.minecraft.entity.data.TrackedData
 import net.minecraft.entity.data.TrackedDataHandlerRegistry
 import net.minecraft.entity.mob.HostileEntity
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.entity.projectile.thrown.SnowballEntity
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.particle.ParticleTypes
 import net.minecraft.server.network.ServerPlayerEntity
@@ -107,6 +108,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         goalSelector.add(1, createSmashAttack())
         goalSelector.add(1, createSpawnAttack())
         goalSelector.add(1, createRushAttack())
+        goalSelector.add(1, createShootAttack())
 
         goalSelector.add(0, ReturnGoal(this, { !arePlayersNearby() }, { spawnPos }))
 
@@ -130,6 +132,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
             stompCooldown--
             spawnCooldown--
             rushCooldown--
+            shootCooldown--
 
             if (lastStage != getStage()) {
                 (world as? ServerWorld)?.spawnParticles(
@@ -139,6 +142,9 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
                     0.0
                 )
                 playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1.0f, 0.8f)
+                world.getEntitiesByClass(LivingEntity::class.java, boundingBox.expand(8.0)) { it != this }.forEach {
+                    it.takeKnockback(1.0, it.x - x, it.z - z)
+                }
                 lastStage = getStage()
             }
 
@@ -182,6 +188,12 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
             legsRaisedAnimation.transitionTo(0f, 40f, Easing::easeInOutCubic)
         }
 
+        if (shouldRaiseFangs()) {
+            fangsAnimation.transitionTo(1f, 15f, Easing::easeOutBack)
+        } else {
+            fangsAnimation.transitionTo(0f, 15f, Easing::easeInOutCubic)
+        }
+
         if (currentAttack == ArachneAttackType.SMASH) {
             if (attackTicks > 70) {
                 when (attackTicks % 20) {
@@ -210,6 +222,11 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         else -> false
     }
 
+    private fun shouldRaiseFangs() = when {
+        currentAttack == ArachneAttackType.SHOOT -> true
+        else -> false
+    }
+
     override fun setBodyYaw(bodyYaw: Float) = super.setBodyYaw(wrapDegrees(this.bodyYaw, bodyYaw, 10f))
     override fun createBodyControl() = ArachneBodyControl(this)
     override fun initDataTracker() {
@@ -234,8 +251,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         else -> 0
     }
 
-    fun getScale() =
-        1.0f + 0.05f * getStage()
+    fun getScale() = 1.0f + 0.05f * getStage()
 
     override fun getBoundingBox(pose: EntityPose): Box =
         super.getBoundingBox(pose).let {
@@ -262,9 +278,9 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         if (!state.isIn(ModBlockTags.COBWEBS)) super.slowMovement(state, multiplier) else Unit
 
     private fun setGlobalCooldown() {
-        spawnCooldown = spawnCooldown.coerceAtLeast(80)
-        stompCooldown = stompCooldown.coerceAtLeast(80)
-        rushCooldown = rushCooldown.coerceAtLeast(80)
+        spawnCooldown = spawnCooldown.coerceAtLeast(20)
+        stompCooldown = stompCooldown.coerceAtLeast(20)
+        rushCooldown = rushCooldown.coerceAtLeast(20)
     }
 
     private fun createSmashAttack() = createArachneAttack(
@@ -274,6 +290,11 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
             val world = this@ArachneEntity.world as? ServerWorld ?: return@tick
 
             if (ticks > 70 && (ticks % 20 == 5 || ticks % 20 == 15)) {
+                val target = target
+                if (target != null) {
+                    navigation.startMovingTo(target, 0.5)
+                }
+
                 ScreenShakeUtils.shakeAround(world, pos, 1f, 20, 4.0, 16.0)
                 val bodyYawRad = (bodyYaw + 90).radians()
                 val scale = getScale()
@@ -379,9 +400,17 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         ArachneAttackType.SHOOT,
         40,
         tick@{ ticks ->
-
+            val target = target
+            if (ticks == 30 && target != null) {
+                val projectile = SnowballEntity(EntityType.SNOWBALL, world)
+                val diff = target.pos.add(0.0, 1.5, 0.0).subtract(pos)
+                projectile.velocity = diff.normalize().multiply(0.5)
+                projectile.setPosition(pos.add(0.0, 0.5, 0.0).add(rotationVector))
+                projectile.owner = this@ArachneEntity
+            }
         },
         { shootCooldown <= 0 && random.nextFloat() < 0.1f && (target != null && target!!.distanceTo(this) > 6.0) },
+        { shootCooldown = 100 }
     )
 
     private fun createArachneAttack(
@@ -420,8 +449,8 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         return result
     }
 
-    override fun isInvulnerableTo(damageSource: DamageSource): Boolean
-        = dataTracker[SCREAMING] || !arePlayersNearby() || super.isInvulnerableTo(damageSource)
+    override fun isInvulnerableTo(damageSource: DamageSource): Boolean =
+        dataTracker[SCREAMING] || !arePlayersNearby() || super.isInvulnerableTo(damageSource)
 
     override fun updatePassengerPosition(passenger: Entity, positionUpdater: PositionUpdater) {
         if (this.hasPassenger(passenger)) {
@@ -479,6 +508,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
 
         fun createArachneAttributes(): DefaultAttributeContainer.Builder = createHostileAttributes()
             .add(EntityAttributes.GENERIC_MAX_HEALTH, 200.0)
+            .add(EntityAttributes.GENERIC_ARMOR, 4.0)
             .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.45)
             .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0)
             .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0)
