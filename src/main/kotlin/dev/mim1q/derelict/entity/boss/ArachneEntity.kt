@@ -149,7 +149,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
             }
 
             if (!arePlayersNearby()) {
-                if (age % 10 == 0) {
+                if (age % 20 == 0) {
                     heal(0.5f)
                 }
             }

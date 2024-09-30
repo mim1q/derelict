@@ -34,4 +34,5 @@ fun ResourceGenerator.spiderCavesTemplatePools() {
     })
 
     add(TemplatePoolPresets.single("derelict:spider_caves/boss_arena"))
+    add(TemplatePoolPresets.single("derelict:spider_caves/overworld_hint"))
 }

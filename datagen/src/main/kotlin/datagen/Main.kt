@@ -220,6 +220,12 @@ fun main(args: Array<String>) {
             "minecraft:spider",
             "minecraft:cave_spider",
         )
+
+        // Biome Tags
+        TagManager.add("derelict:worldgen/biome/spider_caves_hint", "#minecraft:is_forest", "#minecraft:is_taiga")
+
+        // Structure Tags
+        TagManager.add("derelict:worldgen/structure/spider_caves/boss_arena", "derelict:spider_caves/boss_arena")
     }
     generator.printInfo()
     generator.generate()

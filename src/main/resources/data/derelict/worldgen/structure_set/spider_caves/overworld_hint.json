@@ -1,0 +1,15 @@
+{
+  "structures": [
+    {
+      "structure": "derelict:spider_caves/overworld_hint",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 1888251482,
+    "frequency": 0.5,
+    "spacing": 20,
+    "separation": 4
+  }
+}
