@@ -195,6 +195,7 @@
   "block.derelict.fancy_cobweb.disabled_tooltip": "",
   "block.derelict.fancy_corner_cobweb": "Fancy Corner Cobweb",
   "block.derelict.corner_cobweb": "Corner Cobweb",
+  "text.derelict.spider_egg_required_advancement": "You are too weak to break this egg. %1$s",
   "tag.item.derelict.general_tab": "General Derelict Items",
   "tag.item.derelict.burned_logs": "Burned Logs",
   "tag.item.derelict.unwaxed_metals": "Unwaxed Metals",

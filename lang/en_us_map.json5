@@ -85,6 +85,10 @@
     "fancy_corner_cobweb": "Fancy Corner Cobweb",
     "corner_cobweb": "Corner Cobweb",
   },
+  // Text
+  "text.derelict": {
+    "spider_egg_required_advancement": "You are too weak to break this egg. %1$s"
+  },
   // Tags
   "tag.item.derelict": {
     "general_tab": "General Derelict Items",

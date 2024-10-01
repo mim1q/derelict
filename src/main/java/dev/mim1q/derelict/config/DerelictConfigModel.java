@@ -27,4 +27,12 @@ public class DerelictConfigModel {
         Value is a percentage, 0.0 - 100.0"""
     )
     public float spiderlingSpawnChance = 10f;
+
+    @Comment("""
+        The ID of the advancement that is necessary to break Arachne's Egg to summon the boss. Not having this
+        advancement will display a message with the advancement's DESCRIPTION in-game.
+        
+        If left empty, no advancement is required."""
+    )
+    public String arachneEggAdvancement = "";
 }

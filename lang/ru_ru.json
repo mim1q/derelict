@@ -30,6 +30,7 @@
   "block.derelict.waxed_noctisteel_trapdoor": "Waxed Noctisteel Trapdoor",
   "block.derelict.waxed_weathered_noctisteel_trapdoor": "Waxed Weathered Noctisteel Trapdoor",
   "block.derelict.waxed_oxidized_noctisteel_trapdoor": "Waxed Oxidized Noctisteel Trapdoor",
+  "text.derelict.spider_egg_required_advancement": "You are too weak to break this egg. %1$s",
   "tag.item.derelict.general_tab": "General Derelict Items",
   "tag.item.derelict.burned_logs": "Burned Logs",
   "tag.item.derelict.unwaxed_metals": "Unwaxed Metals",
