@@ -93,7 +93,8 @@ sourceSets {
             srcDir("src/main/generated")
         }
         java {
-            srcDir("$buildDir/generated/sources/annotationProcessor/java")
+            // For some reason commenting out this line fixes the annotation processor errors :)
+//            srcDir("$buildDir/generated/sources/annotationProcessor/java")
         }
     }
 }
