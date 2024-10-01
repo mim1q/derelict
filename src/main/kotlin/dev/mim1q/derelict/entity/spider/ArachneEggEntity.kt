@@ -4,11 +4,9 @@ import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.entity.boss.ArachneEntity
 import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.init.ModEntities
-import dev.mim1q.derelict.tag.ModBlockTags
 import dev.mim1q.derelict.util.entity.tracked
 import dev.mim1q.gimm1q.interpolation.Easing
 import dev.mim1q.gimm1q.screenshake.ScreenShakeUtils
-import net.minecraft.block.BlockState
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.LivingEntity
@@ -25,7 +23,6 @@ import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
-import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 
 class ArachneEggEntity(type: EntityType<*>, world: World) : Entity(type, world) {
@@ -47,7 +44,10 @@ class ArachneEggEntity(type: EntityType<*>, world: World) : Entity(type, world) 
         lastAnimationTime = animationTime
         animationTime += stage + 1
         if (stage == 3) {
+            intersectionChecked = false
             animationTime = lastAnimationTime
+        } else {
+            intersectionChecked = true
         }
 
         if (stageCooldown > 0) {
@@ -78,7 +78,7 @@ class ArachneEggEntity(type: EntityType<*>, world: World) : Entity(type, world) 
 
         val player = source.attacker
         if (stageCooldown <= 0 && player is ServerPlayerEntity) {
-            if (canBreakEggIfAdvancementMet(player, Derelict.CONFIG.arachneEggAdvancement())) {
+            if (stage < 3 && canBreakEggIfAdvancementMet(player, Derelict.CONFIG.arachneEggAdvancement())) {
                 breakEggStage()
                 return true
             } else {
@@ -166,11 +166,9 @@ class ArachneEggEntity(type: EntityType<*>, world: World) : Entity(type, world) 
         nbt.putInt("stage", stage)
     }
 
-    override fun canHit(): Boolean = true
-    override fun isCollidable(): Boolean = stage != 3
-    override fun collidesWith(other: Entity): Boolean = isCollidable
-    override fun slowMovement(state: BlockState, multiplier: Vec3d) =
-        if (!state.isIn(ModBlockTags.COBWEBS)) super.slowMovement(state, multiplier) else Unit
+    override fun canHit(): Boolean = stage != 3
+    override fun isCollidable(): Boolean = canHit()
+    override fun collidesWith(other: Entity): Boolean = canHit()
 
     companion object {
         private val STAGE: TrackedData<Int> =

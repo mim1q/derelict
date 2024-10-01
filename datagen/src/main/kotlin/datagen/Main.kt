@@ -169,8 +169,8 @@ fun main(args: Array<String>) {
             add(it, ParentedModel.item("minecraft:item/handheld").texture("layer0", "derelict:item/$it"))
         }
         // Generated items
-        listOf("spiderling_in_a_bucket").forEach {
-            add(it, ParentedModel.item("minecraft:item/generated").texture("layer0", "derelict:item/$it"))
+        listOf("spiderling_in_a_bucket", "netwalkers").forEach {
+            add(CommonModelPresets.generatedItemModel("derelict:$it"))
         }
         Constants.SPAWN_EGGS.forEach {
             add(CommonModelPresets.generatedItemModel("derelict:${it}_spawn_egg"))

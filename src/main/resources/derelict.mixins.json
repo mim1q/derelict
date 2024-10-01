@@ -5,11 +5,13 @@
   "mixins": [
     "block.AbstractBlockMixin",
     "block.BlockMixin",
+    "block.CobwebBlockMixin",
     "block.entity.BlockEntityTypeMixin",
     "entity.BucketableMixin",
     "entity.LivingEntityMixin",
     "entity.SpawnHelperMixin",
     "entity.SpiderEntityMixin",
+    "entity.player.PlayerNetwalkersMixin",
     "item.SwordAndShearsSuitableBlocksMixin"
   ],
   "client": [

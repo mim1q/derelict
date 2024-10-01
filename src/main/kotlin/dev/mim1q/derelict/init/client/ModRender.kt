@@ -2,6 +2,7 @@ package dev.mim1q.derelict.init.client
 
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry
 import dev.mim1q.derelict.Derelict
+import dev.mim1q.derelict.client.render.armor.NetwalkersRenderer
 import dev.mim1q.derelict.client.render.block.SpiderEggClusterRenderer
 import dev.mim1q.derelict.client.render.entity.boss.arachne.ArachneEntityRenderer
 import dev.mim1q.derelict.client.render.entity.boss.arachne.ArachneTexturedModelData
@@ -11,13 +12,18 @@ import dev.mim1q.derelict.init.ModBlockEntities
 import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.init.ModEntities
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap
+import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry.TexturedModelDataProvider
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback
 import net.minecraft.client.render.RenderLayer
+import net.minecraft.client.render.entity.EntityRendererFactory
 import net.minecraft.client.render.entity.model.EntityModelLayer
 
 object ModRender {
+    private var customRenderersWorkaroundInit = false
+
     val ARACHNE_LAYER = registerLayer(ArachneTexturedModelData::create, "arachne")
 
     val SPIDERLING_LAYER = registerLayer(::getSpiderlingTexturedModelData, "spiderling")
@@ -28,6 +34,8 @@ object ModRender {
     val SPINY_SPIDER_LAYER = registerLayer(SpinySpiderEntityModel::createTexturedModelData, "spiny_spider")
 
     val HANGING_COCOON_LAYER = registerLayer(HangingCocoonEntityRenderer::createTexturedModelData, "hanging_cocoon")
+
+    val NETWALKERS_LAYER = registerLayer(NetwalkersRenderer::createTexturedModelData, "netwalkers")
 
     fun init() {
         BlockRenderLayerMap.INSTANCE.putBlocks(
@@ -67,6 +75,17 @@ object ModRender {
         EntityRendererRegistry.register(ModEntities.JUMPING_SPIDER, ::JumpingSpiderEntityRenderer)
         EntityRendererRegistry.register(ModEntities.SPINY_SPIDER, ::SpinySpiderEntityRenderer)
         EntityRendererRegistry.register(ModEntities.ARACHNE_EGG, ::ArachneEggRenderer)
+
+        LivingEntityFeatureRendererRegistrationCallback.EVENT.register { _, _, _, context ->
+            if (!customRenderersWorkaroundInit) {
+                customRenderersWorkaroundInit = true
+                initArmor(context)
+            }
+        }
+    }
+
+    private fun initArmor(context: EntityRendererFactory.Context) {
+        ArmorRenderer.register(NetwalkersRenderer(context), ModBlocksAndItems.NETWALKERS)
     }
 
     private fun registerLayer(provider: TexturedModelDataProvider, path: String, name: String = "main") =

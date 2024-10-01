@@ -1,9 +1,12 @@
 package dev.mim1q.derelict.block.cobweb
 
+import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.tag.ModBlockTags
 import net.minecraft.block.*
 import net.minecraft.client.item.TooltipContext
 import net.minecraft.entity.Entity
+import net.minecraft.entity.EquipmentSlot
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemPlacementContext
 import net.minecraft.item.ItemStack
 import net.minecraft.text.Text
@@ -93,5 +96,16 @@ open class FancyCobwebBlock(
 
     companion object {
         private const val DISABLED_TOOLTIP_KEY = "block.derelict.fancy_cobweb.disabled_tooltip"
+
+        fun shouldBeSolid(pos: BlockPos, ctx: ShapeContext): Boolean {
+            if (ctx !is EntityShapeContext) {
+                return false
+            }
+
+            val player = ctx.entity as? PlayerEntity ?: return false
+            return (player.y - 0.9).toInt() == pos.y
+                && player.getEquippedStack(EquipmentSlot.LEGS).isOf(ModBlocksAndItems.NETWALKERS)
+                && !player.isSneaking
+        }
     }
 }

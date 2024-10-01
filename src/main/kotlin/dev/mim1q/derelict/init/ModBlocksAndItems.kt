@@ -15,6 +15,7 @@ import dev.mim1q.derelict.init.ModEntities.SPINY_SPIDER
 import dev.mim1q.derelict.init.ModEntities.WEB_CASTER
 import dev.mim1q.derelict.interfaces.AbstractBlockAccessor
 import dev.mim1q.derelict.item.StaffItem
+import dev.mim1q.derelict.item.armor.ModArmorMaterials
 import dev.mim1q.derelict.item.weapon.Wildfire
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
@@ -192,14 +193,16 @@ object ModBlocksAndItems {
     val WILDFIRE = registerItem("wildfire", Wildfire(defaultItemSettings().maxCount(1)), null)
 
 
-    // region SPAWN EGGS
+    // region ARMORS
+    val NETWALKERS = registerItem("netwalkers", ArmorItem(ModArmorMaterials.SPIDER, ArmorItem.Type.LEGGINGS, defaultItemSettings().maxCount(1)))
+    // endregion
 
+    // region SPAWN EGGS
     val WEB_CASTER_SPAWN_EGG = registerSpawnEgg(WEB_CASTER)
     val CHARMING_SPIDER_SPAWN_EGG = registerSpawnEgg(CHARMING_SPIDER)
     val DADDY_LONG_LEGS_SPAWN_EGG = registerSpawnEgg(DADDY_LONG_LEGS)
     val JUMPING_SPIDER_SPAWN_EGG = registerSpawnEgg(JUMPING_SPIDER)
     val SPINY_SPIDER_SPAWN_EGG = registerSpawnEgg(SPINY_SPIDER)
-
     // endregion
 
     fun init() {}
