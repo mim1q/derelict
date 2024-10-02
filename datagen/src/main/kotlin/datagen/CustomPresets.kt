@@ -563,6 +563,7 @@ object CustomPresets {
         })
         add(CommonModelPresets.generatedItemModel(id))
         TagManager.add("derelict:blocks/cobwebs", id)
+        TagManager.add("derelict:blocks/full_cobwebs", id)
         TagManager.add("derelict:items/general_tab", id)
     }
 

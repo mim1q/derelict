@@ -107,7 +107,8 @@ fun main(args: Array<String>) {
         )
         add(CommonModelPresets.cubeAllBlock("derelict:extinguished_sea_lantern"))
         add(CommonDropPresets.simpleDrop("derelict:extinguished_sea_lantern"))
-        add(CommonModelPresets.cubeAllBlock("derelict:spider_silk"))
+        add("spider_silk", BlockState.createSingle("derelict:block/spider_silk"))
+        add(CommonModelPresets.itemBlockModel("derelict:spider_silk"))
         add(CommonDropPresets.silkTouchOrShearsOnlyDrop("derelict:spider_silk"))
         add(
             CustomPresets.flickeringCubeAll(
@@ -180,6 +181,7 @@ fun main(args: Array<String>) {
 
         // Custom Tags
         TagManager.add("derelict:blocks/cobwebs", "minecraft:cobweb", "derelict:spider_silk")
+        TagManager.add("derelict:blocks/full_cobwebs", "minecraft:cobweb", "derelict:spider_silk")
         TagManager.add("blocks/leaves", "derelict:burned_leaves", "derelict:smoldering_leaves")
         TagManager.add("blocks/mineable/hoe", "derelict:burned_leaves", "derelict:smoldering_leaves", "derelict:flickering_shroomlight", "derelict:extinguished_shroomlight")
         TagManager.add("blocks/mineable/axe", "#derelict:cover_boards")

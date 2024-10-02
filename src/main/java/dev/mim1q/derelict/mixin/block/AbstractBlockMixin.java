@@ -1,11 +1,14 @@
 package dev.mim1q.derelict.mixin.block;
 
-import dev.mim1q.derelict.block.cobweb.FancyCobwebBlock;
+import dev.mim1q.derelict.init.ModBlocksAndItems;
 import dev.mim1q.derelict.interfaces.AbstractBlockAccessor;
 import dev.mim1q.derelict.tag.ModBlockTags;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.EntityShapeContext;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -49,10 +52,20 @@ public abstract class AbstractBlockMixin implements AbstractBlockAccessor {
         cancellable = true
     )
     private void derelict$getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (state.isIn(ModBlockTags.INSTANCE.getCOBWEBS())
-            && FancyCobwebBlock.Companion.shouldBeSolid(pos, context)
+        if (state.isIn(ModBlockTags.INSTANCE.getFULL_COBWEBS())
+            && derelict$shouldBeSolid(pos, context)
         ) {
             cir.setReturnValue(VoxelShapes.fullCube());
         }
+    }
+
+    @Unique
+    private static boolean derelict$shouldBeSolid(BlockPos pos, ShapeContext ctx) {
+        if (ctx instanceof EntityShapeContext entityCtx && entityCtx.getEntity() instanceof PlayerEntity player) {
+            return ctx.isAbove(VoxelShapes.fullCube(), pos, false)
+                && player.getEquippedStack(EquipmentSlot.LEGS).isOf(ModBlocksAndItems.INSTANCE.getNETWALKERS())
+                && !player.isSneaking();
+        }
+        return false;
     }
 }
