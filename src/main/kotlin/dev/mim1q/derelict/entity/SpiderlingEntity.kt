@@ -6,6 +6,7 @@ import dev.mim1q.derelict.util.entity.tracked
 import dev.mim1q.gimm1q.interpolation.AnimatedProperty
 import net.minecraft.block.Blocks
 import net.minecraft.entity.Bucketable
+import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.ai.goal.*
 import net.minecraft.entity.attribute.DefaultAttributeContainer
@@ -47,8 +48,8 @@ sealed class SpiderlingEntity(entityType: EntityType<SpiderlingEntity>, world: W
         }
 
         fun createSpiderlingAllyAttributes(): DefaultAttributeContainer.Builder = createHostileAttributes()
-            .add(EntityAttributes.GENERIC_MAX_HEALTH, 4.0)
-            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 6.0)
+            .add(EntityAttributes.GENERIC_MAX_HEALTH, 2.0)
+            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5.0)
             .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.36)
     }
 
@@ -160,16 +161,16 @@ sealed class SpiderlingEntity(entityType: EntityType<SpiderlingEntity>, world: W
                 (world as? ServerWorld)?.spawnParticles(
                     BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.COBWEB.defaultState),
                     pos.x, pos.y + 0.5, pos.z,
-                    10,
+                    20,
                     0.2, 0.2, 0.2,
                     0.01
                 )
             }
         }
 
-        override fun isInvulnerableTo(damageSource: DamageSource) = (age < 80)
-            || (owner != null && damageSource.attacker?.uuid == owner)
-            || super.isInvulnerableTo(damageSource)
+        override fun isInvulnerableTo(damageSource: DamageSource) =
+            (owner != null && damageSource.attacker?.uuid == owner)
+                || super.isInvulnerableTo(damageSource)
 
 
         override fun initGoals() {
@@ -193,6 +194,14 @@ sealed class SpiderlingEntity(entityType: EntityType<SpiderlingEntity>, world: W
             super.readCustomDataFromNbt(nbt)
 
             if (nbt.containsUuid("owner")) owner = nbt.getUuid("owner")
+        }
+
+        override fun tryAttack(target: Entity): Boolean {
+            val result = super.tryAttack(target)
+            if (result && !world.isClient()) {
+                damage(damageSources.generic(), 1f)
+            }
+            return result
         }
     }
 }

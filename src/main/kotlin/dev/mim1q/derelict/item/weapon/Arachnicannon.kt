@@ -17,6 +17,8 @@ class Arachnicannon(settings: Settings) : Item(settings) {
             projectile.owner = user
             projectile.setVelocity(user, user.pitch, user.yaw, 0f, 2.5f, 0.3f)
             world.spawnEntity(projectile)
+
+            user.itemCooldownManager.set(this, 20)
         }
 
         return TypedActionResult.consume(user.getStackInHand(hand))

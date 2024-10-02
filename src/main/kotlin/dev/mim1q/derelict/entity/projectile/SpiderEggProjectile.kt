@@ -2,18 +2,16 @@ package dev.mim1q.derelict.entity.projectile
 
 import dev.mim1q.derelict.entity.SpiderlingEntity
 import dev.mim1q.derelict.init.ModEntities
-import net.minecraft.block.BlockState
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.projectile.PersistentProjectileEntity
 import net.minecraft.item.ItemStack
+import net.minecraft.particle.ParticleTypes
+import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.EntityHitResult
-import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
-import net.minecraft.world.BlockView
 import net.minecraft.world.World
-import net.minecraft.world.explosion.Explosion
-import net.minecraft.world.explosion.ExplosionBehavior
 
 class SpiderEggProjectile(
     type: EntityType<out PersistentProjectileEntity>,
@@ -32,18 +30,18 @@ class SpiderEggProjectile(
     private fun explodeIntoSpiderling(pos: Vec3d) {
         if (world.isClient) return
 
-        world.createExplosion(
-            this, damageSources.explosion(this, owner), object : ExplosionBehavior() {
-                override fun canDestroyBlock(
-                    explosion: Explosion,
-                    world: BlockView,
-                    pos: BlockPos,
-                    state: BlockState,
-                    power: Float
-                ): Boolean = false
-            },
-            pos.x, pos.y, pos.z, 1f, false, World.ExplosionSourceType.NONE
+        (world as? ServerWorld)?.spawnParticles(
+            ParticleTypes.EXPLOSION,
+            pos.x, pos.y + 1.0, pos.z,
+            3, 0.8, 0.8, 0.8,
+            0.01
         )
+
+        world.getOtherEntities(this, Box.of(pos, 4.0, 4.0, 4.0)) {
+            it !is SpiderlingEntity.Ally
+        }.forEach {
+            it.damage(damageSources.explosion(this, this.owner), 6.0f)
+        }
 
         val spiderling = ModEntities.SPIDERLING_ALLY.create(world) ?: return
         spiderling.setPos(pos.x, pos.y + 0.5, pos.z)

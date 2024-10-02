@@ -14,7 +14,7 @@
     ],
   },
   "item.derelict": {
-    "aging_staff;waxing_staff;netwalkers": "%",
+    "aging_staff;waxing_staff;netwalkers;arachnicannon;spider_silk_bola": "%",
     "spiderling_in_a_bucket": "Spiderling in a Bucket",
     "spider_caves_boss_arena_map": "Spider Mother's Lair Map",
   },

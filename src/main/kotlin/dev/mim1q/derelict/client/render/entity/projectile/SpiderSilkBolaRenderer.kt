@@ -26,6 +26,8 @@ class SpiderSilkBolaRenderer(context: EntityRendererFactory.Context) : EntityRen
         vertexConsumers: VertexConsumerProvider,
         light: Int
     ) {
+        if ((entity.age + tickDelta) < 1.5f) return
+
         super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light)
 
         matrices.entry {

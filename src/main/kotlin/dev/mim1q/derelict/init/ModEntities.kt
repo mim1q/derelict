@@ -49,7 +49,7 @@ object ModEntities {
     val SPIDER_EGG_PROJECTILE = register("spider_egg_projectile", ::SpiderEggProjectile
     ) { dimensions(EntityDimensions.fixed(0.5f, 0.5f)) }
 
-    fun init() {}
+    fun init() {  }
 
     val SPAWN_ON_GROUND = setOf(
         SPIDERLING, CHARMING_SPIDER, WEB_CASTER, DADDY_LONG_LEGS, JUMPING_SPIDER, SPINY_SPIDER
