@@ -3,6 +3,7 @@ package dev.mim1q.derelict.init
 import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.entity.SpiderlingEntity
 import dev.mim1q.derelict.entity.boss.ArachneEntity
+import dev.mim1q.derelict.entity.projectile.SpiderSilkBolaProjectile
 import dev.mim1q.derelict.entity.spider.*
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricDefaultAttributeRegistry
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
@@ -37,6 +38,9 @@ object ModEntities {
 
     val ARACHNE_EGG = register("arachne_egg", ::ArachneEggEntity
     ) { dimensions(EntityDimensions.fixed(1.5f, 2.25f)) }
+
+    val SPIDER_SILK_BOLA = register("spider_silk_bola", ::SpiderSilkBolaProjectile
+    ) { dimensions(EntityDimensions.fixed(1.0f, 1.0f)) }
 
     fun init() {}
 

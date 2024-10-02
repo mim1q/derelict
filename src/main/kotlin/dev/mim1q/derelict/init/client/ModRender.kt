@@ -7,6 +7,7 @@ import dev.mim1q.derelict.client.render.block.SpiderEggClusterRenderer
 import dev.mim1q.derelict.client.render.entity.boss.arachne.ArachneEntityRenderer
 import dev.mim1q.derelict.client.render.entity.boss.arachne.ArachneTexturedModelData
 import dev.mim1q.derelict.client.render.entity.nonliving.HangingCocoonEntityRenderer
+import dev.mim1q.derelict.client.render.entity.projectile.SpiderSilkBolaRenderer
 import dev.mim1q.derelict.client.render.entity.spider.*
 import dev.mim1q.derelict.init.ModBlockEntities
 import dev.mim1q.derelict.init.ModBlocksAndItems
@@ -75,6 +76,7 @@ object ModRender {
         EntityRendererRegistry.register(ModEntities.JUMPING_SPIDER, ::JumpingSpiderEntityRenderer)
         EntityRendererRegistry.register(ModEntities.SPINY_SPIDER, ::SpinySpiderEntityRenderer)
         EntityRendererRegistry.register(ModEntities.ARACHNE_EGG, ::ArachneEggRenderer)
+        EntityRendererRegistry.register(ModEntities.SPIDER_SILK_BOLA, ::SpiderSilkBolaRenderer)
 
         LivingEntityFeatureRendererRegistrationCallback.EVENT.register { _, _, _, context ->
             if (!customRenderersWorkaroundInit) {

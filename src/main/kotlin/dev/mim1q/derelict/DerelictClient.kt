@@ -16,6 +16,7 @@ import dev.mim1q.derelict.interfaces.AbstractBlockAccessor
 import dev.mim1q.derelict.item.CrosshairTipItem
 import dev.mim1q.derelict.util.BlockMarkerUtils
 import dev.mim1q.gimm1q.client.highlight.HighlightDrawerCallback
+import dev.mim1q.gimm1q.client.item.handheld.HandheldItemModelRegistry
 import dev.mim1q.gimm1q.interpolation.Easing
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin
@@ -94,7 +95,7 @@ object DerelictClient : ClientModInitializer {
             val light = Easing.lerp(world.getBrightness(camera.blockPos) + 1 / 16f, 1f, 0.2f)
             val lastShaderColor = RenderSystem.getShaderColor()
 
-//            RenderSystem.setShaderColor(light, light, light, 1f)
+            RenderSystem.setShaderColor(light, light, light, 1f)
 
             if (player.hasClientSyncedEffect(ModStatusEffects.COBWEBBED)) {
                 val level = MathHelper.clamp(player.getClientSyncedEffectAmplifier(ModStatusEffects.COBWEBBED) ?: 0, 0, 2)
@@ -145,5 +146,9 @@ object DerelictClient : ClientModInitializer {
                 *ArachneEggRenderer.MODEL_IDS
             )
         }
+
+        HandheldItemModelRegistry.getInstance().register(
+            ModBlocksAndItems.ARACHNICANNON, Derelict.id("arachnicannon_hand")
+        )
     }
 }

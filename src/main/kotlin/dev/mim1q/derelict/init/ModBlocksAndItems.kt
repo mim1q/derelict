@@ -16,6 +16,8 @@ import dev.mim1q.derelict.init.ModEntities.WEB_CASTER
 import dev.mim1q.derelict.interfaces.AbstractBlockAccessor
 import dev.mim1q.derelict.item.StaffItem
 import dev.mim1q.derelict.item.armor.ModArmorMaterials
+import dev.mim1q.derelict.item.weapon.Arachnicannon
+import dev.mim1q.derelict.item.weapon.SpiderSilkBola
 import dev.mim1q.derelict.item.weapon.Wildfire
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
@@ -191,7 +193,8 @@ object ModBlocksAndItems {
     )
 
     val WILDFIRE = registerItem("wildfire", Wildfire(defaultItemSettings().maxCount(1)), null)
-
+    val ARACHNICANNON = registerItem("arachnicannon", Arachnicannon(defaultItemSettings().maxCount(1)))
+    val SPIDER_SILK_BOLA = registerItem("spider_silk_bola", SpiderSilkBola(defaultItemSettings().maxCount(1)))
 
     // region ARMORS
     val NETWALKERS = registerItem("netwalkers", ArmorItem(ModArmorMaterials.SPIDER, ArmorItem.Type.LEGGINGS, defaultItemSettings().maxCount(1)))
