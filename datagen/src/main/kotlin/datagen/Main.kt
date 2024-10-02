@@ -76,7 +76,7 @@ fun main(args: Array<String>) {
         add("spider_silk_strand", ParentedModel.item("item/generated").texture("layer0", "derelict:block/spider_silk_strand_top"))
 
         add(CommonModelPresets.cubeAllBlock("derelict:spider_egg_block"))
-        add(CommonDropPresets.silkTouchDrop("derelict:spider_egg_block"))
+        add(CommonDropPresets.simpleDrop("derelict:spider_egg_block"))
 
         listOf(
             "spider_egg", "spider_egg_cluster", "spider_spider_egg", "cave_spider_spider_egg", "jumping_spider_spider_egg",
@@ -85,9 +85,12 @@ fun main(args: Array<String>) {
             add(it, BlockState.createSingle("derelict:block/spider_egg_block"))
         }
         add(CommonModelPresets.generatedItemModel("derelict:spider_egg"))
-        add(CommonDropPresets.silkTouchDrop("derelict:spider_egg"))
+        add(CommonDropPresets.simpleDrop("derelict:spider_egg"))
         add(CommonModelPresets.generatedItemModel("derelict:spider_egg_cluster"))
-        add(CommonDropPresets.silkTouchDrop("derelict:spider_egg_cluster"))
+        add(CommonDropPresets.simpleDrop("derelict:spider_egg_cluster"))
+        add(CommonDropPresets.silkTouchOrShearsOnlyDrop("derelict:spider_silk"))
+        add(CommonDropPresets.silkTouchOrShearsOnlyDrop("derelict:spider_silk_strand"))
+        add(CommonDropPresets.silkTouchOrShearsOnlyDrop("derelict:wall_cobweb"))
 
         add("spider_molt", BlockState.create {
             variant("facing=north", BlockStateModel("derelict:block/spider_molt"))
@@ -96,7 +99,7 @@ fun main(args: Array<String>) {
             variant("facing=west", BlockStateModel("derelict:block/spider_molt", yRot = CW_270))
         })
         add(CommonModelPresets.itemBlockModel("derelict:spider_molt"))
-        add(CommonDropPresets.silkTouchDrop("derelict:spider_molt"))
+        add(CommonDropPresets.simpleDrop("derelict:spider_molt"))
 
         // Flickering Lights
         add(
@@ -217,6 +220,9 @@ fun main(args: Array<String>) {
                 "minecraft:waxed_${it}cut_copper_stairs", "minecraft:waxed_${it}cut_copper_slab"
             )
         }
+        TagManager.add("minecraft:blocks/climbable", "derelict:spider_silk_strand")
+
+        // Entity Tags
         TagManager.add(
             "derelict:entity_types/spawns_spiderlings_on_death",
             "minecraft:spider",

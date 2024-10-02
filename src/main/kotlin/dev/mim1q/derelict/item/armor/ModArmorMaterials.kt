@@ -21,7 +21,7 @@ enum class ModArmorMaterials(
 
     SPIDER(
         "derelict_spider",
-        20, intArrayOf(2, 5, 7, 2), 10,
+        20, intArrayOf(3, 7, 5, 3), 10,
         SoundEvents.ENTITY_SPIDER_STEP,
         0.0f, 0.0f,
         { Ingredient.ofItems(ModBlocksAndItems.SPIDER_MOLT) }

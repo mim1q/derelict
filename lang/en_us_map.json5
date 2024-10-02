@@ -14,7 +14,7 @@
     ],
   },
   "item.derelict": {
-    "aging_staff;waxing_staff": "%",
+    "aging_staff;waxing_staff;netwalkers": "%",
     "spiderling_in_a_bucket": "Spiderling in a Bucket",
     "spider_caves_boss_arena_map": "Spider Mother's Lair Map",
   },
@@ -78,12 +78,13 @@
         },
       }
     },
-    // Cobwebs
-    "fancy_cobweb": "Fancy Cobweb",
-    "fancy_cobweb_with_spider_nest": "Fancy Cobweb With Spider Nest",
-    "fancy_cobweb.disabled_tooltip": "",
-    "fancy_corner_cobweb": "Fancy Corner Cobweb",
-    "corner_cobweb": "Corner Cobweb",
+    "$;$_stairs;$_slab;$_wall;$_pressure_plate;$_button": {
+      "arachnite": "%"
+    },
+    // Cobwebs and other spider blocks
+    "fancy_cobweb;fancy_cobweb_with_spider_nest;fancy_corner_cobweb;corner_cobweb;wall_cobweb": "%",
+    "spider_silk;spider_silk_strand;spider_egg_block;spider_egg;spider_egg_cluster;spider_molt": "%",
+    "fancy_cobweb.disabled_tooltip": ""
   },
   // Text
   "text.derelict": {

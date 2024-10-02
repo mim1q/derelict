@@ -676,5 +676,32 @@ object CustomPresets {
             ingredient("derelict:fancy_cobweb")
             ingredient("minecraft:spider_eye")
         })
+        add("wall_cobweb", CraftingRecipe.shaped("derelict:wall_cobweb", 8) {
+            pattern("CC")
+            pattern("CC")
+            key("C", "derelict:fancy_cobweb")
+        })
+        add(CommonRecipePresets.packed2x2("derelict:fancy_cobweb", "derelict:wall_cobweb", 8))
+        add(CommonRecipePresets.packed3x3("derelict:corner_cobweb", "derelict:spider_silk", 4))
+        add("spider_silk_strand", CraftingRecipe.shaped("derelict:spider_silk_strand", 6) {
+            pattern("S")
+            pattern("S")
+            pattern("S")
+            key("S", "derelict:spider_silk")
+        })
+        add("netwalkers", CraftingRecipe.shaped("derelict:netwalkers") {
+            pattern("CLC")
+            pattern("M M")
+            pattern("C C")
+            key("C", "derelict:spider_silk_strand")
+            key("M", "derelict:spider_molt")
+            key("L", "minecraft:iron_leggings")
+        })
+        add(CommonRecipePresets.packed2x2("derelict:spider_egg", "derelict:spider_egg_block", 1))
+        add("spider_egg_cluster", CraftingRecipe.shaped("derelict:spider_egg_cluster") {
+            pattern("EE")
+            key("E", "derelict:spider_egg")
+        })
+        add(CommonRecipePresets.oneToOne("derelict:spider_egg_cluster", "derelict:spider_egg", 2))
     }
 }
