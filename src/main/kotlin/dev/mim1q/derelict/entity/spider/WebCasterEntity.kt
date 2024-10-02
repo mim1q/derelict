@@ -12,11 +12,14 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.ai.goal.*
+import net.minecraft.entity.attribute.DefaultAttributeContainer
+import net.minecraft.entity.attribute.EntityAttributes
 import net.minecraft.entity.data.DataTracker
 import net.minecraft.entity.data.TrackedData
 import net.minecraft.entity.data.TrackedDataHandlerRegistry
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.mob.HostileEntity
+import net.minecraft.entity.mob.SpiderEntity
 import net.minecraft.entity.passive.PigEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.sound.SoundEvents
@@ -27,6 +30,11 @@ import kotlin.math.pow
 class WebCasterEntity(entityType: EntityType<WebCasterEntity>, world: World) : HostileEntity(entityType, world) {
     companion object {
         val WEB_HELD: TrackedData<Boolean> = DataTracker.registerData(WebCasterEntity::class.java, TrackedDataHandlerRegistry.BOOLEAN)
+
+        fun createWebCasterAttributes(): DefaultAttributeContainer.Builder = SpiderEntity.createSpiderAttributes()
+            .add(EntityAttributes.GENERIC_MAX_HEALTH, 40.0)
+            .add(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, 1.0)
+            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 3.0)
     }
 
     val legController = SpiderLegController(

@@ -21,7 +21,6 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.particle.BlockStateParticleEffect
 import net.minecraft.particle.ParticleTypes
-import net.minecraft.registry.tag.DamageTypeTags
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.sound.SoundEvent
 import net.minecraft.sound.SoundEvents
@@ -46,6 +45,11 @@ sealed class SpiderlingEntity(entityType: EntityType<SpiderlingEntity>, world: W
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.33)
         }
+
+        fun createSpiderlingAllyAttributes(): DefaultAttributeContainer.Builder = createHostileAttributes()
+            .add(EntityAttributes.GENERIC_MAX_HEALTH, 4.0)
+            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 6.0)
+            .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.36)
     }
 
     init {

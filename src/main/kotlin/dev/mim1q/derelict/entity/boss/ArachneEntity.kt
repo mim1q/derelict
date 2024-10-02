@@ -507,11 +507,11 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
             DataTracker.registerData(ArachneEntity::class.java, TrackedDataHandlerRegistry.INTEGER)
 
         fun createArachneAttributes(): DefaultAttributeContainer.Builder = createHostileAttributes()
-            .add(EntityAttributes.GENERIC_MAX_HEALTH, 200.0)
+            .add(EntityAttributes.GENERIC_MAX_HEALTH, 250.0)
             .add(EntityAttributes.GENERIC_ARMOR, 4.0)
             .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.45)
-            .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0)
-            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0)
+            .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 0.9)
+            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 3.0)
             .add(EntityAttributes.GENERIC_ATTACK_SPEED, 0.5)
     }
 }

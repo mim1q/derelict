@@ -4,7 +4,6 @@ import dev.mim1q.derelict.entity.SpiderlingEntity
 import dev.mim1q.derelict.init.ModEntities
 import net.minecraft.block.BlockState
 import net.minecraft.entity.EntityType
-import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.projectile.PersistentProjectileEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.hit.BlockHitResult
@@ -34,7 +33,7 @@ class SpiderEggProjectile(
         if (world.isClient) return
 
         world.createExplosion(
-            this, damageSources.generic(), object : ExplosionBehavior() {
+            this, damageSources.explosion(this, owner), object : ExplosionBehavior() {
                 override fun canDestroyBlock(
                     explosion: Explosion,
                     world: BlockView,

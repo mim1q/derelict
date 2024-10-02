@@ -4,6 +4,8 @@ import dev.mim1q.gimm1q.interpolation.AnimatedProperty
 import dev.mim1q.gimm1q.interpolation.Easing
 import net.minecraft.block.Blocks
 import net.minecraft.entity.EntityType
+import net.minecraft.entity.attribute.DefaultAttributeContainer
+import net.minecraft.entity.attribute.EntityAttributes
 import net.minecraft.entity.mob.SpiderEntity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
@@ -12,6 +14,10 @@ class CharmingSpiderEntity(
     entityType: EntityType<out SpiderEntity>,
     world: World
 ) : SpiderEntity(entityType, world) {
+    companion object {
+        fun createCharmingSpiderAttributes(): DefaultAttributeContainer.Builder = createSpiderAttributes()
+            .add(EntityAttributes.GENERIC_MAX_HEALTH, 10.0)
+    }
 
     private var songSource: BlockPos? = null
     private var isSongPlaying: Boolean = false

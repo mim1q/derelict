@@ -22,13 +22,13 @@ object ModEntities {
     val SPIDERLING = register("spiderling", SpiderlingEntity::Enemy, SpiderlingEntity.createSpiderlingAttributes()
     ) { dimensions(EntityDimensions.fixed(0.7f, 0.7f)) }
 
-    val SPIDERLING_ALLY = register("spiderling_ally", SpiderlingEntity::Ally, SpiderlingEntity.createSpiderlingAttributes()
+    val SPIDERLING_ALLY = register("spiderling_ally", SpiderlingEntity::Ally, SpiderlingEntity.createSpiderlingAllyAttributes()
     ) { dimensions(EntityDimensions.fixed(0.7f, 0.7f)) }
 
-    val CHARMING_SPIDER = register("charming_spider", ::CharmingSpiderEntity, SpiderEntity.createSpiderAttributes()
+    val CHARMING_SPIDER = register("charming_spider", ::CharmingSpiderEntity, CharmingSpiderEntity.createCharmingSpiderAttributes()
     ) { dimensions(EntityDimensions.fixed(0.8f, 0.8f)) }
 
-    val WEB_CASTER = register("web_caster", ::WebCasterEntity, SpiderEntity.createSpiderAttributes()
+    val WEB_CASTER = register("web_caster", ::WebCasterEntity, WebCasterEntity.createWebCasterAttributes()
     ) { dimensions(EntityDimensions.fixed(1.9f, 1.2f)) }
 
     val DADDY_LONG_LEGS = register("daddy_long_legs", ::DaddyLongLegsEntity, SpiderEntity.createSpiderAttributes()
