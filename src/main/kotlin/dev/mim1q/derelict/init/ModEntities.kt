@@ -3,6 +3,7 @@ package dev.mim1q.derelict.init
 import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.entity.SpiderlingEntity
 import dev.mim1q.derelict.entity.boss.ArachneEntity
+import dev.mim1q.derelict.entity.projectile.SpiderEggProjectile
 import dev.mim1q.derelict.entity.projectile.SpiderSilkBolaProjectile
 import dev.mim1q.derelict.entity.spider.*
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricDefaultAttributeRegistry
@@ -18,7 +19,10 @@ object ModEntities {
     val ARACHNE = register("arachne", ::ArachneEntity, ArachneEntity.createArachneAttributes()
     ) { dimensions(EntityDimensions.fixed(2.5f, 1.9f)) }
 
-    val SPIDERLING = register("spiderling", ::SpiderlingEntity, SpiderlingEntity.createSpiderlingAttributes()
+    val SPIDERLING = register("spiderling", SpiderlingEntity::Enemy, SpiderlingEntity.createSpiderlingAttributes()
+    ) { dimensions(EntityDimensions.fixed(0.7f, 0.7f)) }
+
+    val SPIDERLING_ALLY = register("spiderling_ally", SpiderlingEntity::Ally, SpiderlingEntity.createSpiderlingAttributes()
     ) { dimensions(EntityDimensions.fixed(0.7f, 0.7f)) }
 
     val CHARMING_SPIDER = register("charming_spider", ::CharmingSpiderEntity, SpiderEntity.createSpiderAttributes()
@@ -41,6 +45,9 @@ object ModEntities {
 
     val SPIDER_SILK_BOLA = register("spider_silk_bola", ::SpiderSilkBolaProjectile
     ) { dimensions(EntityDimensions.fixed(1.0f, 1.0f)) }
+
+    val SPIDER_EGG_PROJECTILE = register("spider_egg_projectile", ::SpiderEggProjectile
+    ) { dimensions(EntityDimensions.fixed(0.5f, 0.5f)) }
 
     fun init() {}
 

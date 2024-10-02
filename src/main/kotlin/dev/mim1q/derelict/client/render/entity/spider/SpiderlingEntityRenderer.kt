@@ -33,9 +33,10 @@ class SpiderlingEntityRenderer(context: EntityRendererFactory.Context) :
 
     companion object {
         val TEXTURE = Derelict.id("textures/entity/spider/spiderling.png")
+        val TEXTURE_PINK = Derelict.id("textures/entity/spider/spiderling_pink.png")
     }
 
-    override fun getTexture(entity: SpiderlingEntity) = TEXTURE
+    override fun getTexture(entity: SpiderlingEntity) = if (entity is SpiderlingEntity.Ally) TEXTURE_PINK else TEXTURE
 
     override fun render(mob: SpiderlingEntity, f: Float, tickDelta: Float, matrixStack: MatrixStack, vertexConsumerProvider: VertexConsumerProvider, light: Int) {
         super.render(mob, f, tickDelta, matrixStack, vertexConsumerProvider, light)

@@ -4,6 +4,7 @@ import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.util.entity.nullableTracked
 import dev.mim1q.derelict.util.entity.tracked
 import dev.mim1q.gimm1q.interpolation.AnimatedProperty
+import net.minecraft.block.Blocks
 import net.minecraft.entity.Bucketable
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.ai.goal.*
@@ -13,10 +14,15 @@ import net.minecraft.entity.damage.DamageSource
 import net.minecraft.entity.data.DataTracker
 import net.minecraft.entity.data.TrackedData
 import net.minecraft.entity.data.TrackedDataHandlerRegistry
+import net.minecraft.entity.mob.HostileEntity
 import net.minecraft.entity.mob.SpiderEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
+import net.minecraft.particle.BlockStateParticleEffect
+import net.minecraft.particle.ParticleTypes
+import net.minecraft.registry.tag.DamageTypeTags
+import net.minecraft.server.world.ServerWorld
 import net.minecraft.sound.SoundEvent
 import net.minecraft.sound.SoundEvents
 import net.minecraft.util.ActionResult
@@ -26,7 +32,8 @@ import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 import java.util.*
 
-class SpiderlingEntity(entityType: EntityType<SpiderlingEntity>, world: World) : SpiderEntity(entityType, world), Bucketable {
+sealed class SpiderlingEntity(entityType: EntityType<SpiderlingEntity>, world: World) : SpiderEntity(entityType, world),
+    Bucketable {
     companion object {
         val ANCHOR_POSITION: TrackedData<Optional<BlockPos>> =
             DataTracker.registerData(SpiderlingEntity::class.java, TrackedDataHandlerRegistry.OPTIONAL_BLOCK_POS)
@@ -56,8 +63,6 @@ class SpiderlingEntity(entityType: EntityType<SpiderlingEntity>, world: World) :
     }
 
     override fun initGoals() {
-        super.initGoals()
-
         goalSelector.add(4, WanderAroundGoal(this, 1.0))
         goalSelector.add(5, WanderAroundFarGoal(this, 1.0))
 
@@ -94,7 +99,8 @@ class SpiderlingEntity(entityType: EntityType<SpiderlingEntity>, world: World) :
     override fun handleFallDamage(fallDistance: Float, damageMultiplier: Float, damageSource: DamageSource) = false
 
     override fun damage(source: DamageSource, amount: Float): Boolean {
-        val result = super.damage(source, if (anchorPosition == null || source.attacker?.isPlayer != true) amount else 0f)
+        val result =
+            super.damage(source, if (anchorPosition == null || source.attacker?.isPlayer != true) amount else 0f)
         if (!spawnedFromBucket && !world.isClient) {
             anchorPosition = null
         }
@@ -135,6 +141,55 @@ class SpiderlingEntity(entityType: EntityType<SpiderlingEntity>, world: World) :
     override fun getBucketFillSound(): SoundEvent = SoundEvents.ENTITY_SPIDER_STEP
     override fun interactMob(player: PlayerEntity, hand: Hand): ActionResult {
         return Bucketable.tryBucket(player, hand, this).orElse(super.interactMob(player, hand))
+    }
+
+    class Enemy(entityType: EntityType<SpiderlingEntity>, world: World) : SpiderlingEntity(entityType, world)
+
+    class Ally(entityType: EntityType<SpiderlingEntity>, world: World) : SpiderlingEntity(entityType, world) {
+        var owner: UUID? = null
+
+        override fun tick() {
+            super.tick()
+
+            if (!world.isClient && age > 200) {
+                discard()
+                (world as? ServerWorld)?.spawnParticles(
+                    BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.COBWEB.defaultState),
+                    pos.x, pos.y + 0.5, pos.z,
+                    10,
+                    0.2, 0.2, 0.2,
+                    0.01
+                )
+            }
+        }
+
+        override fun isInvulnerableTo(damageSource: DamageSource) = (age < 80)
+            || (owner != null && damageSource.attacker?.uuid == owner)
+            || super.isInvulnerableTo(damageSource)
+
+
+        override fun initGoals() {
+            goalSelector.add(3, LookAroundGoal(this))
+            goalSelector.add(1, MeleeAttackGoal(this, 1.0, true))
+            goalSelector.add(0, PounceAtTargetGoal(this, 0.3f))
+
+            targetSelector.add(0, RevengeGoal(this))
+            targetSelector.add(0, ActiveTargetGoal(this, HostileEntity::class.java, true) {
+                it !is Ally
+            })
+        }
+
+        override fun writeCustomDataToNbt(nbt: NbtCompound) {
+            super.writeCustomDataToNbt(nbt)
+
+            if (owner != null) nbt.putUuid("owner", owner!!)
+        }
+
+        override fun readCustomDataFromNbt(nbt: NbtCompound) {
+            super.readCustomDataFromNbt(nbt)
+
+            if (nbt.containsUuid("owner")) owner = nbt.getUuid("owner")
+        }
     }
 }
 
