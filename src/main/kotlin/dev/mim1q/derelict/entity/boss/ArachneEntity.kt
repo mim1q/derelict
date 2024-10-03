@@ -93,6 +93,8 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
     private var rushCooldown = 400
     private var shootCooldown = 80
 
+    private var forceSpawnAttack = false
+
     override fun initGoals() {
         if (age < 40 || goalsSetup) return
 
@@ -125,6 +127,10 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
                 initGoals()
             }
 
+            if (age % 10 == 0) {
+                (firstPassenger as? PlayerEntity)?.damage(damageSources.mobAttack(this), getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE).toFloat())
+            }
+
             processScreaming()
             bossBar.percent = health / maxHealth
 
@@ -133,7 +139,8 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
             rushCooldown--
             shootCooldown--
 
-            if (lastStage != getStage()) {
+            val currentStage = getStage()
+            if (lastStage != currentStage) {
                 (world as? ServerWorld)?.spawnParticles(
                     ParticleTypes.EXPLOSION_EMITTER,
                     pos.x, pos.y, pos.z,
@@ -144,7 +151,11 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
                 world.getEntitiesByClass(LivingEntity::class.java, boundingBox.expand(8.0)) { it != this }.forEach {
                     it.takeKnockback(1.0, it.x - x, it.z - z)
                 }
-                lastStage = getStage()
+                if (lastStage < currentStage) {
+                    changeStage(currentStage)
+                }
+
+                lastStage = currentStage
             }
 
             if (!arePlayersNearby()) {
@@ -194,13 +205,13 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         }
 
         if (currentAttack == ArachneAttackType.SMASH) {
-            if (attackTicks > 70) {
-                when (attackTicks % 20) {
-                    1 -> leftLegStomp.transitionTo(1f, 8f, Easing::easeOutBounce)
-                    9 -> leftLegStomp.transitionTo(0f, 20f, Easing::easeInOutCubic)
-
-                    11 -> rightLegStomp.transitionTo(1f, 8f, Easing::easeOutBounce)
-                    19 -> rightLegStomp.transitionTo(0f, 20f, Easing::easeInOutCubic)
+            if (attackTicks > getStompWait()) {
+                val interval = getStompInterval()
+                when (attackTicks % interval) {
+                    1 -> leftLegStomp.transitionTo(1f, interval / 2f, Easing::easeOutBounce)
+                    (interval / 2 - 1) -> leftLegStomp.transitionTo(0f, interval.toFloat(), Easing::easeInOutCubic)
+                    (interval / 2 + 1) -> rightLegStomp.transitionTo(1f, interval / 2f, Easing::easeOutBounce)
+                    (interval - 1) -> rightLegStomp.transitionTo(0f, interval.toFloat(), Easing::easeInOutCubic)
                 }
             }
         } else {
@@ -250,6 +261,27 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         else -> 0
     }
 
+    private fun <T> stageBasedValue(stage0: T, stage1: T, stage2: T, stage3: T) = when (getStage()) {
+        0 -> stage0
+        1 -> stage1
+        2 -> stage2
+        else -> stage3
+    }
+
+    private fun getStompWait() = stageBasedValue(60, 55, 40, 20)
+    private fun getStompInterval() = stageBasedValue(20, 16, 14, 10)
+
+    private fun changeStage(stage: Int) {
+        forceSpawnAttack = true
+
+        spawnCooldown = 80
+        stompCooldown = 80
+        rushCooldown = 80
+        shootCooldown = 80
+
+        screamingTicks = 40
+    }
+
     fun getScale() = 1.0f + 0.05f * getStage()
 
     override fun getBoundingBox(pose: EntityPose): Box =
@@ -277,21 +309,24 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         if (!state.isIn(ModBlockTags.COBWEBS)) super.slowMovement(state, multiplier) else Unit
 
     private fun setGlobalCooldown() {
-        spawnCooldown = spawnCooldown.coerceAtLeast(20)
-        stompCooldown = stompCooldown.coerceAtLeast(20)
-        rushCooldown = rushCooldown.coerceAtLeast(20)
+        val cooldown = stageBasedValue(30, 25, 20, 15)
+
+        spawnCooldown = spawnCooldown.coerceAtLeast(cooldown)
+        stompCooldown = stompCooldown.coerceAtLeast(cooldown)
+        rushCooldown = rushCooldown.coerceAtLeast(cooldown)
     }
 
     private fun createSmashAttack() = createArachneAttack(
         ArachneAttackType.SMASH,
-        160,
+        120,
         tick@{ ticks ->
             val world = this@ArachneEntity.world as? ServerWorld ?: return@tick
 
-            if (ticks > 70 && (ticks % 20 == 5 || ticks % 20 == 15)) {
+            val interval = getStompInterval()
+            if (ticks > getStompWait() && (ticks % interval == interval / 4 || ticks % interval == interval * 3 / 4)) {
                 val target = target
                 if (target != null) {
-                    navigation.startMovingTo(target, 0.5)
+                    navigation.startMovingTo(target, stageBasedValue(0.5, 0.6, 0.65, 0.7))
                 }
 
                 ScreenShakeUtils.shakeAround(world, pos, 1f, 20, 4.0, 16.0)
@@ -313,7 +348,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
                 }
             }
         },
-        { this.stompCooldown <= 0 && random.nextFloat() < 0.02f },
+        { this.stompCooldown <= 0 && random.nextFloat() < 0.1f },
         { this.stompCooldown = 200 }
     )
 
@@ -342,12 +377,15 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
             }
         },
         {
-            spawnCooldown <= 0 && random.nextFloat() < 0.01f && world.getOtherEntities(
+            forceSpawnAttack || (spawnCooldown <= 0 && random.nextFloat() < 0.01f && world.getOtherEntities(
                 this,
                 Box.of(pos, 20.0, 20.0, 20.0)
-            ) { it.type.isIn(ModEntityTags.SPAWNS_SPIDERLINGS_ON_DEATH) }.size <= 3
+            ) { it.type.isIn(ModEntityTags.SPAWNS_SPIDERLINGS_ON_DEATH) }.size <= 3)
         },
-        { spawnCooldown = 1200 }
+        {
+            spawnCooldown = 1200
+            forceSpawnAttack = false
+        }
     )
 
     private fun createRushAttack() = createArachneAttack(
@@ -370,7 +408,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
             val bodyYawRad = (bodyYaw + 90).radians()
             move(MovementType.SELF, Vec3d(cos(bodyYawRad) * 0.7, 0.0, sin(bodyYawRad) * 0.7))
         },
-        { rushCooldown <= 0 && random.nextFloat() < 0.01f },
+        { rushCooldown <= 0 && random.nextFloat() < 0.1f },
         {
             world.createExplosion(
                 this,
@@ -385,11 +423,11 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
                     ): Boolean = false
                 },
                 pos.add(0.0, 0.5, 0.0),
-                1.5f,
+                2f,
                 false,
                 World.ExplosionSourceType.MOB
             )
-            rushCooldown = 200
+            rushCooldown = stageBasedValue(200, 160, 130, 100)
             setGlobalCooldown()
         },
         { ticks -> !(ticks > 40 && (prevX == x && prevZ == z)) }
@@ -402,14 +440,15 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
             val target = target
             if (ticks == 30 && target != null) {
                 val projectile = ModEntities.SPIDER_SILK_BOLA.create(world) ?: return@tick
-                val diff = target.pos.add(0.0, 1.5, 0.0).subtract(pos)
-                projectile.velocity = diff.normalize().multiply(0.5)
+                val diff = target.pos.add(0.0, 1.5, 0.0).subtract(pos).normalize()
+                projectile.setVelocity(diff.x, diff.y + 0.1, diff.z)
                 projectile.setPosition(pos.add(0.0, 0.5, 0.0).add(rotationVector))
                 projectile.owner = this@ArachneEntity
+                world.spawnEntity(projectile)
             }
         },
         { shootCooldown <= 0 && random.nextFloat() < 0.1f && (target != null && target!!.distanceTo(this) > 6.0) },
-        { shootCooldown = 100 }
+        { shootCooldown = stageBasedValue(110, 100, 90, 80) }
     )
 
     private fun createArachneAttack(
@@ -507,10 +546,10 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
 
         fun createArachneAttributes(): DefaultAttributeContainer.Builder = createHostileAttributes()
             .add(EntityAttributes.GENERIC_MAX_HEALTH, 250.0)
-            .add(EntityAttributes.GENERIC_ARMOR, 4.0)
+            .add(EntityAttributes.GENERIC_ARMOR, 8.0)
             .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.45)
             .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 0.9)
-            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 3.0)
+            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 4.0)
             .add(EntityAttributes.GENERIC_ATTACK_SPEED, 0.5)
     }
 }
