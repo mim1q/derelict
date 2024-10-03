@@ -12,6 +12,7 @@ import net.minecraft.entity.ai.goal.*
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
 import net.minecraft.entity.damage.DamageSource
+import net.minecraft.entity.damage.DamageTypes
 import net.minecraft.entity.data.DataTracker
 import net.minecraft.entity.data.TrackedData
 import net.minecraft.entity.data.TrackedDataHandlerRegistry
@@ -144,11 +145,11 @@ sealed class SpiderlingEntity(entityType: EntityType<SpiderlingEntity>, world: W
     override fun copyDataFromNbt(nbt: NbtCompound) = Bucketable.copyDataFromNbt(this, nbt)
     override fun getBucketItem(): ItemStack = ModBlocksAndItems.SPIDERLING_IN_A_BUCKET.defaultStack
     override fun getBucketFillSound(): SoundEvent = SoundEvents.ENTITY_SPIDER_STEP
-    override fun interactMob(player: PlayerEntity, hand: Hand): ActionResult {
-        return Bucketable.tryBucket(player, hand, this).orElse(super.interactMob(player, hand))
-    }
 
-    class Enemy(entityType: EntityType<SpiderlingEntity>, world: World) : SpiderlingEntity(entityType, world)
+    class Enemy(entityType: EntityType<SpiderlingEntity>, world: World) : SpiderlingEntity(entityType, world) {
+        override fun interactMob(player: PlayerEntity, hand: Hand): ActionResult =
+            Bucketable.tryBucket(player, hand, this).orElse(super.interactMob(player, hand))
+    }
 
     class Ally(entityType: EntityType<SpiderlingEntity>, world: World) : SpiderlingEntity(entityType, world) {
         var owner: UUID? = null
@@ -170,6 +171,7 @@ sealed class SpiderlingEntity(entityType: EntityType<SpiderlingEntity>, world: W
 
         override fun isInvulnerableTo(damageSource: DamageSource) =
             (owner != null && damageSource.attacker?.uuid == owner)
+                || damageSource.isOf(DamageTypes.IN_WALL)
                 || super.isInvulnerableTo(damageSource)
 
 

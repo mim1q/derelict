@@ -30,7 +30,7 @@ public interface BucketableMixin {
         Hand hand,
         T entity
     ) {
-        if (entity instanceof SpiderlingEntity) {
+        if (entity instanceof SpiderlingEntity.Enemy) {
             if (instance.isOf(Items.WATER_BUCKET)) return Items.AIR;
             if (instance.isOf(Items.BUCKET)) return Items.WATER_BUCKET;
         }

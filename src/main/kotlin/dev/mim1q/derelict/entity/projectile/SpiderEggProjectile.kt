@@ -3,6 +3,8 @@ package dev.mim1q.derelict.entity.projectile
 import dev.mim1q.derelict.entity.SpiderlingEntity
 import dev.mim1q.derelict.init.ModEntities
 import net.minecraft.entity.EntityType
+import net.minecraft.entity.ai.TargetPredicate
+import net.minecraft.entity.mob.HostileEntity
 import net.minecraft.entity.projectile.PersistentProjectileEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.particle.ParticleTypes
@@ -44,8 +46,21 @@ class SpiderEggProjectile(
         }
 
         val spiderling = ModEntities.SPIDERLING_ALLY.create(world) ?: return
-        spiderling.setPos(pos.x, pos.y + 0.5, pos.z)
-        (spiderling as SpiderlingEntity.Ally).owner = owner?.uuid
+        spiderling.setPosition(pos)
+        spiderling.refreshPositionAndAngles(spiderling.x, spiderling.y, spiderling.z, random.nextFloat() * 360f, 0.0f)
+        (spiderling as? SpiderlingEntity.Ally)?.owner = owner?.uuid
+
+        world.getClosestEntity(
+            world.getEntitiesByClass(
+                HostileEntity::class.java,
+                Box.of(pos, 4.0, 4.0, 4.0)
+            ) {
+                it !is SpiderlingEntity.Ally
+            }, TargetPredicate.DEFAULT, spiderling, x, y, z
+        )?.let {
+            spiderling.target = it
+        }
+
         world.spawnEntity(spiderling)
         discard()
     }

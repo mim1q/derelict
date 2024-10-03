@@ -30,7 +30,6 @@ import net.minecraft.entity.data.TrackedData
 import net.minecraft.entity.data.TrackedDataHandlerRegistry
 import net.minecraft.entity.mob.HostileEntity
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.entity.projectile.thrown.SnowballEntity
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.particle.ParticleTypes
 import net.minecraft.server.network.ServerPlayerEntity
@@ -402,7 +401,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         tick@{ ticks ->
             val target = target
             if (ticks == 30 && target != null) {
-                val projectile = SnowballEntity(EntityType.SNOWBALL, world)
+                val projectile = ModEntities.SPIDER_SILK_BOLA.create(world) ?: return@tick
                 val diff = target.pos.add(0.0, 1.5, 0.0).subtract(pos)
                 projectile.velocity = diff.normalize().multiply(0.5)
                 projectile.setPosition(pos.add(0.0, 0.5, 0.0).add(rotationVector))

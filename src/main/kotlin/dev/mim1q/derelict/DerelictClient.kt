@@ -93,7 +93,6 @@ object DerelictClient : ClientModInitializer {
             val world = player.world
 
             val light = Easing.lerp(world.getBrightness(camera.blockPos) + 1 / 16f, 1f, 0.2f)
-            val lastShaderColor = RenderSystem.getShaderColor()
 
             RenderSystem.setShaderColor(light, light, light, 1f)
 
@@ -102,7 +101,7 @@ object DerelictClient : ClientModInitializer {
                 context.drawFullScreenTexture(hudWebTextures[level], 16 / 9f)
             }
 
-            RenderSystem.setShaderColor(lastShaderColor[0], lastShaderColor[1], lastShaderColor[2], lastShaderColor[3])
+            RenderSystem.setShaderColor(1f, 1f, 1f, 1f)
         }
 
 
