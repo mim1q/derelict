@@ -139,7 +139,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
             rushCooldown--
             shootCooldown--
 
-            val currentStage = getStage()
+            val currentStage = getStage().coerceAtLeast(lastStage)
             if (lastStage != currentStage) {
                 (world as? ServerWorld)?.spawnParticles(
                     ParticleTypes.EXPLOSION_EMITTER,
@@ -514,6 +514,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         if (nbt.contains("rush_cooldown")) rushCooldown = nbt.getInt("rush_cooldown")
         if (nbt.contains("shoot_cooldown")) shootCooldown = nbt.getInt("shoot_cooldown")
         if (nbt.contains("spawn_cooldown")) spawnCooldown = nbt.getInt("spawn_cooldown")
+        if (nbt.contains("last_stage")) lastStage = nbt.getInt("last_stage")
     }
 
     override fun writeCustomDataToNbt(nbt: NbtCompound) {
@@ -524,6 +525,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         nbt.putInt("rush_cooldown", rushCooldown)
         nbt.putInt("shoot_cooldown", shootCooldown)
         nbt.putInt("spawn_cooldown", spawnCooldown)
+        nbt.putInt("last_stage", lastStage)
     }
 
     enum class ArachneAttackType {

@@ -1,0 +1,28 @@
+{
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "minecraft:entities/spider"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "derelict:spider_silk_gland",
+          "conditions": [
+            {
+              "condition": "minecraft:random_chance",
+              "chance": 0.75
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

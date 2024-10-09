@@ -61,7 +61,7 @@ object ModBiomes {
                     modification.spawnSettings.addSpawn(
                         SpawnGroup.MONSTER,
                         SpawnSettings.SpawnEntry(
-                            ModEntities.JUMPING_SPIDER, 80, 1, 2
+                            ModEntities.JUMPING_SPIDER, 30, 1, 2
                         )
                     )
                 }

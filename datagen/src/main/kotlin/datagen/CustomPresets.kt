@@ -690,13 +690,32 @@ object CustomPresets {
             key("S", "derelict:spider_silk")
         })
         add("netwalkers", CraftingRecipe.shaped("derelict:netwalkers") {
-            pattern("CLC")
+            pattern("GLG")
             pattern("M M")
             pattern("C C")
+            key("G", "derelict:spider_silk_gland")
             key("C", "derelict:spider_silk_strand")
             key("M", "derelict:spider_molt")
             key("L", "minecraft:iron_leggings")
         })
+        add("arachnicannon", CraftingRecipe.shaped("derelict:arachnicannon") {
+            pattern("SSS")
+            pattern("PMP")
+            pattern("DGD")
+            key("S", "minecraft:string")
+            key("P", "derelict:spider_pheromone_gland")
+            key("M", "derelict:spider_molt")
+            key("G", "minecraft:gunpowder")
+            key("D", "minecraft:diamond")
+        })
+        add("spider_silk_bola", CraftingRecipe.shaped("derelict:spider_silk_bola", 8) {
+            pattern("CCC")
+            pattern("CGC")
+            pattern("CCC")
+            key("C", "derelict:spider_silk_strand")
+            key("G", "derelict:spider_silk_gland")
+        })
+
         add(CommonRecipePresets.packed2x2("derelict:spider_egg", "derelict:spider_egg_block", 1))
         add("spider_egg_cluster", CraftingRecipe.shaped("derelict:spider_egg_cluster") {
             pattern("EE")

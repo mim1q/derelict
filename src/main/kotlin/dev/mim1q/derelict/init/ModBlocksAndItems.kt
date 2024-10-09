@@ -194,10 +194,15 @@ object ModBlocksAndItems {
 
     val WILDFIRE = registerItem("wildfire", Wildfire(defaultItemSettings().maxCount(1)), null)
     val ARACHNICANNON = registerItem("arachnicannon", Arachnicannon(defaultItemSettings().maxCount(1)))
-    val SPIDER_SILK_BOLA = registerItem("spider_silk_bola", SpiderSilkBola(defaultItemSettings().maxCount(1)))
+    val SPIDER_SILK_BOLA = registerItem("spider_silk_bola", SpiderSilkBola(defaultItemSettings()))
 
     // region ARMORS
     val NETWALKERS = registerItem("netwalkers", ArmorItem(ModArmorMaterials.SPIDER, ArmorItem.Type.LEGGINGS, defaultItemSettings().maxCount(1)))
+    // endregion
+
+    // region SIMPLE ITEMS
+    val SPIDER_SILK_GLAND = registerSimpleItem("spider_silk_gland")
+    val SPIDER_PHEROMONE_GLAND = registerSimpleItem("spider_pheromone_gland")
     // endregion
 
     // region SPAWN EGGS
@@ -245,6 +250,8 @@ object ModBlocksAndItems {
         category?.add(item)
         return Registry.register(Registries.ITEM, Derelict.id(name), item)
     }
+
+    internal fun registerSimpleItem(name: String): Item = registerItem(name, Item(defaultItemSettings()))
 
     private fun defaultItemSettings() = FabricItemSettings()
 

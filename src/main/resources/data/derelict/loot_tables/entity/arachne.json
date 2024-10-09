@@ -1,0 +1,52 @@
+{
+  "pools": [
+    {
+      "rolls": {
+        "min": 5,
+        "max": 8
+      },
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "minecraft:entities/spider"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "derelict:spider_silk_gland"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "min": 2,
+            "max": 6
+          }
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "derelict:spider_pheromone_gland"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "min": 3,
+            "max": 6
+          }
+        }
+      ]
+    }
+  ]
+}

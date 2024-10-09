@@ -83,7 +83,9 @@
     [],
     [],
     [],
-    [],
+    [
+        "derelict:spider_caves/spider_silk_pillar"
+    ],
     [],
     [],
     [
@@ -109,7 +111,6 @@
     ],
     [
       "derelict:spider_caves/spider_eggs",
-      "derelict:spider_caves/spider_silk_pillar",
       "derelict:spider_caves/spider_silk_parabola",
       "derelict:spider_caves/fancy_cobweb_patch",
       "derelict:spider_caves/wall_cobweb_patch",
