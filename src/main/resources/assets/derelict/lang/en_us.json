@@ -22,6 +22,7 @@
   "item.derelict.spider_caves_boss_arena_map": "Spider Mother's Lair Map",
   "item.derelict.arachnicannon.tooltip.no_eggs": "Use on a Spider Egg to load it",
   "item.derelict.arachnicannon.tooltip.eggs": "Loaded Spider Eggs: %1$s/%2$s",
+  "entity.derelict.arachne": "Arachne",
   "entity.derelict.spiderling": "Spiderling",
   "entity.derelict.web_caster": "Web Caster",
   "entity.derelict.charming_spider": "Charming Spider",

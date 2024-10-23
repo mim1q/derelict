@@ -1,0 +1,42 @@
+{
+	"credit": "Made with Blockbench by Mim1q. All Rights Reserved",
+	"texture_size": [64, 64],
+	"parent": "derelict:item/arachnicannon_hand",
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [0, 0, 30],
+			"translation": [1, 2, 0.5],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [0, 0, 30],
+			"translation": [1, 2, 0.5],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"firstperson_righthand": {
+			"rotation": [15, 20, 0],
+			"translation": [1.5, 6, 0.5],
+			"scale": [0.68, 0.68, 0.68]
+		},
+		"firstperson_lefthand": {
+			"rotation": [15, 20, 0],
+			"translation": [1.5, 6, 0.5],
+			"scale": [0.68, 0.68, 0.68]
+		},
+		"ground": {
+			"translation": [0, 8, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"gui": {
+			"rotation": [22, 155, 0],
+			"translation": [-0.5, 4.5, 0],
+			"scale": [0.75, 0.75, 0.75]
+		},
+		"head": {
+			"translation": [0, 15.5, -1.5]
+		},
+		"fixed": {
+			"translation": [0, 8, -1.5]
+		}
+	}
+}

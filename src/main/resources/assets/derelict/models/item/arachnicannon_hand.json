@@ -1,5 +1,5 @@
 {
-	"credit": "Made with Blockbench by Mim1q",
+	"credit": "Made with Blockbench by Mim1q. All Rights Reserved",
 	"texture_size": [64, 64],
 	"textures": {
 		"0": "derelict:item/arachnicannon_hand",
@@ -238,5 +238,14 @@
 		"fixed": {
 			"translation": [0, 8, -1.5]
 		}
-	}
+	},
+
+	"overrides": [
+		{
+			"predicate": {
+				"derelict:targeting": 1
+			},
+			"model": "derelict:item/arachnicannon_hand_target"
+		}
+	]
 }

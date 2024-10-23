@@ -1,6 +1,7 @@
 package dev.mim1q.derelict
 
 import com.mojang.blaze3d.systems.RenderSystem
+import dev.mim1q.derelict.Derelict.id
 import dev.mim1q.derelict.client.render.block.SpiderEggClusterRenderer
 import dev.mim1q.derelict.client.render.effect.SpiderWebModelFeature
 import dev.mim1q.derelict.client.render.entity.spider.ArachneEggRenderer
@@ -24,6 +25,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext
+import net.minecraft.client.item.ModelPredicateProviderRegistry
 import net.minecraft.client.render.entity.LivingEntityRenderer
 import net.minecraft.client.render.entity.model.EntityModel
 import net.minecraft.entity.LivingEntity
@@ -46,7 +48,7 @@ object DerelictClient : ClientModInitializer {
         // Might figure something out in the future (turn the spiders into robots in the resrouce pack?)
 
         // ResourceManagerHelper.registerBuiltinResourcePack(
-        //   Derelict.id("arachnophobia_filter"),
+        //   id("arachnophobia_filter"),
         //   FabricLoader.getInstance().getModContainer("derelict").get(),
         //   Text.literal("Arachnophobia Filter"),
         //   ResourcePackActivationType.NORMAL,
@@ -64,9 +66,9 @@ object DerelictClient : ClientModInitializer {
         }
 
         val hudWebTextures = arrayOf(
-            Derelict.id("textures/gui/effect/spider_web_gui_sparse.png"),
-            Derelict.id("textures/gui/effect/spider_web_gui.png"),
-            Derelict.id("textures/gui/effect/spider_web_gui_dense.png")
+            id("textures/gui/effect/spider_web_gui_sparse.png"),
+            id("textures/gui/effect/spider_web_gui.png"),
+            id("textures/gui/effect/spider_web_gui_dense.png")
         )
 
         fun DrawContext.drawFullScreenTexture(texture: Identifier, ratio: Float) {
@@ -97,7 +99,8 @@ object DerelictClient : ClientModInitializer {
             RenderSystem.setShaderColor(light, light, light, 1f)
 
             if (player.hasClientSyncedEffect(ModStatusEffects.COBWEBBED)) {
-                val level = MathHelper.clamp(player.getClientSyncedEffectAmplifier(ModStatusEffects.COBWEBBED) ?: 0, 0, 2)
+                val level =
+                    MathHelper.clamp(player.getClientSyncedEffectAmplifier(ModStatusEffects.COBWEBBED) ?: 0, 0, 2)
                 context.drawFullScreenTexture(hudWebTextures[level], 16 / 9f)
             }
 
@@ -146,8 +149,13 @@ object DerelictClient : ClientModInitializer {
             )
         }
 
+        ModelPredicateProviderRegistry.register(
+            ModBlocksAndItems.ARACHNICANNON,
+            id("targeting")
+        ) { _, _, livingEntity, _ -> if (livingEntity?.isUsingItem == true) 1f else 0f }
+
         HandheldItemModelRegistry.getInstance().register(
-            ModBlocksAndItems.ARACHNICANNON, Derelict.id("arachnicannon_hand")
+            ModBlocksAndItems.ARACHNICANNON, id("arachnicannon_hand")
         )
     }
 }
