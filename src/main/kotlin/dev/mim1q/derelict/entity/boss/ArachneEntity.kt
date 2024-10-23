@@ -14,6 +14,7 @@ import dev.mim1q.derelict.util.wrapDegrees
 import dev.mim1q.gimm1q.interpolation.AnimatedProperty
 import dev.mim1q.gimm1q.interpolation.Easing
 import dev.mim1q.gimm1q.screenshake.ScreenShakeUtils
+import net.fabricmc.fabric.api.client.screen.v1.Screens
 import net.minecraft.block.BlockState
 import net.minecraft.entity.*
 import net.minecraft.entity.ai.goal.ActiveTargetGoal
@@ -132,7 +133,9 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
                 (firstPassenger as? PlayerEntity)?.damage(damageSources.mobAttack(this), getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE).toFloat())
             }
 
-            processScreaming()
+            if (!dead) {
+                processScreaming()
+            }
             bossBar.percent = health / maxHealth
 
             stompCooldown--
@@ -317,13 +320,29 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         rushCooldown = rushCooldown.coerceAtLeast(cooldown)
     }
 
+    override fun onDeath(damageSource: DamageSource) {
+        super.onDeath(damageSource)
+
+        (world as? ServerWorld)?.let {
+            ScreenShakeUtils.shakeAround(it, pos, 1.5f, 60, 5.0, 30.0)
+        }
+    }
+
     override fun updatePostDeath() {
         ++this.deathTime
         if (world.isClient) {
             deathAnimation.transitionTo(1f, 60f)
+        } else {
+            dataTracker.set(SHAKING, true)
         }
 
         if (this.deathTime >= 60 && !world.isClient() && !this.isRemoved) {
+            if (deathTime == 60) {
+                playSound(SoundEvents.ENTITY_SPIDER_AMBIENT, 1f, 0.1f)
+                playSound(SoundEvents.ENTITY_SPIDER_AMBIENT, 1f, 0.2f)
+                playSound(SoundEvents.ENTITY_SPIDER_AMBIENT, 1f, 0.3f)
+            }
+
             world.sendEntityStatus(this, 60.toByte())
             this.remove(RemovalReason.KILLED)
         }
