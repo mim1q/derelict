@@ -10,6 +10,7 @@ import dev.mim1q.gimm1q.screenshake.ScreenShakeUtils
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.LivingEntity
+import net.minecraft.entity.ai.TargetPredicate
 import net.minecraft.entity.damage.DamageSource
 import net.minecraft.entity.data.DataTracker
 import net.minecraft.entity.data.TrackedData
@@ -23,6 +24,7 @@ import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
+import net.minecraft.util.math.Box
 import net.minecraft.world.World
 
 class ArachneEggEntity(type: EntityType<*>, world: World) : Entity(type, world) {
@@ -33,6 +35,7 @@ class ArachneEggEntity(type: EntityType<*>, world: World) : Entity(type, world) 
     private var lastAnimationTime = 0
     private var animationTime = 0
     private var stageCooldown = 20
+    private var lastTimeWithSpiderInArena = 0L
 
     override fun initDataTracker() {
         dataTracker.startTracking(STAGE, 0)
@@ -46,6 +49,25 @@ class ArachneEggEntity(type: EntityType<*>, world: World) : Entity(type, world) 
         if (stage == 3) {
             intersectionChecked = false
             animationTime = lastAnimationTime
+
+            if (!world.isClient() && age % 20 == 0) {
+                if (world.getClosestEntity(
+                        ArachneEntity::class.java,
+                        TargetPredicate.DEFAULT,
+                        null,
+                        x, y, z,
+                        Box.of(pos, 20.0, 6.0, 20.0)
+                    ) != null
+                ) {
+                    lastTimeWithSpiderInArena = world.time
+                }
+
+                if (world.time - lastTimeWithSpiderInArena > 20 * Derelict.CONFIG.arachneEggRespawnTime()) {
+                    breakEggStage()
+                }
+            }
+
+
         } else {
             intersectionChecked = true
         }
@@ -97,7 +119,10 @@ class ArachneEggEntity(type: EntityType<*>, world: World) : Entity(type, world) 
             return true
         } else {
             player.sendMessage(
-                Text.translatable("text.derelict.spider_egg_required_advancement", advancement.display?.description ?: ""),
+                Text.translatable(
+                    "text.derelict.spider_egg_required_advancement",
+                    advancement.display?.description ?: ""
+                ),
                 true
             )
             return false

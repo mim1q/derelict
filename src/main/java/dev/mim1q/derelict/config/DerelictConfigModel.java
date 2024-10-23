@@ -35,4 +35,11 @@ public class DerelictConfigModel {
         If left empty, no advancement is required."""
     )
     public String arachneEggAdvancement = "";
+
+    @Comment("""
+        The time it takes for an Arachne's Egg to respawn, in seconds.
+        Set to -1 to disable respawning (only recommended if you have a proper reason to only allow one fight per\s
+        nest)."""
+    )
+    public int arachneEggRespawnTime = 3600;
 }
