@@ -15,12 +15,18 @@
   },
   "item.derelict": {
     "aging_staff;waxing_staff;netwalkers;arachnicannon;spider_silk_bola": "%",
+    "spider_silk_gland;spider_pheromone_gland": "%",
     "spiderling_in_a_bucket": "Spiderling in a Bucket",
     "spider_caves_boss_arena_map": "Spider Mother's Lair Map",
+    "arachnicannon": {
+      "": "%",
+      "tooltip.no_eggs": "Use on a Spider Egg to load it",
+      "tooltip.eggs": "Loaded Spider Eggs: %1$s/%2$s"
+    }
   },
   // Entities
   "entity.derelict": {
-    "spiderling;web_caster;charming_spider;daddy_long_legs;jumping_spider;spiny_spider": "%",
+    "spiderling;web_caster;charming_spider;daddy_long_legs;jumping_spider;spiny_spider": "%"
   },
   "item.derelict.$_spawn_egg": {
     "web_caster;charming_spider;daddy_long_legs;jumping_spider;spiny_spider": "%"
