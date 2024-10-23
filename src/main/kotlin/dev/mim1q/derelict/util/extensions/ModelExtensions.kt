@@ -9,9 +9,9 @@ fun ModelPart.setPartialAngles(
     yaw: Float = this.yaw,
     delta: Float
 ) {
-    this.pitch = MathHelper.lerp(delta, this.pitch, pitch)
-    this.roll = MathHelper.lerp(delta, this.roll, roll)
-    this.yaw = MathHelper.lerp(delta, this.yaw, yaw)
+    setPartialPitch(pitch, delta)
+    setPartialRoll(roll, delta)
+    setPartialYaw(yaw, delta)
 }
 
 fun ModelPart.setPartialAnglesDegrees(
@@ -21,4 +21,25 @@ fun ModelPart.setPartialAnglesDegrees(
     delta: Float
 ) {
     setPartialAngles(pitch.radians(), roll.radians(), yaw.radians(), delta)
+}
+
+fun ModelPart.setPartialPitch(
+    pitch: Float = this.pitch,
+    delta: Float
+) {
+    this.pitch = MathHelper.lerp(delta, this.pitch, pitch)
+}
+
+fun ModelPart.setPartialRoll(
+    roll: Float = this.roll,
+    delta: Float
+) {
+    this.roll = MathHelper.lerp(delta, this.roll, roll)
+}
+
+fun ModelPart.setPartialYaw(
+    yaw: Float = this.yaw,
+    delta: Float
+) {
+    this.yaw = MathHelper.lerp(delta, this.yaw, yaw)
 }

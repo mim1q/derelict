@@ -79,6 +79,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
     val rightLegStomp = AnimatedProperty(0f, Easing::easeInOutCubic)
 
     val fangsAnimation = AnimatedProperty(0f, Easing::easeInOutCubic)
+    val deathAnimation = AnimatedProperty(0f, Easing::easeInOutCubic)
 
     private var screamingTicks = 0
     private var wasScreaming = false
@@ -314,6 +315,18 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         spawnCooldown = spawnCooldown.coerceAtLeast(cooldown)
         stompCooldown = stompCooldown.coerceAtLeast(cooldown)
         rushCooldown = rushCooldown.coerceAtLeast(cooldown)
+    }
+
+    override fun updatePostDeath() {
+        ++this.deathTime
+        if (world.isClient) {
+            deathAnimation.transitionTo(1f, 60f)
+        }
+
+        if (this.deathTime >= 60 && !world.isClient() && !this.isRemoved) {
+            world.sendEntityStatus(this, 60.toByte())
+            this.remove(RemovalReason.KILLED)
+        }
     }
 
     private fun createSmashAttack() = createArachneAttack(

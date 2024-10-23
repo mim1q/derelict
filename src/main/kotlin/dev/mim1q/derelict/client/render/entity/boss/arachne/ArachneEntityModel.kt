@@ -4,6 +4,7 @@ import dev.mim1q.derelict.entity.boss.ArachneEntity
 import dev.mim1q.derelict.entity.spider.legs.SpiderLegParts
 import dev.mim1q.derelict.util.extensions.radians
 import dev.mim1q.derelict.util.extensions.setPartialAnglesDegrees
+import dev.mim1q.derelict.util.extensions.setPartialRoll
 import dev.mim1q.gimm1q.interpolation.Easing
 import net.minecraft.client.model.ModelPart
 import net.minecraft.client.render.RenderLayer
@@ -13,11 +14,6 @@ import net.minecraft.client.util.math.MatrixStack
 import kotlin.math.sin
 
 class ArachneEntityModel(root: ModelPart) : EntityModel<ArachneEntity>(RenderLayer::getEntityCutout) {
-
-    companion object {
-        const val LIMB_LENGTH = 22 / 16F
-        const val FORELIMB_LENGTH = 30 / 16F
-    }
 
     private val body = root.getChild("body")
     private val sternum = body.getChild("sternum")
@@ -81,6 +77,22 @@ class ArachneEntityModel(root: ModelPart) : EntityModel<ArachneEntity>(RenderLay
         rightFang.roll -= fangAnimation * 20f.radians()
         rightFang.pitch -= fangAnimation * 60f.radians()
         head.pitch -= fangAnimation * 15f.radians()
+
+
+        if (entity.isDead) {
+            val death = entity.deathAnimation.update(animationProgress)
+            val jumpParam = (entity.deathAnimation.progress * 3).coerceAtMost(1f)
+            val jump = -4 * jumpParam * (jumpParam - 1)
+
+            body.pivotY -= 16 * jump
+            body.pivotZ -= 16 * jumpParam
+            body.pitch -= 180f.radians() * jumpParam
+            legs.forEachIndexed { i, leg ->
+                val mul = if (i < 4) 1 else -1
+                leg.lower.setPartialRoll(mul * 130f.radians(), death)
+                leg.upper.setPartialRoll(mul * 40f.radians(), death)
+            }
+        }
     }
 
     override fun animateModel(entity: ArachneEntity, limbAngle: Float, limbDistance: Float, tickDelta: Float) {
@@ -98,7 +110,11 @@ class ArachneEntityModel(root: ModelPart) : EntityModel<ArachneEntity>(RenderLay
         }
 
         legs.forEachIndexed { index, it ->
-            it.applyIk(entity.legController.getIk(index), Easing.lerp(entity.prevBodyYaw, entity.bodyYaw, tickDelta), tickDelta)
+            it.applyIk(
+                entity.legController.getIk(index),
+                Easing.lerp(entity.prevBodyYaw, entity.bodyYaw, tickDelta),
+                tickDelta
+            )
         }
     }
 }
