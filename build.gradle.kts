@@ -48,7 +48,8 @@ dependencies {
     modImplementation("net.fabricmc:fabric-language-kotlin:${Versions.FABRIC_LANUGAGE_KOTLIN}")
     implementation(kotlin("stdlib-jdk8"))
     // owo-lib
-    annotationProcessor(modImplementation("io.wispforest:owo-lib:${Versions.OWO_LIB}")!!)
+    val owoLib = configurations.create("owoLib")
+    owoLib(annotationProcessor(modImplementation("io.wispforest:owo-lib:${Versions.OWO_LIB}")!!)!!)
     include("io.wispforest:owo-sentinel:${Versions.OWO_LIB}")
     // Jankson for owo-lib config comments
     implementation("blue.endless:jankson:${Versions.JANKSON}")
@@ -85,6 +86,16 @@ tasks {
         dependsOn(":datagen:run")
         group = "fabric"
     }
+    register("generateConfigs", JavaCompile::class) {
+        group = "fabric"
+        val owoLib = configurations.getByName("owoLib")
+
+        source("src/main/java/dev/mim1q/derelict/config/")
+        destinationDirectory.set(file("$buildDir/generated/sources/annotationProcessor/java/main"))
+        classpath = files(owoLib)
+        options.compilerArgs.add("-proc:only")
+        options.annotationProcessorPath = files(owoLib)
+    }
 }
 
 sourceSets {
@@ -94,7 +105,7 @@ sourceSets {
         }
         java {
             // For some reason commenting out this line fixes the annotation processor errors :)
-            // Uncomment if it doesn't work
+            // Comment or uncomment if it doesn't work
              srcDir("$buildDir/generated/sources/annotationProcessor/java")
         }
     }
