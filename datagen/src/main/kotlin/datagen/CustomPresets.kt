@@ -22,7 +22,7 @@ object CustomPresets {
         val (ns, name) = Id(id)
         add(CommonModelPresets.generatedItemModel(id))
         add(
-            name, ParentedModel.block("block/vine")
+            name, ParentedModel.block("derelict:block/wall_plant")
                 .texture("particle", "$ns:block/$name")
                 .texture("vine", "$ns:block/$name")
         )
@@ -77,7 +77,7 @@ object CustomPresets {
         add(CommonModelPresets.generatedItemModel("derelict:smoldering_embers"))
         variantList.forEach {
             add(
-                "$name/$it", ParentedModel.block("block/vine")
+                "$name/$it", ParentedModel.block("derelict:block/wall_plant")
                     .texture("particle", "derelict:block/$name/$it")
                     .texture("vine", "derelict:block/$name/$it")
             )

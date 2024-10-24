@@ -40,7 +40,7 @@ class Arachnicannon(settings: Settings) : Item(settings) {
                 val projectile = SpiderEggProjectile(ModEntities.SPIDER_EGG_PROJECTILE, world)
                 projectile.setPosition(user.pos.add(0.0, 1.5, 0.0))
                 projectile.owner = user
-                projectile.setVelocity(user, user.pitch, user.yaw, 0f, 2.3f + user.random.nextFloat() * 2f, 0.4f)
+                projectile.setVelocity(user, user.pitch, user.yaw, 0f, 2.3f + user.random.nextFloat() * 2f, 5f)
                 world.spawnEntity(projectile)
             }
 

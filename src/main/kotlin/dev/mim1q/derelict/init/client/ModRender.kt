@@ -1,6 +1,5 @@
 package dev.mim1q.derelict.init.client
 
-import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry
 import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.client.render.armor.NetwalkersRenderer
 import dev.mim1q.derelict.client.render.block.SpiderEggClusterRenderer
@@ -20,6 +19,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry.Text
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback
 import net.minecraft.client.render.RenderLayer
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactories
 import net.minecraft.client.render.entity.EntityRendererFactory
 import net.minecraft.client.render.entity.model.EntityModelLayer
 
@@ -67,7 +67,7 @@ object ModRender {
             ModBlocksAndItems.SPIDER_SILK_STRAND
         )
 
-        BlockEntityRendererRegistry.register(ModBlockEntities.SPIDER_EGG_BLOCK_ENTITY, ::SpiderEggClusterRenderer)
+        BlockEntityRendererFactories.register(ModBlockEntities.SPIDER_EGG_BLOCK_ENTITY, ::SpiderEggClusterRenderer)
 
         EntityRendererRegistry.register(ModEntities.ARACHNE, ::ArachneEntityRenderer)
         EntityRendererRegistry.register(ModEntities.SPIDERLING, ::SpiderlingEntityRenderer)

@@ -154,10 +154,12 @@ sealed class SpiderlingEntity(entityType: EntityType<SpiderlingEntity>, world: W
     class Ally(entityType: EntityType<SpiderlingEntity>, world: World) : SpiderlingEntity(entityType, world) {
         var owner: UUID? = null
 
+        private val maxAge = 200 + world.random.nextInt(100)
+
         override fun tick() {
             super.tick()
 
-            if (!world.isClient && age > 200) {
+            if (!world.isClient && age > maxAge) {
                 discard()
                 (world as? ServerWorld)?.spawnParticles(
                     BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.COBWEB.defaultState),
