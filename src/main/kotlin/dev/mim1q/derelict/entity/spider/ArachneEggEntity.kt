@@ -50,7 +50,7 @@ class ArachneEggEntity(type: EntityType<*>, world: World) : Entity(type, world) 
             intersectionChecked = false
             animationTime = lastAnimationTime
 
-            if (!world.isClient() && age % 20 == 0) {
+            if (!world.isClient() && age % 20 == 0 && Derelict.CONFIG.arachneEggRespawnTime() > 0) {
                 if (world.getClosestEntity(
                         ArachneEntity::class.java,
                         TargetPredicate.DEFAULT,

@@ -14,7 +14,6 @@ import dev.mim1q.derelict.util.wrapDegrees
 import dev.mim1q.gimm1q.interpolation.AnimatedProperty
 import dev.mim1q.gimm1q.interpolation.Easing
 import dev.mim1q.gimm1q.screenshake.ScreenShakeUtils
-import net.fabricmc.fabric.api.client.screen.v1.Screens
 import net.minecraft.block.BlockState
 import net.minecraft.entity.*
 import net.minecraft.entity.ai.goal.ActiveTargetGoal
@@ -473,7 +472,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
             if (ticks == 30 && target != null) {
                 val projectile = ModEntities.SPIDER_SILK_BOLA.create(world) ?: return@tick
                 val diff = target.pos.add(0.0, 1.5, 0.0).subtract(pos).normalize()
-                projectile.setVelocity(diff.x, diff.y + 0.1, diff.z)
+                projectile.setVelocity(diff.x, diff.y + 0.03, diff.z)
                 projectile.setPosition(pos.add(0.0, 0.5, 0.0).add(rotationVector))
                 projectile.owner = this@ArachneEntity
                 world.spawnEntity(projectile)
