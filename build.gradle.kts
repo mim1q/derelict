@@ -67,7 +67,7 @@ dependencies {
     include(modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${Versions.CARDINAL_COMPONENTS}")!!)
     // Biolith for biome generation
     include(modImplementation("maven.modrinth:biolith:${Versions.BIOLITH}")!!)
-    include(modImplementation("com.terraformersmc.terraform-api:terraform-surfaces-api-v1:10.0.0")!!)
+    include(modImplementation("com.terraformersmc.terraform-api:terraform-surfaces-api-v1:7.0.3")!!)
 }
 
 tasks {
