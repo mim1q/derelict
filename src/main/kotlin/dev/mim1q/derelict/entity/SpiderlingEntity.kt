@@ -1,17 +1,19 @@
 package dev.mim1q.derelict.entity
 
+import dev.mim1q.derelict.entity.damage.DerelictDamageSource
 import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.util.entity.nullableTracked
 import dev.mim1q.derelict.util.entity.tracked
 import dev.mim1q.gimm1q.interpolation.AnimatedProperty
 import net.minecraft.block.Blocks
 import net.minecraft.entity.Bucketable
-import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityType
+import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.ai.goal.*
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
 import net.minecraft.entity.damage.DamageSource
+import net.minecraft.entity.damage.DamageSources
 import net.minecraft.entity.damage.DamageTypes
 import net.minecraft.entity.data.DataTracker
 import net.minecraft.entity.data.TrackedData
@@ -50,7 +52,7 @@ sealed class SpiderlingEntity(entityType: EntityType<SpiderlingEntity>, world: W
 
         fun createSpiderlingAllyAttributes(): DefaultAttributeContainer.Builder = createHostileAttributes()
             .add(EntityAttributes.GENERIC_MAX_HEALTH, 2.0)
-            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5.0)
+            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 4.0)
             .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.36)
     }
 
@@ -188,6 +190,8 @@ sealed class SpiderlingEntity(entityType: EntityType<SpiderlingEntity>, world: W
             })
         }
 
+        override fun getDamageSources(): DamageSources = sources ?: super.getDamageSources()
+
         override fun writeCustomDataToNbt(nbt: NbtCompound) {
             super.writeCustomDataToNbt(nbt)
 
@@ -200,12 +204,14 @@ sealed class SpiderlingEntity(entityType: EntityType<SpiderlingEntity>, world: W
             if (nbt.containsUuid("owner")) owner = nbt.getUuid("owner")
         }
 
-        override fun tryAttack(target: Entity): Boolean {
-            val result = super.tryAttack(target)
-            if (result && !world.isClient()) {
-                damage(damageSources.generic(), 1f)
+        private val sources = createSources()
+
+        private fun createSources(): DamageSources? = world?.registryManager?.let {
+            object :
+                DamageSources(it) {
+                override fun mobAttack(attacker: LivingEntity): DamageSource =
+                    DerelictDamageSource.SPIDERLING_ALLY.get(world, attacker)
             }
-            return result
         }
     }
 }

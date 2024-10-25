@@ -36,6 +36,8 @@ class Arachnicannon(settings: Settings) : Item(settings) {
                 user.sendToolBreakStatus(user.activeHand)
             }
 
+            world.playSound(null, user.blockPos, SoundEvents.ENTITY_SPLASH_POTION_THROW, SoundCategory.PLAYERS, 1f, 0.8f)
+
             repeat(amount) {
                 val projectile = SpiderEggProjectile(ModEntities.SPIDER_EGG_PROJECTILE, world)
                 projectile.setPosition(user.pos.add(0.0, 1.5, 0.0))

@@ -9,6 +9,8 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.particle.ParticleTypes
 import net.minecraft.server.world.ServerWorld
+import net.minecraft.sound.SoundEvent
+import net.minecraft.sound.SoundEvents
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.EntityHitResult
 import net.minecraft.util.math.Box
@@ -64,6 +66,8 @@ class SpiderEggProjectile(
         world.spawnEntity(spiderling)
         discard()
     }
+
+    override fun getHitSound(): SoundEvent = SoundEvents.ENTITY_ITEM_PICKUP
 
     override fun asItemStack(): ItemStack = ItemStack.EMPTY
 }

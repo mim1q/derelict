@@ -234,6 +234,9 @@ fun main(args: Array<String>) {
 
         // Structure Tags
         TagManager.add("derelict:worldgen/structure/spider_caves/boss_arena", "derelict:spider_caves/boss_arena")
+
+        // Damage Type Tags
+        TagManager.add("minecraft:damage_type/bypasses_cooldown", "derelict:spiderling_ally")
     }
     generator.printInfo()
     generator.generate()
