@@ -12,6 +12,7 @@ import net.minecraft.entity.SpawnGroup
 import net.minecraft.registry.RegistryKey
 import net.minecraft.registry.RegistryKeys
 import net.minecraft.world.biome.Biome
+import net.minecraft.world.biome.BiomeKeys
 import net.minecraft.world.biome.SpawnSettings
 import net.minecraft.world.biome.source.util.MultiNoiseUtil
 import net.minecraft.world.biome.source.util.MultiNoiseUtil.NoiseHypercube
@@ -62,6 +63,34 @@ object ModBiomes {
                         SpawnGroup.MONSTER,
                         SpawnSettings.SpawnEntry(
                             ModEntities.JUMPING_SPIDER, 30, 1, 2
+                        )
+                    )
+                }
+            )
+
+        BiomeModifications.create(Derelict.id("add_spiny_spiders"))
+            .add(
+                ModificationPhase.ADDITIONS,
+                { selection -> selection.biomeKey == BiomeKeys.CRIMSON_FOREST },
+                { _, modification ->
+                    modification.spawnSettings.addSpawn(
+                        SpawnGroup.MONSTER,
+                        SpawnSettings.SpawnEntry(
+                            ModEntities.SPINY_SPIDER, 15, 1, 2
+                        )
+                    )
+                }
+            )
+
+        BiomeModifications.create(Derelict.id("add_charming_spiders"))
+            .add(
+                ModificationPhase.ADDITIONS,
+                { selection -> selection.biomeKey == BiomeKeys.WARPED_FOREST },
+                { _, modification ->
+                    modification.spawnSettings.addSpawn(
+                        SpawnGroup.MONSTER,
+                        SpawnSettings.SpawnEntry(
+                            ModEntities.CHARMING_SPIDER, 15, 1, 2
                         )
                     )
                 }
