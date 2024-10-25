@@ -26,7 +26,7 @@
   },
   // Entities
   "entity.derelict": {
-    "arachne;spiderling;web_caster;charming_spider;daddy_long_legs;jumping_spider;spiny_spider": "%"
+    "arachne;arachne_egg;spiderling;web_caster;charming_spider;daddy_long_legs;jumping_spider;spiny_spider": "%"
   },
   "item.derelict.$_spawn_egg": {
     "web_caster;charming_spider;daddy_long_legs;jumping_spider;spiny_spider": "%"
