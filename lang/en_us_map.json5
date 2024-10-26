@@ -92,6 +92,10 @@
     "spider_silk;spider_silk_strand;spider_egg_block;spider_egg;spider_egg_cluster;spider_molt": "%",
     "fancy_cobweb.disabled_tooltip": ""
   },
+  // Effects
+  "effect.derelict": {
+    "cobwebbed": "Cobwebbed"
+  },
   // Text
   "text.derelict": {
     "spider_egg_required_advancement": "You are too weak to break this egg. %1$s"
