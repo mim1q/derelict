@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "derelict",
   "name": "Derelict",
-  "description": "Decorations for your abandoned builds!",
+  "description": "All that is abandoned!",
   "version": "${version}",
   "environment": "*",
   "icon": "assets/derelict/icon.png",
@@ -12,7 +12,8 @@
     "client":              [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.DerelictClient" }],
     "emi":                 [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.compat.emi.EmiDerelictPlugin" }],
     "rei_client":          [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.compat.rei.ReiDerelictPlugin" }],
-    "cardinal-components": [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.init.component.ModCardinalComponents" }]
+    "cardinal-components": [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.init.component.ModCardinalComponents" }],
+    "terrablender":        [{ "adapter": "kotlin", "value": "dev.mim1q.derelict.init.worldgen.ModBiomes" }]
   },
   "mixins": [
     "derelict.mixins.json"
@@ -22,7 +23,8 @@
     "fabric": ">=0.76.0",
     "minecraft": "1.20.1",
     "fabric-language-kotlin": ">=1.9.4+kotlin.1.8.21",
-    "owo": ">=0.11.1"
+    "owo": ">=0.11.1",
+    "terrablender": "*"
   },
   "custom": {
     "cardinal-components": [

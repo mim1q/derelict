@@ -1,7 +1,6 @@
 package dev.mim1q.derelict.init.worldgen
 
-import com.terraformersmc.biolith.api.biome.BiomePlacement
-import com.terraformersmc.biolith.api.surface.SurfaceGeneration
+import com.mojang.datafixers.util.Pair
 import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.init.ModEntities
@@ -9,6 +8,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.SpawnGroup
+import net.minecraft.registry.Registry
 import net.minecraft.registry.RegistryKey
 import net.minecraft.registry.RegistryKeys
 import net.minecraft.world.biome.Biome
@@ -20,31 +20,40 @@ import net.minecraft.world.biome.source.util.MultiNoiseUtil.ParameterRange
 import net.minecraft.world.gen.surfacebuilder.MaterialRules
 import net.minecraft.world.gen.surfacebuilder.MaterialRules.block
 import net.minecraft.world.gen.surfacebuilder.MaterialRules.condition
+import terrablender.api.*
+import terrablender.api.ParameterUtils.*
+import java.util.function.Consumer
 
-object ModBiomes {
+object ModBiomes : TerraBlenderApi {
     private val SPIDER_CAVES = biomeKey("spider_caves")
+    private val DERELICT_REGION = object : Region(Derelict.id("derelict"), RegionType.OVERWORLD, 1) {
+        override fun addBiomes(
+            registry: Registry<Biome>,
+            mapper: Consumer<Pair<NoiseHypercube, RegistryKey<Biome>>>
+        ) {
 
-    fun init() {
-        BiomePlacement.addOverworld(
-            SPIDER_CAVES,
-            noiseParameters(
-                depth = 1.2f..3.0f,
-                weirdness = 0.72f..0.78f,
-                offset = 0.15f
-            )
-        )
-        BiomePlacement.addOverworld(
-            SPIDER_CAVES,
-            noiseParameters(
-                continentalness = 0.0f..1.0f,
-                depth = 0.0f..1.3f,
-                weirdness = 0.84f..1.0f,
-                offset = 0.15f
-            )
-        )
+            val spiderCavesPoints = ParameterPointListBuilder()
+                .temperature(Temperature.FULL_RANGE)
+                .humidity(Humidity.WET, Humidity.HUMID, Humidity.ARID)
+                .continentalness(Continentalness.FULL_RANGE)
+                .erosion(Erosion.FULL_RANGE)
+                .depth(Depth.UNDERGROUND)
+                .weirdness(Weirdness.FULL_RANGE)
+                .offset(0.38f)
+                .build()
 
-        SurfaceGeneration.addOverworldSurfaceRules(
-            Derelict.id("rules/overworld/spider_caves"),
+            addModifiedVanillaOverworldBiomes(mapper) {
+                spiderCavesPoints.forEach { addBiome(mapper, it, SPIDER_CAVES) }
+            }
+        }
+    }
+
+    override fun onTerraBlenderInitialized() {
+        Regions.register(DERELICT_REGION)
+
+        SurfaceRuleManager.addSurfaceRules(
+            SurfaceRuleManager.RuleCategory.OVERWORLD,
+            Derelict.MOD_ID,
             condition(
                 MaterialRules.biome(SPIDER_CAVES),
                 block(ModBlocksAndItems.ARACHNITE.block.defaultState)

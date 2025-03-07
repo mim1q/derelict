@@ -37,6 +37,9 @@ repositories {
         name = "Ladysnake Maven"
         url = uri("https://maven.ladysnake.org/releases")
     }
+    repositories { // TerraBlender
+        maven { url = uri("https://maven.minecraftforge.net/") }
+    }
     mavenLocal()
 }
 
@@ -65,9 +68,8 @@ dependencies {
     // Cardinal Components API for synced entity data
     include(modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${Versions.CARDINAL_COMPONENTS}")!!)
     include(modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${Versions.CARDINAL_COMPONENTS}")!!)
-    // Biolith for biome generation
-    include(modImplementation("maven.modrinth:biolith:${Versions.BIOLITH}")!!)
-    include(modImplementation("com.terraformersmc.terraform-api:terraform-surfaces-api-v1:7.0.3")!!)
+    // Terrablender for biome generation
+    modImplementation("com.github.glitchfiend:TerraBlender-fabric:${Versions.TERRABLENDER}")
 }
 
 tasks {
@@ -106,7 +108,7 @@ sourceSets {
         java {
             // For some reason commenting out this line fixes the annotation processor errors :)
             // Comment or uncomment if it doesn't work
-             srcDir("$buildDir/generated/sources/annotationProcessor/java")
+            srcDir("$buildDir/generated/sources/annotationProcessor/java")
         }
     }
 }
@@ -141,7 +143,7 @@ if (secrets.isModrinthReady()) {
         gameVersions.set(ModData.mcVersions)
         loaders.set(listOf("fabric"))
         dependencies {
-            ModData.dependencies.forEach(required::project)
+            ModData.modrinthDependencies.forEach(required::project)
         }
     }
 }
@@ -158,7 +160,7 @@ if (secrets.isCurseforgeReady()) {
             changelog = newChangelog
             changelogType = "markdown"
             relations(closureOf<CurseRelation> {
-                ModData.dependencies.forEach(::requiredDependency)
+                ModData.curseforgeDependencies.forEach(::requiredDependency)
             })
             mainArtifact(remapJar, closureOf<CurseArtifact> {
                 displayName = newVersionName

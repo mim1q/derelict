@@ -21,6 +21,7 @@ import net.minecraft.util.math.MathHelper.clamp
 import net.minecraft.util.math.MathHelper.lerpAngleDegrees
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
+import net.minecraft.world.WorldView
 import java.util.*
 import kotlin.math.atan2
 import kotlin.math.max
@@ -72,7 +73,11 @@ class JumpingSpiderEntity(
 
         if (isChargingJump && trackedTarget != null) {
             setPos(MathHelper.lerp(0.01, prevX, x), y, MathHelper.lerp(0.01, prevZ, z))
-            bodyYaw = lerpAngleDegrees(0.2f, prevBodyYaw, atan2(trackedTarget.z - z, trackedTarget.x - x).degrees().toFloat() - 90f)
+            bodyYaw = lerpAngleDegrees(
+                0.2f,
+                prevBodyYaw,
+                atan2(trackedTarget.z - z, trackedTarget.x - x).degrees().toFloat() - 90f
+            )
         }
     }
 
@@ -84,12 +89,16 @@ class JumpingSpiderEntity(
     override fun createBodyControl(): BodyControl = ArachneBodyControl(this, 0.7f)
 
     companion object {
-        val JUMP_CHARGING: TrackedData<Boolean> = DataTracker.registerData(JumpingSpiderEntity::class.java, TrackedDataHandlerRegistry.BOOLEAN)
-        val TARGET_ID: TrackedData<Int> = DataTracker.registerData(JumpingSpiderEntity::class.java, TrackedDataHandlerRegistry.INTEGER)
+        val JUMP_CHARGING: TrackedData<Boolean> =
+            DataTracker.registerData(JumpingSpiderEntity::class.java, TrackedDataHandlerRegistry.BOOLEAN)
+        val TARGET_ID: TrackedData<Int> =
+            DataTracker.registerData(JumpingSpiderEntity::class.java, TrackedDataHandlerRegistry.INTEGER)
     }
 
     inner class JumpingSpiderJumpAttack : Goal() {
-        override fun canStart(): Boolean = target != null && target!!.y <= y && jumpAttackCooldown <= 0 && random.nextFloat() < 0.2f
+        override fun canStart(): Boolean =
+            target != null && target!!.y <= y && jumpAttackCooldown <= 0 && random.nextFloat() < 0.2f
+
         override fun shouldContinue(): Boolean = target != null && ticks < 15
         private var ticks = 0
 
@@ -122,4 +131,6 @@ class JumpingSpiderEntity(
             dataTracker[JUMP_CHARGING] = true
         }
     }
+
+    override fun canSpawn(world: WorldView): Boolean = super.canSpawn(world) && world.getLightLevel(blockPos) == 0
 }
