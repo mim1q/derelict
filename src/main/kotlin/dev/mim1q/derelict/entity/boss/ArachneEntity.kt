@@ -28,6 +28,8 @@ import net.minecraft.entity.damage.DamageSource
 import net.minecraft.entity.data.DataTracker
 import net.minecraft.entity.data.TrackedData
 import net.minecraft.entity.data.TrackedDataHandlerRegistry
+import net.minecraft.entity.effect.StatusEffectInstance
+import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.entity.mob.HostileEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.nbt.NbtCompound
@@ -95,6 +97,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
     private var shootCooldown = 80
 
     private var forceSpawnAttack = false
+    private var playerInFangsTimer = 0
 
     override fun initGoals() {
         if (age < 40 || goalsSetup) return
@@ -128,8 +131,27 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
                 initGoals()
             }
 
-            if (age % 10 == 0) {
-                (firstPassenger as? PlayerEntity)?.damage(damageSources.mobAttack(this), getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE).toFloat())
+            if (age % 5 == 0) {
+                val passenger = firstPassenger as? PlayerEntity
+                if (passenger != null) {
+                    passenger.damage(
+                        damageSources.mobAttack(this),
+                        getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE).toFloat()
+                    )
+                    if (playerInFangsTimer == 30) {
+                        playSound(SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, 1.0f, 0.8f)
+                        passenger.addStatusEffect(
+                            StatusEffectInstance(
+                                StatusEffects.POISON,
+                                80,
+                                1
+                            )
+                        )
+                    }
+                    playerInFangsTimer += 5
+                } else {
+                    playerInFangsTimer = 0
+                }
             }
 
             if (!dead) {
@@ -332,14 +354,14 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         if (world.isClient) {
             deathAnimation.transitionTo(1f, 60f)
         } else {
-            dataTracker.set(SHAKING, true)
+            dataTracker.set(SHAKING, deathTime < 60)
         }
 
-        if (this.deathTime >= 60 && !world.isClient() && !this.isRemoved) {
-            if (deathTime == 60) {
-                playSound(SoundEvents.ENTITY_SPIDER_AMBIENT, 1f, 0.1f)
-                playSound(SoundEvents.ENTITY_SPIDER_AMBIENT, 1f, 0.2f)
-                playSound(SoundEvents.ENTITY_SPIDER_AMBIENT, 1f, 0.3f)
+        if (this.deathTime >= 100 && !world.isClient() && !this.isRemoved) {
+            if (deathTime == 100) {
+                playSound(SoundEvents.ENTITY_SPIDER_DEATH, 1f, 0.1f)
+                playSound(SoundEvents.ENTITY_SPIDER_DEATH, 1f, 0.2f)
+                playSound(SoundEvents.ENTITY_SPIDER_DEATH, 1f, 0.3f)
             }
 
             world.sendEntityStatus(this, 60.toByte())

@@ -15,4 +15,5 @@ object ModData {
     val curseforgeDependencies = commonDependencies + listOf(
         "terrablender-fabric"
     )
+    val embeddedDependencies = listOf<String>()
 }

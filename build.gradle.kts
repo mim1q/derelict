@@ -143,6 +143,7 @@ if (secrets.isModrinthReady()) {
         gameVersions.set(ModData.mcVersions)
         loaders.set(listOf("fabric"))
         dependencies {
+            ModData.embeddedDependencies.forEach(embedded::project)
             ModData.modrinthDependencies.forEach(required::project)
         }
     }
@@ -161,6 +162,7 @@ if (secrets.isCurseforgeReady()) {
             changelogType = "markdown"
             relations(closureOf<CurseRelation> {
                 ModData.curseforgeDependencies.forEach(::requiredDependency)
+                ModData.embeddedDependencies.forEach(::embeddedLibrary)
             })
             mainArtifact(remapJar, closureOf<CurseArtifact> {
                 displayName = newVersionName

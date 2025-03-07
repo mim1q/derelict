@@ -32,6 +32,7 @@
   "block.derelict.spider_egg": "Spider Egg",
   "block.derelict.spider_egg_cluster": "Spider Egg Cluster",
   "block.derelict.spider_molt": "Spider Molt",
+  "effect.derelict.cobwebbed": "Cobwebbed",
   "text.derelict.spider_egg_required_advancement": "You are too weak to break this egg. %1$s",
   "tag.item.derelict.general_tab": "General Derelict Items",
   "tag.item.derelict.burned_logs": "Burned Logs",
