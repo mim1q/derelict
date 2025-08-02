@@ -12,8 +12,8 @@ plugins {
 
 java {
     withSourcesJar()
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 base {
@@ -25,6 +25,7 @@ version = ModData.version
 
 repositories {
     mavenCentral()
+    maven("https://redempt.dev") // Crunch in Gimm1q
     maven("https://maven.wispforest.io")
     maven("https://maven.shedaniel.me")
     maven("https://maven.terraformersmc.com")
@@ -81,7 +82,7 @@ tasks {
     }
     withType<JavaCompile> {
         configureEach {
-            options.release.set(17)
+            options.release.set(21)
         }
     }
     register("runDatagenScript") {
@@ -183,5 +184,5 @@ tasks.getByName("sourcesJar").dependsOn("compileJava")
 tasks.getByName("modrinth").dependsOn("optimizeOutputsOfRemapJar")
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }
