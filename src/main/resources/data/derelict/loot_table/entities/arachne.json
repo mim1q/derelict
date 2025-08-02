@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "name": "minecraft:entities/spider"
+          "value": "minecraft:entities/spider"
         }
       ]
     },

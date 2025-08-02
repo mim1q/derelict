@@ -152,7 +152,7 @@ object CustomPresets {
             ingredient("derelict:burned_leaves")
             ingredient("derelict:smoldering_embers")
         })
-        listOf<(String) -> String>({ "${it}grass" }, { "${it}grass_block" }, { "tall_${it}grass" }).forEach {
+        listOf<(String) -> String>({ "short_${it}grass" }, { "${it}grass_block" }, { "tall_${it}grass" }).forEach {
             add(
                 "${it("dried_")}_blasting",
                 SmeltingRecipe.blasting("minecraft:${it("")}", "derelict:${it("dried_")}", 1.0)
@@ -259,28 +259,28 @@ object CustomPresets {
         )
         add("${name}_grass_block", BlockState.createSingle("$ns:block/${name}_grass_block"))
         add(CommonModelPresets.itemBlockModel("$ns:${name}_grass_block"))
-        listOf("${name}_grass", "tall_${name}_grass_bottom", "tall_${name}_grass_top").forEach {
+        listOf("short_${name}_grass", "tall_${name}_grass_bottom", "tall_${name}_grass_top").forEach {
             add(CommonModelPresets.crossBlock("$ns:$it"))
         }
-        add(CommonModelPresets.generatedItemModel("$ns:${name}_grass", "block"))
+        add(CommonModelPresets.generatedItemModel("$ns:short_${name}_grass", "block"))
         add("tall_${name}_grass", ParentedModel.item("minecraft:item/generated") {
             texture("layer0", "$ns:block/tall_${name}_grass_top")
         })
 
-        add("${name}_grass", BlockState.createSingle("$ns:block/${name}_grass"))
+        add("short_${name}_grass", BlockState.createSingle("$ns:block/short_${name}_grass"))
         add("tall_${name}_grass", BlockState.create {
             variant("half=lower", BlockStateModel("$ns:block/tall_${name}_grass_bottom"))
             variant("half=upper", BlockStateModel("$ns:block/tall_${name}_grass_top"))
         })
         // Drops
         add(CommonDropPresets.silkTouchDrop("$ns:${name}_grass_block", "minecraft:dirt", "$ns:${name}_grass_block"))
-        add(CommonDropPresets.silkTouchOrShearsOnlyDrop("$ns:${name}_grass"))
+        add(CommonDropPresets.silkTouchOrShearsOnlyDrop("$ns:short_${name}_grass"))
         add(CommonDropPresets.silkTouchOrShearsOnlyDrop("$ns:tall_${name}_grass"))
         TagManager.add("minecraft:blocks/dirt", "$ns:${name}_grass_block")
         TagManager.add("minecraft:blocks/mineable/shovel", "$ns:${name}_grass_block")
-        TagManager.add("minecraft:blocks/replaceable_plants", "$ns:${name}_grass", "$ns:tall_${name}_grass")
+        TagManager.add("minecraft:blocks/replaceable_plants", "$ns:short_${name}_grass", "$ns:tall_${name}_grass")
         TagManager.add(
-            "derelict:items/general_tab", "$ns:${name}_grass", "$ns:tall_${name}_grass", "$ns:${name}_grass_block",
+            "derelict:items/general_tab", "$ns:short_${name}_grass", "$ns:tall_${name}_grass", "$ns:${name}_grass_block",
         )
     }
 

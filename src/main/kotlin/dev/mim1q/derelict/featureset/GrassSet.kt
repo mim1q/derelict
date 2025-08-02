@@ -13,7 +13,7 @@ class GrassSet(
     defaultItemSettings: Item.Settings
 ) : FeatureSet(id, defaultItemSettings) {
     val grassBlock = registerBlockWithItem("${name}_grass_block", Block(Settings.copy(Blocks.GRASS_BLOCK)))
-    val grass = registerBlockWithItem("${name}_grass", ShortPlantBlock(Settings.copy(Blocks.SHORT_GRASS)))
+    val grass = registerBlockWithItem("short_${name}_grass", ShortPlantBlock(Settings.copy(Blocks.SHORT_GRASS)))
     val tallGrass =
         registerBlockWithItem("tall_${name}_grass", TallPlantBlock(Settings.copy(Blocks.SHORT_GRASS)))
 

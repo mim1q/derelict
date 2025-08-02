@@ -1,8 +1,10 @@
 package datagen
 
+import com.google.gson.JsonObject
 import datagen.custom.CustomTagPresets
 import datagen.custom.FileCopyManager
 import datagen.custom.ImageAtlases
+import datagen.util.PostProcessFileSaver
 import tada.lib.generator.BeautifiedJsonFormatter
 import tada.lib.generator.FilesystemFileSaver
 import tada.lib.generator.ResourceGenerator
@@ -26,7 +28,39 @@ fun main(args: Array<String>) {
     val langPath = Path.of(args[2])
     val langHelperPath = Path.of(args[3])
     FileCopyManager.setupRoot(resourcePath, generatedPath)
-    val generator = ResourceGenerator.create("derelict", generatedPath).apply {
+
+    val fileSaver = PostProcessFileSaver(
+        postProcessPaths = { path ->
+            path
+                .replace("tags/blocks", "tags/block")
+                .replace("tags/items", "tags/item")
+                .replace("recipes/", "recipe/")
+                .replace("loot_tables/", "loot_table/")
+        },
+        postProcessContent = { path, json ->
+            if (path.contains("recipe")) {
+                var result = json["result"]
+                if (result.isJsonObject) {
+                    result = result.asJsonObject
+                    val item = result["item"]
+                    result.addProperty("id", item.asString)
+                    result.remove("item")
+                } else {
+                    val resultStr = result.asString
+                    json.add("result", JsonObject().apply {
+                        addProperty("id", resultStr)
+                    })
+                }
+            }
+
+            json
+        },
+        postProcessContentString = { path, json ->
+            json
+        }
+    )
+
+    val generator = ResourceGenerator("derelict", generatedPath, fileSaver, BeautifiedJsonFormatter).apply {
         // Assets to generate
         add(BlockSets.basicWoodSet("derelict:burned"))
         add(CustomPresets.additionalBurnedBlocksRecipes())
@@ -73,14 +107,23 @@ fun main(args: Array<String>) {
             variant("type=middle", "derelict:block/spider_silk_strand")
             variant("type=bottom", "derelict:block/spider_silk_strand_bottom")
         })
-        add("spider_silk_strand", ParentedModel.item("item/generated").texture("layer0", "derelict:block/spider_silk_strand_top"))
+        add(
+            "spider_silk_strand",
+            ParentedModel.item("item/generated").texture("layer0", "derelict:block/spider_silk_strand_top")
+        )
 
         add(CommonModelPresets.cubeAllBlock("derelict:spider_egg_block"))
         add(CommonDropPresets.simpleDrop("derelict:spider_egg_block"))
 
         listOf(
-            "spider_egg", "spider_egg_cluster", "spider_spider_egg", "cave_spider_spider_egg", "jumping_spider_spider_egg",
-            "web_caster_spider_egg", "fake_spider_egg", "spiderling_spider_egg"
+            "spider_egg",
+            "spider_egg_cluster",
+            "spider_spider_egg",
+            "cave_spider_spider_egg",
+            "jumping_spider_spider_egg",
+            "web_caster_spider_egg",
+            "fake_spider_egg",
+            "spiderling_spider_egg"
         ).forEach {
             add(it, BlockState.createSingle("derelict:block/spider_egg_block"))
         }
@@ -134,11 +177,29 @@ fun main(args: Array<String>) {
                 )
             )
         }
-        add(CustomPresets.flickeringCubeAll("derelict:flickering_glowstone", 8, 40, "minecraft:block/glowstone", "derelict:block/glowstone_half_on", "derelict:block/extinguished_glowstone"))
+        add(
+            CustomPresets.flickeringCubeAll(
+                "derelict:flickering_glowstone",
+                8,
+                40,
+                "minecraft:block/glowstone",
+                "derelict:block/glowstone_half_on",
+                "derelict:block/extinguished_glowstone"
+            )
+        )
         add(CommonModelPresets.cubeAllBlock("derelict:extinguished_glowstone"))
         add(CommonDropPresets.simpleDrop("derelict:extinguished_glowstone"))
 
-        add(CustomPresets.flickeringCubeAll("derelict:flickering_shroomlight", 8, 50, "minecraft:block/shroomlight", "derelict:block/shroomlight_half_on", "derelict:block/extinguished_shroomlight"))
+        add(
+            CustomPresets.flickeringCubeAll(
+                "derelict:flickering_shroomlight",
+                8,
+                50,
+                "minecraft:block/shroomlight",
+                "derelict:block/shroomlight_half_on",
+                "derelict:block/extinguished_shroomlight"
+            )
+        )
         add(CommonModelPresets.cubeAllBlock("derelict:extinguished_shroomlight"))
         add(CommonDropPresets.simpleDrop("derelict:extinguished_shroomlight"))
 
@@ -152,14 +213,23 @@ fun main(args: Array<String>) {
         add(CustomPresets.lantern("derelict:extinguished_lantern"))
         add(
             CustomPresets.flickeringLantern(
-                "derelict:flickering_soul_lantern", 8, 50,
-                "minecraft:block/soul_lantern", "derelict:block/soul_lantern_half_on", "derelict:block/extinguished_lantern"
+                "derelict:flickering_soul_lantern",
+                8,
+                50,
+                "minecraft:block/soul_lantern",
+                "derelict:block/soul_lantern_half_on",
+                "derelict:block/extinguished_lantern"
             )
         )
 
         add(
             CustomPresets.flickeringEndRod(
-                "derelict:flickering_end_rod", 8, 60, "minecraft:block/end_rod", "derelict:block/end_rod_half_on", "derelict:block/extinguished_end_rod"
+                "derelict:flickering_end_rod",
+                8,
+                60,
+                "minecraft:block/end_rod",
+                "derelict:block/end_rod_half_on",
+                "derelict:block/extinguished_end_rod"
             )
         )
         add(CustomPresets.endRod("derelict:extinguished_end_rod"))
@@ -173,7 +243,14 @@ fun main(args: Array<String>) {
             add(it, ParentedModel.item("minecraft:item/handheld").texture("layer0", "derelict:item/$it"))
         }
         // Generated items
-        listOf("spiderling_in_a_bucket", "netwalkers", "arachnicannon", "spider_silk_bola", "spider_silk_gland", "spider_pheromone_gland").forEach {
+        listOf(
+            "spiderling_in_a_bucket",
+            "netwalkers",
+            "arachnicannon",
+            "spider_silk_bola",
+            "spider_silk_gland",
+            "spider_pheromone_gland"
+        ).forEach {
             add(CommonModelPresets.generatedItemModel("derelict:$it"))
         }
         Constants.SPAWN_EGGS.forEach {
@@ -186,9 +263,16 @@ fun main(args: Array<String>) {
         TagManager.add("derelict:blocks/cobwebs", "minecraft:cobweb", "derelict:spider_silk")
         TagManager.add("derelict:blocks/full_cobwebs", "minecraft:cobweb", "derelict:spider_silk")
         TagManager.add("blocks/leaves", "derelict:burned_leaves", "derelict:smoldering_leaves")
-        TagManager.add("blocks/mineable/hoe", "derelict:burned_leaves", "derelict:smoldering_leaves", "derelict:flickering_shroomlight", "derelict:extinguished_shroomlight")
+        TagManager.add(
+            "blocks/mineable/hoe",
+            "derelict:burned_leaves",
+            "derelict:smoldering_leaves",
+            "derelict:flickering_shroomlight",
+            "derelict:extinguished_shroomlight"
+        )
         TagManager.add("blocks/mineable/axe", "#derelict:cover_boards")
-        TagManager.add("blocks/mineable/pickaxe",
+        TagManager.add(
+            "blocks/mineable/pickaxe",
             "derelict:extinguished_lantern", "derelict:extinguished_sea_lantern"
         )
         TagManager.copy("blocks/leaves", "items/leaves")
