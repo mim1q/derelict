@@ -6,6 +6,7 @@ import dev.mim1q.gimm1q.interpolation.AnimatedProperty
 import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
 import net.minecraft.entity.EntityType
+import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.ai.goal.LookAroundGoal
 import net.minecraft.entity.ai.goal.LookAtEntityGoal
 import net.minecraft.entity.ai.goal.WanderAroundFarGoal
@@ -16,6 +17,8 @@ import net.minecraft.entity.mob.PathAwareEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Items
 import net.minecraft.nbt.NbtCompound
+import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.server.world.ServerWorld
 import net.minecraft.sound.SoundEvents
 import net.minecraft.util.ActionResult
 import net.minecraft.util.DyeColor
@@ -28,7 +31,7 @@ import kotlin.math.sin
 
 class DaddyLongLegsEntity(
     entityType: EntityType<DaddyLongLegsEntity>,
-    world: World
+    world: World,
 ) : PathAwareEntity(entityType, world) {
     private var songSource: BlockPos? = null
     private var isSongPlaying: Boolean = false
@@ -66,16 +69,20 @@ class DaddyLongLegsEntity(
         goalSelector.add(3, LookAroundGoal(this))
     }
 
-    override fun initDataTracker() {
-        super.initDataTracker()
+    override fun initDataTracker(builder: DataTracker.Builder) {
+        super.initDataTracker(builder)
 
-        dataTracker.startTracking(SOCK_COLOR, -1)
+        builder.add(SOCK_COLOR, -1)
     }
 
     override fun tick() {
         super.tick()
 
-        if (this.songSource == null || !songSource!!.isWithinDistance(this.pos, 3.46) || !world.getBlockState(this.songSource).isOf(Blocks.JUKEBOX)) {
+        if (this.songSource == null || !songSource!!.isWithinDistance(
+                this.pos,
+                3.46
+            ) || !world.getBlockState(this.songSource).isOf(Blocks.JUKEBOX)
+        ) {
             this.isSongPlaying = false
             this.songSource = null
         }
@@ -88,7 +95,8 @@ class DaddyLongLegsEntity(
             } else {
                 danceAnimation.transitionTo(0f, 20f)
             }
-            danceOffsetVector = Vec3d(cos(age * 0.5), sin(age * 0.5) - 1.0, 0.0).multiply(danceAnimation.value.toDouble())
+            danceOffsetVector =
+                Vec3d(cos(age * 0.5), sin(age * 0.5) - 1.0, 0.0).multiply(danceAnimation.value.toDouble())
         }
     }
 
@@ -98,7 +106,12 @@ class DaddyLongLegsEntity(
         if (stack.isOf(Items.SHEARS) && sockColor != null) {
             if (!world.isClient) {
                 playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1f, 1f)
-                stack.damage(1, player) { it.sendToolBreakStatus(hand) }
+                stack.damage(1, world as ServerWorld, player as ServerPlayerEntity) {
+                    player.sendEquipmentBreakStatus(
+                        stack.item,
+                        if (hand == Hand.MAIN_HAND) EquipmentSlot.MAINHAND else EquipmentSlot.OFFHAND
+                    )
+                }
                 dataTracker.set(SOCK_COLOR, -1)
             }
             return ActionResult.SUCCESS
@@ -161,6 +174,7 @@ class DaddyLongLegsEntity(
             //@formatter:on
         )
 
-        val SOCK_COLOR: TrackedData<Int> = DataTracker.registerData(DaddyLongLegsEntity::class.java, TrackedDataHandlerRegistry.INTEGER)
+        val SOCK_COLOR: TrackedData<Int> =
+            DataTracker.registerData(DaddyLongLegsEntity::class.java, TrackedDataHandlerRegistry.INTEGER)
     }
 }

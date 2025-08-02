@@ -3,15 +3,14 @@ package dev.mim1q.derelict.item
 import dev.mim1q.derelict.DerelictClient
 import dev.mim1q.derelict.block.flickering.FlickeringBlock
 import dev.mim1q.derelict.init.ModBlocksAndItems
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.block.Block
 import net.minecraft.block.Oxidizable
-import net.minecraft.client.util.ParticleUtil
 import net.minecraft.item.HoneycombItem
 import net.minecraft.item.Item
 import net.minecraft.item.ItemUsageContext
 import net.minecraft.particle.ParticleEffect
 import net.minecraft.particle.ParticleTypes
+import net.minecraft.particle.ParticleUtil
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvent
 import net.minecraft.sound.SoundEvents
@@ -19,7 +18,7 @@ import net.minecraft.util.ActionResult
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.intprovider.UniformIntProvider
 
-sealed class StaffItem(settings: FabricItemSettings) : Item(settings), CrosshairTipItem {
+sealed class StaffItem(settings: Item.Settings) : Item(settings), CrosshairTipItem {
     private var lastBlock: Block? = null
     private var didShowTip: Boolean = false
     protected abstract val texture: Identifier
@@ -54,8 +53,8 @@ sealed class StaffItem(settings: FabricItemSettings) : Item(settings), Crosshair
         return ActionResult.PASS
     }
 
-    class Aging(settings: FabricItemSettings) : StaffItem(settings) {
-        override val texture: Identifier = Identifier("textures/item/clock_00.png")
+    class Aging(settings: Item.Settings) : StaffItem(settings) {
+        override val texture: Identifier = Identifier.of("textures/item/clock_00.png")
         override val particle: ParticleEffect = ParticleTypes.WHITE_ASH
         override val sound: SoundEvent = SoundEvents.BLOCK_STONE_BREAK
 
@@ -73,8 +72,8 @@ sealed class StaffItem(settings: FabricItemSettings) : Item(settings), Crosshair
             DerelictClient.CLIENT_CONFIG.ageableCrosshairTip() && super.shouldShowTip(block)
     }
 
-    class Waxing(settings: FabricItemSettings) : StaffItem(settings) {
-        override val texture: Identifier = Identifier("textures/item/honeycomb.png")
+    class Waxing(settings: Item.Settings) : StaffItem(settings) {
+        override val texture: Identifier = Identifier.of("textures/item/honeycomb.png")
         override val particle: ParticleEffect = ParticleTypes.WAX_ON
         override val sound: SoundEvent = SoundEvents.ITEM_HONEYCOMB_WAX_ON
 

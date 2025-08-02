@@ -1,18 +1,17 @@
 package dev.mim1q.derelict.featureset
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings
-import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.type.BlockSetTypeBuilder
 import net.fabricmc.fabric.api.`object`.builder.v1.block.type.WoodTypeBuilder
 import net.fabricmc.fabric.api.registry.StrippableBlockRegistry
 import net.minecraft.block.*
+import net.minecraft.item.Item
 import net.minecraft.item.SignItem
 import net.minecraft.util.Identifier
 
 class WoodSet(
     id: Identifier,
-    defaultItemSettings: FabricItemSettings = FabricItemSettings()
-) : FeatureSet(id, defaultItemSettings, FabricBlockSettings.copyOf(Blocks.OAK_WOOD)) {
+    defaultItemSettings: Item.Settings = Item.Settings(),
+) : FeatureSet(id, defaultItemSettings, AbstractBlock.Settings.copy(Blocks.OAK_WOOD)) {
     val blockSetType = BlockSetTypeBuilder.copyOf(BlockSetType.OAK).register(id)
     val woodType = WoodTypeBuilder.copyOf(WoodType.OAK).register(id, blockSetType)
 
@@ -23,15 +22,15 @@ class WoodSet(
     val strippedWood = PillarBlock(defaultBlockSettings())
     val stairs = StairsBlock(planks.defaultState, defaultBlockSettings())
     val slab = SlabBlock(defaultBlockSettings())
-    val door = DoorBlock(defaultBlockSettings().nonOpaque(), blockSetType)
-    val trapdoor = TrapdoorBlock(defaultBlockSettings().nonOpaque(), blockSetType)
+    val door = DoorBlock(blockSetType, defaultBlockSettings().nonOpaque())
+    val trapdoor = TrapdoorBlock(blockSetType, defaultBlockSettings().nonOpaque())
     val fence = FenceBlock(defaultBlockSettings())
-    val fenceGate = FenceGateBlock(defaultBlockSettings(), woodType)
-    val button = ButtonBlock(defaultBlockSettings(), blockSetType, 20, true)
+    val fenceGate = FenceGateBlock(woodType, defaultBlockSettings())
+    val button = ButtonBlock(blockSetType, 20, defaultBlockSettings())
     val pressurePlate =
-        PressurePlateBlock(PressurePlateBlock.ActivationRule.EVERYTHING, defaultBlockSettings(), blockSetType)
-    val sign = SignBlock(defaultBlockSettings().noCollision(), woodType)
-    val wallSign = WallSignBlock(defaultBlockSettings().noCollision(), woodType)
+        PressurePlateBlock(blockSetType, defaultBlockSettings())
+    val sign = SignBlock(woodType, defaultBlockSettings().noCollision())
+    val wallSign = WallSignBlock(woodType, defaultBlockSettings().noCollision())
 
     override fun register(): WoodSet = this.apply {
         registerBlockWithItem("${name}_planks", planks)

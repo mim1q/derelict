@@ -120,7 +120,7 @@ object DerelictClient : ClientModInitializer {
             if (!aging && !waxing) return@register
 
             val world = ctx.player.world
-            val tickDelta = MinecraftClient.getInstance().tickDelta
+            val tickDelta = MinecraftClient.getInstance().renderTickCounter.getTickDelta(false)
             val opacity = (sin((world.time + tickDelta) * 0.25F) * 32F + 32F).toInt()
             val color = (opacity shl 24) or 0xfcad03
 

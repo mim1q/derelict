@@ -49,12 +49,9 @@ class WebCasterEntityModel(part: ModelPart) : EntityModel<WebCasterEntity>(Rende
         vertices: VertexConsumer,
         light: Int,
         overlay: Int,
-        red: Float,
-        green: Float,
-        blue: Float,
-        alpha: Float
+        color: Int
     ) {
-        root.render(matrices, vertices, light, overlay, red, green, blue, alpha)
+        root.render(matrices, vertices, light, overlay, color)
     }
 
     override fun setAngles(

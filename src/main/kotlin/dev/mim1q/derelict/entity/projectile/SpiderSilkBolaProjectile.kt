@@ -78,5 +78,5 @@ class SpiderSilkBolaProjectile(
 
     }
 
-    override fun asItemStack(): ItemStack = ItemStack.EMPTY
+    override fun getDefaultItemStack(): ItemStack = ItemStack.EMPTY
 }

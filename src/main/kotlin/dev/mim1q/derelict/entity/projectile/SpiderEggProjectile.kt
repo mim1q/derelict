@@ -69,5 +69,5 @@ class SpiderEggProjectile(
 
     override fun getHitSound(): SoundEvent = SoundEvents.ENTITY_ITEM_PICKUP
 
-    override fun asItemStack(): ItemStack = ItemStack.EMPTY
+    override fun getDefaultItemStack(): ItemStack = ItemStack.EMPTY
 }

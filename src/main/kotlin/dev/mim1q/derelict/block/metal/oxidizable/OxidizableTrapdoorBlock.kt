@@ -12,7 +12,7 @@ class OxidizableTrapdoorBlock(
     private val level: Oxidizable.OxidationLevel,
     settings: Settings,
     type: BlockSetType
-) : TrapdoorBlock(settings, type), Oxidizable {
+) : TrapdoorBlock(type, settings), Oxidizable {
     override fun getDegradationLevel(): Oxidizable.OxidationLevel = level
 
     override fun hasRandomTicks(state: BlockState): Boolean = true

@@ -3,14 +3,18 @@ package dev.mim1q.derelict.item.weapon
 import dev.mim1q.derelict.block.cobweb.SpiderEggBlock
 import dev.mim1q.derelict.entity.projectile.SpiderEggProjectile
 import dev.mim1q.derelict.init.ModEntities
-import net.minecraft.client.item.TooltipContext
+import dev.mim1q.derelict.util.extensions.getNbt
+import dev.mim1q.derelict.util.extensions.updateNbt
+import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.ItemUsage
 import net.minecraft.item.ItemUsageContext
+import net.minecraft.item.tooltip.TooltipType
 import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.server.world.ServerWorld
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
 import net.minecraft.text.Text
@@ -32,11 +36,21 @@ class Arachnicannon(settings: Settings) : Item(settings) {
             if (amount == 0) return
 
             stack.setLoadedEggs(count - amount)
-            stack.damage(1, user) {
-                user.sendToolBreakStatus(user.activeHand)
+            stack.damage(1, world as ServerWorld, user as ServerPlayerEntity) {
+                user.sendEquipmentBreakStatus(
+                    this,
+                    if (user.activeHand == Hand.MAIN_HAND) EquipmentSlot.MAINHAND else EquipmentSlot.OFFHAND
+                )
             }
 
-            world.playSound(null, user.blockPos, SoundEvents.ENTITY_SPLASH_POTION_THROW, SoundCategory.PLAYERS, 1f, 0.8f)
+            world.playSound(
+                null,
+                user.blockPos,
+                SoundEvents.ENTITY_SPLASH_POTION_THROW,
+                SoundCategory.PLAYERS,
+                1f,
+                0.8f
+            )
 
             repeat(amount) {
                 val projectile = SpiderEggProjectile(ModEntities.SPIDER_EGG_PROJECTILE, world)
@@ -77,19 +91,23 @@ class Arachnicannon(settings: Settings) : Item(settings) {
         return super.useOnBlock(context)
     }
 
-    override fun getMaxUseTime(stack: ItemStack): Int = MAX_USE_TIME
+    override fun getMaxUseTime(stack: ItemStack, user: LivingEntity): Int = MAX_USE_TIME
     override fun getUseAction(stack: ItemStack): UseAction = UseAction.BOW
 
-    private fun ItemStack.getLoadedEggs(): Int = nbt?.getInt("eggs") ?: 0
-    private fun ItemStack.setLoadedEggs(eggs: Int) = getOrCreateNbt().putInt("eggs", eggs)
+    private fun ItemStack.getLoadedEggs(): Int = getNbt().getInt("eggs") ?: 0
+
+    private fun ItemStack.setLoadedEggs(eggs: Int) = updateNbt {
+        putInt("eggs", eggs)
+    }
+
 
     override fun appendTooltip(
         stack: ItemStack,
-        world: World?,
+        context: TooltipContext,
         tooltip: MutableList<Text>,
-        context: TooltipContext
+        type: TooltipType,
     ) {
-        super.appendTooltip(stack, world, tooltip, context)
+        super.appendTooltip(stack, context, tooltip, type)
         val loaded = stack.getLoadedEggs()
         if (loaded == 0) {
             tooltip.add(

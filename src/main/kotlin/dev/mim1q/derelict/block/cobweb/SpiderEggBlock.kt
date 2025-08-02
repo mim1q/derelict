@@ -1,6 +1,8 @@
 package dev.mim1q.derelict.block.cobweb
 
+import com.mojang.serialization.MapCodec
 import dev.mim1q.derelict.init.ModBlockEntities
+import dev.mim1q.derelict.init.ModBlocksAndItems
 import net.minecraft.block.BlockState
 import net.minecraft.block.BlockWithEntity
 import net.minecraft.block.entity.BlockEntity
@@ -17,17 +19,21 @@ class SpiderEggBlock(
     val big: Boolean = false,
     private val entityType: EntityType<out LivingEntity>? = null,
     private val count: (Random) -> Int = { 1 },
-    private val ticks: Boolean = entityType != null
+    private val ticks: Boolean = entityType != null,
 ) : BlockWithEntity(settings) {
+    override fun getCodec(): MapCodec<out BlockWithEntity> = MapCodec.unit(ModBlocksAndItems.SPIDER_EGG)
+
     override fun createBlockEntity(pos: BlockPos, state: BlockState): BlockEntity = SpiderEggBlockEntity(pos, state)
 
     override fun <T : BlockEntity> getTicker(
         world: World,
         state: BlockState,
-        type: BlockEntityType<T>
+        type: BlockEntityType<T>,
     ): BlockEntityTicker<T>? = if (!ticks) null else
-        checkType(type, ModBlockEntities.SPIDER_EGG_BLOCK_ENTITY) { entityWorld, entityPos, entityState, entity ->
-            entity.tick(entityWorld, entityPos, entityState)
+        BlockEntityTicker<T> { entityWorld, entityPos, entityState, entity ->
+            if (entity is SpiderEggBlockEntity) {
+                entity.tick(entityWorld, entityPos, entityState)
+            }
         }
 
     class SpiderEggBlockEntity(pos: BlockPos, state: BlockState) :

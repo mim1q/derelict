@@ -1,21 +1,21 @@
 package dev.mim1q.derelict.featureset
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings
-import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
+import net.minecraft.block.AbstractBlock.Settings
 import net.minecraft.block.Block
 import net.minecraft.block.Blocks
-import net.minecraft.block.FernBlock
+import net.minecraft.block.ShortPlantBlock
 import net.minecraft.block.TallPlantBlock
+import net.minecraft.item.Item
 import net.minecraft.util.Identifier
 
 class GrassSet(
     id: Identifier,
-    defaultItemSettings: FabricItemSettings
+    defaultItemSettings: Item.Settings
 ) : FeatureSet(id, defaultItemSettings) {
-    val grassBlock = registerBlockWithItem("${name}_grass_block", Block(FabricBlockSettings.copyOf(Blocks.GRASS_BLOCK)))
-    val grass = registerBlockWithItem("${name}_grass", FernBlock(FabricBlockSettings.copyOf(Blocks.GRASS)))
+    val grassBlock = registerBlockWithItem("${name}_grass_block", Block(Settings.copy(Blocks.GRASS_BLOCK)))
+    val grass = registerBlockWithItem("${name}_grass", ShortPlantBlock(Settings.copy(Blocks.SHORT_GRASS)))
     val tallGrass =
-        registerBlockWithItem("tall_${name}_grass", TallPlantBlock(FabricBlockSettings.copyOf(Blocks.GRASS)))
+        registerBlockWithItem("tall_${name}_grass", TallPlantBlock(Settings.copy(Blocks.SHORT_GRASS)))
 
     override fun register(): FeatureSet = this
 }

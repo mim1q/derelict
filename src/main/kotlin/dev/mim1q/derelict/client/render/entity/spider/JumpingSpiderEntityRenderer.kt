@@ -49,10 +49,7 @@ class JumpingSpiderEntityModel(bone: ModelPart) : EntityModel<JumpingSpiderEntit
         vertices: VertexConsumer,
         light: Int,
         overlay: Int,
-        red: Float,
-        green: Float,
-        blue: Float,
-        alpha: Float
+        color: Int
     ) {
         root.render(matrices, vertices, light, overlay)
     }

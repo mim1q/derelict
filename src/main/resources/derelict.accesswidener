@@ -1,3 +1,4 @@
 accessWidener v2 named
 
 accessible field net/minecraft/structure/StructureTemplate blockInfoLists Ljava/util/List;
+accessible method net/minecraft/item/ArmorMaterials register (Ljava/lang/String;Ljava/util/EnumMap;ILnet/minecraft/registry/entry/RegistryEntry;FFLjava/util/function/Supplier;Ljava/util/List;)Lnet/minecraft/registry/entry/RegistryEntry;

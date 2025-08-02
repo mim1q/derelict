@@ -40,7 +40,7 @@ private fun renderBakedQuads(
             matrices.peek(),
             quad,
             floatArrayOf(1.0f, 1.0f, 1.0f, 1.0f),
-            1f, 1f, 1f,
+            1f, 1f, 1f, 1f,
             intArrayOf(light, light, light, light),
             OverlayTexture.DEFAULT_UV,
             false

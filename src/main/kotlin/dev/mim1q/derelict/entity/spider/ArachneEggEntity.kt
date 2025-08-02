@@ -37,8 +37,8 @@ class ArachneEggEntity(type: EntityType<*>, world: World) : Entity(type, world) 
     private var stageCooldown = 20
     private var lastTimeWithSpiderInArena = 0L
 
-    override fun initDataTracker() {
-        dataTracker.startTracking(STAGE, 0)
+    override fun initDataTracker(builder: DataTracker.Builder) {
+        builder.add(STAGE, 0)
     }
 
     override fun tick() {
@@ -121,7 +121,7 @@ class ArachneEggEntity(type: EntityType<*>, world: World) : Entity(type, world) 
             player.sendMessage(
                 Text.translatable(
                     "text.derelict.spider_egg_required_advancement",
-                    advancement.display?.description ?: ""
+                    advancement.value.display?.get()?.description ?: ""
                 ),
                 true
             )

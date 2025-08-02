@@ -9,19 +9,20 @@ import dev.mim1q.derelict.block.metal.BeamBlock
 import dev.mim1q.derelict.block.metal.GrateBlock
 import dev.mim1q.derelict.block.metal.MetalLadderBlock
 import dev.mim1q.derelict.block.metal.oxidizable.*
+import dev.mim1q.derelict.block.metal.oxidizable.OxidizableGrateBlock
+import dev.mim1q.derelict.block.metal.oxidizable.OxidizableTrapdoorBlock
 import dev.mim1q.derelict.init.ModBlocksAndItems.ItemCategory
 import dev.mim1q.derelict.init.noZFighting
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings
-import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry
 import net.minecraft.block.*
 import net.minecraft.block.Oxidizable.OxidationLevel
+import net.minecraft.item.Item
 import net.minecraft.util.Identifier
 
 sealed class MetalSet(
     id: Identifier,
-    defaultItemSettings: FabricItemSettings,
-    defaultBlockSettings: FabricBlockSettings
+    defaultItemSettings: Item.Settings,
+    defaultBlockSettings: AbstractBlock.Settings
 ) : FeatureSet(id, defaultItemSettings, defaultBlockSettings) {
     abstract val block: Block
     abstract val cut: Block
@@ -44,8 +45,8 @@ sealed class MetalSet(
 
     class Regular(
         id: Identifier,
-        defaultItemSettings: FabricItemSettings,
-        defaultBlockSettings: FabricBlockSettings,
+        defaultItemSettings: Item.Settings,
+        defaultBlockSettings: AbstractBlock.Settings,
         prefix: String = ""
     ) : MetalSet(id, defaultItemSettings, defaultBlockSettings) {
         override val block: Block = registerBlockWithItem(
@@ -72,7 +73,7 @@ sealed class MetalSet(
         )
         override val trapdoor: TrapdoorBlock = registerBlockWithItem(
             "$prefix${name}_trapdoor",
-            TrapdoorBlock(defaultBlockSettings().nonOpaque(), BlockSetType.IRON),
+            TrapdoorBlock(BlockSetType.IRON, defaultBlockSettings().nonOpaque()),
             ItemCategory.WAXED_METAL_DECORATION
         )
         override val chain: ChainBlock = registerBlockWithItem(
@@ -120,8 +121,8 @@ sealed class MetalSet(
     class Oxidized internal constructor(
         id: Identifier,
         prefix: String,
-        defaultItemSettings: FabricItemSettings,
-        defaultBlockSettings: FabricBlockSettings,
+        defaultItemSettings: Item.Settings,
+        defaultBlockSettings: AbstractBlock.Settings,
         level: OxidationLevel
     ) : MetalSet(id, defaultItemSettings, defaultBlockSettings) {
         override val block: Block = registerBlockWithItem(
@@ -223,8 +224,8 @@ sealed class MetalSet(
 
     class ThreeLevelOxidizable(
         id: Identifier,
-        defaultItemSettings: FabricItemSettings,
-        defaultBlockSettings: FabricBlockSettings
+        defaultItemSettings: Item.Settings,
+        defaultBlockSettings: AbstractBlock.Settings
     ) : FeatureSet(id, defaultItemSettings, defaultBlockSettings) {
         val waxedUnaffected = Regular(id, defaultItemSettings, defaultBlockSettings, "waxed_")
         val waxedWeathered = Regular(id, defaultItemSettings, defaultBlockSettings, "waxed_weathered_")

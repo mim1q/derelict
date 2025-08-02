@@ -1,7 +1,10 @@
 package dev.mim1q.derelict.block.cobweb
 
+import com.mojang.serialization.MapCodec
+import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.init.ModParticles
 import net.minecraft.block.BlockState
+import net.minecraft.block.MultifaceGrowthBlock
 import net.minecraft.entity.Entity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
@@ -47,6 +50,8 @@ class FancyCobwebWithSpiderNestBlock(settings: Settings) : FancyCobwebBlock(sett
         }
         super.onEntityCollision(state, world, pos, entity)
     }
+
+    override fun getCodec(): MapCodec<out MultifaceGrowthBlock> = MapCodec.unit(ModBlocksAndItems.FANCY_COBWEB_WITH_SPIDER_NEST)
 
     override fun onBroken(world: WorldAccess, pos: BlockPos, state: BlockState) {
         super.onBroken(world, pos, state)

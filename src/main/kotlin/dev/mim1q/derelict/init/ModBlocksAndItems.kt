@@ -1,5 +1,6 @@
 package dev.mim1q.derelict.init
 
+import com.mojang.serialization.MapCodec
 import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.block.EmbersBlock
 import dev.mim1q.derelict.block.SmolderingLeavesBlock
@@ -19,11 +20,11 @@ import dev.mim1q.derelict.item.armor.ModArmorMaterials
 import dev.mim1q.derelict.item.weapon.Arachnicannon
 import dev.mim1q.derelict.item.weapon.SpiderSilkBola
 import dev.mim1q.derelict.item.weapon.Wildfire
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings
-import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
+import dev.mim1q.derelict.util.extensions.getNbt
 import net.fabricmc.fabric.mixin.`object`.builder.AbstractBlockSettingsAccessor
 import net.minecraft.block.*
 import net.minecraft.block.AbstractBlock.Offsetter
+import net.minecraft.block.AbstractBlock.Settings
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.EntityType.CAVE_SPIDER
 import net.minecraft.entity.EntityType.SPIDER
@@ -42,9 +43,8 @@ import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.BlockView
 import net.minecraft.world.event.GameEvent
-import java.util.*
 
-@Suppress("UNUSED")
+@Suppress("UNUSED", "MemberVisibilityCanBePrivate")
 object ModBlocksAndItems {
     private val lastAgeable = mutableSetOf<Block>()
     private val lastWaxable = mutableSetOf<Block>()
@@ -53,16 +53,16 @@ object ModBlocksAndItems {
     val WAXING_STAFF = registerItem("waxing_staff", StaffItem.Waxing(defaultItemSettings().maxCount(1)))
 
     val BURNED_WOOD = WoodSet(Derelict.id("burned"), defaultItemSettings()).register()
-    val BURNED_LEAVES = register("burned_leaves", LeavesBlock(FabricBlockSettings.copyOf(Blocks.OAK_LEAVES)))
+    val BURNED_LEAVES = register("burned_leaves", LeavesBlock(Settings.copy(Blocks.OAK_LEAVES)))
     val SMOLDERING_LEAVES =
-        register("smoldering_leaves", SmolderingLeavesBlock(FabricBlockSettings.copyOf(Blocks.OAK_LEAVES)))
+        register("smoldering_leaves", SmolderingLeavesBlock(Settings.copy(Blocks.OAK_LEAVES)))
     val SMOKING_EMBERS = register(
         "smoking_embers",
-        EmbersBlock.Smoking(FabricBlockSettings.copyOf(Blocks.FIRE).luminance(1).breakInstantly())
+        EmbersBlock.Smoking(Settings.copy(Blocks.FIRE).luminance { 1 }.breakInstantly())
     )
     val SMOLDERING_EMBERS = register(
         "smoldering_embers", EmbersBlock.Smoldering(
-            FabricBlockSettings.copyOf(Blocks.FIRE).luminance(4).emissiveLighting { _, _, _ -> true }.breakInstantly()
+            Settings.copy(Blocks.FIRE).luminance { 4 }.emissiveLighting { _, _, _ -> true }.breakInstantly()
         )
     )
     val DRIED_GRASS = GrassSet(Derelict.id("dried"), defaultItemSettings())
@@ -81,55 +81,60 @@ object ModBlocksAndItems {
     val CRIMSON_COVER_BOARDS = CoverBoardsSet(Derelict.id("crimson"), defaultItemSettings())
     val BURNED_COVER_BOARDS = CoverBoardsSet(Derelict.id("burned"), defaultItemSettings())
 
-    val FLICKERING_REDSTONE_LAMP = register("flickering_redstone_lamp", FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.REDSTONE_LAMP)))
-    val FLICKERING_SEA_LANTERN = register("flickering_sea_lantern", FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.SEA_LANTERN)))
-    val EXTINGUISHED_SEA_LANTERN = register("extinguished_sea_lantern", Block(FabricBlockSettings.copyOf(Blocks.SEA_LANTERN).luminance { 0 }))
-    val FLICKERING_JACK_O_LANTERN = register("flickering_jack_o_lantern", FlickeringCarvedPumpkinBlock(FabricBlockSettings.copyOf(Blocks.JACK_O_LANTERN)))
-    val FLICKERING_LANTERN = register("flickering_lantern", FlickeringLanternBlock(FabricBlockSettings.copyOf(Blocks.LANTERN)))
-    val FLICKERING_SOUL_LANTERN = register("flickering_soul_lantern", FlickeringLanternBlock(FabricBlockSettings.copyOf(Blocks.SOUL_LANTERN)))
-    val EXTINGUISHED_LANTERN = register("extinguished_lantern", LanternBlock(FabricBlockSettings.copyOf(Blocks.LANTERN).luminance { 0 }))
-    val FLICKERING_OCHRE_FROGLIGHT = register("flickering_ochre_froglight", FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.OCHRE_FROGLIGHT)))
-    val EXTINGUISHED_OCHRE_FROGLIGHT = register("extinguished_ochre_froglight", Block(FabricBlockSettings.copyOf(Blocks.OCHRE_FROGLIGHT).luminance { 0 }))
-    val FLICKERING_VERDANT_FROGLIGHT = register("flickering_verdant_froglight", FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.VERDANT_FROGLIGHT)))
-    val EXTINGUISHED_VERDANT_FROGLIGHT = register("extinguished_verdant_froglight", Block(FabricBlockSettings.copyOf(Blocks.VERDANT_FROGLIGHT).luminance { 0 }))
-    val FLICKERING_PEARLESCENT_FROGLIGHT = register("flickering_pearlescent_froglight", FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.PEARLESCENT_FROGLIGHT)))
-    val EXTINGUISHED_PEARLESCENT_FROGLIGHT = register("extinguished_pearlescent_froglight", Block(FabricBlockSettings.copyOf(Blocks.PEARLESCENT_FROGLIGHT).luminance { 0 }))
-    val FLICKERING_GLOWSTONE = register("flickering_glowstone", FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.GLOWSTONE)))
-    val EXTINGUISHED_GLOWSTONE = register("extinguished_glowstone", Block(FabricBlockSettings.copyOf(Blocks.GLOWSTONE).luminance { 0 }))
-    val FLICKERING_SHROOMLIGHT = register("flickering_shroomlight", FlickeringSolidBlock(FabricBlockSettings.copyOf(Blocks.SHROOMLIGHT)))
-    val EXTINGUISHED_SHROOMLIGHT = register("extinguished_shroomlight", Block(FabricBlockSettings.copyOf(Blocks.SHROOMLIGHT).luminance { 0 }))
-    val FLICKERING_END_ROD = register("flickering_end_rod", FlickeringEndRodBlock(FabricBlockSettings.copyOf(Blocks.END_ROD)))
-    val EXTINGUISHED_END_ROD = register("extinguished_end_rod", ExtinguishedEndRodBlock(FabricBlockSettings.copyOf(Blocks.END_ROD).luminance { 0 }))
+    val FLICKERING_REDSTONE_LAMP = register("flickering_redstone_lamp", FlickeringSolidBlock(Settings.copy(Blocks.REDSTONE_LAMP)))
+    val FLICKERING_SEA_LANTERN = register("flickering_sea_lantern", FlickeringSolidBlock(Settings.copy(Blocks.SEA_LANTERN)))
+    val EXTINGUISHED_SEA_LANTERN = register("extinguished_sea_lantern", Block(Settings.copy(Blocks.SEA_LANTERN).luminance { 0 }))
+    val FLICKERING_JACK_O_LANTERN = register("flickering_jack_o_lantern", FlickeringCarvedPumpkinBlock(Settings.copy(Blocks.JACK_O_LANTERN)))
+    val FLICKERING_LANTERN = register("flickering_lantern", FlickeringLanternBlock(Settings.copy(Blocks.LANTERN)))
+    val FLICKERING_SOUL_LANTERN = register("flickering_soul_lantern", FlickeringLanternBlock(Settings.copy(Blocks.SOUL_LANTERN)))
+    val EXTINGUISHED_LANTERN = register("extinguished_lantern", LanternBlock(Settings.copy(Blocks.LANTERN).luminance { 0 }))
+    val FLICKERING_OCHRE_FROGLIGHT = register("flickering_ochre_froglight", FlickeringSolidBlock(Settings.copy(Blocks.OCHRE_FROGLIGHT)))
+    val EXTINGUISHED_OCHRE_FROGLIGHT = register("extinguished_ochre_froglight", Block(Settings.copy(Blocks.OCHRE_FROGLIGHT).luminance { 0 }))
+    val FLICKERING_VERDANT_FROGLIGHT = register("flickering_verdant_froglight", FlickeringSolidBlock(Settings.copy(Blocks.VERDANT_FROGLIGHT)))
+    val EXTINGUISHED_VERDANT_FROGLIGHT = register("extinguished_verdant_froglight", Block(Settings.copy(Blocks.VERDANT_FROGLIGHT).luminance { 0 }))
+    val FLICKERING_PEARLESCENT_FROGLIGHT = register("flickering_pearlescent_froglight", FlickeringSolidBlock(Settings.copy(Blocks.PEARLESCENT_FROGLIGHT)))
+    val EXTINGUISHED_PEARLESCENT_FROGLIGHT = register("extinguished_pearlescent_froglight", Block(Settings.copy(Blocks.PEARLESCENT_FROGLIGHT).luminance { 0 }))
+    val FLICKERING_GLOWSTONE = register("flickering_glowstone", FlickeringSolidBlock(Settings.copy(Blocks.GLOWSTONE)))
+    val EXTINGUISHED_GLOWSTONE = register("extinguished_glowstone", Block(Settings.copy(Blocks.GLOWSTONE).luminance { 0 }))
+    val FLICKERING_SHROOMLIGHT = register("flickering_shroomlight", FlickeringSolidBlock(Settings.copy(Blocks.SHROOMLIGHT)))
+    val EXTINGUISHED_SHROOMLIGHT = register("extinguished_shroomlight", Block(Settings.copy(Blocks.SHROOMLIGHT).luminance { 0 }))
+    val FLICKERING_END_ROD = register("flickering_end_rod", FlickeringEndRodBlock(Settings.copy(Blocks.END_ROD)))
+    val EXTINGUISHED_END_ROD = register("extinguished_end_rod", ExtinguishedEndRodBlock(Settings.copy(Blocks.END_ROD).luminance { 0 }))
 
-    val FANCY_COBWEB = register("fancy_cobweb", FancyCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB).offset(AbstractBlock.OffsetType.XYZ).dynamicBounds()))
-    val FANCY_COBWEB_WITH_SPIDER_NEST = register("fancy_cobweb_with_spider_nest", FancyCobwebWithSpiderNestBlock(FabricBlockSettings.copyOf(FANCY_COBWEB)))
-    val CORNER_COBWEB = register("corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
-    val FANCY_CORNER_COBWEB = register("fancy_corner_cobweb", FancyCornerCobwebBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)))
-    val WALL_COBWEB = register("wall_cobweb", object : MultifaceGrowthBlock(FabricBlockSettings.copyOf(Blocks.COBWEB)) {
+    val FANCY_COBWEB = register("fancy_cobweb", FancyCobwebBlock(Settings.copy(Blocks.COBWEB).offset(AbstractBlock.OffsetType.XYZ).dynamicBounds()))
+    val FANCY_COBWEB_WITH_SPIDER_NEST = register("fancy_cobweb_with_spider_nest", FancyCobwebWithSpiderNestBlock(Settings.copy(FANCY_COBWEB)))
+    val CORNER_COBWEB = register("corner_cobweb", FancyCornerCobwebBlock(Settings.copy(Blocks.COBWEB)))
+    val FANCY_CORNER_COBWEB = register("fancy_corner_cobweb", FancyCornerCobwebBlock(Settings.copy(Blocks.COBWEB)))
+
+    class WallCobweb : MultifaceGrowthBlock(Settings.copy(Blocks.COBWEB)) {
+        val codec_: MapCodec<out MultifaceGrowthBlock> = MapCodec.unit(WALL_COBWEB)
         override fun getGrower(): LichenGrower = LichenGrower(this)
-    })
+        override fun getCodec(): MapCodec<out MultifaceGrowthBlock> = codec_
+    }
+
+    val WALL_COBWEB = register("wall_cobweb", WallCobweb())
     val SPIDER_SILK = register("spider_silk", SpiderSilkBlock(AbstractBlock.Settings.copy(Blocks.WHITE_WOOL).noCollision().strength(0.2f)))
-    val SPIDER_SILK_STRAND = register("spider_silk_strand", SpiderSilkStrandBlock(FabricBlockSettings.copyOf(Blocks.WHITE_WOOL).noCollision().breakInstantly()))
+    val SPIDER_SILK_STRAND = register("spider_silk_strand", SpiderSilkStrandBlock(Settings.copy(Blocks.WHITE_WOOL).noCollision().breakInstantly()))
 
-    val SPIDER_EGG_BLOCK = register("spider_egg_block", Block(FabricBlockSettings.copyOf(Blocks.MUD)))
-    val SPIDER_EGG = register("spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(Blocks.MUD).nonOpaque().noCollision().luminance { 1 }.offset(AbstractBlock.OffsetType.XZ), true))
-    val SPIDER_EGG_CLUSTER = register("spider_egg_cluster", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG)))
-    val FAKE_SPIDER_EGG = registerBlock("fake_spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG), false, null, { 0 }, true))
-    val SPIDERLING_SPIDER_EGG = registerBlock("spiderling_spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG), false, SPIDERLING, { it.nextInt(3) + 1}))
-    val SPIDER_SPIDER_EGG = registerBlock("spider_spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG), true, SPIDER))
-    val CAVE_SPIDER_SPIDER_EGG = registerBlock("cave_spider_spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG), true, CAVE_SPIDER))
-    val WEB_CASTER_SPIDER_EGG = registerBlock("web_caster_spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG), true, WEB_CASTER))
-    val JUMPING_SPIDER_SPIDER_EGG = registerBlock("jumping_spider_spider_egg", SpiderEggBlock(FabricBlockSettings.copyOf(SPIDER_EGG), true, JUMPING_SPIDER))
+    val SPIDER_EGG_BLOCK = register("spider_egg_block", Block(Settings.copy(Blocks.MUD)))
+    val SPIDER_EGG = register("spider_egg", SpiderEggBlock(Settings.copy(Blocks.MUD).nonOpaque().noCollision().luminance { 1 }.offset(AbstractBlock.OffsetType.XZ), true))
+    val SPIDER_EGG_CLUSTER = register("spider_egg_cluster", SpiderEggBlock(Settings.copy(SPIDER_EGG)))
+    val FAKE_SPIDER_EGG = registerBlock("fake_spider_egg", SpiderEggBlock(Settings.copy(SPIDER_EGG), false, null, { 0 }, true))
+    val SPIDERLING_SPIDER_EGG = registerBlock("spiderling_spider_egg", SpiderEggBlock(Settings.copy(SPIDER_EGG), false, SPIDERLING, { it.nextInt(3) + 1}))
+    val SPIDER_SPIDER_EGG = registerBlock("spider_spider_egg", SpiderEggBlock(Settings.copy(SPIDER_EGG), true, SPIDER))
+    val CAVE_SPIDER_SPIDER_EGG = registerBlock("cave_spider_spider_egg", SpiderEggBlock(Settings.copy(SPIDER_EGG), true, CAVE_SPIDER))
+    val WEB_CASTER_SPIDER_EGG = registerBlock("web_caster_spider_egg", SpiderEggBlock(Settings.copy(SPIDER_EGG), true, WEB_CASTER))
+    val JUMPING_SPIDER_SPIDER_EGG = registerBlock("jumping_spider_spider_egg", SpiderEggBlock(Settings.copy(SPIDER_EGG), true, JUMPING_SPIDER))
 
-    val SPIDER_MOLT = register("spider_molt", SpiderMoltBlock(FabricBlockSettings.copyOf(Blocks.MUD).nonOpaque()))
+    val SPIDER_MOLT = register("spider_molt", SpiderMoltBlock(Settings.copy(Blocks.MUD).nonOpaque()))
 
     val ARACHNITE =
-        StoneSet(Derelict.id("arachnite"), FabricBlockSettings.copyOf(Blocks.STONE).sounds(BlockSoundGroup.MUD)).register()
+        StoneSet(Derelict.id("arachnite"), Settings.copy(Blocks.STONE).sounds(BlockSoundGroup.MUD)).register()
 
     val NOCTISTEEL = MetalSet.ThreeLevelOxidizable(
         Derelict.id("noctisteel"),
         defaultItemSettings(),
-        FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).strength(2.0f, 1200f).nonOpaque()
+        Settings.copy(Blocks.IRON_BLOCK).strength(2.0f, 1200f).nonOpaque()
     ).register()
 
     val SPIDERLING_IN_A_BUCKET = registerItem("spiderling_in_a_bucket", object : Item(defaultItemSettings().maxCount(1)) {
@@ -145,7 +150,7 @@ object ModBlocksAndItems {
                 false
             )
             if (entity is SpiderlingEntity) {
-                entity.copyDataFromNbt(context.stack.getOrCreateNbt())
+                entity.copyDataFromNbt(context.stack.getNbt())
                 entity.isFromBucket = true
                 if (context.side == Direction.DOWN) {
                     entity.anchorPosition = context.blockPos
@@ -253,7 +258,7 @@ object ModBlocksAndItems {
 
     internal fun registerSimpleItem(name: String): Item = registerItem(name, Item(defaultItemSettings()))
 
-    private fun defaultItemSettings() = FabricItemSettings()
+    private fun defaultItemSettings() = Item.Settings()
 
     private fun registerSpawnEgg(entity: EntityType<out MobEntity>) =
         registerItem(
@@ -290,7 +295,7 @@ object NoZFightingOffsetter : Offsetter {
 
 @Suppress("UnstableApiUsage")
 fun <T : AbstractBlock.Settings> T.noZFighting(): T {
-    (this as AbstractBlockSettingsAccessor).offsetter = Optional.of(NoZFightingOffsetter)
+    (this as AbstractBlockSettingsAccessor).offsetter = NoZFightingOffsetter
     this.dynamicBounds = true
     return this
 }

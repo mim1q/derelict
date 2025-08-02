@@ -11,7 +11,8 @@
     "entity.SpawnHelperMixin",
     "entity.SpiderEntityMixin",
     "entity.player.PlayerNetwalkersMixin",
-    "item.SwordAndShearsSuitableBlocksMixin"
+    "item.ShearsSuitableBlocksMixin",
+    "item.SwordSuitableBlocksMixin"
   ],
   "client": [
     "client.item.HoneycombItemClientMixin",

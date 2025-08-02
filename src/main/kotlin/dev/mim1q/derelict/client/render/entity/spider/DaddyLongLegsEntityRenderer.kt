@@ -46,7 +46,7 @@ class DaddyLongLegsEntityRenderer(
                 matrixStack,
                 vertexConsumerProvider.getBuffer(RenderLayer.getEntityCutoutNoCull(SOCK_TEXTURES[sockColor])),
                 i, OverlayTexture.DEFAULT_UV,
-                1f, 1f, 1f, 1f
+                0xFFFFFFFF.toInt()
             )
         }
     }
@@ -62,8 +62,8 @@ class DaddyLongLegsEntityModel(part: ModelPart) : EntityModel<DaddyLongLegsEntit
     private val body = root.getChild("body")
     val legs = SpiderLegParts.createArray(root)
 
-    override fun render(matrices: MatrixStack, vertices: VertexConsumer, light: Int, overlay: Int, red: Float, green: Float, blue: Float, alpha: Float) {
-        root.render(matrices, vertices, light, overlay, red, green, blue, alpha)
+    override fun render(matrices: MatrixStack, vertices: VertexConsumer, light: Int, overlay: Int, color: Int) {
+        root.render(matrices, vertices, light, overlay, color)
     }
 
     override fun setAngles(entity: DaddyLongLegsEntity, limbAngle: Float, limbDistance: Float, animationProgress: Float, headYaw: Float, headPitch: Float) {

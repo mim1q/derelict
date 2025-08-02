@@ -67,8 +67,8 @@ dependencies {
     // Gimm1q for common Mim1q's mods code
     include(modImplementation("dev.mim1q:gimm1q:${Versions.GIMM1Q}")!!)
     // Cardinal Components API for synced entity data
-    include(modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${Versions.CARDINAL_COMPONENTS}")!!)
-    include(modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${Versions.CARDINAL_COMPONENTS}")!!)
+    include(modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-base:${Versions.CARDINAL_COMPONENTS}")!!)
+    include(modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-entity:${Versions.CARDINAL_COMPONENTS}")!!)
     // Terrablender for biome generation
     modImplementation("com.github.glitchfiend:TerraBlender-fabric:${Versions.TERRABLENDER}")
 }

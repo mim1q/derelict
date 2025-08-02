@@ -1,11 +1,14 @@
 package dev.mim1q.derelict.block.cobweb
 
+import com.mojang.serialization.MapCodec
+import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.tag.ModBlockTags
 import net.minecraft.block.*
-import net.minecraft.client.item.TooltipContext
 import net.minecraft.entity.Entity
+import net.minecraft.item.Item
 import net.minecraft.item.ItemPlacementContext
 import net.minecraft.item.ItemStack
+import net.minecraft.item.tooltip.TooltipType
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import net.minecraft.util.math.BlockPos
@@ -48,6 +51,8 @@ open class FancyCobwebBlock(
         return state
     }
 
+    override fun getCodec(): MapCodec<out MultifaceGrowthBlock> = MapCodec.unit(ModBlocksAndItems.FANCY_COBWEB)
+
     @Suppress("OVERRIDE_DEPRECATION")
     override fun getStateForNeighborUpdate(
         state: BlockState,
@@ -65,11 +70,11 @@ open class FancyCobwebBlock(
 
     override fun appendTooltip(
         stack: ItemStack,
-        world: BlockView?,
+        context: Item.TooltipContext,
         tooltip: MutableList<Text>,
-        options: TooltipContext
+        options: TooltipType,
     ) {
-        super.appendTooltip(stack, world, tooltip, options)
+        super.appendTooltip(stack, context, tooltip, options)
         val text = Text.translatable(DISABLED_TOOLTIP_KEY)
         if (text.string.isNotBlank() && hasTooltip) {
             tooltip.add(text.formatted(Formatting.DARK_RED))

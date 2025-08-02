@@ -22,6 +22,8 @@ import net.minecraft.loot.context.LootContextParameters
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.particle.BlockStateParticleEffect
 import net.minecraft.particle.ParticleTypes
+import net.minecraft.registry.RegistryKey
+import net.minecraft.registry.RegistryKeys
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.sound.SoundEvents
 import net.minecraft.util.math.MathHelper.HALF_PI
@@ -106,15 +108,15 @@ class HangingCocoonEntity(type: EntityType<*>, world: World) : Entity(type, worl
     }
 
     private fun dropLoot(broken: Boolean, source: DamageSource, player: PlayerEntity) {
-        val lootTableId = Derelict.id("misc/hanging_cocoon_${if (broken) "break" else "damage"}")
         (world as? ServerWorld)?.let { serverWorld ->
-            val lootTable = serverWorld.server.lootManager.getLootTable(lootTableId)
-            lootTable.generateLoot(
+            val lootTableId = Derelict.id("misc/hanging_cocoon_${if (broken) "break" else "damage"}")
+            val lootTableKey = RegistryKey.of(RegistryKeys.LOOT_TABLE, lootTableId)
+            val lootTable = serverWorld.registryManager.get(RegistryKeys.LOOT_TABLE).entryOf(lootTableKey)
+            lootTable?.value()?.generateLoot(
                 LootContextParameterSet(
                     serverWorld,
                     mapOf(
                         LootContextParameters.THIS_ENTITY to this,
-                        LootContextParameters.KILLER_ENTITY to player,
                         LootContextParameters.DAMAGE_SOURCE to source
                     ),
                     mapOf(),
@@ -122,7 +124,11 @@ class HangingCocoonEntity(type: EntityType<*>, world: World) : Entity(type, worl
                 )
             ) {
                 if (it.isOf(Items.SKELETON_SKULL)) {
-                    FallingBlockEntity.spawnFromBlock(world, blockPos, Blocks.FURNACE.defaultState.with(FurnaceBlock.LIT, true))
+                    FallingBlockEntity.spawnFromBlock(
+                        world,
+                        blockPos,
+                        Blocks.FURNACE.defaultState.with(FurnaceBlock.LIT, true)
+                    )
                 } else {
                     val item = ItemEntity(world, x, y, z, it)
                     item.velocity = Vec3d(item.velocity.x * 0.5, -0.1, item.velocity.z * 0.5)
@@ -147,9 +153,9 @@ class HangingCocoonEntity(type: EntityType<*>, world: World) : Entity(type, worl
         return random.nextFloat() < 0.2f
     }
 
-    override fun initDataTracker() {
-        dataTracker.startTracking(BROKEN, false)
-        dataTracker.startTracking(PUNCH_ANGLE, 0f)
+    override fun initDataTracker(builder: DataTracker.Builder) {
+        builder.add(BROKEN, false)
+        builder.add(PUNCH_ANGLE, 0f)
     }
 
     override fun readCustomDataFromNbt(nbt: NbtCompound) {

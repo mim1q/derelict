@@ -1,13 +1,12 @@
 package dev.mim1q.derelict.featureset
 
-import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.type.BlockSetTypeBuilder
 import net.minecraft.block.*
 import net.minecraft.util.Identifier
 
 class StoneSet(
     id: Identifier,
-    defaultBlockSettings: FabricBlockSettings = FabricBlockSettings.copyOf(Blocks.STONE)
+    defaultBlockSettings: AbstractBlock.Settings = AbstractBlock.Settings.copy(Blocks.STONE)
 ) : FeatureSet(id, defaultBlockSettings = defaultBlockSettings) {
     val blockSetType = BlockSetTypeBuilder.copyOf(BlockSetType.STONE).build(id)
 
@@ -15,8 +14,8 @@ class StoneSet(
     val stairs = StairsBlock(block.defaultState, defaultBlockSettings)
     val slab = SlabBlock(defaultBlockSettings)
     val wall = WallBlock(defaultBlockSettings)
-    val pressurePlate = PressurePlateBlock(PressurePlateBlock.ActivationRule.MOBS, defaultBlockSettings, blockSetType)
-    val button = ButtonBlock(defaultBlockSettings, blockSetType, 5, false)
+    val pressurePlate = PressurePlateBlock(blockSetType, defaultBlockSettings)
+    val button = ButtonBlock(blockSetType, 5, defaultBlockSettings)
 
     override fun register(): StoneSet = this.apply {
         registerBlockWithItem(name, block)

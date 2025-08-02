@@ -14,7 +14,7 @@ object ModItemGroups {
 
     internal val ITEM_GROUP: OwoItemGroup = OwoItemGroup.builder(Derelict.id("derelict")) {
         Icon.of(ModBlocksAndItems.FLICKERING_REDSTONE_LAMP.asItem().defaultStack)
-    }.customTexture(ITEM_GROUP_TEXTURE).build().apply {
+    }.backgroundTexture(ITEM_GROUP_TEXTURE).build().apply {
         tabs.add(
             0, ItemGroupTab(
                 Icon.of(ModBlocksAndItems.FLICKERING_LANTERN),

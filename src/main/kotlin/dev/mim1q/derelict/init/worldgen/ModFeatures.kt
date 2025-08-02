@@ -1,6 +1,6 @@
 package dev.mim1q.derelict.init.worldgen
 
-import com.mojang.serialization.Codec
+import com.mojang.serialization.MapCodec
 import dev.mim1q.derelict.Derelict
 import dev.mim1q.derelict.world.feature.LocalGravityProcessor
 import dev.mim1q.derelict.world.feature.NbtFeature
@@ -26,7 +26,7 @@ object ModFeatures {
         return Registry.register(Registries.FEATURE, Derelict.id(name), feature)
     }
 
-    private fun <P : StructureProcessor> registerProcessor(id: String, codec: Codec<P>): StructureProcessorType<P> =
+    private fun <P : StructureProcessor> registerProcessor(id: String, codec: MapCodec<P>): StructureProcessorType<P> =
         Registry.register(
             Registries.STRUCTURE_PROCESSOR,
             Derelict.id(id),

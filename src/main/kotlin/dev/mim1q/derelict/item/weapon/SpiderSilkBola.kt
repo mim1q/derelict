@@ -19,7 +19,7 @@ class SpiderSilkBola(settings: Settings) : Item(settings) {
     override fun onStoppedUsing(stack: ItemStack, world: World, user: LivingEntity, remainingUseTicks: Int) {
         super.onStoppedUsing(stack, world, user, remainingUseTicks)
 
-        val ticks = getMaxUseTime(stack) - remainingUseTicks
+        val ticks = getMaxUseTime(stack, user) - remainingUseTicks
         if (ticks < 10) return
 
         if (!world.isClient) {
@@ -45,6 +45,6 @@ class SpiderSilkBola(settings: Settings) : Item(settings) {
     override fun use(world: World, user: PlayerEntity, hand: Hand): TypedActionResult<ItemStack> =
         ItemUsage.consumeHeldItem(world, user, hand)
 
-    override fun getMaxUseTime(stack: ItemStack): Int = 3600 * 20
+    override fun getMaxUseTime(stack: ItemStack, user: LivingEntity): Int = 3600 * 20
     override fun getUseAction(stack: ItemStack): UseAction = UseAction.BOW
 }

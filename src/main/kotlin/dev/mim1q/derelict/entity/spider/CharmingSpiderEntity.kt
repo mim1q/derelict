@@ -6,6 +6,7 @@ import net.minecraft.block.Blocks
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
+import net.minecraft.entity.data.DataTracker
 import net.minecraft.entity.mob.SpiderEntity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
@@ -25,8 +26,8 @@ class CharmingSpiderEntity(
     val tailDanceAnimation = AnimatedProperty(0f)
     val bodyDanceAnimation = AnimatedProperty(0f, Easing::easeOutBack)
 
-    override fun initDataTracker() {
-        super.initDataTracker()
+    override fun initDataTracker(builder: DataTracker.Builder) {
+        super.initDataTracker(builder)
     }
 
     override fun tick() {

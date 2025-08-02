@@ -6,7 +6,7 @@ import net.minecraft.client.particle.NoRenderParticle
 import net.minecraft.client.particle.Particle
 import net.minecraft.client.particle.ParticleFactory
 import net.minecraft.client.world.ClientWorld
-import net.minecraft.particle.DefaultParticleType
+import net.minecraft.particle.SimpleParticleType
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 
@@ -46,9 +46,9 @@ class SpiderEmitterParticle private constructor(
         markDead()
     }
 
-    class Factory : ParticleFactory<DefaultParticleType> {
+    class Factory : ParticleFactory<SimpleParticleType> {
         override fun createParticle(
-            defaultParticleType: DefaultParticleType,
+            defaultParticleType: SimpleParticleType,
             clientWorld: ClientWorld,
             d: Double,
             e: Double,

@@ -53,5 +53,5 @@ object Derelict : ModInitializer {
         }
     }
 
-    fun id(value: String) = Identifier(MOD_ID, value)
+    fun id(value: String) = Identifier.of(MOD_ID, value)
 }

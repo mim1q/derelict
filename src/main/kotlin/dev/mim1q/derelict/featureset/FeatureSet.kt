@@ -2,8 +2,9 @@ package dev.mim1q.derelict.featureset
 
 import dev.mim1q.derelict.init.ModBlocksAndItems
 import dev.mim1q.derelict.init.ModBlocksAndItems.ItemCategory
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings
-import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
+import dev.mim1q.derelict.util.extensions.copy
+import net.minecraft.block.AbstractBlock
+import net.minecraft.block.AbstractBlock.Settings
 import net.minecraft.block.Block
 import net.minecraft.block.Blocks
 import net.minecraft.item.Item
@@ -11,13 +12,13 @@ import net.minecraft.util.Identifier
 
 abstract class FeatureSet(
     id: Identifier,
-    protected val defaultItemSettings: FabricItemSettings = FabricItemSettings(),
-    private val defaultBlockSettings: FabricBlockSettings = FabricBlockSettings.copyOf(Blocks.STONE)
+    protected val defaultItemSettings: Item.Settings = Item.Settings(),
+    private val defaultBlockSettings: Settings = Settings.copy(Blocks.STONE)
 ) {
     protected val name = id.path
     protected val namespace = id.namespace
 
-    protected fun id(name: String) = Identifier(namespace, name)
+    protected fun id(name: String) = Identifier.of(namespace, name)
     open fun register(): FeatureSet = this
 
     protected fun <I : Item> registerItem(
@@ -34,5 +35,5 @@ abstract class FeatureSet(
         category: ItemCategory = ItemCategory.GENERAL
     ): B = ModBlocksAndItems.register(name, block, category)
 
-    protected fun defaultBlockSettings(): FabricBlockSettings = FabricBlockSettings.copyOf(defaultBlockSettings)
+    protected fun defaultBlockSettings(): AbstractBlock.Settings = defaultBlockSettings.copy()
 }

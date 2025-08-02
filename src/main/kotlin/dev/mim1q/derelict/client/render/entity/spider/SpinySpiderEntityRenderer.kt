@@ -66,10 +66,7 @@ class SpinySpiderEntityModel(part: ModelPart) : EntityModel<SpinySpiderEntity>(R
         vertices: VertexConsumer,
         light: Int,
         overlay: Int,
-        red: Float,
-        green: Float,
-        blue: Float,
-        alpha: Float
+        color: Int
     ) {
         root.render(matrices, vertices, light, overlay)
     }

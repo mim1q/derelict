@@ -1,7 +1,7 @@
 package dev.mim1q.derelict.block
 
+import com.mojang.serialization.MapCodec
 import dev.mim1q.derelict.init.ModBlocksAndItems
-import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.minecraft.block.*
 import net.minecraft.fluid.FluidState
 import net.minecraft.fluid.Fluids
@@ -19,7 +19,7 @@ import net.minecraft.world.World
 import net.minecraft.world.WorldAccess
 
 @Suppress("OVERRIDE_DEPRECATION", "DEPRECATION")
-sealed class EmbersBlock(settings: FabricBlockSettings, private val particleVelocity: Double = 0.01) :
+sealed class EmbersBlock(settings: Settings, private val particleVelocity: Double = 0.01) :
     MultifaceGrowthBlock(settings.noCollision().ticksRandomly()), Waterloggable {
     override fun getGrower(): LichenGrower = null!!
 
@@ -80,7 +80,9 @@ sealed class EmbersBlock(settings: FabricBlockSettings, private val particleVelo
 
     abstract fun getParticle(random: Random): ParticleEffect?
 
-    class Smoldering(settings: FabricBlockSettings) : EmbersBlock(settings) {
+    class Smoldering(settings: Settings) : EmbersBlock(settings) {
+        override fun getCodec(): MapCodec<out MultifaceGrowthBlock> = MapCodec.unit(ModBlocksAndItems.SMOLDERING_EMBERS)
+
         override fun getParticle(random: Random): ParticleEffect? {
             if (random.nextFloat() < 0.8f) return null
             return if (random.nextFloat() < 0.4f) ParticleTypes.FLAME else ParticleTypes.SMOKE
@@ -112,7 +114,9 @@ sealed class EmbersBlock(settings: FabricBlockSettings, private val particleVelo
         }
     }
 
-    class Smoking(settings: FabricBlockSettings) : EmbersBlock(settings, 0.07) {
+    class Smoking(settings: Settings) : EmbersBlock(settings, 0.07) {
+        override fun getCodec(): MapCodec<out MultifaceGrowthBlock> = MapCodec.unit(ModBlocksAndItems.SMOKING_EMBERS)
+
         override fun getParticle(random: Random): ParticleEffect = ParticleTypes.CAMPFIRE_COSY_SMOKE
     }
 }

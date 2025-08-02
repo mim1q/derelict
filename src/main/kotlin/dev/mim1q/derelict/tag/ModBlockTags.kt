@@ -9,5 +9,5 @@ object ModBlockTags {
     val COBWEBS = of("cobwebs")
     val FULL_COBWEBS = of("full_cobwebs")
 
-    private fun of(id: String): TagKey<Block> = TagKey.of(RegistryKeys.BLOCK, Identifier("derelict", id))
+    private fun of(id: String): TagKey<Block> = TagKey.of(RegistryKeys.BLOCK, Identifier.of("derelict", id))
 }

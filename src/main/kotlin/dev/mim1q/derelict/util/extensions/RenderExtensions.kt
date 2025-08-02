@@ -3,13 +3,10 @@ package dev.mim1q.derelict.util.extensions
 import net.minecraft.client.render.OverlayTexture
 import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.util.math.MatrixStack
-import org.joml.Matrix3f
-import org.joml.Matrix4f
 import org.joml.Vector2f
 
 fun VertexConsumer.produceVertex(
-    positionMatrix: Matrix4f,
-    normalMatrix: Matrix3f,
+    entry: MatrixStack.Entry,
     light: Int,
     x: Float,
     y: Float,
@@ -21,13 +18,12 @@ fun VertexConsumer.produceVertex(
     blue: Int,
     alpha: Int
 ) {
-    vertex(positionMatrix, x, y, z)
+    vertex(entry.positionMatrix, x, y, z)
         .color(red, green, blue, alpha)
         .texture(textureU, textureV)
         .overlay(OverlayTexture.DEFAULT_UV)
         .light(light)
-        .normal(normalMatrix, 0F, -1F, 0F)
-        .next()
+        .normal(entry, 0F, -1F, 0F)
 }
 
 fun VertexConsumer.drawBillboard(
@@ -43,17 +39,16 @@ fun VertexConsumer.drawBillboard(
     alpha: Int = 255,
     doubleSided: Boolean = true
 ) {
-    val posMatrix = matrices.peek().positionMatrix
-    val normalMatrix = matrices.peek().normalMatrix
+    val entry = matrices.peek()
 
-    produceVertex(posMatrix, normalMatrix, light, from.x, from.y, 0.0f, fromUv.x, fromUv.y, red, green, blue, alpha)
-    produceVertex(posMatrix, normalMatrix, light, to.x, from.y, 0.0f, toUv.x, fromUv.y, red, green, blue, alpha)
-    produceVertex(posMatrix, normalMatrix, light, to.x, to.y, 0.0f, toUv.x, toUv.y, red, green, blue, alpha)
-    produceVertex(posMatrix, normalMatrix, light, from.x, to.y, 0.0f, fromUv.x, toUv.y, red, green, blue, alpha)
+    produceVertex(entry, light, from.x, from.y, 0.0f, fromUv.x, fromUv.y, red, green, blue, alpha)
+    produceVertex(entry, light, to.x, from.y, 0.0f, toUv.x, fromUv.y, red, green, blue, alpha)
+    produceVertex(entry, light, to.x, to.y, 0.0f, toUv.x, toUv.y, red, green, blue, alpha)
+    produceVertex(entry, light, from.x, to.y, 0.0f, fromUv.x, toUv.y, red, green, blue, alpha)
     if (doubleSided) {
-        produceVertex(posMatrix, normalMatrix, light, to.x, from.y, 0.0f, toUv.x, fromUv.y, red, green, blue, alpha)
-        produceVertex(posMatrix, normalMatrix, light, from.x, from.y, 0.0f, fromUv.x, fromUv.y, red, green, blue, alpha)
-        produceVertex(posMatrix, normalMatrix, light, from.x, to.y, 0.0f, fromUv.x, toUv.y, red, green, blue, alpha)
-        produceVertex(posMatrix, normalMatrix, light, to.x, to.y, 0.0f, toUv.x, toUv.y, red, green, blue, alpha)
+        produceVertex(entry, light, to.x, from.y, 0.0f, toUv.x, fromUv.y, red, green, blue, alpha)
+        produceVertex(entry, light, from.x, from.y, 0.0f, fromUv.x, fromUv.y, red, green, blue, alpha)
+        produceVertex(entry, light, from.x, to.y, 0.0f, fromUv.x, toUv.y, red, green, blue, alpha)
+        produceVertex(entry, light, to.x, to.y, 0.0f, toUv.x, toUv.y, red, green, blue, alpha)
     }
 }

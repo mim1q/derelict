@@ -39,6 +39,6 @@ private fun walkSpiderLeg(legs: Array<ModelPart>, index: Int, defaultAngle: Floa
 
 fun <T : Entity, M : EntityModel<T>> createEyesFeatureRenderer(ctx: FeatureRendererContext<T, M>, baseTexture: Identifier) =
     object : EyesFeatureRenderer<T, M>(ctx) {
-        val texture = Identifier(baseTexture.namespace, baseTexture.path.replace(".png", "_eyes.png"))
+        val texture = Identifier.of(baseTexture.namespace, baseTexture.path.replace(".png", "_eyes.png"))
         override fun getEyesTexture(): RenderLayer = RenderLayer.getEyes(texture)
     }

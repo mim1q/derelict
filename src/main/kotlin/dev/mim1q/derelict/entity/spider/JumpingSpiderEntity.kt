@@ -33,10 +33,10 @@ class JumpingSpiderEntity(
     var jumpAttackCooldown = 40
     val jumpChargeAnimation = AnimatedProperty(0f, Easing::easeOutCubic)
 
-    override fun initDataTracker() {
-        super.initDataTracker()
-        dataTracker.startTracking(JUMP_CHARGING, false)
-        dataTracker.startTracking(TARGET_ID, -1)
+    override fun initDataTracker(builder: DataTracker.Builder) {
+        super.initDataTracker(builder)
+        builder.add(JUMP_CHARGING, false)
+        builder.add(TARGET_ID, -1)
     }
 
     override fun initGoals() {

@@ -1,7 +1,6 @@
 package dev.mim1q.derelict.block
 
 import dev.mim1q.derelict.util.ShapeUtil.rotate
-import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.Oxidizable
@@ -14,7 +13,6 @@ import net.minecraft.state.property.DirectionProperty
 import net.minecraft.state.property.IntProperty
 import net.minecraft.state.property.Properties
 import net.minecraft.util.ActionResult
-import net.minecraft.util.Hand
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction.*
@@ -25,7 +23,7 @@ import net.minecraft.world.BlockView
 import net.minecraft.world.World
 
 sealed class RotatableCoverBlock(
-    settings: FabricBlockSettings
+    settings: Settings
 ) : Block(settings.nonOpaque()) {
     protected abstract fun getRotationProperty(): IntProperty
     protected abstract fun getRotation(ctx: ItemPlacementContext): Int
@@ -54,14 +52,12 @@ sealed class RotatableCoverBlock(
         }
     }
 
-    @Suppress("OVERRIDE_DEPRECATION")
     override fun onUse(
         state: BlockState,
         world: World,
         pos: BlockPos,
         player: PlayerEntity,
-        hand: Hand,
-        hit: BlockHitResult
+        hit: BlockHitResult,
     ): ActionResult {
         val rotation = state[getRotationProperty()]
         val difference = if (player.isSneaking) -1 else 1
@@ -72,7 +68,7 @@ sealed class RotatableCoverBlock(
 
     override fun isTransparent(state: BlockState, world: BlockView, pos: BlockPos) = true
 
-    open class Normal(settings: FabricBlockSettings) : RotatableCoverBlock(settings) {
+    open class Normal(settings: Settings) : RotatableCoverBlock(settings) {
         override fun getRotationProperty(): IntProperty = ROTATION_8
         override fun getRotation(ctx: ItemPlacementContext): Int {
             val up = ctx.side == UP
@@ -83,7 +79,7 @@ sealed class RotatableCoverBlock(
 
         class OxidizableNormal(
             private val level: Oxidizable.OxidationLevel,
-            settings: FabricBlockSettings
+            settings: Settings
         ) : Normal(settings), Oxidizable {
             override fun getDegradationLevel() = level
 
@@ -98,7 +94,7 @@ sealed class RotatableCoverBlock(
         }
     }
 
-    class Crossed(settings: FabricBlockSettings) : RotatableCoverBlock(settings) {
+    class Crossed(settings: Settings) : RotatableCoverBlock(settings) {
         override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
             builder.add(ROTATION_3, FACING)
         }
@@ -108,7 +104,7 @@ sealed class RotatableCoverBlock(
             if (ctx.horizontalPlayerFacing.axis == Axis.X) 2 else 0
     }
 
-    open class SquarePatch(settings: FabricBlockSettings) : RotatableCoverBlock(settings) {
+    open class SquarePatch(settings: Settings) : RotatableCoverBlock(settings) {
         override fun appendProperties(builder: StateManager.Builder<Block, BlockState>) {
             builder.add(ROTATION_4, FACING)
         }
@@ -123,7 +119,7 @@ sealed class RotatableCoverBlock(
 
         class OxidizableSquarePatch(
             private val level: Oxidizable.OxidationLevel,
-            settings: FabricBlockSettings
+            settings: Settings
         ) : SquarePatch(settings), Oxidizable {
             override fun getDegradationLevel() = level
 

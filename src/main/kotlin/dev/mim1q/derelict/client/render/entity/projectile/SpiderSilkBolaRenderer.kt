@@ -50,5 +50,5 @@ class SpiderSilkBolaRenderer(context: EntityRendererFactory.Context) : EntityRen
         }
     }
 
-    override fun getTexture(entity: SpiderSilkBolaProjectile) = Identifier("textures/item/cobweb.png")
+    override fun getTexture(entity: SpiderSilkBolaProjectile) = Identifier.of("textures/item/cobweb.png")
 }

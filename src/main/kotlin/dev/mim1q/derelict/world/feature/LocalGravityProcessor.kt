@@ -1,6 +1,6 @@
 package dev.mim1q.derelict.world.feature
 
-import com.mojang.serialization.Codec
+import com.mojang.serialization.MapCodec
 import dev.mim1q.derelict.init.worldgen.ModFeatures
 import net.minecraft.structure.StructurePlacementData
 import net.minecraft.structure.StructureTemplate
@@ -11,7 +11,7 @@ import net.minecraft.world.WorldView
 
 class LocalGravityProcessor : StructureProcessor() {
     companion object {
-        val CODEC: Codec<LocalGravityProcessor> = Codec.unit(LocalGravityProcessor())
+        val CODEC: MapCodec<LocalGravityProcessor> = MapCodec.unit(LocalGravityProcessor())
     }
 
     override fun process(
@@ -20,7 +20,7 @@ class LocalGravityProcessor : StructureProcessor() {
         pivot: BlockPos,
         originalBlockInfo: StructureTemplate.StructureBlockInfo,
         currentBlockInfo: StructureTemplate.StructureBlockInfo,
-        data: StructurePlacementData
+        data: StructurePlacementData,
     ): StructureTemplate.StructureBlockInfo {
         val mutPos = currentBlockInfo.pos.mutableCopy()
         val diff = mutPos.y - pos.y

@@ -1,6 +1,5 @@
 package dev.mim1q.derelict.block.metal.oxidizable
 
-import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.minecraft.block.BlockState
 import net.minecraft.block.Oxidizable
 import net.minecraft.block.PaneBlock
@@ -10,7 +9,7 @@ import net.minecraft.util.math.random.Random
 
 class OxidizablePaneBlock(
     private val oxidizationLevel: Oxidizable.OxidationLevel,
-    settings: FabricBlockSettings
+    settings: Settings
 ) : PaneBlock(settings), Oxidizable {
     override fun getDegradationLevel() = oxidizationLevel
 

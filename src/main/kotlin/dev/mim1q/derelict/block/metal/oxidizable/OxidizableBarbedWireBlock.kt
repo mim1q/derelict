@@ -1,7 +1,6 @@
 package dev.mim1q.derelict.block.metal.oxidizable
 
 import dev.mim1q.derelict.block.metal.BarbedWireBlock
-import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.minecraft.block.BlockState
 import net.minecraft.block.Oxidizable
 import net.minecraft.server.world.ServerWorld
@@ -10,7 +9,7 @@ import net.minecraft.util.math.random.Random
 
 class OxidizableBarbedWireBlock(
     private val level: Oxidizable.OxidationLevel,
-    settings: FabricBlockSettings
+    settings: Settings
 ) : BarbedWireBlock(settings), Oxidizable {
     override fun getDegradationLevel() = level
 

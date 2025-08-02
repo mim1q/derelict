@@ -29,7 +29,8 @@ import kotlin.math.pow
 
 class WebCasterEntity(entityType: EntityType<WebCasterEntity>, world: World) : HostileEntity(entityType, world) {
     companion object {
-        val WEB_HELD: TrackedData<Boolean> = DataTracker.registerData(WebCasterEntity::class.java, TrackedDataHandlerRegistry.BOOLEAN)
+        val WEB_HELD: TrackedData<Boolean> =
+            DataTracker.registerData(WebCasterEntity::class.java, TrackedDataHandlerRegistry.BOOLEAN)
 
         fun createWebCasterAttributes(): DefaultAttributeContainer.Builder = SpiderEntity.createSpiderAttributes()
             .add(EntityAttributes.GENERIC_MAX_HEALTH, 40.0)
@@ -54,9 +55,9 @@ class WebCasterEntity(entityType: EntityType<WebCasterEntity>, world: World) : H
         //@formatter:on
     )
 
-    override fun initDataTracker() {
-        super.initDataTracker()
-        dataTracker.startTracking(WEB_HELD, false)
+    override fun initDataTracker(builder: DataTracker.Builder) {
+        super.initDataTracker(builder)
+        builder.add(WEB_HELD, false)
     }
 
     override fun initGoals() {
@@ -164,7 +165,10 @@ class WebCasterEntity(entityType: EntityType<WebCasterEntity>, world: World) : H
     }
 
     override fun getSoundPitch(): Float = 0.6f + random.nextFloat() * 0.25f
-    override fun squaredAttackRange(target: LivingEntity): Double = (width + 1.0).pow(2) + target.width
+
+    override fun isInAttackRange(entity: LivingEntity): Boolean =
+        entity.squaredDistanceTo(this) <= (width + 1.0).pow(2) + entity.width
+    
     override fun setBodyYaw(bodyYaw: Float) = super.setBodyYaw(wrapDegrees(this.bodyYaw, bodyYaw, 10f))
     override fun createBodyControl() = ArachneBodyControl(this)
     override fun slowMovement(state: BlockState, multiplier: Vec3d) =

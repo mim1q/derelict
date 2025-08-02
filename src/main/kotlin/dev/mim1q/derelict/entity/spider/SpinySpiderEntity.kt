@@ -52,10 +52,10 @@ class SpinySpiderEntity(
 
     }
 
-    override fun initDataTracker() {
-        super.initDataTracker()
+    override fun initDataTracker(builder: DataTracker.Builder) {
+        super.initDataTracker(builder)
 
-        dataTracker.startTracking(FUSE_SPEED, -1)
+        builder.add(FUSE_SPEED, -1)
     }
 
     private var prevFuse = 0f

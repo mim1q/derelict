@@ -55,10 +55,7 @@ class CharmingSpiderEntityModel(
         vertices: VertexConsumer,
         light: Int,
         overlay: Int,
-        red: Float,
-        green: Float,
-        blue: Float,
-        alpha: Float
+        color: Int
     ) = root.render(matrices, vertices, light, overlay)
 
     override fun setAngles(

@@ -30,12 +30,9 @@ class ArachneEntityModel(root: ModelPart) : EntityModel<ArachneEntity>(RenderLay
         vertices: VertexConsumer,
         light: Int,
         overlay: Int,
-        red: Float,
-        green: Float,
-        blue: Float,
-        alpha: Float
+        color: Int
     ) {
-        body.render(matrices, vertices, light, overlay, red, green, blue, alpha)
+        body.render(matrices, vertices, light, overlay, color)
     }
 
     override fun setAngles(

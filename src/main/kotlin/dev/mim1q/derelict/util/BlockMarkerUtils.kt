@@ -10,7 +10,7 @@ import net.minecraft.util.hit.HitResult
 
 
 object BlockMarkerUtils {
-    private val HONEYCOMB_TEXTURE = Identifier("textures/item/honeycomb.png")
+    private val HONEYCOMB_TEXTURE = Identifier.of("textures/item/honeycomb.png")
 
     fun renderWaxedIndicator(textureDrawer: (Identifier, Int, Int, Int, Int, Float) -> Unit, x: Int, y: Int) {
         val size = (DerelictClient.CLIENT_CONFIG.waxedIndicatorScale() * 16).toInt()

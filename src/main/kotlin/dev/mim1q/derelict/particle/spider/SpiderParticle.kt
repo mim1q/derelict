@@ -236,24 +236,20 @@ class SpiderParticle(
             .texture(maxU, maxV)
             .color(this.red, this.green, this.blue, this.alpha)
             .light(light)
-            .next()
         vertexConsumer
             .vertex(posMatrix, vertices[1].x, vertices[1].y, vertices[1].z)
             .texture(maxU, minV)
             .color(this.red, this.green, this.blue, this.alpha)
             .light(light)
-            .next()
         vertexConsumer
             .vertex(posMatrix, vertices[2].x, vertices[2].y, vertices[2].z)
             .texture(minU, minV)
             .color(this.red, this.green, this.blue, this.alpha)
             .light(light)
-            .next()
         vertexConsumer
             .vertex(posMatrix, vertices[3].x, vertices[3].y, vertices[3].z)
             .texture(minU, maxV)
             .color(this.red, this.green, this.blue, this.alpha)
             .light(light)
-            .next()
     }
 }

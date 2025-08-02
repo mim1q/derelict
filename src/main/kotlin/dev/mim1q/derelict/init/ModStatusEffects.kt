@@ -12,6 +12,7 @@ import net.minecraft.particle.BlockStateParticleEffect
 import net.minecraft.particle.ParticleTypes
 import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
+import net.minecraft.registry.entry.RegistryEntry
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
@@ -20,11 +21,12 @@ object ModStatusEffects {
     val COBWEBBED = register("cobwebbed", object : DerelictStatusEffect(StatusEffectCategory.HARMFUL, 0x000000, false) {
         override fun canApplyUpdateEffect(duration: Int, amplifier: Int): Boolean = duration == 5 && amplifier > 0
 
-        override fun applyUpdateEffect(entity: LivingEntity, amplifier: Int) {
-            entity.removeStatusEffectInternal(this)
+
+        override fun applyUpdateEffect(entity: LivingEntity, amplifier: Int): Boolean {
+            entity.removeStatusEffectInternal(getCobwebbed())
             entity.addStatusEffect(
                 StatusEffectInstance(
-                    this,
+                    getCobwebbed(),
                     if (entity.isPlayer) 60 else 40,
                     amplifier - 1,
                     false,
@@ -33,10 +35,11 @@ object ModStatusEffects {
                 )
             )
             spawnParticlesAndPlaySound(entity)
+            return true
         }
 
-        override fun onRemoved(entity: LivingEntity, attributes: AttributeContainer, amplifier: Int) {
-            super.onRemoved(entity, attributes, amplifier)
+        override fun onRemoved(entity: LivingEntity, container: AttributeContainer, amplifier: Int) {
+            super.onRemoved(entity, container, amplifier)
             spawnParticlesAndPlaySound(entity)
         }
 
@@ -59,11 +62,17 @@ object ModStatusEffects {
         }
     })
 
+    fun getCobwebbed(): RegistryEntry<StatusEffect> = COBWEBBED
+
     fun init() {}
 
-    fun <S : StatusEffect> register(name: String, effect: S): S = Registry.register(
-        Registries.STATUS_EFFECT,
-        Derelict.id(name),
-        effect
-    )
+    fun <S : StatusEffect> register(name: String, effect: S): RegistryEntry<StatusEffect> {
+        val value = Registry.register(
+            Registries.STATUS_EFFECT,
+            Derelict.id(name),
+            effect
+        )
+
+        return Registries.STATUS_EFFECT.getEntry(value)
+    }
 }

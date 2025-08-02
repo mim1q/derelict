@@ -60,7 +60,7 @@ class Wildfire(settings: Settings) : Item(settings) {
 
     override fun getUseAction(stack: ItemStack) = UseAction.NONE
 
-    override fun getMaxUseTime(stack: ItemStack) = 3600 * 20
+    override fun getMaxUseTime(stack: ItemStack, user: LivingEntity) = 3600 * 20
 
     override fun use(world: World?, user: PlayerEntity?, hand: Hand?): TypedActionResult<ItemStack> =
         ItemUsage.consumeHeldItem(world, user, hand)

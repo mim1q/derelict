@@ -59,8 +59,8 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
 
     val legController = SpiderLegController(
         this,
-        { getScale() * 24 / 16f },
-        { getScale() * 28 / 16f },
+        { scale * 24 / 16f },
+        { scale * 28 / 16f },
         //@formatter:off
         { ikVec( 0.6, 0.9, 1.0 ) } to { ikVec( 1.5, 0.0,  3.5) },
         { ikVec( 0.6, 1.0, 0.65) } to { ikVec( 2.5, 0.0,  1.5) },
@@ -172,7 +172,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
                     8, 2.0, 2.0, 2.0,
                     0.0
                 )
-                playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1.0f, 0.8f)
+                playSound(SoundEvents.ENTITY_GENERIC_EXPLODE.value(), 1.0f, 0.8f)
                 world.getEntitiesByClass(LivingEntity::class.java, boundingBox.expand(8.0)) { it != this }.forEach {
                     it.takeKnockback(1.0, it.x - x, it.z - z)
                 }
@@ -264,12 +264,12 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
 
     override fun setBodyYaw(bodyYaw: Float) = super.setBodyYaw(wrapDegrees(this.bodyYaw, bodyYaw, 10f))
     override fun createBodyControl() = ArachneBodyControl(this)
-    override fun initDataTracker() {
-        super.initDataTracker()
+    override fun initDataTracker(builder: DataTracker.Builder) {
+        super.initDataTracker(builder)
 
-        dataTracker.startTracking(SCREAMING, false)
-        dataTracker.startTracking(SHAKING, false)
-        dataTracker.startTracking(CURRENT_ATTACK, 0)
+        builder.add(SCREAMING, false)
+        builder.add(SHAKING, false)
+        builder.add(CURRENT_ATTACK, 0)
     }
 
     override fun onTrackedDataSet(data: TrackedData<*>) {
@@ -307,12 +307,13 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
         screamingTicks = 40
     }
 
-    fun getScale() = 1.0f + 0.05f * getStage()
+
+    override fun getScaleFactor() = 1.0f + 0.05f * getStage()
 
     override fun getBoundingBox(pose: EntityPose): Box =
         super.getBoundingBox(pose).let {
             val scale = (getScale() - 1) * 0.5
-            it.expand(it.xLength * scale, it.yLength * scale, it.zLength * scale)
+            it.expand(it.lengthX * scale, it.lengthY * scale, it.lengthZ * scale)
         }
 
     private fun ikVec(x: Double, y: Double, z: Double): Vec3d {
@@ -388,7 +389,7 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
                 val pos = pos.add(3.0 * cos(bodyYawRad) * scale, 0.0, 3.0 * sin(bodyYawRad) * scale)
 
                 world.spawnParticles(ParticleTypes.EXPLOSION, pos.x, pos.y + 0.5, pos.z, 2, 0.3, 0.3, 0.3, 0.0)
-                playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.7f, 0.3f + random.nextFloat() * 0.2f)
+                playSound(SoundEvents.ENTITY_GENERIC_EXPLODE.value(), 0.7f, 0.3f + random.nextFloat() * 0.2f)
 
                 world.getOtherEntities(this, Box.of(pos, 5.0, 4.0, 5.0)).forEach {
                     if (it !is LivingEntity) return@forEach
@@ -545,10 +546,10 @@ class ArachneEntity(entityType: EntityType<ArachneEntity>, world: World) : Hosti
 
     override fun updatePassengerPosition(passenger: Entity, positionUpdater: PositionUpdater) {
         if (this.hasPassenger(passenger)) {
-            val y = this.y + 0.3 + passenger.heightOffset
+            val y = this.y + 0.3 + passenger.height
             val bodyYawRad = (bodyYaw + 90).radians()
-            val dx = cos(bodyYawRad) * 2.0 * getScale()
-            val dz = sin(bodyYawRad) * 2.0 * getScale()
+            val dx = cos(bodyYawRad) * 2.0 * scale
+            val dz = sin(bodyYawRad) * 2.0 * scale
             positionUpdater.accept(passenger, this.x + dx, y, this.z + dz)
         }
     }

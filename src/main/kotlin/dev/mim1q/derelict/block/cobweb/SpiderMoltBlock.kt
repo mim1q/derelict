@@ -1,5 +1,7 @@
 package dev.mim1q.derelict.block.cobweb
 
+import com.mojang.serialization.MapCodec
+import dev.mim1q.derelict.init.ModBlocksAndItems
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.HorizontalFacingBlock
@@ -12,6 +14,8 @@ import net.minecraft.util.shape.VoxelShapes
 import net.minecraft.world.BlockView
 
 class SpiderMoltBlock(settings: Settings) : HorizontalFacingBlock(settings) {
+    override fun getCodec(): MapCodec<out HorizontalFacingBlock> = MapCodec.unit(ModBlocksAndItems.SPIDER_MOLT)
+
     @Suppress("OVERRIDE_DEPRECATION")
     override fun getCollisionShape(state: BlockState, world: BlockView, pos: BlockPos, context: ShapeContext): VoxelShape =
         VoxelShapes.empty()

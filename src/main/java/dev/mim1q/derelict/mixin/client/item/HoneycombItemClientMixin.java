@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Unique;
 @Mixin(HoneycombItem.class)
 public class HoneycombItemClientMixin implements CrosshairTipItem {
     @Unique
-    private static final Identifier TEXTURE = new Identifier("textures/item/honeycomb.png");
+    private static final Identifier TEXTURE = Identifier.of("textures/item/honeycomb.png");
     @Unique
     private Block lastBlock = null;
     @Unique

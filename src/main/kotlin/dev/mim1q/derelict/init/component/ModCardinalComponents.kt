@@ -1,17 +1,18 @@
 package dev.mim1q.derelict.init.component
 
 import dev.mim1q.derelict.Derelict
-import dev.onyxstudios.cca.api.v3.component.Component
-import dev.onyxstudios.cca.api.v3.component.ComponentKey
-import dev.onyxstudios.cca.api.v3.component.ComponentRegistry
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent
-import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry
-import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.effect.StatusEffect
 import net.minecraft.nbt.NbtCompound
-import net.minecraft.registry.Registries
+import net.minecraft.registry.RegistryWrapper.WrapperLookup
+import net.minecraft.registry.entry.RegistryEntry
 import net.minecraft.util.Identifier
+import org.ladysnake.cca.api.v3.component.Component
+import org.ladysnake.cca.api.v3.component.ComponentKey
+import org.ladysnake.cca.api.v3.component.ComponentRegistry
+import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent
+import org.ladysnake.cca.api.v3.entity.EntityComponentFactoryRegistry
+import org.ladysnake.cca.api.v3.entity.EntityComponentInitializer
 
 object ModCardinalComponents : EntityComponentInitializer {
     val EFFECTS_COMPONENT: ComponentKey<DerelictEffectsComponent> =
@@ -24,33 +25,34 @@ object ModCardinalComponents : EntityComponentInitializer {
     class DerelictEffectsComponent(private val provider: Any) : Component, AutoSyncedComponent {
         private val effects = mutableMapOf<Identifier, Int>()
 
-        override fun readFromNbt(tag: NbtCompound) {
+
+        override fun readFromNbt(tag: NbtCompound, registry: WrapperLookup) {
             effects.clear()
             tag.keys.forEach { key ->
-                effects[Identifier(key)] = tag.getInt(key)
+                effects[Identifier.of(key)] = tag.getInt(key)
             }
         }
 
-        override fun writeToNbt(tag: NbtCompound) {
+        override fun writeToNbt(tag: NbtCompound, registry: WrapperLookup) {
             effects.forEach { (key, value) ->
                 tag.putInt(key.toString(), value)
             }
         }
 
-        fun addEffect(effect: StatusEffect, amplifier: Int) {
-            val id = Registries.STATUS_EFFECT.getId(effect) ?: return
+        fun addEffect(effect: RegistryEntry<StatusEffect>, amplifier: Int) {
+            val id = effect.key.get().value
             effects[id] = amplifier
             EFFECTS_COMPONENT.sync(provider)
         }
 
-        fun removeEffect(effect: StatusEffect) {
-            val id = Registries.STATUS_EFFECT.getId(effect) ?: return
+        fun removeEffect(effect: RegistryEntry<StatusEffect>) {
+            val id = effect.key.get().value
             effects.remove(id)
             EFFECTS_COMPONENT.sync(provider)
         }
 
-        fun getEffectAmplifier(effect: StatusEffect): Int? {
-            val id = Registries.STATUS_EFFECT.getId(effect) ?: return null
+        fun getEffectAmplifier(effect: RegistryEntry<StatusEffect>): Int? {
+            val id = effect.key.get().value
             return effects[id]
         }
 
@@ -60,10 +62,10 @@ object ModCardinalComponents : EntityComponentInitializer {
     val LivingEntity.statusEffectComponent: DerelictEffectsComponent
         get() = EFFECTS_COMPONENT.get(this)
 
-    fun LivingEntity.hasClientSyncedEffect(effect: StatusEffect): Boolean =
+    fun LivingEntity.hasClientSyncedEffect(effect: RegistryEntry<StatusEffect>): Boolean =
         statusEffectComponent.getEffectAmplifier(effect) != null
 
-    fun LivingEntity.getClientSyncedEffectAmplifier(effect: StatusEffect): Int? =
+    fun LivingEntity.getClientSyncedEffectAmplifier(effect: RegistryEntry<StatusEffect>): Int? =
         statusEffectComponent.getEffectAmplifier(effect)
 
     fun LivingEntity.updateClientSyncedEffects() {

@@ -64,10 +64,10 @@ sealed class SpiderlingEntity(entityType: EntityType<SpiderlingEntity>, world: W
     val anchored = AnimatedProperty(0f)
     private var spawnedFromBucket by tracked(SPAWNED_FROM_BUCKET)
 
-    override fun initDataTracker() {
-        super.initDataTracker()
-        dataTracker.startTracking(ANCHOR_POSITION, Optional.empty())
-        dataTracker.startTracking(SPAWNED_FROM_BUCKET, false)
+    override fun initDataTracker(builder: DataTracker.Builder) {
+        super.initDataTracker(builder)
+        builder.add(ANCHOR_POSITION, Optional.empty())
+        builder.add(SPAWNED_FROM_BUCKET, false)
     }
 
     override fun initGoals() {

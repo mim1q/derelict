@@ -13,7 +13,7 @@ object Versions {
     const val OWO_LIB = "0.12.15.4+1.21"
     const val JANKSON = "1.2.1"
     const val CARDINAL_COMPONENTS = "6.1.2"
-    const val TERRABLENDER = "1.20.1-3.0.1.7"
+    const val TERRABLENDER = "1.21.1-4.1.0.8"
 
     // Compatibility
     const val REI = "16.0.799"
