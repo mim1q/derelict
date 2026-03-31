@@ -59,6 +59,8 @@ sealed class EmbersBlock(settings: FabricBlockSettings, private val particleVelo
     // Particle Spawning
     private fun getBaseParticleOffset(state: BlockState, random: Random): Vec3d {
         val directions = collectDirections(state)
+        if (directions.isEmpty()) return Vec3d.ZERO
+
         val direction = directions.toList()[random.nextInt(directions.size)]
         val planeVector = Vec3d(1.0, 1.0, 1.0)
             .subtract(Vec3d.of(direction.vector.multiply(direction.direction.offset())))
